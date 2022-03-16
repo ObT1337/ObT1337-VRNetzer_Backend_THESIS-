@@ -282,7 +282,8 @@ def upload_files(request):
 
     global sessionData
     sessionData["proj"] = listProjects()
-    
+
     return state
     
-    
+
+sessionData["proj"] = listProjects()
