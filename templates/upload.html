@@ -1,0 +1,112 @@
+<!-- PUT YOUR UI ELEMENTS IN HERE AND DEFINE MAPPINGS IN MyUi.js -->
+
+<!-- HTML STARTS HERE -->
+
+<!DOCTYPE html>
+<html>
+
+
+<style>
+    input[type='file']
+    {
+      outline: none;
+        
+    }
+</style>
+
+<head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+  <!-- rel = "stylesheet"> -->
+  <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+
+</head>
+
+<body>
+
+  <div id="tabsUL"><a href="upload.html" id="" title="upload">upload</a>
+    <ul>
+      <li><a href="#fragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
+        src="{{ url_for('static', filename='img/upload.png') }}" /></a></li>
+    </ul>
+    <div id="fragment-1">
+      <br>
+      <div class="swagLabel">UPLOAD NEW DATA</div>
+      <p style="color:rgb(255, 255, 255)">
+
+
+      Please upload layouts, links, and labels here.<br>  File formats need to follow 
+      <a href="https://github.com/menchelab/Analytics_Module/tree/master/sample_inputs"> this </a> structures. <br>
+      NOTE: You can not add new projects on the demo server. To do that, you need a stand alone installation.
+
+      </p>
+      <br>
+
+      <div class="swagLabel">PROJECTS</div>
+      <select name="namespaces" id="namespaces">
+        {% for namespace in namespaces %}
+          <option value="{{namespace}}">{{namespace}}</option>
+        {% endfor %}
+      </select>
+      <br>
+      
+
+      <form id="upload_form" method=post enctype=multipart/form-data style="color:rgb(255, 255, 255)">
+ 
+        <input type="radio" name="namespace" value="existing" checked >Add to current project<br>
+        <p>
+          <input type="radio" name="namespace" id="radio_new_namespace" value="New"  > Create new project</p>
+        
+        <br>
+        <br>
+        
+
+        <input type="text" id="new_namespace_name" name="new_name">
+        <br>
+        <p id="submit_warnings"></p>
+
+      <label>L A Y O U T S</label><br>
+      <input type=file name=layouts multiple><br><br>
+      <!--
+      <label>N O D E S</label><br>
+      <input type=file name=nodes multiple><br><br>
+	  -->
+      <label>L I N K S</label><br>
+      <input type=file name=links multiple><br><br>
+      <!--
+      <label>A T T R I B U T E S (optional) </label><br>
+      <input type=file name=attributes multiple><br><br>
+	  
+      <label>L A B E L S (optional) </label><br>
+      <input type=file name=labels multiple><br><br>
+-->
+        <br>
+        <input type=submit value=Upload  id=upload_button>
+        <br>
+        <p id="upload_message"></p>
+      </form>
+
+
+         
+      </div>
+
+
+  </div>
+
+    
+
+    
+  
+
+  
+
+</body>

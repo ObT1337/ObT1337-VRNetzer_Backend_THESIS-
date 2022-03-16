@@ -1,0 +1,229 @@
+<!-- PUT YOUR UI ELEMENTS IN HERE AND DEFINE MAPPINGS IN main_UI.js -->
+
+<!-- HTML STARTS HERE -->
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+                <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+                    <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+                    <!-- rel = "stylesheet"> -->
+                    <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+                    <script src="https://d3js.org/d3.v4.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+                    <!--
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
+                    -->
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/main_UI.js') }}"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/d3ForceGraph.js') }}"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/d3barchart.js') }}"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/d3barchart_works.js') }}"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/jszip.min.js') }}"></script>
+                    <script type="text/javascript" src="{{ url_for('static', filename='js/kendo.all.min.js') }}"></script>
+
+    </head>
+
+                <body>
+
+                    <p1> Hello "{{usr}}"</p1>
+
+                    <div id="tabs" class="disable-select">
+
+
+                        <ul>
+
+
+
+                            <li><a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_open.png') }}" /></a></li>
+                            <li><a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>
+                            <li><a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_tune.png') }}" /></a></li>
+                            <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
+                            <li><a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>
+                            <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
+
+ 
+                            <!-- <li><a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_pub.png') }}" /></a></li> -->
+                        </ul>
+
+                        <div id="tabs-1">
+                            <div id="projects-section">
+                                <div class="swagLabel" >PROJECTS</div>
+                                <select name="namespaces" id="namespaces">
+                                </select>
+                                <button id="RefreshProjects"><img src="{{ url_for('static', filename='img/refresh.png') }}"></button>
+
+                                <div class="swagLabel"  > LAYOUTS
+                                
+								
+                                </div>
+                                
+                                
+                                <div style="width: 100%; display: table;">
+                                        <div style="display: table-row; overflow-y:auto;">
+                                                <div style="width: 170px; display: table-cell;">
+                                                <select name="layouts" id="layouts" style="max-width:150px; float: left;"></select> 
+                                                </div>
+                                                <div id = "channelB" style="display: table-cell;">
+                                                    <button id="MorphState">A_</button>
+                                                    <select name="layoutsB" id="layoutsB" style="max-width:150px;"></select>
+                                                </div>
+                                         </div>
+										 <button id="canMorph">MORPHING OFF</button>
+                                 </div>
+                                    
+                                
+
+                                    
+                                    
+
+                                <div class="swagLabel" >LINKLIST</div>
+                                <button name="reload" id="reload">LINKS</button>
+
+                            </div>
+                            <img id = "spinner_load" src="{{ url_for('static', filename='img/processing.gif') }}" />
+
+                        </div>
+
+                        <div id="tabs-2">
+                            <div class="swagLabel" >LOAD SELECTION</div>
+
+                            <select name="selectMode" id="selectMode"></select>
+                            <select name="selections" id="selections"></select>
+                            <button id="LoadSelection">GO!</button>
+                            <p>
+                                <button id="saveSel">SAVE SELECTION</button>
+                            </p>
+                        </div>
+
+                        <div id="tabs-3">
+                            <!-- SLIDERS -->
+                            <div class="swagLabel">SCALE</div>
+                            <div id="slider_scale"></div>
+                            <div class="swagLabel">NODE SIZE</div>
+                            <div id="slider-node_size"></div>
+                            <div class="swagLabel">LINK SIZE</div>
+                            <div id="slider-link_size"></div>
+                            <div class="swagLabel">LINK TRANSPARENCY</div>
+                            <div id="slider-link_transparency"></div>
+                            <div class="swagLabel">LIGHT</div>
+                            <div id="slider-light"></div>
+                            <!-- BUTTONS -->
+                             
+
+                            </div>
+                            <div id="tabs-4">
+                                <div class="swagLabel">SEARCH</div>
+
+                                <div id="searchGroup1">
+                                    <select name="searchMode1" id="searchMode1"></select>
+                                    <button name="searchGO" id="searchGO">GO!</button>
+                                </div>
+                                <p>
+                                    <select name="searchAttribute1" id="searchAttribute1"></select>
+                                    <button name	="searchInput1" id="searchInput1">INPUT1</button>
+
+                                    <!-- <button name	="addAttr" id="addAttr">+</button> -->
+
+                                    <input type="text" id="search_txt" name="search_txt" />
+                                </p> 
+
+                                <p>
+
+                                    <div class="swagLabel" id="sResults"  >SEARCH RESULTS</div>
+                                    <div id="autocomp" style="max-height:300px;overflow-y:auto;">
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div id="tabs-5">
+
+                                <div class="swagLabel" id="ResultsLabel" > RESULTS</div>
+
+                                <div id="ResultList" style="max-height:300px;overflow-y:auto;">
+                                </div>
+                            </div>
+                            <div id="tabs-6">
+
+                                <div  style="max-height:300px;overflow-y:auto;">
+
+                                <div class="swagLabel" > RANDOM WALK</div>
+                                <div id = "rwsection">
+                                    <div class="swagLabelSmall" id="restart_probability"  > RESTART PROBABILITY:</div>
+                                    <div id="slider-restart_probability"></div>
+                                    <div class="widget">
+                                        <button id="start_randomwalk_button">START RANDOMWALK</button>
+                                        <button id="clear_randomwalk_button">CLEAR</button>
+                                        <div class="swagLabel" id = "rwLabel"  >__________________________________</div>
+                                    </div>
+                                </div>
+
+                                <img id = "spinner" src="{{ url_for('static', filename='img/processing.gif') }}" />
+
+                                <p> </p>
+                                <div class="swagLabel" id="ShortestPathSection" >SHORTEST PATH
+                                     
+                                    <p></p>
+                                        <button id="p1_shortestPath" data-value = -1>P1</button>
+                                        <button id="p2_shortestPath" data-value = -1>P2</button>
+                                    
+                                    <button id="start_shortestPath">START</button><button id="clear_shortestPath">CLEAR</button>
+                                    <div class="swagLabel" id="spLabel" ></div>
+                                    <div class="swagLabel" >__________________________________</div>
+                                    
+                                    <!-- <svg width="512" height="600"></svg> -->
+                                    <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/d3ForceGraph.js') }}"></script> -->
+                                </div>
+                                <p></p>
+                                <div class="swagLabel" >ISOLATE SELECTION</div>
+                                <p></p>
+                                <button name="test" id="test">ISOLATE</button>
+                                <button id="exitIsolate"> EXIT </button> 
+                                <div class="swagLabel" >__________________________________</div>
+                                <p> </p>
+                                <div class="swagLabel" >LINKFADE</div>
+                                <p> </p>
+                                <button id="linkfade"> ON </button> 
+                                <div class="swagLabel" >__________________________________</div>
+                                <p> </p>
+                                <div class="swagLabel" >RE-LAYOUT</div>
+                                <p> </p>
+                                <button name="reLayout" id="reLayout">RE-LAYOUT</button>
+                                <div class="swagLabel" >__________________________________</div>
+                                <p> </p>
+
+                                <div class="swagLabel" id="GSEASection" >GSEA
+                                    <p> </p>
+                                    <p>
+                                        <select name="GSEAAttributes" id="GSEAAttributes"></select>
+                                        <button id="start_GSEA">START</button>  
+                                    </p>
+                                  
+                                        <svg id="GSEABarChart" width="500" height="1500" style="overflow-y:auto;" ></svg>
+                                               
+                                </div>
+
+                                </div>
+                            </div>
+
+                            <div id="tabs-7">
+             
+                            </div>
+                        </div>
+
+
+                    </body>
+
+                    
