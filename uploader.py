@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import json
 import os
-
+from GlobalData import *
 from flask import jsonify
 from engineio.payload import Payload
 from PIL import Image
@@ -280,6 +280,9 @@ def upload_files(request):
     with open(folder + 'pfile.json', 'w') as json_file:
         json.dump(pfile, json_file)
 
+    global sessionData
+    sessionData["proj"] = listProjects()
+    
     return state
     
     

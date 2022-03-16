@@ -1,4 +1,4 @@
-from uploader import listProjects
+
 import json
 
 idata = {'mes': 'dfhdfhfh', 'usr': 'NaS7QA89nxLg9nKQAAAn', 'tag': 'flask'}
@@ -19,7 +19,7 @@ sliders = [("ddfd", "1"), ("bfsd", "2"), ("cdfsdf", "3")]
 #prolist = json.dumps(listProjects())
 x = '{"proj": ["ere","rrr"], "actPro": "coolNewproject"}'
 sessionData = json.loads(x)
-sessionData["proj"] = listProjects()
+
 
 pfile = {}
 names = {}
