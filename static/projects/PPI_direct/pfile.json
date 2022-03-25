@@ -1,0 +1,1 @@
+{"name": "PPI_direct", "layouts": ["nodes_direct_nocolorXYZ", "nodes_direct_nocolorXYZ", "nodes_direct_colorXYZ"], "layoutsRGB": ["nodes_direct_nocolorRGB", "nodes_direct_nocolorRGB", "nodes_direct_colorRGB"], "links": ["elist_directXYZ", "elist_directXYZ", "elist_directXYZ"], "linksRGB": ["elist_directRGB", "elist_directRGB", "elist_directRGB"], "selections": []}
