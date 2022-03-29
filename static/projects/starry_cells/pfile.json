@@ -1,0 +1,1 @@
+{"name": "starry_cells", "layouts": ["subsampled_cellsXYZ", "subsampled_cellsXYZ", "subsampled_cellsXYZ", "subsampled_cellsXYZ"], "layoutsRGB": ["subsampled_cellsRGB", "subsampled_cellsRGB", "subsampled_cellsRGB", "subsampled_cellsRGB"], "links": ["subsampled_cellsXYZ", "subsampled_cellsXYZ"], "linksRGB": ["subsampled_cellsRGB", "subsampled_cellsRGB"], "selections": []}
