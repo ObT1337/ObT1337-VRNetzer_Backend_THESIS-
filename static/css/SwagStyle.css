@@ -80,7 +80,11 @@ input[type="submit"]
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
+    input[type="radio"]
+    {
 
+      height: 1em;
+    }
 :focus{
 
     user-select: none;
