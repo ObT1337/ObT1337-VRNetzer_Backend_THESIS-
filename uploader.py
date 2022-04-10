@@ -76,18 +76,22 @@ def makeNodeTex(project, name, file):
 
     f = StringIO(file)
     csvreader = csv.reader(f, delimiter=',')
+    elem = sum(1 for row in csvreader)
+    hight = int((elem + elem % 128)/128)
+    print (str(hight))
+    size = 128 * hight 
     path = 'static/projects/' + project 
     
     
-    texh = [(0,0,0)] * 16384
-    texl = [(0,0,0)] * 16384
-    texc = [(0,0,0,0)] * 16384
+    texh = [(0,0,0)] * size
+    texl = [(0,0,0)] * size
+    texc = [(0,0,0,0)] * size
 
-    new_imgh = Image.new('RGB', (128, 128))
-    new_imgl = Image.new('RGB', (128, 128))
-    new_imgc = Image.new('RGBA', (128, 128))
+    new_imgh = Image.new('RGB', (128, hight))
+    new_imgl = Image.new('RGB', (128, hight))
+    new_imgc = Image.new('RGBA', (128, hight))
 
-    TexXYZ = Image.new('RGB', (128, 256))
+    TexXYZ = Image.new('RGB', (128, hight * 2))
     
     i = 0
     attrlist = {}
@@ -118,6 +122,7 @@ def makeNodeTex(project, name, file):
             texh[i] = pixelh
             texl[i] = pixell
             texc[i] = pixelc
+            print(r)
             i += 1
 
     except (IndexError, ValueError):
@@ -131,7 +136,7 @@ def makeNodeTex(project, name, file):
     new_imgc.putdata(texc)
         
     TexXYZ.paste(new_imgh, (0, 0))
-    TexXYZ.paste(new_imgl, (0, 128))
+    TexXYZ.paste(new_imgl, (0, hight))
         
     pathXYZ = path + '/layouts/' +  name + 'XYZ.bmp'
     pathRGB = path + '/layoutsRGB/' +  name +  'RGB.png'
