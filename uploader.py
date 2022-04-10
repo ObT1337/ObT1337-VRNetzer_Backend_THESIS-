@@ -76,8 +76,10 @@ def makeNodeTex(project, name, file):
 
     f = StringIO(file)
     csvreader = csv.reader(f, delimiter=',')
-    elem = sum(1 for row in csvreader)
-    hight = int((elem + elem % 128)/128)
+    elem = sum(1 for x in csvreader)
+    f.seek(0)
+    csvreader = csv.reader(f, delimiter=',')
+    hight = int(elem / 128)+1
     print (str(hight))
     size = 128 * hight 
     path = 'static/projects/' + project 
@@ -122,7 +124,7 @@ def makeNodeTex(project, name, file):
             texh[i] = pixelh
             texl[i] = pixell
             texc[i] = pixelc
-            print(r)
+            #print(row)
             i += 1
 
     except (IndexError, ValueError):
@@ -154,15 +156,19 @@ def makeLinkTex(project, name, file):
     
     f = StringIO(file)
     csvreader = csv.reader(f, delimiter=',')
+    elem = sum(1 for x in csvreader)
+    f.seek(0)
+    csvreader = csv.reader(f, delimiter=',')
+    hight = int(elem / 512)+1
     path = 'static/projects/' + project 
 
     #with open('static/csv/'+ name +'.csv', newline='') as csvfile:
     #csvreader = csv.reader(csvfile, delimiter=',', quotechar='|')
  
-    texl = [(0,0,0)] * 1024 * 512
-    texc = [(0,0,0,0)] * 512 * 512
-    new_imgl = Image.new('RGB', (1024, 512))
-    new_imgc = Image.new('RGBA', (512, 512))
+    texl = [(0,0,0)] * 1024 * hight
+    texc = [(0,0,0,0)] * 512 * hight
+    new_imgl = Image.new('RGB', (1024, hight))
+    new_imgc = Image.new('RGBA', (512, hight))
     i = 0
     try:
         for row in csvreader:
