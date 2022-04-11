@@ -1,7 +1,7 @@
 from os import link
 
-name = "stone"
-f = open(name + ".csv", "r")
+name = "dna"
+f = open(name + ".txt", "r")
 lines = f.readlines()
 verticis = []
 

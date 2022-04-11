@@ -174,10 +174,12 @@ def makeLinkTex(project, name, file):
         for row in csvreader:
 
             sl = int(row[0]) % 128
-            s = int(int (row[0]) / 128)
+            s = int(row[0] / 128) % 128
+            sb = int(row[0] / 128) 
 
-            el = int(row[1]) % 128
-            e = int(int (row[1]) / 128)
+            el = row[1] % 128
+            e = int(row[1] / 128) % 128
+            eb = int(row[1] / 128)
 
             if len(row) == 6:
 
@@ -192,8 +194,8 @@ def makeLinkTex(project, name, file):
                 b = 255
                 a = 90
 
-            pixell1 = (s,sl,0)
-            pixell2 = (e,el,0)
+            pixell1 = (s,sl,sb)
+            pixell2 = (e,el,eb)
             pixelc = (r,g,b,a)
 
             if i < 262144:
