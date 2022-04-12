@@ -1,6 +1,6 @@
 from os import link
 
-name = "VRNetzer"
+name = "test"
 f = open(name + ".obj", "r")
 lines = f.readlines()
 verticis = []

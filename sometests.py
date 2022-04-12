@@ -3,6 +3,15 @@ from PIL import Image
 import random
 
 
+row = [406943]
+
+sl = int(row[0]) % 128
+s = int(int(row[0]) / 128) % 128
+sb = int(int(row[0]) / 16384)
+
+reverse = sb * 16384 + s * 128 + sl
+
+print(str(row[0]) + ' -> r = ' + str(s) + ' g = ' + str(sl) + ' b = ' + str(sb) + " --> " + str(reverse))
 
 def write_image():
     new_im = Image.new('RGB', (128, 128))
