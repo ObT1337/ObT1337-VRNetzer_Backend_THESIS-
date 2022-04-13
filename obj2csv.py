@@ -1,12 +1,12 @@
 from os import link
 
-name = "ballsBig"
+name = "test"
 f = open(name + ".obj", "r")
 lines = f.readlines()
 verticis = []
 polygons = []
 linklist = []
-
+nLinkList = []
 #read obj file
 
 for i in lines:
@@ -38,7 +38,7 @@ minvals = [9990.0,9990.0,9990.0]
 maxvals = [-9990.0,-9990.0,-9990.0]
 dimen = [0.0,0.0,0.0]
 normverts = []
-print(verticis)
+
 for v in verticis:
     for i in range(3):
         if float(v[i]) < minvals[i]:
@@ -79,11 +79,26 @@ for p in polygons:
     c = 0 
     for i in p:
         next = (c + 1) % len(p) 
-        thislink = [int(i) - 1, int(p[next]) - 1]
-        linklist.append(thislink)
+        p1 = int(i) - 1
+        p2 = int(p[next]) - 1
+        if p1 > p2:
+            textLink = str(p2) + " " + str(p1)
+        else:
+            textLink = str(p1) + " " + str(p2)
+
+        nLinkList.append(textLink)
+        
         c = c + 1
 
-print(linklist)
+# remove duplicates
+final_linklist = list(dict.fromkeys(nLinkList))
+
+print(str(len(linklist)) + "after removing dublicates: " + str(len(final_linklist)))
+for i in final_linklist:
+    tlink = list(i.split(" "))
+    thislink = [int(tlink[0]), int(tlink[1])]
+    linklist.append(thislink)
+
 
 with open(name +'_links.csv', 'w') as f:
     for l in linklist:
@@ -92,7 +107,7 @@ with open(name +'_links.csv', 'w') as f:
 f.close()
 
 i = 0
-with open(name +'nodes.csv', 'w') as f:
+with open(name +'_nodes.csv', 'w') as f:
     for l in normverts:
         line = str(l[0]) + ',' + str(l[1])+ ',' + str(l[2]) + ",255,255,0,100,node" + str(i) +";vertex" +"\n"
         f.write(line)

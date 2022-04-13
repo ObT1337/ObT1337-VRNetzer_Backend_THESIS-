@@ -2,16 +2,11 @@
 from PIL import Image
 import random
 
+new_menu = ['Hawaiian', 'Margherita', 'Mushroom', 'Prosciutto', 'Meat Feast', 'Hawaiian', 'Bacon', 'Black Olive Special', 'Sausage', 'Sausage']
 
-row = [406943]
+final_new_menu = list(dict.fromkeys(new_menu))
 
-sl = int(row[0]) % 128
-s = int(int(row[0]) / 128) % 128
-sb = int(int(row[0]) / 16384)
-
-reverse = sb * 16384 + s * 128 + sl
-
-print(str(row[0]) + ' -> r = ' + str(s) + ' g = ' + str(sl) + ' b = ' + str(sb) + " --> " + str(reverse))
+print(final_new_menu)
 
 def write_image():
     new_im = Image.new('RGB', (128, 128))
