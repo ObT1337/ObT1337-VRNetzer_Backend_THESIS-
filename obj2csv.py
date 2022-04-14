@@ -1,6 +1,6 @@
 from os import link
 
-name = "test"
+name = "xyz"
 f = open(name + ".obj", "r")
 lines = f.readlines()
 verticis = []
