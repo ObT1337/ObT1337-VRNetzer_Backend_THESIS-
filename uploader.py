@@ -25,6 +25,7 @@ def makeProjectFolders(name):
     try:
         os.mkdir(path)
         os.mkdir(path + '/layouts')
+        os.mkdir(path + '/layoutsl')
         os.mkdir(path + '/layoutsRGB')
         os.mkdir(path + '/links')
         os.mkdir(path + '/linksRGB')
@@ -79,11 +80,11 @@ def makeNodeTex(project, name, file):
     elem = sum(1 for x in csvreader)
     f.seek(0)
     csvreader = csv.reader(f, delimiter=',')
-    hight = int(elem / 128)+1
-    print (str(hight))
+    hight = 128 * (int(elem / 16384) + 1)
+
+    print ("hight is " + str(hight))
     size = 128 * hight 
     path = 'static/projects/' + project 
-    
     
     texh = [(0,0,0)] * size
     texl = [(0,0,0)] * size
@@ -92,8 +93,6 @@ def makeNodeTex(project, name, file):
     new_imgh = Image.new('RGB', (128, hight))
     new_imgl = Image.new('RGB', (128, hight))
     new_imgc = Image.new('RGBA', (128, hight))
-
-    TexXYZ = Image.new('RGB', (128, hight * 2))
     
     i = 0
     attrlist = {}
@@ -137,16 +136,15 @@ def makeNodeTex(project, name, file):
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
         
-    TexXYZ.paste(new_imgh, (0, 0))
-    TexXYZ.paste(new_imgl, (0, hight))
-        
     pathXYZ = path + '/layouts/' +  name + 'XYZ.bmp'
+    pathXYZl = path + '/layoutsl/' +  name + 'XYZl.bmp' 
     pathRGB = path + '/layoutsRGB/' +  name +  'RGB.png'
 
     if os.path.exists(pathXYZ):
         return '<a style="color:red;">ERROR </a>' +  name + " Nodelist already in project"
     else:
-        TexXYZ.save(pathXYZ)
+        new_imgh.save(pathXYZ)
+        new_imgl.save(pathXYZl)
         new_imgc.save(pathRGB, "PNG")
         return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
     
@@ -159,7 +157,7 @@ def makeLinkTex(project, name, file):
     elem = sum(1 for x in csvreader)
     f.seek(0)
     csvreader = csv.reader(f, delimiter=',')
-    hight = int(elem / 512)+1
+    hight = 512 #int(elem / 512)+1
     path = 'static/projects/' + project 
 
     #with open('static/csv/'+ name +'.csv', newline='') as csvfile:

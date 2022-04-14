@@ -1,1 +1,1 @@
-{"name": "balls", "layouts": ["balls_nodesXYZ"], "layoutsRGB": ["balls_nodesRGB"], "links": ["balls_linksXYZ"], "linksRGB": ["balls_linksRGB"], "selections": []}
+{"name": "balls", "layouts": ["ballsBig_nodesXYZ"], "layoutsRGB": ["ballsBig_nodesRGB"], "links": ["ballsBig_linksXYZ"], "linksRGB": ["ballsBig_linksRGB"], "selections": []}
