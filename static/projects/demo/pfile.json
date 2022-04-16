@@ -1,1 +1,1 @@
-{"name": "demo", "layouts": ["VRNetzer_nodesXYZ"], "layoutsRGB": ["VRNetzer_nodesRGB"], "links": ["VRNetzer_linksXYZ"], "linksRGB": ["VRNetzer_linksRGB"], "selections": []}
+{"name": "demo", "layouts": ["VRNetzer_nodesXYZ"], "layoutsRGB": ["VRNetzer_nodesRGB"], "links": ["VRNetzer_linksXYZ"], "linksRGB": ["VRNetzer_links1RGB","VRNetzer_links2RGB","VRNetzer_links3RGB"], "selections": []}
