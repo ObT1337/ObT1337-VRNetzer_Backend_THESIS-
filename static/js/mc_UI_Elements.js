@@ -215,6 +215,37 @@ function initSlider (id){
 
 }
 
+function initButton (id){
+
+
+
+}
+
+function initToggle (id){
+
+  $('#'+ id).on("click", function(){
+    var $this = $(this);
+    $this.toggleClass('SeeMore2');
+    if($this.hasClass('SeeMore2')){
+        $this.text('See More');         
+    } else {
+        $this.text('See Less');
+    }
+    socket.emit('ex', {id: id, val: 1, fn: "tgl"}); 
+  });
+
+}
+
+
+function initCheckbox (id){
+
+  $('#'+ id).on("change", function(){
+    socket.emit('ex', {id: id, val: $('#'+ id).is(":checked"), fn: "chk"}); 
+  });
+
+}
+
+
 
 
 function makeid(length) {
