@@ -94,9 +94,19 @@ $(document).ready(function(){
                  $(box).find('#' + data.id).remove();
                 break;
 
+            case 'tgl':
+                $('#'+ data.id).val(data.val)
+                ue4("tgl", data);
+                break;
+
+            case 'chk':
+                $('#'+ data.id).prop('checked', (data.val));
+                ue4("chk", data);
+                break;
+
             case 'cnl':
-                    ue4("cnl", data);
-                    break;
+                ue4("cnl", data);
+                break;
 
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project

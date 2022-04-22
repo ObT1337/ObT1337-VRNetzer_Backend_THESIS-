@@ -217,21 +217,21 @@ function initSlider (id){
 
 function initButton (id){
 
-
-
-}
-
-function initToggle (id){
-
   $('#'+ id).on("click", function(){
     var $this = $(this);
-    $this.toggleClass('SeeMore2');
-    if($this.hasClass('SeeMore2')){
-        $this.text('See More');         
+    socket.emit('ex', {id: id, val: $this.val(), fn: "but"}); 
+  });
+}
+
+function initToggle (id, texts){
+  $('#'+ id).on("click", function(){
+    var $this = $(this);
+    if($this.val() == texts[1] ){
+        $this.val(texts[0]);         
     } else {
-        $this.text('See Less');
+        $this.val(texts[1]);
     }
-    socket.emit('ex', {id: id, val: 1, fn: "tgl"}); 
+    socket.emit('ex', {id: id, val: $this.val(), fn: "tgl"}); 
   });
 
 }
