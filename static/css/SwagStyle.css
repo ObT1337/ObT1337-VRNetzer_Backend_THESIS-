@@ -72,18 +72,21 @@ body {
 .column {
   float: left;
   padding: 20px;
-  margin-left:5px;
-  margin-right:5px;
+  margin-left:2px;
+  margin-right:2px;
   background-color:rgba(66,66,66, 0.35);
 }
 
+.left  {
+  width: 35%;
+}
 
-.left, .right {
-  width: 25%;
+.right {
+  width: 15%;
 }
 
 .middle {
-  width: 45%;
+  width: 40%;
 }
 
 /* Clear floats after the columns */
