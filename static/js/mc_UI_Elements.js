@@ -221,17 +221,17 @@ function initButton (id){
 
 }
 
-function initToggle (id){
+function initToggle (id, texts){
 
   $('#'+ id).on("click", function(){
     var $this = $(this);
     $this.toggleClass('SeeMore2');
     if($this.hasClass('SeeMore2')){
-        $this.text('See More');         
+        $this.val(texts[0]);         
     } else {
-        $this.text('See Less');
+        $this.val(texts[1]);
     }
-    socket.emit('ex', {id: id, val: 1, fn: "tgl"}); 
+    socket.emit('ex', {id: id, val: $this.val(), fn: "tgl"}); 
   });
 
 }
