@@ -292,7 +292,7 @@
                             <div id="tabs-5">
                                 <select id = 'scenery' ></select>
                                 <script>
-                                    initDropdown('scenery', ["1","2","3"],"1");
+                                    initDropdown('scenery', ["1","2","3"],"1"); // has 3 arguments : id, array of options, selected option
                                 </script>
                                 <h1>SQUARE somesmalltext</h1>
                                 <h2>FUTURE somesmalltext</h2>
@@ -300,6 +300,14 @@
                                 <h4>VENUS somesmalltext</h4>
                             </div>
                             <div id="tabs-6">
+                                <input type="button" value="PLAY" id = 'play' style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
+                                <input type="checkbox" value="check1" id = 'check1' style = "width: 25px; height: 25px;"></button>
+                                <button class="SeeMore2" id = 'testToggle'>See More</button>
+                                <script>
+                                    initButton('play'); 
+                                    initCheckbox("check1");
+                                    initToggle('testToggle');
+                                </script>
                                 <div  id= "url"></div>
                                 <div >logged in as {{session['username']}}</div>
                                 <script>
