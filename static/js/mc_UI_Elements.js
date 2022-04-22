@@ -225,8 +225,9 @@ function initToggle (id, texts){
 
   $('#'+ id).on("click", function(){
     var $this = $(this);
-    $this.toggleClass('SeeMore2');
-    if($this.hasClass('SeeMore2')){
+    $this.toggleClass('toggle');
+
+    if($this.val() == texts[1] ){
         $this.val(texts[0]);         
     } else {
         $this.val(texts[1]);
