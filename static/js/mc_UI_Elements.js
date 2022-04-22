@@ -217,16 +217,15 @@ function initSlider (id){
 
 function initButton (id){
 
-
-
+  $('#'+ id).on("click", function(){
+    var $this = $(this);
+    socket.emit('ex', {id: id, val: $this.val(), fn: "but"}); 
+  });
 }
 
 function initToggle (id, texts){
-
   $('#'+ id).on("click", function(){
     var $this = $(this);
-    $this.toggleClass('toggle');
-
     if($this.val() == texts[1] ){
         $this.val(texts[0]);         
     } else {
