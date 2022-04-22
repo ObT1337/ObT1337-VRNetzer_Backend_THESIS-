@@ -5,38 +5,105 @@
 @font-face { font-family: Venus; src: url('venus.ttf'); } 
 @font-face { font-family: Modular; src: url('Modular Amplitude.otf'); } 
 
+@font-face { font-family: Akshar-lig; src: url('fonts/Akshar-Light.ttf'); } 
+@font-face { font-family: Akshar-reg; src: url('fonts/Akshar-Regular.ttf'); }
+@font-face { font-family: Akshar-med; src: url('fonts/Akshar-Medium.ttf'); } 
+@font-face { font-family: Akshar-semi; src: url('fonts/Akshar-SemiBold.ttf'); } 
+
  
+/* ######################################################
+#########################################################
+                  F O N T S
+#########################################################
+#######################################################*/
 
 h1 {
-  font-family: 'Square', sans-serif;
+  /*font-family: 'Square', sans-serif;*/
+  font-family: 'Akshar-med', sans-serif;
   font-size: 80px;
   font-weight: 10;
 }
 h2 {
-  font-family: 'Future', sans-serif;
+  /*font-family: 'Future', sans-serif;*/
+  font-family: 'Akshar-reg', sans-serif;
   font-size: 50px;
   font-weight: 10;
 }
 h3 {
-  font-family: 'Modular', sans-serif;
-  font-size: 50px;
+  /*font-family: 'Modular', sans-serif;*/
+  font-family: 'Akshar-reg', sans-serif;
+  font-size: 35px;
   font-weight: 10;
 }
 h4 {
-  font-family: 'Venus', sans-serif;
-  font-size: 50px;
+  /*font-family: 'Venus', sans-serif;*/
+  font-family: 'Akshar-lig', sans-serif;
+  font-size: 25px;
   font-weight: 10;
 }
-  
-input {
-    /* ... */
 
+div {
+  font-family: 'Akshar-reg', sans-serif;
+  font-size: 25px;
+}
+
+
+
+/* ######################################################
+#########################################################
+              U I     E L E M E N T S 
+#########################################################
+#######################################################*/
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                  main body + columns 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
+/* for debugging i make the background of body and ui widget contents transparent */
+body { 
+  background-color:rgba(10, 20, 0, 0); 
+ } 
+
+* {
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  padding: 20px;
+  margin-left:5px;
+  margin-right:5px;
+  background-color:rgba(66,66,66, 0.35);
+}
+
+
+.left, .right {
+  width: 25%;
+}
+
+.middle {
+  width: 45%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      input windows 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
+input {
     width: 100%;
     height: 80px;
     -moz-padding-start: calc(10px - 3px);
     padding-left: 10px;
-    font-family: 'Square', sans-serif;
-    font-size: 80px;
+    /*font-family: 'Square', sans-serif;*/
+    font-size: 40px;
     font-weight: 10;
     color: rgb(255, 255, 255);
     cursor: pointer;
@@ -44,8 +111,8 @@ input {
     border: 10px solid transparent;
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
-
     }
+
 
 input[type="submit"]
     {
@@ -53,8 +120,8 @@ input[type="submit"]
       height: 50px;
       -moz-padding-start: calc(10px - 3px);
       padding-left: 10px;
-      font-family: 'Square', sans-serif;
-      font-size: 80px;
+      /*font-family: 'Square', sans-serif;*/
+      font-size: 40px;
       font-weight: 10;
       color: rgb(255, 255, 255);
       cursor: pointer;
@@ -64,13 +131,13 @@ input[type="submit"]
       border-image: url("images/frame1.png") 10 stretch;
     }
 
-    input[type="file"]
+input[type="file"]
     {
       width: 100%;
       height: 100px;
       -moz-padding-start: calc(10px - 3px);
       padding-left: 10px;
-      font-family: 'Future', sans-serif;
+      /*font-family: 'Future', sans-serif;*/
       font-size: 30px;
       font-weight: 10;
       color: rgb(255, 255, 255);
@@ -80,13 +147,13 @@ input[type="submit"]
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
-    input[type="radio"]
-    {
 
+input[type="radio"]
+    {
       height: 1em;
     }
-:focus{
 
+:focus{
     user-select: none;
     outline: none !important;
 }
@@ -95,8 +162,7 @@ input[type="submit"]
         
 } */
 
-.disable-select {
-     
+.disable-select {     
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -106,34 +172,41 @@ input[type="submit"]
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.swagLabelSmall {
 
-  padding-top: 25px;
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                text labels + frames
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+.swagLabelSmall {
+    padding-top: 15px;
     color:white;
-    font-size:30px;
+    font-size:25px;
     /* font: 'Roboto'; */
-    font-family: 'Square', sans-serif;
-    font-weight: normal;
+    /*font-family: 'Square', sans-serif;*/
 }
 
 .swagLabel {
     color:white;
     font-size:40px;
     /* font: 'Roboto'; */
-    font-family: 'Square', sans-serif;
-    font-weight: lighter;
+    /*font-family: 'Square', sans-serif;*/
+    /*font-weight: lighter;*/
 }
-/* added comment */
-.swagBox{
 
+.swagBox{
   border: 10px solid transparent;
   padding: 10px;
   border-image: url("images/frame1.png") 10 stretch;
-
 }
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      header 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
 .ui-widget-header {
-	
-	background: #333333 url("images/network1.gif") 100% 100% repeat; 
+	background: #333333 url("images/network2.gif") 100% 100% repeat; 
 	font-weight: lighter;
 }
 
@@ -146,44 +219,36 @@ input[type="submit"]
 }
 
 .ui-selectmenu-button.ui-button {
-    
     width:90%;
-    height: 25px;
+    height: 45px;
     -moz-padding-start: calc(10px - 3px);
     padding: 5px;
     
     color: rgb(255, 255, 255);
     background:rgba(66, 66, 66, 0);
-    font-family: 'Future', sans-serif;
+    /*font-family: 'Future', sans-serif;*/
     font-size: 25px;
     font-weight: normal;
     cursor: pointer;
-
-
-    
-
 }
 
 
-
 .ui-widget.ui-widget-content {
-
-    font-family: 'Future', sans-serif;
+    /*font-family: 'Future', sans-serif;*/
     font-size: 25px;
     outline: none;
     background-color: #444444;
     border: 0px solid transparent;
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
-    
     }
     
+
 .ui-button {
     font-weight: normal;
     outline: none;
     padding: 2px 5px;
     margin: 3px 3px;
-    
 }
 
 
@@ -194,31 +259,28 @@ input[type="submit"]
   border-radius: 0px;
   background: transparent url(images/slider2.png);
 }
+
+
 .ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-max{
-    
    background: transparent url(images/slider1.png);
    /* border: 1px solid #666666; */
 }
 
 
-
 .ui-slider .ui-slider-handle {
 	/* position: absolute; */
-
     top: -0em;
     left: -0.1em;
 	z-index: 2;
 	width: 40px;
 	height: 40px;
 	cursor: default;
-	 
-   touch-action: none;
-   background: transparent url(images/slider_customHandle.png) no-repeat 0 0;
+  touch-action: none;
+  background: transparent url(images/slider_customHandle.png) no-repeat 0 0;
 }
 
 
-/* style for d3 board in tab random walk */
-
+/* style for d3 board in tab random walk  */
 .links line {
   stroke: #999;
   stroke-opacity: 0.6;
@@ -228,7 +290,6 @@ input[type="submit"]
   stroke: #fff;
   stroke-width: 1.5px;
 }
-
 
 
 .ui-state-hover,
@@ -255,10 +316,6 @@ input[type="submit"]
 	/* color: #ffffff; */
 }
 
-/* for debugging i make the background of body and ui widget contents transparent */
-body { 
- background-color:rgba(10, 20, 0, 0); 
-} 
 
 .ui-widget-content { 
 	/* border: 1px solid #666666; */
@@ -322,5 +379,3 @@ body {
       fill: white;
   stroke: white;
 }
-
-

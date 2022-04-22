@@ -5,6 +5,13 @@
 <!DOCTYPE html>
 <html>
 
+<!-- #################################################################
+######################################################################
+                             
+                  H E A D  + T E M P L A T E S
+
+######################################################################
+###################################################################-->
 
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
@@ -41,15 +48,11 @@
     </head>
 
 
-    
-
-
     <template id="mcRB-template" >
         <style>
             button {
                 width: 15%;
-                font-family: 'Future', sans-serif;
-               
+                font-family: 'Ashkar-lig';
                 cursor: pointer;
                 box-sizing: border-box;
                 padding: 5px 2px;
@@ -71,13 +74,9 @@
 
     <template id="mcSresult-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-        
-        <button id = 'name' name = 'name' style = 'width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
-        
+        <button id = 'name' name = 'name' style = 'width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>   
         </button>
     </template>
-
 
     <template id="mcScrollBox-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
@@ -88,7 +87,6 @@
         </div>
     </template>
 
-
     <template id="mcTextBox-template" >
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
@@ -96,8 +94,6 @@
         <div id = "label" class = "swagLabelSmall">TEXT</div>
         <input type="Text" id = "text" autocomplete="off">
     </template>
-
-
     
     <template id="mcColorBox-template" >
 
@@ -123,28 +119,21 @@
     </template>
 
 
-
-
-
-
-
-
-
-
-
-
-                <body>
+    <!-- #################################################################
+    ######################################################################
                     
+                        M A I N B O D Y  (tabs) 
+
+    ######################################################################
+    ###################################################################-->
+        
+    <body> 
                     <script>
                         var sessiondata = JSON.parse({{sessionData|tojson}});
                         var pdata = JSON.parse({{pfile|tojson}});
                         var username = '{{session['username']}}';
                         console.log(username);
-                        
                     </script>
-
-
-                    
 
                     <div id="tabs" class="disable-select">
                         <script>   // MULTICAST TAB CHANGES 
@@ -176,65 +165,81 @@
                                             src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>
                             <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
-
- 
                             <!-- <li><a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_pub.png') }}" /></a></li> -->
                         </ul>
 
-                        <div id="tabs-1">
 
-                            <div id="projects-section" class="swagLabel"> Project
-                               
-                                <select id = 'projects' ></select>
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       tab 1 - uploading projectfiles
+                                       
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <div id="tabs-1" class="row">
+
+                            <div id="projects-section" class="column"> 
+                                <h3>PROJECT</h3>
+                                <select id = 'projects'></select>
                                     <script>
                                         initDropdown('projects', sessiondata["proj"],sessiondata["actPro"]);
                                     </script>
-                                <br><br>
-                                <div style = 'width: 300px; height: 450px;' class="swagBox">
-                               
-                      
-
-                                <div class="swagLabelSmall"> Layouts </div>
-                                <select id = 'layouts' ></select>
-                                    <script>
-                                        initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
-                                    </script>
-                         
-                                <div class="swagLabelSmall"> node colors </div>
-                                <select id = 'nodecolors'></select>
-                                    <script>
-                                        initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
-                                    </script>
-                                <div class="swagLabelSmall"> links </div>
-                                <select id = 'links'></select>
-                                    <script>
-                                        initDropdown('links',pdata["links"],pdata["links"][0]);
-                                    </script>
-                                <div class="swagLabelSmall"> link colors </div>
-                                <select id = 'linkcolors'></select>
-                                    <script>
-                                        initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
-                                    </script>
-                                </div>
-                                <mc-textbox id = 'color' ></mc-textbox>
-                               <!--
-                                <button id="RefreshProjects"><img src="{{ url_for('static', filename='img/refresh.png') }}"></button>
- 
-                                <div class="swagLabel"  > LAYOUTS
-                               
-								
-                                </div>
--->
 
                             </div>
-                           
+
+                            <div class="column"> 
+                                <!-- <div style = 'width: 300px; height: 450px;' class="swagBox"> -->
+                                <div class="swagBox"></div>
+                                    <div class="swagLabelSmall">
+                                        <h4>LAYOUTS</h4> 
+                                        <select id = 'layouts' ></select>
+                                            <script>
+                                                initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
+                                            </script>
+                                    </div>
+
+                                    <div class="swagLabelSmall" > 
+                                        <h4>NODE COLORS</h4> 
+                                        <select id = 'nodecolors'></select>
+                                            <script>
+                                                initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
+                                            </script>
+                                    </div>  
+                                    
+                                    <div class="swagLabelSmall">
+                                        <h4>LINKS</h4> 
+                                        <select id = 'links'></select>
+                                            <script>
+                                                initDropdown('links',pdata["links"],pdata["links"][0]);
+                                            </script>
+                                    </div> 
+
+                                    <div class="swagLabelSmall">
+                                        <h4>LINK COLORS</h4> 
+                                        <select id = 'linkcolors'></select>
+                                            <script>
+                                                initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
+                                            </script>
+                                    </div>
+                            </div>
+
+                                <!--
+                                <mc-textbox id = 'color' ></mc-textbox>
+
+                                 <button id="RefreshProjects"><img src="{{ url_for('static', filename='img/refresh.png') }}"></button>
+                                <div class="swagLabel"  > LAYOUTS
+                                </div>-->
+                            
 
                         </div>
 
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       tab 2 - buttons
+                                       
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2">
-                           
-		
                             <script>
                                 // fill scrollbox with buttons
                                 //$('document').ready(function(){
@@ -250,15 +255,16 @@
                                         p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
                                         document.getElementById("somename").shadowRoot.getElementById("box").appendChild(p);
                                     }
-                
                                 //});
-                
-                
-                                
                             </script>
-                         
                         </div>
 
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                    tab 3 - sliders for visual properties
+                                       
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-3">
                             <!-- SLIDERS -->
                             <div class="swagLabelSmall">SCALE</div>
@@ -282,6 +288,12 @@
                              
 
                             </div>
+
+                             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       tab 4 - search windows 
+                                       
+                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                             <div id="tabs-4">
                           
                                 <mc-textbox id = 'search' ></mc-textbox>
@@ -289,16 +301,27 @@
                                 <mc-scrollbox id = 'sres'></mc-scrollbox>
                             </div>
 
+                             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       tab 5 - select Room setup
+                                       
+                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                             <div id="tabs-5">
                                 <select id = 'archscenery' ></select>
                                 <script>
                                     initDropdown('archscenery', ["empty","lecturehall","forest","museum"],"empty");
                                 </script>
-                                <!--<h1>SQUARE somesmalltext</h1>
-                                <h2>FUTURE somesmalltext</h2>
-                                <h3>MODULAR somesmalltext</h3>
-                                <h4>VENUS somesmalltext</h4> -->
+                                <h1>h1 somesmalltext</h1>
+                                <h2>h2 somesmalltext</h2>
+                                <h3>h3 somesmalltext</h3>
+                                <h4>h4 somesmalltext</h4>
                             </div>
+
+                            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       tab 6 - Settings / check boxes
+                                       
+                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                             <div id="tabs-6">
                                 <input type="button" value="PLAY" id = 'play' style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
                                 <input type="checkbox" value="check1" id = 'check1' style = "width: 25px; height: 25px;"></button>
