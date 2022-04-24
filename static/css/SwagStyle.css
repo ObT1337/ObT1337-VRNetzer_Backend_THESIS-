@@ -8,9 +8,19 @@
 @font-face { font-family: Akshar-lig; src: url('fonts/Akshar-Light.ttf'); } 
 @font-face { font-family: Akshar-reg; src: url('fonts/Akshar-Regular.ttf'); }
 @font-face { font-family: Akshar-med; src: url('fonts/Akshar-Medium.ttf'); } 
-@font-face { font-family: Akshar-semi; src: url('fonts/Akshar-SemiBold.ttf'); } 
+@font-face { font-family: Akshar-semi; src: url('fonts/Akshar-SemiBold.ttf'); }
 
- 
+@font-face { font-family: ExtBack; src: url('fonts/ExtrosBackstage.ttf'); } 
+
+@font-face { font-family: Bal-ligital; src: url('fonts/BaiJamjuree-LightItalic.ttf'); } 
+@font-face { font-family: Bal-lig; src: url('fonts/BaiJamjuree-Light.ttf'); } 
+@font-face { font-family: Bal-boldital; src: url('fonts/BaiJamjuree-BoldItalic.ttf'); }
+@font-face { font-family: Bal-semi; src: url('fonts/BaiJamjuree-Semibold.ttf'); }
+@font-face { font-family: Bal-med; src: url('fonts/BaiJamjuree-Medium.ttf'); }
+
+@font-face { font-family: Michr; src: url('fonts/Michroma-Regular.ttf'); } 
+
+
 /* ######################################################
 #########################################################
                   F O N T S
@@ -22,31 +32,54 @@ h1 {
   font-family: 'Akshar-med', sans-serif;
   font-size: 80px;
   font-weight: 10;
+  padding:0%;
+  margin: left 20px;
 }
 h2 {
   /*font-family: 'Future', sans-serif;*/
   font-family: 'Akshar-reg', sans-serif;
   font-size: 50px;
   font-weight: 10;
+  padding:0%;
+  margin:0%;
 }
 h3 {
   /*font-family: 'Modular', sans-serif;*/
-  font-family: 'Akshar-reg', sans-serif;
-  font-size: 35px;
-  font-weight: 10;
+  font-family: 'Michr'; /*'Akshar-reg', sans-serif;*/
+  font-size: 28px;
+  color:#202020;
+  font-weight: 250;
 }
+h3 span {
+  padding:0 10px;
+  font-size:32px;
+  color:#ffffff;
+}
+
 h4 {
   /*font-family: 'Venus', sans-serif;*/
-  font-family: 'Akshar-lig', sans-serif;
-  font-size: 25px;
-  font-weight: 10;
+  font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
+  font-size: 20px;
+  font-weight: 1;
+  padding: 0%;
+  margin-bottom: 5px;
+  margin-top: 15px;
+  color:#688b9e; /*rgba(100,100,100,1);*/
 }
 
 div {
-  font-family: 'Akshar-reg', sans-serif;
-  font-size: 25px;
+  font-family: 'Michr', sans-serif;
+  font-size: 20px;
+  padding:0%;
+  margin:0%;
 }
 
+* {
+  box-sizing: border-box;
+  font-family: 'Michr', sans-serif;
+  font-size: 20px;
+  text-transform: uppercase;
+}
 
 
 /* ######################################################
@@ -55,47 +88,121 @@ div {
 #########################################################
 #######################################################*/
 
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                   main body + columns 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 
 /* for debugging i make the background of body and ui widget contents transparent */
-body { 
-  background-color:rgba(10, 20, 0, 0); 
- } 
+body {
+  background-color:rgba(10, 20, 0, 1);
+} 
 
-* {
+
+.container {
+  position: relative;
+  /*width: 100%;*/
+  /*max-width: 960px;*/
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  height: 100vh;
   box-sizing: border-box;
 }
 
-.column {
+.column,
+.columns {
+  width: 100%;
   float: left;
-  padding: 20px;
-  margin-left:2px;
-  margin-right:2px;
-  background-color:rgba(66,66,66, 0.35);
 }
 
-.left  {
-  width: 35%;
+
+/* For devices larger than 550px */
+@media (min-width: 550px) {
+  .container {
+    width: 100%;
+  }
+  .column,
+  .columns {
+      margin-right: 10px;
+      width: 100%;
+  }
+  .column:first-child,
+  .columns:first-child {
+      margin-left: 0;
+  }
+  .one.column,
+  .one.columns {
+      width: 4.66666666667%;
+  }
+  .two.columns {
+      width: 13.3333333333%;
+  }
+  .three.columns {
+      width: 20%;
+  }
+  .four.columns {
+      width: 30.6666666667%;
+  }
+  .five.columns {
+      width: 39.3333333333%;
+  }
+  .six.columns {
+      width: 48%;
+  }
+  .seven.columns {
+      width: 54%;
+  }
+  .eight.columns {
+      width: 65.3333333333%;
+  }
+  .nine.columns {
+      width: 74.0%;
+  }
+  .ten.columns {
+      width: 82.6666666667%;
+  }
+  .eleven.columns {
+      width: 91.3333333333%;
+  }
+  .twelve.columns {
+      width: 100%;
+      margin-left: 0;
+  }
+  .one-third.column {
+      width: 30.6666666667%;
+  }
+  .two-thirds.column {
+      width: 65.3333333333%;
+  }
+  .one-half.column {
+      width: 48%;
+  }
 }
 
-.right {
-  width: 15%;
+
+.backgroundglow {
+  background-color: #00abff;
+  border-radius: 0.15rem;
+  text-align: left;
+  padding-left:4px;
+  width:100%;
+  line-height:2.3rem;
+  height: 2px; /*100%;*/
+  box-shadow:0px 0px 6px 4px #00aaffcb;
 }
 
-.middle {
-  width: 40%;
+
+.lineglow {
+  background-color: #00abff;
+  border-radius: 0.15rem;
+  border-bottom: 2px solid #00abff;
+  text-align: left;
+  width:100%;
+  line-height:0rem;
+  box-shadow:0px 0px 8px 6px #00aaffcb;
+  margin: 20px 0 20px;
 }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
+ 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                       input windows 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
@@ -156,7 +263,7 @@ input[type="radio"]
       height: 1em;
     }
 
-    input[type="button"]
+input[type="button"]
     {
       width: 100%;
       height: 100px;
@@ -175,8 +282,7 @@ input[type="radio"]
     }
 
   
-
-    input[type="checkbox"]
+input[type="checkbox"]
     {
       width: 100%;
       height: 100px;
@@ -210,7 +316,7 @@ input[type="radio"]
      -khtml-user-select: none; /* Konqueror HTML */
        -moz-user-select: none; /* Old versions of Firefox */
         -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+            user-select: none; /* Non-prefsixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -238,48 +344,45 @@ input[type="radio"]
 
 .swagBox{
   border: 10px solid transparent;
-  padding: 10px;
+  padding: 5px;
   border-image: url("images/frame1.png") 10 stretch;
+  background-color:rgba(20,20,20,1);
 }
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                       header 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
 .ui-widget-header {
 	background: #333333 url("images/network2.gif") 100% 100% repeat; 
 	font-weight: lighter;
 }
 
-.ui-widget .ui-widget{
+.ui-widget .ui-widget {
      font-size:30px;
      border: 10px solid transparent;
      padding: 2px;
-     border-image: url("images/frame1.png") 10 stretch;
-
+     /*border-image: url("images/frame1.png") 10 stretch;*/
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              projects dropdown menu
++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 .ui-selectmenu-button.ui-button {
-    width:90%;
-    height: 45px;
+    min-width:fit-content;
+    width:100%;
+    height: 100%;
     -moz-padding-start: calc(10px - 3px);
-    padding: 5px;
-    
+    padding: 0px;
     color: rgb(255, 255, 255);
-    background:rgba(66, 66, 66, 0);
-    /*font-family: 'Future', sans-serif;*/
-    font-size: 25px;
-    font-weight: normal;
+    background:rgb(20,20,20,1);
+    border-image: url("images/frame1.png") 10 stretch;    
     cursor: pointer;
 }
 
-
 .ui-widget.ui-widget-content {
-    /*font-family: 'Future', sans-serif;*/
-    font-size: 25px;
     outline: none;
-    background-color: #444444;
     border: 0px solid transparent;
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
@@ -289,8 +392,8 @@ input[type="radio"]
 .ui-button {
     font-weight: normal;
     outline: none;
-    padding: 2px 5px;
-    margin: 3px 3px;
+    /*padding: 2px 5px;
+    margin: 3px 3px;*/
 }
 
 
@@ -311,8 +414,8 @@ input[type="radio"]
 
 .ui-slider .ui-slider-handle {
 	/* position: absolute; */
-    top: -0em;
-    left: -0.1em;
+  top: -0em;
+  left: -0.1em;
 	z-index: 2;
 	width: 40px;
 	height: 40px;

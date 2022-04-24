@@ -214,7 +214,7 @@
 }
 .ui-menu .ui-menu-item-wrapper {
 	position: relative;
-	padding: 3px 1em 3px .4em;
+	padding: 5px 1em 3px 0.4em;
 }
 .ui-menu .ui-menu-divider {
 	margin: 5px 0;
@@ -242,7 +242,7 @@
 	top: 0;
 	bottom: 0;
 	left: .2em;
-	margin: auto 0;
+	margin: 0;
 }
 
 /* right-aligned */
@@ -684,30 +684,41 @@ button.ui-button::-moz-focus-inner {
 .ui-progressbar-indeterminate .ui-progressbar-value {
 	background-image: none;
 }
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            	Project menu dropdown 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
 .ui-selectmenu-menu {
 	padding: 0;
-	margin: 0;
-	position: absolute;
+	margin-left:100px;
+	position: relative;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
 	top: 0;
 	left: 0;
 	display: none;
 }
+
 .ui-selectmenu-menu .ui-menu {
 	overflow: auto;
 	overflow-x: hidden;
-	padding-bottom: 1px;
+	width:100%;
 }
+
 .ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
 	font-size: 1em;
 	font-weight: bold;
 	line-height: 1.5;
 	padding: 2px 0.4em;
-	margin: 0.5em 0 0 0;
+	/*margin: 0.5em 0 0 0;*/
 	height: auto;
 	border: 0;
 }
+
 .ui-selectmenu-open {
 	display: block;
+	width:fit-content;
 }
 .ui-selectmenu-text {
 	display: block;
@@ -718,7 +729,7 @@ button.ui-button::-moz-focus-inner {
 .ui-selectmenu-button.ui-button {
 	text-align: left;
 	white-space: nowrap;
-	width: 14em;
+
 }
 .ui-selectmenu-icon.ui-icon {
 	float: right;
@@ -833,8 +844,7 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-tabs {
 	position: relative;/* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
-	padding: .2em;
-    
+	padding: .2em;    
 }
 .ui-tabs .ui-tabs-nav {
 	margin: 0;
@@ -871,7 +881,9 @@ button.ui-button::-moz-focus-inner {
 	display: block;
 	border-width: 0;
 	padding: 1em 1.4em;
-	background: none;
+	/*background: none;*/
+	/*background: #33333333 url("images/network2.gif") 100% 100% repeat;*/
+	/*background-color:(20,10,0,1);*/
 }
 .ui-tooltip {
 	padding: 8px;
@@ -883,10 +895,12 @@ body .ui-tooltip {
 	border-width: 2px;
 }
 
-/* Component containers
-----------------------------------*/
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                 Component containers
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
 .ui-widget {
-	font-family: Roboto;
 	font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -896,7 +910,6 @@ body .ui-tooltip {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: Roboto;
 	font-size: 1em;
 }
 .ui-widget.ui-widget-content {
@@ -920,8 +933,11 @@ body .ui-tooltip {
 	color: #ffffff;
 }
 
-/* Interaction states
-----------------------------------*/
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                	Interaction states
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+
 .ui-state-default,
 .ui-widget-content .ui-state-default,
 .ui-widget-header .ui-state-default,
@@ -931,8 +947,8 @@ body .ui-tooltip {
 works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
 html .ui-button.ui-state-disabled:active {
-	border: 0px solid #666666;
-	background: #272727;
+	/*border: 0px solid #666666;*/
+	background: #27272770;
 	font-weight: bold;
 	color: #eeeeee;
 }
@@ -982,9 +998,11 @@ a.ui-button:focus {
 a.ui-button:active,
 .ui-button:active,
 .ui-button.ui-state-active:hover {
-	border: 0px solid #3e67ff;
-	background: #0088cd;
-	font-weight: bold;
+	border: 2px solid #00abffcb;
+	box-shadow:0px 0px 3px 1.5px #00abffcb;
+	background: #00aaff36;
+	font-weight:1;
+	/*font-weight: bold;*/
 	color: #ffffff;
 }
 .ui-icon-background,
@@ -998,6 +1016,7 @@ a.ui-button:active,
 	color: #ffffff;
 	text-decoration: none;
 }
+
 
 /* Interaction Cues
 ----------------------------------*/

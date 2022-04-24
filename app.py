@@ -46,7 +46,6 @@ def index():
 def searchR():
     term = request.args.get("term")
     return jsonify(search(term))
-   
 
 
 @app.route('/upload', methods=['GET'])
