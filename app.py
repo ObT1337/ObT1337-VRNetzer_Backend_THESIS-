@@ -78,7 +78,7 @@ def ws_receiver():
     wsreceiver(socketio)
     return 
 
-@app.route('/fileuploads', methods=['GET', 'POST'])
+@app.route('/uploadfiles', methods=['GET', 'POST'])
 def uploadR():
     return upload_files(request)
 
