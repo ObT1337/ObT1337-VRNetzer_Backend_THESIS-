@@ -17,6 +17,7 @@ from GlobalData import *
 import logging
 import re
 from search import *
+import random
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -99,8 +100,9 @@ def main():
     username = request.args.get("usr")
     project = request.args.get("project")
     if username is None:
-        username = "none"
+        username = str(random.randint(1001,9998))
     else:
+        username = username + str(random.randint(1001,9998))
         print(username)
     
     if project is None:
