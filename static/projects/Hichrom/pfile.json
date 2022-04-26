@@ -1,0 +1,1 @@
+{"name": "Hichrom", "layouts": ["bla_pdb_layout_modCXYZ", "final_hichrom_pdb_layout_modCXYZ"], "layoutsRGB": ["bla_pdb_layout_modCRGB", "final_hichrom_pdb_layout_modCRGB"], "links": ["bla_pdb_linksXYZ", "final_hichrom_pdb_linksXYZ"], "linksRGB": ["bla_pdb_linksRGB", "final_hichrom_pdb_linksRGB"], "selections": []}
