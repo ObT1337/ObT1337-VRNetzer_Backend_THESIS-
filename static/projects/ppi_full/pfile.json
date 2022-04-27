@@ -1,0 +1,1 @@
+{"name": "ppi_full", "layouts": ["nodes_full_colorXYZ", "nodes_full_nocolorXYZ"], "layoutsRGB": ["nodes_full_colorRGB", "nodes_full_nocolorRGB"], "links": ["elist_fullXYZ"], "linksRGB": ["elist_fullRGB"], "selections": []}
