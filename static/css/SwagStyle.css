@@ -20,6 +20,8 @@
 
 @font-face { font-family: Michr; src: url('fonts/Michroma-Regular.ttf'); } 
 
+@font-face { font-family: Jura-reg; src: url('fonts/Jura-Regular.ttf'); } 
+
 
 /* ######################################################
 #########################################################
@@ -46,30 +48,32 @@ h2 {
 h3 {
   /*font-family: 'Modular', sans-serif;*/
   font-family: 'Michr'; /*'Akshar-reg', sans-serif;*/
-  font-size: 28px;
-  color:#202020;
+  font-size: 22px;
+  color:#ffffffcc; /*202020;*/
   font-weight: 250;
 }
 h3 span {
-  padding:0 10px;
-  font-size:32px;
-  color:#ffffff;
+  padding:0 12px;
+  font-size:22px;
+  color:#ffffffcc;
 }
 
 h4 {
   /*font-family: 'Venus', sans-serif;*/
   font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 1;
   padding: 0%;
   margin-bottom: 5px;
   margin-top: 15px;
+  font-style: italic;
   color:#688b9e; /*rgba(100,100,100,1);*/
 }
 
 div {
-  font-family: 'Michr', sans-serif;
-  font-size: 20px;
+  font-family: 'Jura-reg', sans-serif;
+  font-size: 16px;
+  line-height:1.5rem;
   padding:0%;
   margin:0%;
 }
@@ -78,7 +82,7 @@ div {
   box-sizing: border-box;
   font-family: 'Michr', sans-serif;
   font-size: 20px;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 
 
@@ -97,15 +101,9 @@ body {
   background-color:rgba(10, 20, 0, 1);
 } 
 
-
 .container {
-  position: relative;
-  /*width: 100%;*/
-  /*max-width: 960px;*/
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
+  width: 100%;
   height: 100vh;
-  box-sizing: border-box;
 }
 
 .column,
@@ -116,14 +114,19 @@ body {
 
 
 /* For devices larger than 550px */
-@media (min-width: 550px) {
+@media (min-width: 450px) {
+  .row {
+    width:100%;
+  }
   .container {
     width: 100%;
+    height: 100vh;
   }
   .column,
   .columns {
-      margin-right: 10px;
-      width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
   }
   .column:first-child,
   .columns:first-child {
@@ -136,9 +139,15 @@ body {
   .two.columns {
       width: 13.3333333333%;
   }
+  .twoandhalf.columns {
+    width: 17.66666666667%;
+  }
   .three.columns {
       width: 20%;
   }
+  .threeplus.columns {
+    width: 28%;
+}
   .four.columns {
       width: 30.6666666667%;
   }
@@ -196,7 +205,7 @@ body {
   border-radius: 0.15rem;
   border-bottom: 2px solid #00abff;
   text-align: left;
-  width:100%;
+  width:95%;
   line-height:0rem;
   box-shadow:0px 0px 8px 6px #00aaffcb;
   margin: 20px 0 20px;
@@ -349,13 +358,31 @@ input[type="checkbox"]
   background-color:rgba(20,20,20,1);
 }
 
+.cornerBox {
+  --b:2px;   /* thickness of the border */
+  --c:#688b9e;   /* color of the border */
+  --w:10px;  /* width of border piece*/
+  --h:10px; /* height of border piece*/
+  border:var(--b) solid transparent; /* space for the border */
+  --g:rgba(252, 44, 44, 0) 90deg,var(--c) 0;
+  background:
+    conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--g)) 0    0,
+    conic-gradient(from 180deg at top    var(--b) right var(--b),var(--g)) 100% 0,
+    conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--g)) 0    100%,
+    conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--g)) 100% 100%;
+  background-size:var(--w) var(--w);
+  background-origin:border-box;
+  background-repeat:no-repeat;
+  width:100%;
+  box-sizing:border-box;
+  margin:0;
+  padding:3px;
+}
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                      header 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-.ui-widget-header {
-	background: #333333 url("images/network2.gif") 100% 100% repeat; 
-	font-weight: lighter;
+.swagCheckbox {
+  width: 20px; 
+  height: 20px;
+  margin-top:12px;
 }
 
 .ui-widget .ui-widget {

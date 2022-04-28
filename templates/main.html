@@ -5,13 +5,6 @@
 <!DOCTYPE html>
 <html>
 
-<!-- #################################################################
-######################################################################
-                             
-                  H E A D  + T E M P L A T E S
-
-######################################################################
-###################################################################-->
 
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
@@ -48,11 +41,15 @@
     </head>
 
 
+    
+
+
     <template id="mcRB-template" >
         <style>
             button {
                 width: 15%;
-                font-family: 'Ashkar-lig';
+                font-family: 'Future', sans-serif;
+               
                 cursor: pointer;
                 box-sizing: border-box;
                 padding: 5px 2px;
@@ -74,9 +71,13 @@
 
     <template id="mcSresult-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-        <button id = 'name' name = 'name' style = 'width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>   
+
+        
+        <button id = 'name' name = 'name' style = 'width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
+        
         </button>
     </template>
+
 
     <template id="mcScrollBox-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
@@ -87,6 +88,7 @@
         </div>
     </template>
 
+
     <template id="mcTextBox-template" >
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
@@ -94,6 +96,8 @@
         <div id = "label" class = "swagLabelSmall">TEXT</div>
         <input type="Text" id = "text" autocomplete="off">
     </template>
+
+
     
     <template id="mcColorBox-template" >
 
@@ -118,22 +122,18 @@
         <input type="Color" id = "color">
     </template>
 
-
-    <!-- #################################################################
-    ######################################################################
+                <body>
                     
-                        M A I N B O D Y  (tabs) 
-
-    ######################################################################
-    ###################################################################-->
-        
-    <body> 
                     <script>
                         var sessiondata = JSON.parse({{sessionData|tojson}});
                         var pdata = JSON.parse({{pfile|tojson}});
                         var username = '{{session['username']}}';
                         console.log(username);
+                        
                     </script>
+
+
+                    
 
                     <div id="tabs" class="disable-select">
                         <script>   // MULTICAST TAB CHANGES 
@@ -165,143 +165,122 @@
                                             src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>
                             <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
+
+ 
                             <!-- <li><a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_pub.png') }}" /></a></li> -->
                         </ul>
 
-
-
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                       tab 1 - uploading projectfiles
-                                       
+                                        tab 1 - uploading projectfiles
+                                        
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-1" class="container">
 
+                                <div class="twelve columns">
+                                    <div id="projects-section" class="five columns" style="position:relative">   
+                                            <h3 class="lineglow"><span>PROJECT</span></h3>
+                                        </div>
+                                            <div class="seven columns">
+                                                <div class="cornerBox">
+                                                <select id='projects'></select>
+                                                <script>
+                                                    initDropdown('projects', sessiondata["proj"],sessiondata["actPro"]);
+                                                </script>
+                                                </div>
+                                            </div>
+                                </div>   
 
-                            <div class="row">
-                                <div id="projects-section">   
-                                    <div class="five columns">
-                                        <h3 class="lineglow"><span>PROJECT</span></h3>
-                                    </div>
-                                    <div class="seven columns"> 
-                                        <select id='projects'></select> 
+                                <div class="twelve columns">
+                                    <h4 class="eight columns">LAYOUTS</h4>
+                                    <h4 class="two columns" style="text-align:right">MORPH</h4>
+                                </div>
+
+                                <div class="twelve columns">
+                                    <div class="eight columns">
+                                        <div class="cornerBox">
+                                            <select id = 'layouts'></select>
                                             <script>
-                                                initDropdown('projects', sessiondata["proj"],sessiondata["actPro"]);
+                                                initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <div class="two columns">   
+                                            <input type="checkbox" id = 'chbXYZ' class="swagCheckbox"></button>
+                                            <script>
+                                                initCheckbox("chbXYZ");
                                             </script>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                               
-                                <h4 class="eight columns">LAYOUTS</h4>
-                                <h4 class="three columns">MORPH</h4>
-                            </div>
-                            <div class="row">
-                                <div class="eight columns">
-                                    <div class="swagBox">
-                                        <div class="swagLabelSmall">
-                                            <select id = 'layouts' ></select>
-                                                <script>
-                                                    initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
-                                                </script>
-                                        </div>
+                              
+                                <h4 class="twelve columns">NODE COLORS</h4>
+                                <div class="twelve columns">
+                                    <div class="eight columns">
+                                        <div class="cornerBox">
+                                            <select id = 'nodecolors'></select>
+                                            <script>
+                                                initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
+                                            </script>
+                                        </div>  
+                                    </div>
+                                    <div class="two columns">
+                                            <input type="checkbox" id = 'chbNrgb' class="swagCheckbox"></button>
+                                            <script>
+                                                initCheckbox("chbNrgb");
+                                            </script>
                                     </div>
                                 </div>
                                 
-                                <div class="three columns">   
-                                        <input type="checkbox" id = 'chbXYZ' style = "width: 25px; height: 25px;"></button>
-                                        <script>
-                                            initCheckbox("chbXYZ");
-                                        </script>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <h4 class="twelve columns">NODE COLORS</h4>
-                                <div class="eight columns">
-                                    <div class="swagBox">
-                                        <div class="swagLabelSmall" > 
-                                            <select id = 'nodecolors'></select>
-                                                <script>
-                                                    initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
-                                                </script>
-                                        </div>
-                                    </div>  
-                                </div>
-                                <div class="three columns">
-                                        <input type="checkbox" id = 'chbNrgb' style = "width: 25px; height: 25px;"></button>
-                                        <script>
-                                            initCheckbox("chbNrgb");
-                                        </script>
-                                </div>
-                            </div>
-
-                            <div class="row">
                                 <h4 class="twelve columns">LINKS</h4>
-                                <div class="eight columns">                 
-                                        <div class="swagBox">
-                                            <div class="swagLabelSmall">
-                                                <select id = 'links'></select>
-                                                    <script>
-                                                        initDropdown('links',pdata["links"],pdata["links"][0]);
-                                                    </script>
-                                            </div> 
-                                        </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <h4 class="twelve columns">LINK COLORS</h4>
-                                <div class="eight columns">
-                                        <div class="swagBox">
-                                            <div class="swagLabelSmall"> 
-                                                <select id = 'linkcolors'></select>
-                                                    <script>
-                                                        initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
-                                                    </script>
+                                <div class="twelve columns">
+                                    <div class="eight columns">                 
+                                            <div class="cornerBox">
+                                            <select id = 'links'></select>
+                                            <script>
+                                                initDropdown('links',pdata["links"],pdata["links"][0]);
+                                            </script>
                                             </div>
-                                        </div>
+                                    </div>
                                 </div>
-                                <div class="three columns">
-                                    <input type="checkbox" id = 'chbLrgb' style = "width: 25px; height: 25px;"></button>
-                                        <script>
-                                            initCheckbox("chbLrgb");
-                                        </script>
-                                </div>
-                            </div>
-                            
-                            <div class="row"> 
-                                <div class="eight columns"> 
-                                    <br></br>
-                                </div>
-                                <div class="three columns">
 
-                                    <input type="button"  id = 'play' value="PLAY" style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
+                                <h4 class="twelve columns">LINK COLORS</h4>
+                                <div class="twelve columns">
+                                    <div class="eight columns">
+                                            <div class="cornerBox">
+                                            <select id = 'linkcolors'></select>
+                                            <script>
+                                                initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
+                                            </script>
+                                            </div>
+                                    </div>
+                                    <div class="two columns">
+                                        <input type="checkbox" id = 'chbLrgb' class="swagCheckbox"></button>
+                                            <script>
+                                                initCheckbox("chbLrgb");
+                                            </script>
+                                    </div>
+                                </div>
+
+                                <div class="twelve columns"> 
+                                    <div class="eight columns"> 
+                                        <br></br>
+                                    </div>
+                                    <div class="three columns">
+                                        <input type="button"  id = 'play' value="PLAY" style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
                                         <script>
                                             initToggle('play', ['PLAY','PAUSE']);
                                         </script>
-                                </div>  
-
-                            </div>
-
-                        </div>
-
+                                    </div>  
+                                </div>
+                        </div> 
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                       tab 2 - buttons
-                                       
+                                        tab 2
+                                        
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2" class="container">
-                            <div class="five columns">
-                                <div class="backgroundglow">
-                                    <h3 style="margin-left:5px; color:#202020">Select</h3>
-                                </div>
-                            </div>
-                            
-                            <div class="five columns">
                                 <script>
                                     // fill scrollbox with buttons
                                     //$('document').ready(function(){
@@ -317,101 +296,86 @@
                                             p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
                                             document.getElementById("somename").shadowRoot.getElementById("box").appendChild(p);
                                         }
+                    
                                     //});
-                                </script> 
-                            </div>
+                                </script>
+                            
+                        </div>
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                        tab 3
+                                        
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <div id="tabs-3">
+                                <!-- SLIDERS -->
+                                <h4>SCALE</h4>
+                                <div id="slider_scale"></div>
+                                <h4>NODE SIZE</h4>
+                                <div id="slider-node_size"></div>
+                                <h4>LINK SIZE</h4>
+                                <div id="slider-link_size"></div>
+                                <h4>LINK TRANSPARENCY</h4>
+                                <div id="slider-link_transparency"></div>
+                                <h4>LABELS SCALE</h4>
+                                <div id="slider-label_scale"></div>
+                                <script>
+                                    initSlider('slider_scale');
+                                    initSlider('slider-node_size');
+                                    initSlider('slider-link_size');
+                                    initSlider('slider-link_transparency');
+                                    initSlider('slider-label_scale');
+                                </script>
+                                <!-- BUTTONS -->
+                                
+                        </div>
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                        tab 4
+                                        
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <div id="tabs-4">
+                            
+                                    <mc-textbox id = 'search' ></mc-textbox>
+                                    <br><br>
+                                    <mc-scrollbox id = 'sres'></mc-scrollbox>
                         </div>
 
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                    tab 3 - sliders for visual properties
-                                       
+                                        tab 5
+                                        
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                        <div id="tabs-3" class="container">
-                            <!-- SLIDERS -->
-                            <div class="swagLabelSmall">SCALE</div>
-                            <div id="slider_scale"></div>
-                            <div class="swagLabelSmall">NODE SIZE</div>
-                            <div id="slider-node_size"></div>
-                            <div class="swagLabelSmall">LINK SIZE</div>
-                            <div id="slider-link_size"></div>
-                            <div class="swagLabelSmall">LINK TRANSPARENCY</div>
-                            <div id="slider-link_transparency"></div>
-                            <div class="swagLabelSmall">LABELS SCALE</div>
-                            <div id="slider-label_scale"></div>
-                            <script>
-                                initSlider('slider_scale');
-                                initSlider('slider-node_size');
-                                initSlider('slider-link_size');
-                                initSlider('slider-link_transparency');
-                                initSlider('slider-label_scale');
-                            </script>
-                            <!-- BUTTONS -->
-                             
+                        <div id="tabs-5">
+                                    <h1>SQUARE somesmalltext</h1>
+                                    <h2>FUTURE somesmalltext</h2>
+                                    <h3>MODULAR somesmalltext</h3>
+                                    <h4>VENUS somesmalltext</h4>
+                        </div>
 
-                            </div>
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                                        tab 6 - Settings / check boxes
+                                        
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <div id="tabs-6" class="container">
+                                    <div  id= "url" class="texthidden"></div>
+                                    <h4>logged in as {{session['username']}}</h4>
+                                    <script>
+                                        document.getElementById('url').innerHTML = window.location.href;
+                                    </script>
 
-                                       tab 4 - search windows 
-                                       
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                            <div id="tabs-4" class="container">
-                          
-                                <mc-textbox id = 'search' ></mc-textbox>
-                                <br><br>
-                                <mc-scrollbox id = 'sres'></mc-scrollbox>
-                            </div>
-
-                             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                                       tab 5 - select Room setup
-                                       
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                            <div id="tabs-5" class="container">
-                                <select id = 'archscenery' ></select>
-                                <script>
-                                    initDropdown('archscenery', ["empty","lecturehall","forest","museum"],"empty");
-                                </script>
-                                <h1>h1 somesmalltext</h1>
-                                <h2>h2 somesmalltext</h2>
-                                <h3>h3 somesmalltext</h3>
-                                <h4>h4 somesmalltext</h4>
-                            </div>
-
-                            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                                       tab 6 - Settings / check boxes
-                                       
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                            <div id="tabs-6" class="container">
-                                <!--
-                                <div class="swagLabelSmall">SEQUENCE PLAYER</div>
-                                <input type="checkbox" id = 'chbXYZ' style = "width: 25px; height: 25px;"></button>
-                                <input type="checkbox" id = 'chbNrgb' style = "width: 25px; height: 25px;"></button>
-                                <input type="checkbox" id = 'chbLrgb' style = "width: 25px; height: 25px;"></button>
-                                <input type="button"  id = 'play' value="PLAY" style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
-                                <script>
-                                    initCheckbox("chbXYZ");
-                                    initCheckbox("chbNrgb");
-                                    initCheckbox("chbLrgb");
-                                    
-                                    initToggle('play', ['PLAY','PAUSE']);
-                                </script>
-                                -->
-
-                                <div  id= "url"></div>
-                                <div >logged in as {{session['username']}}</div>
-                                <script>
-                                    document.getElementById('url').innerHTML = window.location.href;
-                                </script>
-                            </div>
+                                    <div class="ui-button">Example Button</div>
+                                
 
                         </div>
 
+                    </div>
 
-                    </body>
+
+                </body>
 
 
 

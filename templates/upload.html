@@ -33,45 +33,48 @@
 
 <body>
 
-  <div id="tabsUL"><a href="upload.html" id="" title="upload">upload</a>
+  <div id="tabsUL"><a href="upload.html" id="" title="upload"></a> <!--upload-->
     <ul>
       <li><a href="#fragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
         src="{{ url_for('static', filename='img/upload.png') }}" /></a></li>
     </ul>
+
+
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+               PAGE CONTENT STARTS HERE 
+                                       
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
     <div id="fragment-1">
-      <br>
-      <div class="swagLabel">UPLOAD NEW DATA</div>
-      <p style="color:rgb(255, 255, 255)">
+      <h3 class="lineglow">
+        <span>UPLOAD NEW DATA</span></h3>
+          <h4>
+            For filestructure and csv-table composition refer to files in VRNetzer_Backend/static/csv.
+          </h4>
+          <h3>PROJECT
+        </span>
+      </h3>
 
-Have a look at the templates inside the static/csv folder for the file structure
-
-      </p>
-      <br>
-
-      <div class="swagLabel">PROJECTS</div>
+      <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    Namespace Dropdown
+      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
       <select name="namespaces" id="namespaces">
         {% for namespace in namespaces %}
           <option value="{{namespace}}">{{namespace}}</option>
         {% endfor %}
       </select>
-      <br>
-      
 
+      <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                     Upload Form 
+      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
       <form id="upload_form" method=post enctype=multipart/form-data style="color:rgb(255, 255, 255)">
  
         <input type="radio" name="namespace" value="existing" checked >Add to current project<br>
-        <p>
-          <input type="radio" name="namespace" id="radio_new_namespace" value="New"  > Create new project</p>
-        
-        <br>
-        <br>
-        
-
+        <p><input type="radio" name="namespace" id="radio_new_namespace" value="New"  > Create new project</p>
         <input type="text" id="new_namespace_name" name="new_name">
-        <br>
         <p id="submit_warnings"></p>
 
-      <label>L A Y O U T S</label><br>
+      <h4label>L A Y O U T S</h4><br>
       <input type=file name=layouts multiple><br><br>
       <!--
       <label>N O D E S</label><br>
