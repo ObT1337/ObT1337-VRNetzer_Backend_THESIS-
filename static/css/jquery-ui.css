@@ -217,6 +217,7 @@ a.ui-button:active,
 .ui-selectmenu-menu .ui-menu {
 	overflow-x: hidden;
 	overflow: visible;
+	
 }
 .ui-selectmenu-open {
 	height: auto;
