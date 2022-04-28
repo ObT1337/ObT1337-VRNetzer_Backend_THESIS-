@@ -1,1 +1,0 @@
-{"name": "Airports", "layouts": ["airports_geoXYZ", "test_nodesXYZ", "test_nodesXYZ"], "layoutsRGB": ["airports_geoRGB", "test_nodesRGB", "test_nodesRGB"], "links": ["airports_geoXYZ", "test_linksXYZ", "test_linksXYZ"], "linksRGB": ["airports_geoRGB", "test_linksRGB", "test_linksRGB"], "selections": []}
