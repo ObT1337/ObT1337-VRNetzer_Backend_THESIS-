@@ -49,15 +49,14 @@ h3 {
   /*font-family: 'Modular', sans-serif;*/
   font-family: 'Michr'; /*'Akshar-reg', sans-serif;*/
   font-size: 22px;
-  color:#ffffffcc; /*202020;*/
-  font-weight: 250;
+  color:#ffffff; /*202020;*/
+  font-weight: lighter;
 }
 h3 span {
   padding:0 12px;
-  font-size:22px;
-  color:#ffffffcc;
+  font-size: 22px;
+  color:#ffffffcc; 
 }
-
 h4 {
   /*font-family: 'Venus', sans-serif;*/
   font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
@@ -69,7 +68,6 @@ h4 {
   font-style: italic;
   color:#688b9e; /*rgba(100,100,100,1);*/
 }
-
 div {
   font-family: 'Jura-reg', sans-serif;
   font-size: 16px;
@@ -77,7 +75,6 @@ div {
   padding:0%;
   margin:0%;
 }
-
 * {
   box-sizing: border-box;
   font-family: 'Michr', sans-serif;
@@ -98,12 +95,14 @@ div {
 
 /* for debugging i make the background of body and ui widget contents transparent */
 body {
-  background-color:rgba(10, 20, 0, 1);
+  background: #000000;
 } 
 
 .container {
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  border-color: #00abff;
+  border-width: 10px;
 }
 
 .column,
@@ -201,14 +200,20 @@ body {
 
 
 .lineglow {
-  background-color: #00abff;
+  background-image: url("images/lineglow2_mod.gif");
+  /*background-color: #00abff;
   border-radius: 0.15rem;
   border-bottom: 2px solid #00abff;
-  text-align: left;
-  width:95%;
-  line-height:0rem;
   box-shadow:0px 0px 8px 6px #00aaffcb;
-  margin: 20px 0 20px;
+  line-height:0rem;
+  width:95%;
+  text-align:left;
+  */
+  height:100%;
+  background-size:contain;
+  background-position: left;
+  background-repeat: no-repeat;
+  margin: 10px 0 0px;
 }
 
  
@@ -329,15 +334,13 @@ input[type="checkbox"]
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-
-
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 text labels + frames
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 .swagLabelSmall {
     padding-top: 15px;
-    color:white;
+    color:rgb(255, 255, 255);
     font-size:25px;
     /* font: 'Roboto'; */
     /*font-family: 'Square', sans-serif;*/
@@ -359,13 +362,16 @@ input[type="checkbox"]
 }
 
 .cornerBox {
-  --b:2px;   /* thickness of the border */
-  --c:#688b9e;   /* color of the border */
-  --w:10px;  /* width of border piece*/
-  --h:10px; /* height of border piece*/
-  border:var(--b) solid transparent; /* space for the border */
-  --g:rgba(252, 44, 44, 0) 90deg,var(--c) 0;
-  background:
+  --b:2px;  
+  --c:#688b9e;  
+  --w:10px; 
+  --h:10px;
+
+  width:100%;
+  box-sizing:border-box;
+  margin:0;
+  padding:3px;
+  /*background:
     conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--g)) 0    0,
     conic-gradient(from 180deg at top    var(--b) right var(--b),var(--g)) 100% 0,
     conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--g)) 0    100%,
@@ -373,10 +379,7 @@ input[type="checkbox"]
   background-size:var(--w) var(--w);
   background-origin:border-box;
   background-repeat:no-repeat;
-  width:100%;
-  box-sizing:border-box;
-  margin:0;
-  padding:3px;
+  */ 
 }
 
 .swagCheckbox {
@@ -385,43 +388,13 @@ input[type="checkbox"]
   margin-top:12px;
 }
 
-.ui-widget .ui-widget {
-     font-size:30px;
-     border: 10px solid transparent;
-     padding: 2px;
-     /*border-image: url("images/frame1.png") 10 stretch;*/
-}
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              projects dropdown menu
+             get rid of jquery stuff in this css
+             e.g. projects dropdown menu
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-.ui-selectmenu-button.ui-button {
-    min-width:fit-content;
-    width:100%;
-    height: 100%;
-    -moz-padding-start: calc(10px - 3px);
-    padding: 0px;
-    color: rgb(255, 255, 255);
-    background:rgb(20,20,20,1);
-    border-image: url("images/frame1.png") 10 stretch;    
-    cursor: pointer;
-}
 
-.ui-widget.ui-widget-content {
-    outline: none;
-    border: 0px solid transparent;
-    padding: 2px;
-    border-image: url("images/frame1.png") 10 stretch;
-    }
-    
-
-.ui-button {
-    font-weight: normal;
-    outline: none;
-    /*padding: 2px 5px;
-    margin: 3px 3px;*/
-}
 
 
 .ui-slider.ui-slider-horizontal {
@@ -464,21 +437,6 @@ input[type="checkbox"]
 }
 
 
-.ui-state-hover,
-.ui-widget-content .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
-.ui-widget-content .ui-state-focus,
-.ui-widget-header .ui-state-focus,
-.ui-button:hover,  
-.ui-button:focus {
-	
-	background: #0f0f0f;
-	font-weight: normal;
-	color: #ffffff;
-    outline: 1px
-}
-
 .ui-slider-handle:hover,
 .ui-slider-handle:focus {
 	border: 0px solid #1c58fb;
@@ -489,16 +447,7 @@ input[type="checkbox"]
 }
 
 
-.ui-widget-content { 
-	/* border: 1px solid #666666; */
-	/* background: none; */
-  /* color: white; */
-  border: 10px solid transparent;
-  padding: 2px;
-  border-image: url("images/frame1.png") 10 stretch;
-  background: transparent url("images/80black.png") 100% 100% repeat;  
 
-} 
 /* width */
 ::-webkit-scrollbar {
   width: 20px;

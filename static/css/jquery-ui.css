@@ -21,12 +21,9 @@
 	background-size: 100%;
 }
 .ui-widget {
-	height:100%;
 	text-align: left;
 }
-.ui-widget-content a { /* not in use ? */
-	color: #0400ff;
-}
+
 .ui-widget-header a { /* not in use ? */
 	color: #ff00aa;
 }
@@ -37,9 +34,8 @@
 
 /* widget / COMPLETE TAB + DROPDOWN*/
 .ui-widget-content {
-	border: 0px solid #000000;
 	background: #000000;
-	color: #ffffff;
+	/*color: #ffffff;*/
 	width:100%;
 	text-overflow:hidden;
 	box-sizing: border-box;
@@ -74,15 +70,7 @@ a:visited.ui-button,
 	color: #eeeeee;
 	text-decoration: none;
 }
-.ui-state-hover,
-.ui-widget-content .ui-state-hover,
-.ui-widget-header .ui-state-hover,
-.ui-state-focus,
-.ui-widget-content .ui-state-focus,
-.ui-widget-header .ui-state-focus {
-	background: #688b9e33;
-	font-weight: normal;
-}
+
 .ui-state-hover a,
 .ui-state-hover a:hover,
 .ui-state-hover a:link,
@@ -121,19 +109,42 @@ a:visited.ui-button,
              D R O P D O W N 
 ------------------------------------------ */
 
+.ui-button {
+    font-weight: normal;
+    outline: none;
+    /*padding: 2px 5px;
+    margin: 3px 3px;*/
+}
+
 /* ---------- DROPDOWN CLOSED ---------- */
 .ui-widget .ui-widget {
-	border: 2px solid transparent;
+	font-size:22px;
+	border: 10px solid transparent;
 	padding: 2px;
+	/*line-height: 1.2rem;*/
 	border-image: url("images/frame1.png") 10 stretch;
-}
+  }
 .ui-selectmenu-button.ui-button {
+    min-width:fit-content;
+    width:100%;
+    height: 100%;
+    -moz-padding-start: calc(10px - 3px);
+    padding: 0px;
+    color: rgb(255, 255, 255);
+    background:rgb(20,20,20,1);
+    border-image: url("images/frame1.png") 10 stretch;    
+    cursor: pointer;
+}
+
+/*
+.ui-selectmenu-button.ui-button-old {
 	height:100%;
-	/*-moz-padding-start: calc(10px - 3px);*/
 	background:rgba(20, 10, 0, 0);
 	border-image: url("images/frame1.png") 10 stretch; 
 	cursor: pointer;
 }
+*/
+
 .ui-selectmenu-text {
 	display: block;
 	margin-left: 5px;
@@ -161,9 +172,7 @@ a:visited.ui-button,
 	margin-top: -2px;
 	background-color:#00000000;
 }
-.ui-widget .ui-widget {
-	line-height: 1.2rem;
-}
+
 .ui-front {
 	z-index: 100;
 }
@@ -206,9 +215,12 @@ a.ui-button:active,
 /* ---------- DROPDOWN OPEN ---------- */
 /* content of dropdown when open */
 .ui-widget.ui-widget-content {
-	outline: none;
-	border: 0px solid transparent;
+    outline: none;
+    border: 0px solid transparent;
+    padding: 2px;
+    border-image: url("images/frame1.png") 10 stretch;
 }
+
 .ui-selectmenu-menu {
 	/*position: relative;*/
 	background-color:rgb(20,10, 0, 0);
@@ -354,6 +366,11 @@ button.ui-button::-moz-focus-inner {
 	border: 0;
 	padding: 0;
 }
+
+
+
+
+
 
 
 
