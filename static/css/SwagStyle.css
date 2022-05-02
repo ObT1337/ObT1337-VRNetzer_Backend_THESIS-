@@ -20,7 +20,7 @@
 
 @font-face { font-family: Michr; src: url('fonts/Michroma-Regular.ttf'); } 
 
-@font-face { font-family: Jura-reg; src: url('fonts/Jura-Regular.ttf'); } 
+@font-face { font-family: Jura; src: url('fonts/Jura-Regular.ttf'); } 
 
 
 /* ######################################################
@@ -28,22 +28,21 @@
                   F O N T S
 #########################################################
 #######################################################*/
-
 h1 {
   /*font-family: 'Square', sans-serif;*/
-  font-family: 'Akshar-med', sans-serif;
-  font-size: 80px;
-  font-weight: 10;
+  font-family: 'Michr', sans-serif;
+  font-size: 50px;
   padding:0%;
   margin: left 20px;
+  line-height:2rem;
 }
 h2 {
   /*font-family: 'Future', sans-serif;*/
-  font-family: 'Akshar-reg', sans-serif;
-  font-size: 50px;
-  font-weight: 10;
+  font-family: 'Michr', sans-serif;
+  font-size: 40px;
   padding:0%;
   margin:0%;
+  line-height:1.6rem;
 }
 h3 {
   /*font-family: 'Modular', sans-serif;*/
@@ -53,7 +52,7 @@ h3 {
   font-weight: lighter;
 }
 h3 span {
-  padding:0 12px;
+  padding:0 18px;
   font-size: 22px;
   color:#ffffffcc; 
 }
@@ -61,25 +60,34 @@ h4 {
   /*font-family: 'Venus', sans-serif;*/
   font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
   font-size: 16px;
-  font-weight: 1;
   padding: 0%;
   margin-bottom: 5px;
   margin-top: 15px;
   font-style: italic;
-  color:#688b9e; /*rgba(100,100,100,1);*/
+  color:rgb(78, 139, 170);
 }
 div {
-  font-family: 'Jura-reg', sans-serif;
-  font-size: 16px;
-  line-height:1.5rem;
+  font-family: 'Michr', sans-serif;
+  font-size: 20px;
+  line-height:1.2rem;
   padding:0%;
   margin:0%;
+  font-weight:lighter;
+}
+p {
+  font-family: 'Michr', sans-serif;
+  font-size: 20px;
+  line-height:1.2rem;
+  padding:0%;
+  margin:0%;
+  font-weight:lighter;
 }
 * {
   box-sizing: border-box;
   font-family: 'Michr', sans-serif;
+  line-height:1.2rem;
   font-size: 20px;
-  /*text-transform: uppercase;*/
+  font-weight:lighter;
 }
 
 
@@ -100,9 +108,7 @@ body {
 
 .container {
   width: 100%;
-  height: 100%;
-  border-color: #00abff;
-  border-width: 10px;
+  height:100%;
 }
 
 .column,
@@ -114,17 +120,14 @@ body {
 
 /* For devices larger than 550px */
 @media (min-width: 450px) {
-  .row {
-    width:100%;
-  }
   .container {
     width: 100%;
-    height: 100vh;
+    height: 100%;
   }
   .column,
   .columns {
-    margin-left: 5px;
-    margin-right: 5px;
+    /*margin-left: 5px;
+    margin-right: 5px;*/
     width: 100%;
   }
   .column:first-child,
@@ -173,7 +176,7 @@ body {
   }
   .twelve.columns {
       width: 100%;
-      margin-left: 0;
+      margin-right: 0;
   }
   .one-third.column {
       width: 30.6666666667%;
@@ -185,49 +188,17 @@ body {
       width: 48%;
   }
 }
-
-
-.backgroundglow {
-  background-color: #00abff;
-  border-radius: 0.15rem;
-  text-align: left;
-  padding-left:4px;
-  width:100%;
-  line-height:2.3rem;
-  height: 2px; /*100%;*/
-  box-shadow:0px 0px 6px 4px #00aaffcb;
-}
-
-
-.lineglow {
-  background-image: url("images/lineglow2_mod.gif");
-  /*background-color: #00abff;
-  border-radius: 0.15rem;
-  border-bottom: 2px solid #00abff;
-  box-shadow:0px 0px 8px 6px #00aaffcb;
-  line-height:0rem;
-  width:95%;
-  text-align:left;
-  */
-  height:100%;
-  background-size:contain;
-  background-position: left;
-  background-repeat: no-repeat;
-  margin: 10px 0 0px;
-}
-
  
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                      input windows 
+              INPUT Windows
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
-
 input {
     width: 100%;
     height: 80px;
     -moz-padding-start: calc(10px - 3px);
     padding-left: 10px;
     /*font-family: 'Square', sans-serif;*/
-    font-size: 40px;
+    font-size: 20px;
     font-weight: 10;
     color: rgb(255, 255, 255);
     cursor: pointer;
@@ -236,8 +207,6 @@ input {
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
     }
-
-
 input[type="submit"]
     {
       width: 50%;
@@ -254,7 +223,6 @@ input[type="submit"]
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
-
 input[type="file"]
     {
       width: 100%;
@@ -271,68 +239,66 @@ input[type="file"]
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
-
 input[type="radio"]
     {
       height: 1em;
-    }
-
-input[type="button"]
-    {
-      width: 100%;
-      height: 100px;
-      -moz-padding-start: calc(10px - 3px);
-      padding-left: 10px;
-      font-family: 'Future', sans-serif;
-      font-size: 20px;
-      font-weight: 10;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      background:rgba(66, 66, 66, 0);
-      border: 10px solid transparent;
-      padding: 2px;
-      border-image: url("images/frame1.png") 10 stretch;
-      height: 1em;
-    }
-
-  
+    }  
 input[type="checkbox"]
     {
       width: 100%;
-      height: 100px;
-      -moz-padding-start: calc(10px - 3px);
+      height: 100%;
+      /*-moz-padding-start: calc(10px - 3px);
       padding-left: 10px;
       font-family: 'Future', sans-serif;
       font-size: 20px;
       font-weight: 10;
       color: rgb(255, 255, 255);
-      cursor: pointer;
+      cursor: pointer;*/
       background:rgba(66, 66, 66, 0);
       border: 10px solid transparent;
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
       height: 1em;
     }
-
-
 :focus{
+      user-select: none;
+      outline: none !important;
+  }
+  
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              Button 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+input[type="button"]
+{
+  /*-moz-padding-start: calc(10px - 3px);
+  padding-left: 10px;*/
+  font-size:16px !important;
+  color:#97dcff;
+  font-family: 'Michr', sans-serif;
+  font-size: 20px;
+  font-weight: 10;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  background:rgba(66, 66, 66, 0);
+  border: 10px solid transparent;
+  padding: 1px;
+  border-image: url("images/frame1.png") 10 stretch;
+}
+.swagPlayButton { 
+  display: inline-block; 
+  width:100px !important;
+  height:50px !important;
+}
+.swagPlayButton:hover {
+   background-color:rgba(2, 77, 114, 0.45);
+}
+.swagPlayButton:focus{
     user-select: none;
     outline: none !important;
 }
-/*disable dragging on images */
-/* img{-webkit-user-drag: none;
-        
-} */
 
-.disable-select {     
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefsixed version, currently
-                                  supported by Chrome, Edge, Opera and Firefox */
-}
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 text labels + frames
@@ -362,24 +328,19 @@ input[type="checkbox"]
 }
 
 .cornerBox {
-  --b:2px;  
+  /*--b:2px;  
   --c:#688b9e;  
   --w:10px; 
-  --h:10px;
-
+  --h:10px;*/
   width:100%;
   box-sizing:border-box;
   margin:0;
   padding:3px;
-  /*background:
-    conic-gradient(from 90deg  at top    var(--b) left  var(--b),var(--g)) 0    0,
-    conic-gradient(from 180deg at top    var(--b) right var(--b),var(--g)) 100% 0,
-    conic-gradient(from 0deg   at bottom var(--b) left  var(--b),var(--g)) 0    100%,
-    conic-gradient(from -90deg at bottom var(--b) right var(--b),var(--g)) 100% 100%;
-  background-size:var(--w) var(--w);
+  padding-right:8px;
+  border: solid 1.5px #222222;
   background-origin:border-box;
   background-repeat:no-repeat;
-  */ 
+  
 }
 
 .swagCheckbox {
@@ -388,41 +349,6 @@ input[type="checkbox"]
   margin-top:12px;
 }
 
-
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-             get rid of jquery stuff in this css
-             e.g. projects dropdown menu
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-
-.ui-slider.ui-slider-horizontal {
-  margin: 0px 0px 5px 0px;
-  height: 40px;
-  border: 0px solid #666666;
-  border-radius: 0px;
-  background: transparent url(images/slider2.png);
-}
-
-
-.ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-max{
-   background: transparent url(images/slider1.png);
-   /* border: 1px solid #666666; */
-}
-
-
-.ui-slider .ui-slider-handle {
-	/* position: absolute; */
-  top: -0em;
-  left: -0.1em;
-	z-index: 2;
-	width: 40px;
-	height: 40px;
-	cursor: default;
-  touch-action: none;
-  background: transparent url(images/slider_customHandle.png) no-repeat 0 0;
-}
 
 
 /* style for d3 board in tab random walk  */
@@ -437,42 +363,118 @@ input[type="checkbox"]
 }
 
 
-.ui-slider-handle:hover,
-.ui-slider-handle:focus {
-	border: 0px solid #1c58fb;
-	background: transparent url(images/slider_customHandle_active.png) no-repeat 0 0;
-	font-weight: normal;
-    outline: none;
-	/* color: #ffffff; */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+               Special effects + gifs
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+.backgroundglow {
+  background-color: #00abff;
+  border-radius: 0.15rem;
+  text-align: left;
+  padding-left:4px;
+  width:100%;
+  line-height:2.3rem;
+  height: 2px; /*100%;*/
+  box-shadow:0px 0px 6px 4px #00aaffcb;
+}
+
+.backgroundflow {
+  background-image: url("images/background-flow.gif");
+  background-position: center;
+  height:100%;
+  background-size: 100%;
+}
+
+.lineglow {
+  background-image: url("images/lineglow2_mod.gif");
+  height:100%;
+  background-size:contain;
+  background-position: left;
+  background-repeat: no-repeat;
+  margin: 10px 0 0px;
+}
+
+.lineglowslow {
+  background-image: url("images/lineglow2_mod-slow.gif");
+  height:100%;
+  background-size:contain;
+  background-position: left;
+  background-repeat: no-repeat;
+  margin: 10px 0 0px;
+}
+
+.lineglow-particles {
+  background-image: url("images/lineglow4_mod.gif");
+  height:100%;
+  background-size:100%; /* containt */
+  background-position: left;
+  background-repeat: no-repeat;
+  margin: 10px 0 0px;
+}
+
+.netgif-wave {
+  background-image: url("images/network9.gif"); /* or "images/network9-rev.gif" */
+  background-position: center;
+  height:100%;
+  background-size: 100%;
+}
+
+.netgif-flash {
+  background-image: url("images/network8.gif");
+  background-position: center;
+  height:100%;
+  background-size: 100%;
+}
+
+.netgif-planet {
+  background-image: url("images/network10.gif");
+  background-position: left;
+  height:100%;
+  background-size: 100%;
 }
 
 
 
-/* width */
+
+/*disable dragging on images */
+/* img{-webkit-user-drag: none;
+      
+} */
+/* NOT INS USE?? 
+
+.disable-select {     
+  -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+     -khtml-user-select: none;
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; 
+} 
+*/
+
+
+/* NOT INS USE?? 
 ::-webkit-scrollbar {
   width: 20px;
   height: 20px
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey; 
   border-radius: 10px;
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #0089cc; 
   border-radius: 10px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #00abff; 
 }
 
 .bar {
-  /* fill: steelblue; */
+   fill: steelblue;/
 }
 
 .bar:hover {
@@ -497,6 +499,7 @@ input[type="checkbox"]
 }
 
 .g tick{
-      fill: white;
+  fill: white;
   stroke: white;
 }
+*/

@@ -43,6 +43,11 @@
 
     
 
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                TEMPLATES
+                                        
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
     <template id="mcRB-template" >
         <style>
@@ -122,7 +127,13 @@
         <input type="Color" id = "color">
     </template>
 
-                <body>
+    
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       body
+                                        
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+    <body>
                     
                     <script>
                         var sessiondata = JSON.parse({{sessionData|tojson}});
@@ -165,10 +176,6 @@
                                             src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>
                             <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
-
- 
-                            <!-- <li><a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_pub.png') }}" /></a></li> -->
                         </ul>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -179,8 +186,8 @@
                         <div id="tabs-1" class="container">
 
                                 <div class="twelve columns">
-                                    <div id="projects-section" class="five columns" style="position:relative">   
-                                            <h3 class="lineglow"><span>PROJECT</span></h3>
+                                    <div id="projects-section" class="five columns">   
+                                            <h3 class="lineglowslow" style="line-height:2.0rem"><span>PROJECT</span></h3>
                                         </div>
                                             <div class="seven columns">
                                                 <div class="cornerBox">
@@ -190,7 +197,7 @@
                                                 </script>
                                                 </div>
                                             </div>
-                                </div>   
+                                </div>  
 
                                 <div class="twelve columns">
                                     <h4 class="eight columns">LAYOUTS</h4>
@@ -261,18 +268,23 @@
                                             </script>
                                     </div>
                                 </div>
-
+                                <div class="twelve columns" style="height:20px;"></div>
                                 <div class="twelve columns"> 
                                     <div class="eight columns"> 
+                                        <div  class="lineglowslow">
                                         <br></br>
+                                        </div>
                                     </div>
                                     <div class="three columns">
-                                        <input type="button"  id = 'play' value="PLAY" style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"></button>
+                                        <input type="button"  id = 'play' class="swagPlayButton" value="PLAY"></button> 
+                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
                                             initToggle('play', ['PLAY','PAUSE']);
                                         </script>
                                     </div>  
                                 </div>
+
+
                         </div> 
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -345,19 +357,49 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 5
-                                        
+                                        tab 5 - GIF SELECTION 
+
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-5">
-                                    <h1>SQUARE somesmalltext</h1>
-                                    <h2>FUTURE somesmalltext</h2>
-                                    <h3>MODULAR somesmalltext</h3>
-                                    <h4>VENUS somesmalltext</h4>
+                                    <h1>h1 text</h1>
+                                    <h2>h2 text</h2>
+                                    <h3>h3 text</h3>
+                                    <h4>h4 text</h4>
+                                    
+                                    <div class="twelve columns"><br>Lineglow</br>
+                                        <div class="lineglow">
+                                        <br></br>
+                                        </div>
+                                    </div>
+                                    <div class="twelve columns"><br>Lineglow particle</br></div>
+                                    <div class="twelve columns">
+                                        <div class="lineglow-particles">
+                                        <br></br>
+                                        </div>
+                                    </div>
+                                    <div class="twelve columns"><br>Network Wave</br></div>
+                                    <div class="twelve columns">
+                                        <div class="netgif-wave">
+                                        <br></br>
+                                        </div>
+                                    </div>
+                                    <div class="twelve columns"><br>Network Flash</br></div>
+                                    <div class="twelve columns">
+                                        <div class="netgif-flash">
+                                        <br></br>
+                                        </div>
+                                    </div>    
+                                    <div class="twelve columns"><br>Network Planet</br></div>
+                                    <div class="twelve columns">
+                                        <div class="netgif-planet">
+                                        <br></br>
+                                        </div>
+                                    </div> 
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 6 - Settings / check boxes
+                                        tab 6 - SETTINGS
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-6" class="container">
@@ -367,7 +409,7 @@
                                         document.getElementById('url').innerHTML = window.location.href;
                                     </script>
 
-                                    <div class="ui-button">Example Button</div>
+                                    <div type="button" class="swagPlayButton">Example Button</button>
                                 
 
                         </div>
@@ -375,7 +417,7 @@
                     </div>
 
 
-                </body>
+    </body>
 
 
 

@@ -17,30 +17,38 @@
 /* ---------- U I   H E A D E R + I M A G E ---------- */
 /* height of header */
 .ui-widget-header {
-	background-image: url("images/network8.gif"); /* stretch */
-	background-size: 100%;
+	background-image: url("images/network9-rev.gif"); /* stretch */
+	/*background-size: 100%;*/
+	background-position: center;
+	background-repeat:repeat-x; /* TO FIX : mirroring of gifs to make repeat less obvious */
 }
 .ui-widget {
 	text-align: left;
 }
 
-.ui-widget-header a { /* not in use ? */
-	color: #ff00aa;
-}
-  
-/* ------------------------------------------
-            T A B S / H E A D E R / W I D G E T
------------------------------------------- */
 
+/* ------------------------------------------
+     T A B S / H E A D E R / W I D G E T
+------------------------------------------ */
 /* widget / COMPLETE TAB + DROPDOWN*/
 .ui-widget-content {
 	background: #000000;
-	/*color: #ffffff;*/
+	color: #ffffff;
 	width:100%;
-	text-overflow:hidden;
+	height:100%;
+	/*text-overflow:hidden;*/
 	box-sizing: border-box;
+	font-family: "Michr";
 }
-  
+
+/* tabs - default state*/
+.ui-state-default,
+.ui-widget-content .ui-state-default,
+.ui-widget-header .ui-state-default {
+	border: 2px solid #00000000;
+	background: rgba(20,10,0,0.15);
+}
+
   /* tabs - hovering */
 .ui-state-hover,
 .ui-widget-content .ui-state-hover,
@@ -48,29 +56,15 @@
 .ui-state-focus,
 .ui-widget-content .ui-state-focus,
 .ui-widget-header .ui-state-focus,
-.ui-button:hover,  
-.ui-button:focus {	
+.ui-button:hover,
+.ui-button:focus 
+{	
 	text-decoration: none;
-	background-color:rgb(66,66,66);
-	border: 2px solid #00000000;
-}
-.ui-state-default,
-.ui-widget-content .ui-state-default,
-.ui-widget-header .ui-state-default {
-	border: 2px solid #00000000;
-	background: #27272770;
-}
-.ui-state-default a,
-.ui-state-default a:link,
-.ui-state-default a:visited,
-a.ui-button,
-a:link.ui-button,
-a:visited.ui-button,
-.ui-button {
-	color: #eeeeee;
-	text-decoration: none;
+	background-color:rgba(2, 77, 114, 0.45);
+	border: 2px solid #00f7ff00;
 }
 
+/* not in use ? - for links only 
 .ui-state-hover a,
 .ui-state-hover a:hover,
 .ui-state-hover a:link,
@@ -81,19 +75,21 @@ a:visited.ui-button,
 .ui-state-focus a:visited
 {
 	color: #ffffff;
-	text-decoration: none;
-}
-/* parent of dropdown */
+	text-decoration: none;	
+} */
+
+
+/* ------------------------------------------
+             B U T T O N 
+------------------------------------------ */
 .ui-button {
-	display: block;
-	position: relative;
-	cursor: pointer; 
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	/* Support: IE <= 11*/
+    font-weight: normal;
+    outline: none;
+	display: inline-block; 
+    padding: 2px 5px;
+    margin: 3px 3px;
 }
+
 .ui-button,
 .ui-button:link,
 .ui-button:visited {
@@ -103,223 +99,6 @@ a:visited.ui-button,
 .ui-button:focus .ui-icon {
 	background-image: url("images/ui-icons_ffffff_256x240.png");
 }
-
-  
-/* ------------------------------------------
-             D R O P D O W N 
------------------------------------------- */
-
-.ui-button {
-    font-weight: normal;
-    outline: none;
-    /*padding: 2px 5px;
-    margin: 3px 3px;*/
-}
-
-/* ---------- DROPDOWN CLOSED ---------- */
-.ui-widget .ui-widget {
-	font-size:22px;
-	border: 10px solid transparent;
-	padding: 2px;
-	/*line-height: 1.2rem;*/
-	border-image: url("images/frame1.png") 10 stretch;
-  }
-.ui-selectmenu-button.ui-button {
-    min-width:fit-content;
-    width:100%;
-    height: 100%;
-    -moz-padding-start: calc(10px - 3px);
-    padding: 0px;
-    color: rgb(255, 255, 255);
-    background:rgb(20,20,20,1);
-    border-image: url("images/frame1.png") 10 stretch;    
-    cursor: pointer;
-}
-
-/*
-.ui-selectmenu-button.ui-button-old {
-	height:100%;
-	background:rgba(20, 10, 0, 0);
-	border-image: url("images/frame1.png") 10 stretch; 
-	cursor: pointer;
-}
-*/
-
-.ui-selectmenu-text {
-	display: block;
-	margin-left: 5px;
-	overflow: hidden;
-	font-size:14px;
-	text-align: left;
-	color:rgb(180,180,180);
-	font-style: normal;
-	font-weight:normal;
-}
-.ui-widget input,
-.ui-widget select,
-.ui-widget textarea,
-.ui-widget button {
-	  font-size: 1em;
-}
-.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
-	  height: auto;
-	  border: 0;
-	  background: none;
-}
-/* arrow at dropdown */
-.ui-selectmenu-icon.ui-icon {
-	float: right;
-	margin-top: -2px;
-	background-color:#00000000;
-}
-
-.ui-front {
-	z-index: 100;
-}
-.ui-button .ui-icon {
-	background-image: url("images/ui-icons_cccccc_256x240.png");
-	background-color: rgb(66,66,66);
-}
-
-/* ---------- DROPDOWN ACTIVE ---------- */
-.ui-button.ui-state-active:hover,
-.ui-button.ui-state-active:focus {
-	background: #00aaff36;
-	font-weight: normal;
-}
-/* We use html here because we need a greater specificity to make sure disabled
-works properly when clicked or hovered */
-html .ui-button.ui-state-disabled:hover,
-html .ui-button.ui-state-disabled:active {
-	background-color:blue;
-}
-.ui-state-active,
-.ui-state-hover,
-a.ui-button:active,
-.ui-button:active {
-	font-weight: normal;
-	color: #ffffff;
-}
-.ui-widget-content .ui-state-active,
-.ui-widget-content .ui-state-hover,
-.ui-widget-header .ui-state-active,
-.ui-widget-header .ui-state-hover {
-	border: 2px solid #00abffcb;
-	box-shadow:0px 0px 3px 1.5px #00abffcb;
-	background: #00aaff36;
-	font-weight: normal;
-	/*font-weight: bold;*/
-	color: #ffffff;
-}
-
-/* ---------- DROPDOWN OPEN ---------- */
-/* content of dropdown when open */
-.ui-widget.ui-widget-content {
-    outline: none;
-    border: 0px solid transparent;
-    padding: 2px;
-    border-image: url("images/frame1.png") 10 stretch;
-}
-
-.ui-selectmenu-menu {
-	/*position: relative;*/
-	background-color:rgb(20,10, 0, 0);
-	display: none;
-}
-.ui-selectmenu-menu .ui-menu {
-	overflow-x: hidden;
-	overflow: visible;
-	
-}
-.ui-selectmenu-open {
-	height: auto;
-	display: block;
-	position:absolute;
-}
-.ui-menu {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: block;
-	outline: 0;
-}
-.ui-menu .ui-menu {
-	position: absolute;
-}
-.ui-menu .ui-menu-item {
-	margin: 0;
-	margin-left:10px;
-	cursor: pointer;
-	text-overflow:hidden;
-
-	/* support: IE10, see #8844 
-	list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");*/
-}
-.ui-menu .ui-menu-item-wrapper {
-	/*position: relative;*/
-	display:block;
-	/*padding: 5px 1em 3px 0.4em;*/
-	font-size:16px;
-	line-height:2rem;
-}
-.ui-menu .ui-menu-divider {
-	margin: 5px 0;
-	height: 0;
-	font-size: 0;
-	line-height: 0;
-	border-width: 1px 0 0 0;
-}
-.ui-menu .ui-state-focus,
-.ui-menu .ui-state-active {
-	margin: -1px;
-}
-/* icon support */
-.ui-menu-icons {
-	position: relative;
-}
-.ui-menu-icons .ui-menu-item-wrapper {
-	padding-left: 2em;
-}
-  /* left-aligned */
-.ui-menu .ui-icon {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	left: .2em;
-	margin: 0;
-}
-/* right-aligned */
-.ui-menu .ui-menu-icon {
-	left: auto;
-	right: 0;
-}
-  
-  
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* to make room for the icon, a width needs to be set here */
 .ui-button-icon-only {
@@ -368,12 +147,194 @@ button.ui-button::-moz-focus-inner {
 }
 
 
+/* ------------------------------------------
+             D R O P D O W N 
+------------------------------------------ */
+
+/* ---------- DROPDOWN CLOSED ---------- */
+.ui-widget .ui-widget {
+	border: 10px solid transparent;
+	padding: 2px;
+	border-image: url("images/frame1.png") 10 stretch;
+  }
+.ui-selectmenu-button.ui-button {
+    /*min-width:fit-content;*/
+    width: 100%;
+    height: 100%;
+    /*-moz-padding-start: calc(10px - 3px);*/
+    padding:0px;
+	color: rgb(255, 255, 255);
+    background:rgb(20,20,20,1);
+    border-image: url("images/frame1.png") 10 stretch;    
+    cursor: pointer;
+}
+.ui-selectmenu-text {
+	display: block;
+	margin-left: 5px;
+	margin-right: 25px; /*to avoid overflow to arrow*/
+	overflow: hidden;
+	font-size: 20px;
+	line-height:1.2rem;
+	text-align: left;
+	color:rgb(255, 255, 255);
+}
+.ui-widget input,
+.ui-widget select,
+.ui-widget textarea,
+.ui-widget button {
+	  font-size: 1em;
+}
+.ui-selectmenu-menu .ui-menu .ui-selectmenu-optgroup {
+	  height: auto;
+	  border: 0;
+	  background: none;
+}
+/* arrow at dropdown */
+.ui-selectmenu-icon.ui-icon {
+	float: right;
+	margin-top: 3px;
+	background-color:#00000000;
+}
+
+.ui-front {
+	z-index: 100;
+}
+.ui-button .ui-icon {
+	background-image: url("images/ui-icons_cccccc_256x240.png");
+	background-color: rgb(66,66,66);
+}
+
+/* ---------- DROPDOWN ACTIVE ---------- */
+.ui-button.ui-state-active:hover,
+.ui-button.ui-state-active:focus {
+	font-weight: normal;
+}
+/* We use html here because we need a greater specificity to make sure disabled
+works properly when clicked or hovered */
+html .ui-button.ui-state-disabled:hover,
+html .ui-button.ui-state-disabled:active {
+	background-color:blue;
+}
+.ui-state-active,
+.ui-state-hover,
+a.ui-button:active,
+.ui-button:active {
+	font-weight: normal;
+	color: #ffffff;
+}
+.ui-widget-content .ui-state-active,
+.ui-widget-content .ui-state-hover,
+.ui-widget-header .ui-state-active,
+.ui-widget-header .ui-state-hover {
+	border: 2px solid #00abffcb;
+	/*box-shadow:0px 0px 3px 1.5px #00abffcb;*/
+	background: #00aaff36;
+	font-weight: normal;
+	color: #ffffff;
+}
+
+/* ---------- DROPDOWN OPEN ---------- */
+/* content of dropdown when open */
+.ui-widget.ui-widget-content {
+    outline: none;
+    border: 0px solid transparent;
+    padding: 2px;
+    border-image: url("images/frame1.png") 10 stretch;
+}
+.ui-selectmenu-menu {
+	/*position: relative;*/
+	background-color:rgba(0, 0, 0, 0);
+	display: none;
+}
+.ui-selectmenu-open {
+	height: auto;
+	display: block;
+	position:absolute;
+}
+.ui-selectmenu-menu .ui-menu {
+	overflow-x: hidden;
+	overflow: visible;	
+}
+.ui-menu {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: block;
+	outline: 0;
+}
+.ui-menu .ui-menu {
+	position: absolute;
+}
+.ui-menu .ui-menu-item {
+	margin: 0;
+	margin-left:10px;
+	cursor: pointer;
+	text-overflow:hidden;
+	/* support: IE10, see #8844 
+	list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");*/
+}
+.ui-menu .ui-menu-divider {
+	margin: 5px 0;
+	height: 0;
+	line-height: 0;
+}
+/* open dropdown*/
+.ui-menu .ui-menu-item-wrapper {
+	display:block;
+	line-height:2.2rem;
+}
+/* open dropdown hover item*/
+.ui-menu .ui-state-focus,
+.ui-menu .ui-state-active {
+	margin: -2px; /*to make text pop out when hovering */
+	padding:0px;
+	background-color:rgba(2, 77, 114, 0.45);
+}
+/* icon support */
+.ui-menu-icons {
+	position: relative;
+}
+.ui-menu-icons .ui-menu-item-wrapper {
+	padding-left: 2em;
+}
+  /* left-aligned */
+.ui-menu .ui-icon {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: .2em;
+	margin: 0;
+}
+/* right-aligned */
+.ui-menu .ui-menu-icon {
+	left: auto;
+	margin: 0px;
+}
+  
+  
+  
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------------------------------------
+            S L I D E R S 
+------------------------------------------ */
 .ui-slider {
 	position: relative;
 	text-align: left;
@@ -482,7 +443,44 @@ button.ui-button::-moz-focus-inner {
 	bottom: 0;
 }
 
+.ui-slider-handle:hover,
+.ui-slider-handle:focus {
+	border: 0px solid #1c58fb;
+	background: transparent url(images/slider_customHandle_active.png) no-repeat 0 0;
+	font-weight: normal;
+    outline: none;
+	/* color: #ffffff; */
+}
 
+
+.ui-slider.ui-slider-horizontal {
+	margin: 0px 0px 5px 0px;
+	height: 40px;
+	border: 0px solid #666666;
+	border-radius: 0px;
+	background: transparent url(images/slider2.png);
+  }
+  
+  
+  .ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-max{
+	 background: transparent url(images/slider1.png);
+	 /* border: 1px solid #666666; */
+  }
+  
+  
+  .ui-slider .ui-slider-handle {
+	  /* position: absolute; */
+	top: -0em;
+	left: -0.1em;
+	  z-index: 2;
+	  width: 40px;
+	  height: 40px;
+	  cursor: default;
+	touch-action: none;
+	background: transparent url(images/slider_customHandle.png) no-repeat 0 0;
+  }
+  
+  
 
 
 
@@ -528,7 +526,7 @@ button.ui-button::-moz-focus-inner {
 	display: block;
 	border-width: 0;
 	padding: 1em 1.4em;
-	/*background: none;*/
+	/*background: none; */
 	/*background: #33333333 url("images/network2.gif") 100% 100% repeat;*/
 	/*background-color:(20,10,0,1);*/
 }
@@ -578,12 +576,12 @@ body .ui-tooltip {
 }
 .ui-state-checked {
 	border: 1px solid #cccccc;
-	background: #eeeeee;
+	background: #ffffff;
 }
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
-	color: #2e7db2;
+	color: #000000;
 }
 .ui-state-error,
 .ui-widget-content .ui-state-error,
@@ -1230,7 +1228,6 @@ Misc
 
 /* Spinner specific style fixes */
 .ui-controlgroup-vertical .ui-spinner-input {
-
 	/* Support: IE8 only, Android < 4.4 only */
 	width: 75%;
 	width: calc( 100% - 2.4em );
