@@ -5,13 +5,6 @@
 @font-face { font-family: Venus; src: url('venus.ttf'); } 
 @font-face { font-family: Modular; src: url('Modular Amplitude.otf'); } 
 
-@font-face { font-family: Akshar-lig; src: url('fonts/Akshar-Light.ttf'); } 
-@font-face { font-family: Akshar-reg; src: url('fonts/Akshar-Regular.ttf'); }
-@font-face { font-family: Akshar-med; src: url('fonts/Akshar-Medium.ttf'); } 
-@font-face { font-family: Akshar-semi; src: url('fonts/Akshar-SemiBold.ttf'); }
-
-@font-face { font-family: ExtBack; src: url('fonts/ExtrosBackstage.ttf'); } 
-
 @font-face { font-family: Bal-ligital; src: url('fonts/BaiJamjuree-LightItalic.ttf'); } 
 @font-face { font-family: Bal-lig; src: url('fonts/BaiJamjuree-Light.ttf'); } 
 @font-face { font-family: Bal-boldital; src: url('fonts/BaiJamjuree-BoldItalic.ttf'); }
@@ -20,7 +13,13 @@
 
 @font-face { font-family: Michr; src: url('fonts/Michroma-Regular.ttf'); } 
 
-@font-face { font-family: Jura; src: url('fonts/Jura-Regular.ttf'); } 
+@font-face { font-family: Jura; src: url('fonts/Jura-VariableFont.ttf'); } 
+@font-face { font-family: Jura-lig; src: url('fonts/Jura-Light.ttf'); } 
+@font-face { font-family: Jura-med; src: url('fonts/Jura-Medium.ttf'); } 
+
+@font-face { font-family: Aldi; src: url('fonts/Aldrich-Regular.ttf'); } 
+
+@font-face { font-family: Oxan-lig; src: url('fonts/Oxanium-Light.ttf'); } 
 
 
 /* ######################################################
@@ -33,7 +32,6 @@ h1 {
   font-family: 'Michr', sans-serif;
   font-size: 50px;
   padding:0%;
-  margin: left 20px;
   line-height:2rem;
 }
 h2 {
@@ -52,9 +50,8 @@ h3 {
   font-weight: lighter;
 }
 h3 span {
-  padding:0 18px;
   font-size: 22px;
-  color:#ffffffcc; 
+  color:rgba(255, 255, 255, 0.75); 
 }
 h4 {
   /*font-family: 'Venus', sans-serif;*/
@@ -65,30 +62,29 @@ h4 {
   margin-top: 15px;
   font-style: italic;
   color:rgb(78, 139, 170);
+  font-weight:lighter;
 }
+
 div {
-  font-family: 'Michr', sans-serif;
+  font-family: 'Bal-lig', sans-serif;
+  font-weight:100;
   font-size: 20px;
-  line-height:1.2rem;
+  line-height:2rem;
   padding:0%;
   margin:0%;
-  font-weight:lighter;
-}
-p {
-  font-family: 'Michr', sans-serif;
-  font-size: 20px;
-  line-height:1.2rem;
-  padding:0%;
-  margin:0%;
-  font-weight:lighter;
 }
 * {
   box-sizing: border-box;
-  font-family: 'Michr', sans-serif;
-  line-height:1.2rem;
-  font-size: 20px;
-  font-weight:lighter;
 }
+
+/*p {
+  font-family: 'Future', sans-serif;
+  font-size: 18px;
+  line-height:1.2rem;
+  padding:0%;
+  margin:0%;
+} */
+
 
 
 /* ######################################################
@@ -243,23 +239,7 @@ input[type="radio"]
     {
       height: 1em;
     }  
-input[type="checkbox"]
-    {
-      width: 100%;
-      height: 100%;
-      /*-moz-padding-start: calc(10px - 3px);
-      padding-left: 10px;
-      font-family: 'Future', sans-serif;
-      font-size: 20px;
-      font-weight: 10;
-      color: rgb(255, 255, 255);
-      cursor: pointer;*/
-      background:rgba(66, 66, 66, 0);
-      border: 10px solid transparent;
-      padding: 2px;
-      border-image: url("images/frame1.png") 10 stretch;
-      height: 1em;
-    }
+
 :focus{
       user-select: none;
       outline: none !important;
@@ -267,16 +247,15 @@ input[type="checkbox"]
   
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              Button 
+                  Button 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 input[type="button"]
 {
   /*-moz-padding-start: calc(10px - 3px);
   padding-left: 10px;*/
-  font-size:16px !important;
+  font-size:12px;
   color:#97dcff;
   font-family: 'Michr', sans-serif;
-  font-size: 20px;
   font-weight: 10;
   color: rgb(255, 255, 255);
   cursor: pointer;
@@ -287,8 +266,9 @@ input[type="button"]
 }
 .swagPlayButton { 
   display: inline-block; 
-  width:100px !important;
-  height:50px !important;
+  width: 70px !important;
+  height: 40px !important;
+  margin: 10px !important;
 }
 .swagPlayButton:hover {
    background-color:rgba(2, 77, 114, 0.45);
@@ -298,8 +278,108 @@ input[type="button"]
     outline: none !important;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                     Checkbox
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* ----------- O L D ---------------
+input[type="checkbox"]
+    {
+      width: 1em;
+      height: 1em;
+      background: rgb(75, 114, 2);
+      /*-moz-padding-start: calc(10px - 3px);
+      font-family: 'Future', sans-serif;
+      font-size: 20px;
+      font-weight: 10;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      background:rgb(255, 136, 136);
+      border: 0px solid transparent;
+      padding: 10px;
+      border-image: url("images/frame1.png") 10 stretch;
+    }
 
+.swagCheckbox {
+  background: rgba(2, 77, 114, 1.0);
+  }*/
 
+/* --------------- N E W --------------- */
+input[type=checkbox] {
+    visibility: hidden;
+}  
+
+/* SLIDE TWO */
+.slideTwo {
+	width: 80px;
+	height: 30px;
+	background: #000000;
+  margin-top: 16px;
+  margin-left: 10px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	position: relative;
+}
+
+.slideTwo:after {
+	content: '';
+	position: absolute;
+	top: 14px;
+	left: 14px;
+	height: 2px;
+	width: 52px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	background: #8d8d8d;
+}
+
+.slideTwo label {
+	display: block;
+	width: 22px;
+	height: 22px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+
+	-webkit-transition: all .4s ease;
+	-moz-transition: all .4s ease;
+	-o-transition: all .4s ease;
+	-ms-transition: all .4s ease;
+	transition: all .4s ease;
+	cursor: pointer;
+	position: absolute;
+	top: 4px;
+	z-index: 1;
+	left: 4px;
+  
+	background: #ffffff;
+}
+
+.slideTwo label:after {
+	content: '';
+	position: absolute;
+	width: 10px;
+	height: 10px;
+
+	-webkit-border-radius: 50px;
+	-moz-border-radius: 50px;
+	border-radius: 50px;
+	background: #333;
+	left: 6px;
+	top: 6px;
+}
+
+.slideTwo input[type=checkbox]:checked + label {
+	left: 54px;
+}
+
+.slideTwo input[type=checkbox]:checked + label:after {
+	background: #00abff;
+}
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 text labels + frames
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -342,14 +422,6 @@ input[type="button"]
   background-repeat:no-repeat;
   
 }
-
-.swagCheckbox {
-  width: 20px; 
-  height: 20px;
-  margin-top:12px;
-}
-
-
 
 /* style for d3 board in tab random walk  */
 .links line {
