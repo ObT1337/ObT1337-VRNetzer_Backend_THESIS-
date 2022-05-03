@@ -187,7 +187,7 @@
 
                                 <div class="twelve columns">
                                     <div id="projects-section" class="five columns">   
-                                            <h3 class="lineglowslow" style="line-height:2.0rem"><span>PROJECT</span></h3>
+                                            <h3 class="lineglowslow"><span>PROJECT</span></h3>
                                         </div>
                                             <div class="seven columns">
                                                 <div class="cornerBox">
@@ -298,47 +298,74 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 2
+                                     tab 2 - template elements for UI
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2" class="container">
-                                <script>
-                                    // fill scrollbox with buttons
-                                    //$('document').ready(function(){
-                                        var b = document.createElement("mc-scrollbox");
-                                            b.setAttribute("id", "somename");
-                                            b.setAttribute("name","somename");
-                                        document.getElementById("tabs-2").appendChild(b);
-                    
-                                        for (let i = 0; i < 50; i++) {
-                                            var p = document.createElement("mc-rbutton");
-                                            p.setAttribute("id", i);
-                                            p.setAttribute("name", makeid(Math.floor(Math.random() * 3) + 4));
-                                            p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
-                                            document.getElementById("somename").shadowRoot.getElementById("box").appendChild(p);
-                                        }
-                    
-                                    //});
-                                </script>
                             
+                            <div>
+                                This tab contains diverse UI elements and font types.
+                                <br></br>
+                                <!-- FONTS -->
+                                Fonts:
+                                <h1>h1 text</h1>
+                                <h2>h2 text</h2>
+                                <h3>h3 text</h3>
+                                <h4>h4 text</h4>
+                                <div>div text</div>
+
+                                <!-- SLIDER ON/OFF -->
+                                <br></br>
+                                Slider for "on/off":
+                                <div class="slideTwo">
+                                        <input type="checkbox" value="None" id = "slideTwo" name="check"></checkbox>
+                                        <label for="slideTwo"></label> 
+                                        <!-- <script>
+                                            Here goes the function /also: in "input" and "label": replace "id" and "for" with respective functional id for slider 
+                                        </script> -->
+                                        </div>
+
+                                <!-- SCROLL BOX -->
+                                <br></br>
+                                Scrollbox: 
+                                    <script>
+                                        // fill scrollbox with buttons
+                                        //$('document').ready(function(){
+                                            var b = document.createElement("mc-scrollbox");
+                                                b.setAttribute("id", "somename");
+                                                b.setAttribute("name","somename");
+                                            document.getElementById("tabs-2").appendChild(b);
+                        
+                                            for (let i = 0; i < 50; i++) {
+                                                var p = document.createElement("mc-rbutton");
+                                                p.setAttribute("id", i);
+                                                p.setAttribute("name", makeid(Math.floor(Math.random() * 3) + 4));
+                                                p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
+                                                document.getElementById("somename").shadowRoot.getElementById("box").appendChild(p);
+                                            }
+                        
+                                        //});
+                                    </script>
+                            </div>
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 3
+                                    tab 3 - sliders for visual network mods
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-3">
+                            
                                 <!-- SLIDERS -->
-                                <h4>SCALE</h4>
+                                <h3 class="border">SCALE</h3>
                                 <div id="slider_scale"></div>
-                                <h4>NODE SIZE</h4>
+                                <h3 class="border">NODE SIZE</h3>
                                 <div id="slider-node_size"></div>
-                                <h4>LINK SIZE</h4>
+                                <h3 class="border">LINK SIZE</h3>
                                 <div id="slider-link_size"></div>
-                                <h4>LINK TRANSPARENCY</h4>
+                                <h3 class="border">LINK OPACITY</h3>
                                 <div id="slider-link_transparency"></div>
-                                <h4>LABELS SCALE</h4>
+                                <h3 class="border">LABELS SCALE</h3>
                                 <div id="slider-label_scale"></div>
                                 <script>
                                     initSlider('slider_scale');
@@ -346,9 +373,8 @@
                                     initSlider('slider-link_size');
                                     initSlider('slider-link_transparency');
                                     initSlider('slider-label_scale');
-                                </script>
-                                <!-- BUTTONS -->
-                                
+                                </script> 
+                                                          
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -370,10 +396,6 @@
 
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-5">
-                                    <h1>h1 text</h1>
-                                    <h2>h2 text</h2>
-                                    <h3>h3 text</h3>
-                                    <h4>h4 text</h4>
                                     
                                     <div class="twelve columns"><br>Lineglow</br>
                                         <div class="lineglow">

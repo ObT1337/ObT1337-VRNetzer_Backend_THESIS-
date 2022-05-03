@@ -53,22 +53,27 @@ h3 span {
   font-size: 22px;
   color:rgba(255, 255, 255, 0.75); 
 }
+h3.border {
+  border:0px;
+  margin-top:45px;
+  margin-bottom:15px;
+}
 h4 {
   /*font-family: 'Venus', sans-serif;*/
   font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
   font-size: 16px;
   padding: 0%;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   margin-top: 15px;
   font-style: italic;
-  color:rgb(78, 139, 170);
+  color:rgb(42, 113, 148);
   font-weight:lighter;
 }
 
 div {
   font-family: 'Bal-lig', sans-serif;
   font-weight:100;
-  font-size: 20px;
+  font-size: 18px;
   line-height:2rem;
   padding:0%;
   margin:0%;
@@ -100,16 +105,18 @@ div {
 /* for debugging i make the background of body and ui widget contents transparent */
 body {
   background: #000000;
+  height:100%;
+  width:100%;
 } 
 
 .container {
-  width: 100%;
   height:100%;
+  width:100%;
 }
 
 .column,
 .columns {
-  width: 100%;
+  width:100%;
   float: left;
 }
 
@@ -118,7 +125,7 @@ body {
 @media (min-width: 450px) {
   .container {
     width: 100%;
-    height: 100%;
+    height: 80vh;
   }
   .column,
   .columns {
@@ -156,10 +163,10 @@ body {
       width: 48%;
   }
   .seven.columns {
-      width: 54%;
+      width: 59%;
   }
   .eight.columns {
-      width: 65.3333333333%;
+      width: 68%;
   }
   .nine.columns {
       width: 74.0%;
@@ -203,22 +210,7 @@ input {
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
     }
-input[type="submit"]
-    {
-      width: 50%;
-      height: 50px;
-      -moz-padding-start: calc(10px - 3px);
-      padding-left: 10px;
-      /*font-family: 'Square', sans-serif;*/
-      font-size: 40px;
-      font-weight: 10;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      background:rgba(66, 66, 66, 0);
-      border: 10px solid transparent;
-      padding: 2px;
-      border-image: url("images/frame1.png") 10 stretch;
-    }
+
 input[type="file"]
     {
       width: 100%;
@@ -246,6 +238,53 @@ input[type="radio"]
   }
   
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                  Submit
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+input[type="submit"]
+    {
+      /*
+      width: 50%;
+      height: 50px;
+      -moz-padding-start: calc(10px - 3px);
+      padding-left: 10px;
+      /*font-family: 'Square', sans-serif;*/
+      /* font-size: 40px;
+      font-weight: 10;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      background:rgba(66, 66, 66, 0);
+      border: 10px solid transparent;
+      padding: 2px;
+      border-image: url("images/frame1.png") 10 stretch;*/
+    
+      font-size:20px;
+      color:#97dcff;
+      font-family: 'Michr', sans-serif;
+      font-weight: 10;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      background:rgba(66, 66, 66, 0);
+      border: 10px solid transparent;
+      border-image: url("images/frame1.png") 10 stretch;
+}
+.swagSubmit { 
+  display: inline-block; 
+  width: 120px !important;
+  height: 55px !important;
+  margin: 0px !important;
+  margin-top: 5px !important;
+}
+.swagSubmit:hover {
+   background-color:rgba(2, 77, 114, 0.45);
+}
+.swagSubmit:focus{
+    user-select: none;
+    outline: none !important;
+}
+
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                   Button 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -266,9 +305,9 @@ input[type="button"]
 }
 .swagPlayButton { 
   display: inline-block; 
-  width: 70px !important;
+  width: 85px !important;
   height: 40px !important;
-  margin: 10px !important;
+  margin: 8px !important;
 }
 .swagPlayButton:hover {
    background-color:rgba(2, 77, 114, 0.45);
@@ -279,7 +318,7 @@ input[type="button"]
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                     Checkbox
+              Slider Checkbox (on/off)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* ----------- O L D ---------------
 input[type="checkbox"]
@@ -380,6 +419,8 @@ input[type=checkbox] {
 .slideTwo input[type=checkbox]:checked + label:after {
 	background: #00abff;
 }
+
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 text labels + frames
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
