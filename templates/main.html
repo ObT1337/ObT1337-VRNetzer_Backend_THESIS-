@@ -281,17 +281,34 @@
                                     </div>
                                 </div>
                                 <div class="twelve columns"> 
-                                    <div class="nine columns"> 
+                                    <div class="six columns"> 
                                         <div  class="lineglowslow"><br></br></div>
                                     </div>
-                                    <div class="two columns">
-                                        <input type="button"  id = 'play' class="swagPlayButton" value="PLAY"></button> 
-                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
+
+                                     <!-- backward button -->
+                                     <div class="two columns">
+                                        <input type="button"  id = 'backwardstep' class="swagPlayButton" value="<"></button> 
+                                        <script>
+                                            initButton('backwardstep');
+                                        </script>
+                                    </div> 
+
+                                    <!-- Play Pause button -->
+                                    <div class="three columns">
+                                    <input type="button"  id = 'play' class="swagPlayButton" value="PLAY"></button> 
+                                        <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
                                             initToggle('play', ['PLAY','PAUSE']);
                                         </script>
-
                                     </div>  
+
+                                    <!-- forward button -->
+                                    <div class="two columns">
+                                        <input type="button"  id = 'forwardstep' class="swagPlayButton" value=">"></button> 
+                                        <script>
+                                            initButton('forwardstep');
+                                        </script>
+                                    </div> 
                                 </div>
 
 
@@ -314,7 +331,7 @@
                                 <h3>h3 text</h3>
                                 <h4>h4 text</h4>
                                 <div>div text</div>
-                                ----
+                                ---------------------------------
                                 <!-- SLIDER ON/OFF -->
                                 <br>
                                 Slider for "on/off":
@@ -324,8 +341,9 @@
                                         <!-- <script>
                                             Here goes the function /also: in "input" and "label": replace "id" and "for" with respective functional id for slider 
                                         </script> -->
-                                        </div>
-                                ----
+                                </div>
+
+                                ---------------------------------
                                 <!-- DROPDOWN --> 
                                 <br>
                                 Dropdown Template
@@ -335,10 +353,20 @@
                                         initDropdown('template_id', ["firstitem","seconditem","thirditem"], "firstitem");
                                     </script>
                                 </div>
-                                ----
+
+                                ---------------------------------
+                                <!-- BUTTON -->
+                                <br>
+                                Button
+                                <input type="button"  id = 'button_id' class="swagPlayButton" value="play"></button> 
+                                    <script>
+                                        initToggle('button_id', ['play','pause']);
+                                    </script>
+                              
+                                ---------------------------------
                                 <!-- SCROLL BOX -->
                                 <br>
-                                Scrollbox: 
+                                mc-Scrollbox: 
                                     <script>
                                         // fill scrollbox with buttons
                                         //$('document').ready(function(){
