@@ -314,9 +314,9 @@
                                 <h3>h3 text</h3>
                                 <h4>h4 text</h4>
                                 <div>div text</div>
-
+                                ----
                                 <!-- SLIDER ON/OFF -->
-                                <br></br>
+                                <br>
                                 Slider for "on/off":
                                 <div class="slideTwo">
                                         <input type="checkbox" value="None" id = "slideTwo" name="check"></checkbox>
@@ -325,9 +325,19 @@
                                             Here goes the function /also: in "input" and "label": replace "id" and "for" with respective functional id for slider 
                                         </script> -->
                                         </div>
-
+                                ----
+                                <!-- DROPDOWN --> 
+                                <br>
+                                Dropdown Template
+                                <div class="cornerBox">
+                                    <select id='template_id'></select>
+                                    <script>
+                                        initDropdown('template_id', ["firstitem","seconditem","thirditem"], "firstitem");
+                                    </script>
+                                </div>
+                                ----
                                 <!-- SCROLL BOX -->
-                                <br></br>
+                                <br>
                                 Scrollbox: 
                                     <script>
                                         // fill scrollbox with buttons
@@ -443,12 +453,10 @@
 
                         <div class="twelve columns">
                             <div class="cornerBox">
-                            
                             <select id='archworlds'></select>
                             <script>
                                 initDropdown('archworlds', ["empty","lecturehall","studyspace"], "empty");
                             </script>
-
                             </div>
                         </div>
                         
