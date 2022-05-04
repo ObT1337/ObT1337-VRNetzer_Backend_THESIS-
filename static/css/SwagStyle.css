@@ -1,9 +1,9 @@
 
 
-@font-face { font-family: Future; src: url('Roboto-Light.ttf'); } 
-@font-face { font-family: Square; src: url('square_sans_serif_7.ttf'); } 
-@font-face { font-family: Venus; src: url('venus.ttf'); } 
-@font-face { font-family: Modular; src: url('Modular Amplitude.otf'); } 
+@font-face { font-family: Future; src: url('fonts/Roboto-Light.ttf'); } 
+@font-face { font-family: Square; src: url('fonts/square_sans_serif_7.ttf'); } 
+@font-face { font-family: Venus; src: url('fonts/venus.ttf'); } 
+@font-face { font-family: Modular; src: url('fonts/Modular Amplitude.otf'); } 
 
 @font-face { font-family: Bal-ligital; src: url('fonts/BaiJamjuree-LightItalic.ttf'); } 
 @font-face { font-family: Bal-lig; src: url('fonts/BaiJamjuree-Light.ttf'); } 
@@ -103,19 +103,18 @@ div {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 
 /* for debugging i make the background of body and ui widget contents transparent */
-body {
+html, body {
   background: #000000;
-  height:100%;
-  width:100%;
 } 
 
 .container {
-  height:100%;
+  height:fit-content;
   width:100%;
 }
 
 .column,
 .columns {
+  height:100%;
   width:100%;
   float: left;
 }
@@ -125,17 +124,24 @@ body {
 @media (min-width: 450px) {
   .container {
     width: 100%;
-    height: 80vh;
+    height:fit-content;
   }
   .column,
   .columns {
-    /*margin-left: 5px;
-    margin-right: 5px;*/
+    padding-left:2px;
+    padding-right:2px;
     width: 100%;
   }
   .column:first-child,
   .columns:first-child {
       margin-left: 0;
+      padding-left:0;
+  }
+
+  .column:last-child,
+  .columns:last-child {
+      margin-right: 0;
+      padding-right:0;
   }
   .one.column,
   .one.columns {
@@ -160,7 +166,7 @@ body {
       width: 39.3333333333%;
   }
   .six.columns {
-      width: 48%;
+      width: 50%;
   }
   .seven.columns {
       width: 59%;
@@ -197,10 +203,9 @@ body {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 input {
     width: 100%;
-    height: 80px;
+    height: 55px;
     -moz-padding-start: calc(10px - 3px);
     padding-left: 10px;
-    /*font-family: 'Square', sans-serif;*/
     font-size: 20px;
     font-weight: 10;
     color: rgb(255, 255, 255);
@@ -214,23 +219,18 @@ input {
 input[type="file"]
     {
       width: 100%;
-      height: 100px;
+      height: 50px;
       -moz-padding-start: calc(10px - 3px);
       padding-left: 10px;
-      /*font-family: 'Future', sans-serif;*/
-      font-size: 30px;
+      font-size: 20px;
       font-weight: 10;
-      color: rgb(255, 255, 255);
+      color: rgb(119, 119, 119);
       cursor: pointer;
       background:rgba(66, 66, 66, 0);
       border: 10px solid transparent;
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
-input[type="radio"]
-    {
-      height: 1em;
-    }  
 
 :focus{
       user-select: none;
@@ -284,6 +284,16 @@ input[type="submit"]
     outline: none !important;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                 Radio Button 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+input[type="radio"]
+    {
+      height: 1em;
+      padding:0;
+      margin:0;
+      margin-top: 6px;
+    }  
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
                   Button 
@@ -447,6 +457,11 @@ input[type=checkbox] {
   border-image: url("images/frame1.png") 10 stretch;
   background-color:rgba(20,20,20,1);
 }
+.swagBox:hover,
+.swagBox:focus,
+.swagBox:active {
+  background-color:#222222;
+}
 
 .cornerBox {
   /*--b:2px;  
@@ -464,6 +479,18 @@ input[type=checkbox] {
   
 }
 
+.frameBox {
+  display:inline-block;
+  box-sizing:border-box;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  margin-top: 5px;
+  padding: 10px;
+  border: 8px solid transparent;
+  border-image: url("images/frame1_transparent.png") 10 stretch;
+}
+
 /* style for d3 board in tab random walk  */
 .links line {
   stroke: #999;
@@ -474,6 +501,71 @@ input[type=checkbox] {
   stroke: #fff;
   stroke-width: 1.5px;
 }
+
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+               Pop up warning message 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -545,7 +637,6 @@ input[type=checkbox] {
   height:100%;
   background-size: 100%;
 }
-
 
 
 

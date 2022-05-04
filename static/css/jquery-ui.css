@@ -34,8 +34,6 @@
 .ui-widget-content {
 	background: #000000;
 	color: #ffffff;
-	width:100%;
-	height:100%;
 	text-overflow:hidden;
 	box-sizing: border-box;
 	font-family: "Michr";

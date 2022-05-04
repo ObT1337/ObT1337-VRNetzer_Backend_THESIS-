@@ -46,91 +46,105 @@
       <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                     Project + Namespace Dropdown
       +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+      
+      <form id="upload_form" method=post enctype=multipart/form-data>
+      
       <div class="twelve columns">
-        <div class="four columns">
-            <h3 class="lineglowslow"><span>PROJECT</span></h3>
-        </div>
-        <div class="eight columns">
+        <div class="six columns">
+          <div class="frameBox"> 
+            <div class="two columns">
+              <input type="radio" name="namespace" value="existing" checked><br>
+            </div>  
+            <h4 style="padding:0; margin:0;"> ADD TO PROJECT</h4>
+            
+            <!--<h3 class="lineglowslow"><span>PROJECT</span></h3>-->
+            <br>
+            
             <div class="cornerBox">
             <select name="namespaces" id="namespaces">
-                      {% for namespace in namespaces %}
-                        <option value="{{namespace}}">{{namespace}}</option>
-                      {% endfor %}
+                              {% for namespace in namespaces %}
+                                <option value="{{namespace}}">{{namespace}}</option>
+                              {% endfor %}
             </select>
+            <br>
+
             </div>
-        </div>
-      </div>  
 
-      <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                     Upload Form 
-      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-      <!-- UNFINISHED !!!!!!!!!!!!!!!!!!!!
-      RESHUFFLE elements -->
-  
-      <form id="upload_form" method=post enctype=multipart/form-data>
-          
-        <div class="twelve columns">
-          <div class="four columns"><br></br></div>  
-          <div class="one columns">
-            <input type="radio" name="namespace" value="existing" checked ><br>
           </div>  
-          <h4 class="seven columns">ADD TO PROJECT</h4><br>
         </div>
+        
+        <div class="six columns">
+          <div class="frameBox">
+            <div class="two columns">
+              <input type="radio" name="namespace" id="radio_new_namespace" value="New">
+            </div>
+            <h4 style="padding:0; margin:0;">CREATE NEW PROJECT</h4>
+            <br>
+            
+            
+            <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+            <p id="submit_warnings"></p>
+            
 
-        <div class="twelve columns">
-          <div class="four columns"><br></br></div>  
-          <div class="one columns">
-            <input type="radio" name="namespace" id="radio_new_namespace" value="New">
-          </div>
-          <h4 class="seven columns">CREATE NEW PROJECT</h4><br>
-          <input type="text" id="new_namespace_name" name="new_name">
-          <p id="submit_warnings"></p>
+            <!-- The Popup window warning :
+            <script>
+              function popupWarning() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+              }
+            </script>
+            <div class="popup" onclick="popupWarning()">
+              <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+              <span class="popuptext" id="submit_warnings"></span>
+            </div>
+             -->
+            
+
+            
+          </div> 
         </div>
-
-        <div class="twelve columns">
-          <h4 class="nine columns">LAYOUTS</h4>
-          <input type=file name=layouts multiple>
-        
-        <!--
-        <label>N O D E S</label><br>
-        <input type=file name=nodes multiple><br><br>
-        -->
-        
-        <h4 class="nine columns">LINKS</h4>
-        <input type=file name=links multiple>
-
-        <!--
-        <label>A T T R I B U T E S (optional) </label><br>
-        <input type=file name=attributes multiple><br><br>
+      </div>
       
-        <label>L A B E L S (optional) </label><br>
-        <input type=file name=labels multiple><br><br>
-        -->
-        </div>
 
-        <div class="twelve columns">
-          <div class="three columns"><input type=submit value=Upload  id=upload_button class="swagSubmit"></button> </div>
-          <div class="nine columns"><p id="upload_message"></p></div>
-        </div>
-        
 
-        
-        
+      <!-- original position before radio buttons <form id="upload_form" method=post enctype=multipart/form-data> -->
+      
+      <div class="frameBox"> 
+            <div class="twelve columns">
+              <h4 class="nine columns">LAYOUTS</h4>
+              <input type=file name=layouts multiple>
+            
+            <!--
+            <label>N O D E S</label><br>
+            <input type=file name=nodes multiple><br><br>
+            -->
+            
+            <h4 class="nine columns">LINKS</h4>
+            <input type=file name=links multiple>
+
+            <!--
+            <label>A T T R I B U T E S (optional) </label><br>
+            <input type=file name=attributes multiple><br><br>
+          
+            <label>L A B E L S (optional) </label><br>
+            <input type=file name=labels multiple><br><br>
+            -->
+            </div>
+      </div> 
+
+      <div class="twelve columns">
+              <div class="three columns"><input type=submit value=Upload  id=upload_button class="swagSubmit"></button> </div>
+              <div class="nine columns"><p id="upload_message"></p></div>
+      </div>
+
       </form>
      
 
          
-      </div>
+    </div>
 
 
   </div>
 
-    
-
-    
-  
-
-  
 
 </body>
