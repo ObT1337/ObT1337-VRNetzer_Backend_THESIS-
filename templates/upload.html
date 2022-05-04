@@ -50,6 +50,34 @@
       <form id="upload_form" method=post enctype=multipart/form-data>
       
       <div class="twelve columns">
+        
+        <div class="six columns">
+          <div class="frameBox">
+            <div class="two columns">
+              <input type="radio" name="namespace" id="radio_new_namespace" value="New">
+            </div>
+            <h4 style="padding:0; margin:0;">CREATE NEW PROJECT</h4>
+            <br>
+            
+            <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+            <p id="submit_warnings"></p>
+
+            <!-- The Popup window warning :
+            <script>
+              function popupWarning() {
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
+              }
+            </script>
+            <div class="popup" onclick="popupWarning()">
+              <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+              <span class="popuptext" id="submit_warnings"></span>
+            </div>
+             -->
+            
+          </div> 
+        </div>
+
         <div class="six columns">
           <div class="frameBox"> 
             <div class="two columns">
@@ -72,37 +100,7 @@
 
           </div>  
         </div>
-        
-        <div class="six columns">
-          <div class="frameBox">
-            <div class="two columns">
-              <input type="radio" name="namespace" id="radio_new_namespace" value="New">
-            </div>
-            <h4 style="padding:0; margin:0;">CREATE NEW PROJECT</h4>
-            <br>
-            
-            
-            <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-            <p id="submit_warnings"></p>
-            
 
-            <!-- The Popup window warning :
-            <script>
-              function popupWarning() {
-                var popup = document.getElementById("myPopup");
-                popup.classList.toggle("show");
-              }
-            </script>
-            <div class="popup" onclick="popupWarning()">
-              <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-              <span class="popuptext" id="submit_warnings"></span>
-            </div>
-             -->
-            
-
-            
-          </div> 
-        </div>
       </div>
       
 
