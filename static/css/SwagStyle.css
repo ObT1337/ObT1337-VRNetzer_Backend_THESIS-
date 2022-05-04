@@ -74,12 +74,16 @@ div {
   font-family: 'Bal-lig', sans-serif;
   font-weight:100;
   font-size: 18px;
-  line-height:2rem;
+  line-height: 1.6rem;
   padding:0%;
   margin:0%;
 }
 * {
   box-sizing: border-box;
+}
+
+p {
+  font-family: 'Bal-lig', sans-serif;
 }
 
 /*p {
@@ -199,23 +203,33 @@ html, body {
 }
  
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              INPUT Windows
+              General Input Parent
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 input {
     width: 100%;
-    height: 55px;
+    /*height: 55px;*/
     -moz-padding-start: calc(10px - 3px);
-    padding-left: 10px;
     font-size: 20px;
-    font-weight: 10;
     color: rgb(255, 255, 255);
     cursor: pointer;
     background:rgba(66, 66, 66, 0);
     border: 10px solid transparent;
     padding: 2px;
     border-image: url("images/frame1.png") 10 stretch;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              Input text
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
+input[type="text"]
+    {
+      height:58px;
     }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+              Input file window
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/ 
 input[type="file"]
     {
       width: 100%;
@@ -224,19 +238,29 @@ input[type="file"]
       padding-left: 10px;
       font-size: 20px;
       font-weight: 10;
-      color: rgb(119, 119, 119);
+      color: rgba(0,0,0,0);
       cursor: pointer;
-      background:rgba(66, 66, 66, 0);
       border: 10px solid transparent;
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;
     }
 
-:focus{
+:focus {
       user-select: none;
       outline: none !important;
   }
-  
+
+::-webkit-file-upload-button {
+  background: rgba(92, 92, 92,0.25);
+  padding: 5px;
+  font-size:16px;
+  color:#757575;
+  font-weight:lighter; 
+  text-transform:uppercase;
+  border: none;
+  font-family: 'Bal-lig', sans-serif;
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -260,7 +284,6 @@ input[type="submit"]
       border-image: url("images/frame1.png") 10 stretch;*/
     
       font-size:20px;
-      color:#97dcff;
       font-family: 'Michr', sans-serif;
       font-weight: 10;
       color: rgb(255, 255, 255);
@@ -302,30 +325,55 @@ input[type="button"]
 {
   /*-moz-padding-start: calc(10px - 3px);
   padding-left: 10px;*/
+  height: 40px !important;
   font-size:12px;
   color:#97dcff;
   font-family: 'Michr', sans-serif;
   font-weight: 10;
+  text-transform: uppercase;
   color: rgb(255, 255, 255);
   cursor: pointer;
-  background:rgba(66, 66, 66, 0);
+  margin: 8px; 
+  /*background:rgba(66, 66, 66, 0);*/
   border: 10px solid transparent;
-  padding: 1px;
   border-image: url("images/frame1.png") 10 stretch;
+}
+.swagTextButton { 
+  display: inline-block; 
+  min-width: max-content;
 }
 .swagPlayButton { 
   display: inline-block; 
   min-width: max-content;
-  /*width: 85px !important;*/
-  height: 40px !important;
-  margin: 8px !important;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("images/arrow_playpause.png");
 }
-.swagPlayButton:hover {
-   background-color:rgba(2, 77, 114, 0.45);
+.swagForwardButton {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("images/arrow_forward.png");
 }
-.swagPlayButton:focus{
-    user-select: none;
-    outline: none !important;
+.swagBackwardButton {
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("images/arrow_backward.png");
+}
+.swagTextButton:hover,
+.swagPlayButton:hover,
+.swagForwardButton:hover,
+.swagBackwardButton:hover {
+  background-color:rgba(2, 77, 114, 0.45);
+}
+.swagTextButton:focus,
+.swagPlayButton:focus,
+.swagForwardButton:focus,
+.swagBackwardButton:focus {
+   user-select: none;
+   outline: none !important;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -361,35 +409,34 @@ input[type=checkbox] {
 /* SLIDE TWO */
 .slideTwo {
 	width: 80px;
-	height: 30px;
-	background: #000000;
-  margin-top: 16px;
+	height: 50px;
+	background: rgba(0,0,0,0);
+  margin-top: 0px;
   margin-left: 10px;
 
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
-	border-radius: 50px;
+	border-radius: 10px;
 	position: relative;
 }
 
 .slideTwo:after {
 	content: '';
 	position: absolute;
-	top: 14px;
+	top: 20px;
 	left: 14px;
-	height: 2px;
+	height: 6px;
 	width: 52px;
-
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
 	border-radius: 50px;
-	background: #8d8d8d;
+	background: #2b2b2b;
 }
 
 .slideTwo label {
 	display: block;
-	width: 22px;
-	height: 22px;
+	width: 24px;
+	height: 24px;
 
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
@@ -402,25 +449,24 @@ input[type=checkbox] {
 	transition: all .4s ease;
 	cursor: pointer;
 	position: absolute;
-	top: 4px;
+	top: 12px;
 	z-index: 1;
 	left: 4px;
   
-	background: #ffffff;
+	background: rgb(207, 207, 207);
 }
 
 .slideTwo label:after {
 	content: '';
 	position: absolute;
-	width: 10px;
-	height: 10px;
-
+	width: 16px;
+	height: 16px;
 	-webkit-border-radius: 50px;
 	-moz-border-radius: 50px;
 	border-radius: 50px;
-	background: #333;
-	left: 6px;
-	top: 6px;
+	background: rgb(10, 10, 10);
+	left: 4px;
+	top: 4px;
 }
 
 .slideTwo input[type=checkbox]:checked + label {
@@ -428,7 +474,7 @@ input[type=checkbox] {
 }
 
 .slideTwo input[type=checkbox]:checked + label:after {
-	background: #00abff;
+	background: rgba(78, 140, 255, 0.85);
 }
 
 
@@ -481,9 +527,9 @@ input[type=checkbox] {
 }
 
 .frameBox {
-  display:inline-block;
+  display: inline-block;  
   box-sizing:border-box;
-  height: 100%;
+  min-height:max-content;
   width: 100%;
   position: relative;
   margin-top: 5px;

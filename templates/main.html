@@ -87,7 +87,7 @@
     <template id="mcScrollBox-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-        <div id = "label" class = "swagLabelSmall">TEXT</div>
+        <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
         <div id = 'box' name = 'box' class = 'swagBox' style = 'width: 300px; height: 120px; overflow:auto;display: inline-block; border-color: rgb(10, 24, 221);'>
         
         </div>
@@ -285,26 +285,26 @@
                                         <div  class="lineglowslow"><br></br></div>
                                     </div>
 
-                                     <!-- backward button -->
-                                     <div class="two columns">
-                                        <input type="button"  id = 'backwardstep' class="swagPlayButton" value="<"></button> 
+                                    <!-- backward button -->
+                                    <div class="two columns">
+                                        <input type="button"  id = 'backwardstep' class="swagBackwardButton"></button> 
                                         <script>
                                             initButton('backwardstep');
                                         </script>
                                     </div> 
 
                                     <!-- Play Pause button -->
-                                    <div class="three columns">
-                                    <input type="button"  id = 'play' class="swagPlayButton" value="PLAY"></button> 
+                                    <div class="two columns">
+                                    <input type="button"  id = 'play' class="swagPlayButton"></button> 
                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
-                                            initToggle('play', ['PLAY','PAUSE']);
+                                            initToggle('play', ['','']);
                                         </script>
                                     </div>  
 
                                     <!-- forward button -->
                                     <div class="two columns">
-                                        <input type="button"  id = 'forwardstep' class="swagPlayButton" value=">"></button> 
+                                        <input type="button"  id = 'forwardstep' class="swagForwardButton"></button> 
                                         <script>
                                             initButton('forwardstep');
                                         </script>
@@ -322,18 +322,22 @@
                         <div id="tabs-2" class="container">
                             
                             <div>
-                                This tab contains diverse UI elements and font types.
-                                <br></br>
-                                <!-- FONTS -->
+                                This tab contains diverse UI elements.
+                                <br>
+                        
+                                <!-- FONTS 
                                 Fonts:
                                 <h1>h1 text</h1>
                                 <h2>h2 text</h2>
                                 <h3>h3 text</h3>
                                 <h4>h4 text</h4>
-                                <div>div text</div>
-                                ---------------------------------
+                                <div>div text</div> 
+                            
+                                -->
+                                ___________________________________
+                                
                                 <!-- SLIDER ON/OFF -->
-                                <br>
+                                <br></br>
                                 Slider for "on/off":
                                 <div class="slideTwo">
                                         <input type="checkbox" value="None" id = "slideTwo" name="check"></checkbox>
@@ -343,9 +347,11 @@
                                         </script> -->
                                 </div>
 
-                                ---------------------------------
+                                <br></br>
+                                ___________________________________
+
                                 <!-- DROPDOWN --> 
-                                <br>
+                                <br></br>
                                 Dropdown Template
                                 <div class="cornerBox">
                                     <select id='template_id'></select>
@@ -354,18 +360,31 @@
                                     </script>
                                 </div>
 
-                                ---------------------------------
+                                ___________________________________
+
                                 <!-- BUTTON -->
-                                <br>
-                                Button
-                                <input type="button"  id = 'button_id' class="swagPlayButton" value="play"></button> 
-                                    <script>
-                                        initToggle('button_id', ['play','pause']);
-                                    </script>
-                              
-                                ---------------------------------
+                                <br></br>
+                                <div class="twelve columns">
+                                    <div class="six columns">
+                                    Button with Text
+                                    <input type="button"  id = 'button_id' class="swagTextButton" value="play"></button> 
+                                        <script>
+                                            initToggle('button_id', ['play','pause']);
+                                        </script>
+                                    </div>
+
+                                    <div class="six columns">
+                                        Button with Image 
+                                        <input type="button"  id = 'button_id' class="swagPlayButton"></button> 
+                                            <script>
+                                                initButton('button_id');
+                                            </script>
+                                        </div>
+                                </div>
+                                ___________________________________
+
                                 <!-- SCROLL BOX -->
-                                <br>
+                                <br></br>
                                 mc-Scrollbox: 
                                     <script>
                                         // fill scrollbox with buttons
