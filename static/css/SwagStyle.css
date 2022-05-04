@@ -147,15 +147,19 @@ html, body {
       margin-right: 0;
       padding-right:0;
   }
+
   .one.column,
   .one.columns {
       width: 4.66666666667%;
+  }
+  .onehalf.columns {
+    width: 8%;
   }
   .two.columns {
       width: 13.3333333333%;
   }
   .twoandhalf.columns {
-    width: 17.66666666667%;
+    width: 16%;
   }
   .three.columns {
       width: 20%;
@@ -348,19 +352,19 @@ input[type="button"]
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("images/arrow_playpause.png");
+  background-image: url("images/arrow_playpause-new.png");
 }
 .swagForwardButton {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("images/arrow_forward.png");
+  background-image: url("images/arrow_forward-new.png");
 }
 .swagBackwardButton {
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("images/arrow_backward.png");
+  background-image: url("images/arrow_backward-new.png");
 }
 .swagTextButton:hover,
 .swagPlayButton:hover,
@@ -408,10 +412,10 @@ input[type=checkbox] {
 
 /* SLIDE TWO */
 .slideTwo {
-	width: 80px;
+  width:50px;
 	height: 50px;
-	background: rgba(0,0,0,0);
-  margin-top: 0px;
+	background: rgba(0, 0, 0, 0);
+  margin-top: 4px;
   margin-left: 10px;
 
 	-webkit-border-radius: 50px;
@@ -474,7 +478,7 @@ input[type=checkbox] {
 }
 
 .slideTwo input[type=checkbox]:checked + label:after {
-	background: rgba(78, 140, 255, 0.85);
+	background: #00abff;
 }
 
 
