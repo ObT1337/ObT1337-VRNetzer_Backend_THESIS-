@@ -185,6 +185,10 @@
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-1" class="container">
 
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VRNetzer</h2>
+                            </div>
+
                                 <div class="twelve columns">
                                     <div id="projects-section" class="five columns">   
                                             <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
@@ -201,7 +205,7 @@
 
                                 <div class="twelve columns">
                                     <h4 class="eight columns">LAYOUTS</h4>
-                                    <h4 class="four columns" style="text-align: left; padding-left:20px;">MORPH</h4>
+                                    <h4 class="four columns" style="padding-left:20px;">MORPH</h4>
                                 </div>
 
                                 <div class="twelve columns">
@@ -310,9 +314,9 @@
                                         </script>
                                     </div> 
                                 </div>
-                                <div class="twelve columns"> 
+                                <!-- <div class="twelve columns"> 
                                     <div  class="lineglowslow"><br></br></div>
-                                </div>
+                                </div>-->
 
                         </div> 
 
@@ -322,7 +326,9 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2" class="container">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">UI MODS</h2>
+                            </div>
                             <div>
                                 This tab contains diverse UI elements.
                                 <br>
@@ -415,7 +421,9 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-3">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
+                            </div>
                                 <!-- SLIDERS -->
                                 <h3 class="border">SCALE</h3>
                                 <div id="slider_scale"></div>
@@ -443,7 +451,9 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-4">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ANALYSIS</h2>
+                            </div>
                                     <mc-textbox id = 'search' ></mc-textbox>
                                     <br><br>
                                     <mc-scrollbox id = 'sres'></mc-scrollbox>
@@ -452,40 +462,24 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 5 - GIF SELECTION 
+                                        tab 5 - Arch Worlds 
 
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-5">
                                     
-                                    <div class="twelve columns"><br>Lineglow</br>
-                                        <div class="lineglow">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Lineglow particle</br></div>
-                                    <div class="twelve columns">
-                                        <div class="lineglow-particles">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Network Wave</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-wave">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Network Flash</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-flash">
-                                        <br></br>
-                                        </div>
-                                    </div>    
-                                    <div class="twelve columns"><br>Network Planet</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-planet">
-                                        <br></br>
-                                        </div>
-                                    </div> 
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ROOMS</h2>
+                            </div>
+
+                            <div class="twelve columns">
+                                <div class="cornerBox">
+                                <select id='archworlds'></select>
+                                <script>
+                                    initDropdown('archworlds', ["empty","lecturehall","studyspace"], "empty");
+                                </script>
+                                </div>
+                            </div>
+
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -494,20 +488,14 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-6" class="container">
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO</h2>
+                            </div>
                                     <div  id= "url" class="texthidden"></div>
                                     <h4>logged in as {{session['username']}}</h4>
                                     <script>
                                         document.getElementById('url').innerHTML = window.location.href;
                                     </script>
-
-                        <div class="twelve columns">
-                            <div class="cornerBox">
-                            <select id='archworlds'></select>
-                            <script>
-                                initDropdown('archworlds', ["empty","lecturehall","studyspace"], "empty");
-                            </script>
-                            </div>
-                        </div>
                         
                         </div>
 
