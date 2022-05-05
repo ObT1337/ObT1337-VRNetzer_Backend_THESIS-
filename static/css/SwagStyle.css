@@ -36,18 +36,17 @@ h1 {
 }
 h2 {
   /*font-family: 'Future', sans-serif;*/
-  font-family: 'Michr', sans-serif;
-  font-size: 40px;
-  padding:0%;
-  margin:0%;
-  line-height:1.6rem;
+  font-family: 'Square', sans-serif;
+  font-size: 96px;
+  font-weight:lighter;
+  color:rgba(42, 113, 148, 0.2);
 }
 h3 {
   /*font-family: 'Modular', sans-serif;*/
   font-family: 'Michr'; /*'Akshar-reg', sans-serif;*/
   font-size: 22px;
   color:#ffffff; /*202020;*/
-  font-weight: lighter;
+  font-weight: normal;
 }
 h3 span {
   font-size: 22px;
@@ -215,6 +214,7 @@ input {
     -moz-padding-start: calc(10px - 3px);
     font-size: 20px;
     color: rgb(255, 255, 255);
+    font-family: 'Bal-lig', sans-serif;
     cursor: pointer;
     background:rgba(66, 66, 66, 0);
     border: 10px solid transparent;
@@ -228,6 +228,7 @@ input {
 input[type="text"]
     {
       height:58px;
+      font-family: 'Bal-lig', sans-serif;
     }
 
 
@@ -242,7 +243,8 @@ input[type="file"]
       padding-left: 10px;
       font-size: 20px;
       font-weight: 10;
-      color: rgba(0,0,0,0);
+      color: rgba(255, 255, 255, 0.925);
+      font-family: 'Bal-lig', sans-serif;
       cursor: pointer;
       border: 10px solid transparent;
       padding: 2px;
@@ -287,21 +289,22 @@ input[type="submit"]
       padding: 2px;
       border-image: url("images/frame1.png") 10 stretch;*/
     
-      font-size:20px;
+      font-size:16px;
       font-family: 'Michr', sans-serif;
-      font-weight: 10;
       color: rgb(255, 255, 255);
       cursor: pointer;
       background:rgba(66, 66, 66, 0);
       border: 10px solid transparent;
       border-image: url("images/frame1.png") 10 stretch;
+      text-transform: uppercase;
+
 }
 .swagSubmit { 
   display: inline-block; 
   width: 120px !important;
   height: 55px !important;
-  margin: 0px !important;
-  margin-top: 5px !important;
+  margin: 0;
+  padding: 0;
 }
 .swagSubmit:hover {
    background-color:rgba(2, 77, 114, 0.45);
@@ -309,6 +312,16 @@ input[type="submit"]
 .swagSubmit:focus{
     user-select: none;
     outline: none !important;
+}
+.swagLogo {
+  background-image: url("images/MencheLab_Logo_uploader_network.png");
+  z-index:1;
+  height:90px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: right;
+  filter: opacity(0.15);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -547,6 +560,7 @@ input[type=checkbox] {
   background-color:#222222;
 }
 
+
 .cornerBox {
   /*--b:2px;  
   --c:#688b9e;  
@@ -685,8 +699,8 @@ input[type=checkbox] {
 
 .lineglowslow {
   background-image: url("images/lineglow2_mod-slow.gif");
-  height:100%;
-  background-size:contain;
+  height: 100%;
+  background-size: fill;
   background-position: left;
   background-repeat: no-repeat;
   margin: 10px 0 0px;
