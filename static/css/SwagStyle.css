@@ -348,19 +348,23 @@ input[type="button"]
 }
 .swagPlayButton { 
   display: inline-block; 
-  min-width: max-content;
+  
+  width: 39px;
+  /*min-width: max-content;*/
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url("images/arrow_playpause-new.png");
 }
 .swagForwardButton {
+  width: 40px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url("images/arrow_forward-new.png");
 }
 .swagBackwardButton {
+  width: 40px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
