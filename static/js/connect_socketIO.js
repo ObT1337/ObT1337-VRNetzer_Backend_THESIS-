@@ -99,6 +99,11 @@ $(document).ready(function(){
                 ue4("tgl", data);
                 break;
 
+            case 'but':
+                //$('#'+ data.id).val(data.val)
+                ue4("but", data);
+                break;
+
             case 'chk':
                 $('#'+ data.id).prop('checked', (data.val));
                 ue4("chk", data);
