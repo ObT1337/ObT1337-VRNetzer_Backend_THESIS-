@@ -40,8 +40,18 @@
     </ul>
 
     <div id="fragment-1">
-      <h3 class="lineglow"><span>UPLOAD NEW DATA</span></h3>
-      <h4>For filestructure and csv-table composition refer to files in VRNetzer_Backend/static/csv.</h4>
+      <div class="twelve columns">
+        <div class="eight columns">
+            <h2 class="lineglowslow" style="margin-top:30px">VRNetzer</h2>
+        </div>
+        <div class="four columns">
+          <div class="swagLogo"><br></br></div>
+        </div>
+      </div>
+      <div class="twelve columns">
+        <h3><span>UPLOAD NEW DATA</span></h3>
+        <h4>For filestructure and csv-table composition refer to files in VRNetzer_Backend/static/csv.</h4>
+      </div>
 
       <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                     Project + Namespace Dropdown
@@ -60,7 +70,7 @@
             <br>
             
             <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-            <p id="submit_warnings"></p>
+            <p id="submit_warnings" style="display:inline"></p>
 
             <!-- The Popup window warning :
             <script>
@@ -110,7 +120,7 @@
       <div class="frameBox"> 
             <div class="twelve columns">
               <h4 class="nine columns">LAYOUTS</h4>
-              <input type=file name=layouts multiple>
+              <input type=file name=layouts multiple value="placeholder">
             
             <!--
             <label>N O D E S</label><br>
@@ -130,9 +140,16 @@
             </div>
       </div> 
 
-      <div class="twelve columns">
-              <div class="three columns"><input type=submit value=Upload  id=upload_button class="swagSubmit"></button> </div>
-              <div class="nine columns"><p id="upload_message"></p></div>
+        <div class="frameBox">
+          <div class="twelve columns">
+              <div class="two columns"><input type=submit value=Upload  id=upload_button class="swagSubmit"></button> </div>
+              <div class="nine columns" id="upload_message"></div>
+          </div>
+        </div>
+         <!--<div class="twelve columns"> 
+          <div  class="lineglow" style="background-position: center;"><br></br></div>
+        </div>-->
+
       </div>
 
       </form>

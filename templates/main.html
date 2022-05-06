@@ -87,7 +87,7 @@
     <template id="mcScrollBox-template" >
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-        <div id = "label" class = "swagLabelSmall">TEXT</div>
+        <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
         <div id = 'box' name = 'box' class = 'swagBox' style = 'width: 300px; height: 120px; overflow:auto;display: inline-block; border-color: rgb(10, 24, 221);'>
         
         </div>
@@ -185,9 +185,13 @@
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-1" class="container">
 
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VRNetzer</h2>
+                            </div>
+
                                 <div class="twelve columns">
                                     <div id="projects-section" class="five columns">   
-                                            <h3 class="lineglowslow"><span>PROJECT</span></h3>
+                                            <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
                                         </div>
                                             <div class="seven columns">
                                                 <div class="cornerBox">
@@ -200,12 +204,12 @@
                                 </div>  
 
                                 <div class="twelve columns">
-                                    <h4 class="nine columns">LAYOUTS</h4>
-                                    <h4 class="two columns">MORPH</h4>
+                                    <h4 class="eight columns">LAYOUTS</h4>
+                                    <h4 class="four columns" style="padding-left:20px;">MORPH</h4>
                                 </div>
 
                                 <div class="twelve columns">
-                                    <div class="nine columns">
+                                    <div class="eight columns">
                                         <div class="cornerBox">
                                             <select id = 'layouts'></select>
                                             <script>
@@ -213,7 +217,7 @@
                                             </script>
                                         </div>
                                     </div>
-                                    <div class="two columns"> 
+                                    <div class="four columns"> 
                                             <!-- <input type="checkbox" id = 'chbXYZ' class="swagCheckbox"></checkbox>-->
                                             <div class="slideTwo">	
                                                 <input type="checkbox" value="None" id = "chbXYZ" name="check"></checkbox>
@@ -227,7 +231,7 @@
                               
                                 <h4 class="twelve columns">NODE COLORS</h4>
                                 <div class="twelve columns">
-                                    <div class="nine columns">
+                                    <div class="eight columns">
                                         <div class="cornerBox">
                                             <select id = 'nodecolors'></select>
                                             <script>
@@ -235,7 +239,7 @@
                                             </script>
                                         </div>  
                                     </div>
-                                    <div class="two columns">
+                                    <div class="four columns">
                                         <!-- <input type="checkbox" id = 'chbNrgb' class="swagCheckbox"></button>-->
                                         <div class="slideTwo">	
                                             <input type="checkbox" value="None" id = "chbNrgb" name="check"></checkbox>
@@ -249,7 +253,7 @@
                                 
                                 <h4 class="twelve columns">LINKS</h4>
                                 <div class="twelve columns">
-                                    <div class="nine columns">                 
+                                    <div class="eight columns">                 
                                             <div class="cornerBox">
                                             <select id = 'links'></select>
                                             <script>
@@ -261,7 +265,7 @@
 
                                 <h4 class="twelve columns">LINK COLORS</h4>
                                 <div class="twelve columns">
-                                    <div class="nine columns">
+                                    <div class="eight columns">
                                             <div class="cornerBox">
                                             <select id = 'linkcolors'></select>
                                             <script>
@@ -269,7 +273,7 @@
                                             </script>
                                             </div>
                                     </div>
-                                    <div class="two columns">
+                                    <div class="four columns">
                                         <!-- <input type="checkbox" id = 'chbLrgb' class="swagCheckbox"></button>-->
                                         <div class="slideTwo">	
                                             <input type="checkbox" value="None" id = "chbLrgb" name="check"></checkbox>
@@ -281,21 +285,21 @@
                                     </div>
                                 </div>
                                 <div class="twelve columns"> 
-                                    <div class="six columns"> 
-                                        <div  class="lineglowslow"><br></br></div>
+                                    <div class="eight columns"> 
+                                        <br></br>
                                     </div>
 
-                                     <!-- backward button -->
-                                     <div class="two columns">
-                                        <input type="button"  id = 'backwardstep' class="swagPlayButton" value="<"></button> 
+                                    <!-- backward button -->
+                                    <div class="onehalf columns" style="width:40px;">
+                                        <input type="button"  id = 'backwardstep' class="swagBackwardButton"></button> 
                                         <script>
                                             initButton('backwardstep');
                                         </script>
                                     </div> 
 
                                     <!-- Play Pause button -->
-                                    <div class="three columns">
-                                    <input type="button"  id = 'play' class="swagPlayButton" value="PLAY"></button> 
+                                    <div class="two columns" style="width:40px;">
+                                    <input type="button"  id = 'play' class="swagPlayButton"></button> 
                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
                                             initToggle('play', ['PLAY','PAUSE']);
@@ -303,14 +307,16 @@
                                     </div>  
 
                                     <!-- forward button -->
-                                    <div class="two columns">
-                                        <input type="button"  id = 'forwardstep' class="swagPlayButton" value=">"></button> 
+                                    <div class="onehalf columns" style="width:40px;">
+                                        <input type="button"  id = 'forwardstep' class="swagForwardButton"></button> 
                                         <script>
                                             initButton('forwardstep');
                                         </script>
                                     </div> 
                                 </div>
-
+                                <!-- <div class="twelve columns"> 
+                                    <div  class="lineglowslow"><br></br></div>
+                                </div>-->
 
                         </div> 
 
@@ -320,20 +326,26 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2" class="container">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">UI MODS</h2>
+                            </div>
                             <div>
-                                This tab contains diverse UI elements and font types.
-                                <br></br>
-                                <!-- FONTS -->
+                                This tab contains diverse UI elements.
+                                <br>
+                        
+                                <!-- FONTS 
                                 Fonts:
                                 <h1>h1 text</h1>
                                 <h2>h2 text</h2>
                                 <h3>h3 text</h3>
                                 <h4>h4 text</h4>
-                                <div>div text</div>
-                                ---------------------------------
+                                <div>div text</div> 
+                            
+                                -->
+                                ___________________________________
+                                
                                 <!-- SLIDER ON/OFF -->
-                                <br>
+                                <br></br>
                                 Slider for "on/off":
                                 <div class="slideTwo">
                                         <input type="checkbox" value="None" id = "slideTwo" name="check"></checkbox>
@@ -343,9 +355,11 @@
                                         </script> -->
                                 </div>
 
-                                ---------------------------------
+                                <br></br>
+                                ___________________________________
+
                                 <!-- DROPDOWN --> 
-                                <br>
+                                <br></br>
                                 Dropdown Template
                                 <div class="cornerBox">
                                     <select id='template_id'></select>
@@ -354,18 +368,31 @@
                                     </script>
                                 </div>
 
-                                ---------------------------------
+                                ___________________________________
+
                                 <!-- BUTTON -->
-                                <br>
-                                Button
-                                <input type="button"  id = 'button_id' class="swagPlayButton" value="play"></button> 
-                                    <script>
-                                        initToggle('button_id', ['play','pause']);
-                                    </script>
-                              
-                                ---------------------------------
+                                <br></br>
+                                <div class="twelve columns">
+                                    <div class="six columns">
+                                    Button with Text
+                                    <input type="button"  id = 'button_id' class="swagTextButton" value="play"></button> 
+                                        <script>
+                                            initToggle('button_id', ['play','pause']);
+                                        </script>
+                                    </div>
+
+                                    <div class="six columns">
+                                        Button with Image 
+                                        <input type="button"  id = 'button_id' class="swagPlayButton"></button> 
+                                            <script>
+                                                initButton('button_id');
+                                            </script>
+                                        </div>
+                                </div>
+                                ___________________________________
+
                                 <!-- SCROLL BOX -->
-                                <br>
+                                <br></br>
                                 mc-Scrollbox: 
                                     <script>
                                         // fill scrollbox with buttons
@@ -394,7 +421,9 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-3">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
+                            </div>
                                 <!-- SLIDERS -->
                                 <h3 class="border">SCALE</h3>
                                 <div id="slider_scale"></div>
@@ -422,7 +451,9 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-4">
-                            
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ANALYSIS</h2>
+                            </div>
                                     <mc-textbox id = 'search' ></mc-textbox>
                                     <br><br>
                                     <mc-scrollbox id = 'sres'></mc-scrollbox>
@@ -431,40 +462,24 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 5 - GIF SELECTION 
+                                        tab 5 - Arch Worlds 
 
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-5">
                                     
-                                    <div class="twelve columns"><br>Lineglow</br>
-                                        <div class="lineglow">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Lineglow particle</br></div>
-                                    <div class="twelve columns">
-                                        <div class="lineglow-particles">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Network Wave</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-wave">
-                                        <br></br>
-                                        </div>
-                                    </div>
-                                    <div class="twelve columns"><br>Network Flash</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-flash">
-                                        <br></br>
-                                        </div>
-                                    </div>    
-                                    <div class="twelve columns"><br>Network Planet</br></div>
-                                    <div class="twelve columns">
-                                        <div class="netgif-planet">
-                                        <br></br>
-                                        </div>
-                                    </div> 
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ROOMS</h2>
+                            </div>
+
+                            <div class="twelve columns">
+                                <div class="cornerBox">
+                                <select id='archworlds'></select>
+                                <script>
+                                    initDropdown('archworlds', ["empty","lecturehall","studyspace"], "empty");
+                                </script>
+                                </div>
+                            </div>
+
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -473,20 +488,14 @@
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-6" class="container">
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO</h2>
+                            </div>
                                     <div  id= "url" class="texthidden"></div>
                                     <h4>logged in as {{session['username']}}</h4>
                                     <script>
                                         document.getElementById('url').innerHTML = window.location.href;
                                     </script>
-
-                        <div class="twelve columns">
-                            <div class="cornerBox">
-                            <select id='archworlds'></select>
-                            <script>
-                                initDropdown('archworlds', ["empty","lecturehall","studyspace"], "empty");
-                            </script>
-                            </div>
-                        </div>
                         
                         </div>
 
