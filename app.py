@@ -43,6 +43,7 @@ def index():
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
+
 @app.route('/search', methods=['GET'])
 def searchR():
     term = request.args.get("term")
@@ -169,6 +170,18 @@ def chat():
 @app.route('/Test')
 def test():
     return render_template('test.html')
+
+@app.route('/nodepanel',methods=['GET'])
+def nodepanel():
+    id = int(request.args.get("id"))
+    if "ppi" in pfile["name"]:
+        data = "this is ppi specific nodeinfopanel"
+        return render_template('nodepanelppi.html', data = data)
+    else:
+        data = names['names'][id]
+        return render_template('nodepanel.html', data = data)
+
+
 
 
 ###SocketIO ROUTES###
