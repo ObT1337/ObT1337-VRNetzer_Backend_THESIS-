@@ -25,22 +25,13 @@ function logger(message) {
     ue4("log", message);
 }
 
-/// ue4 to webui routes
+
 
 ue.interface.nodelabels = function (data) {
     console.log(data);
-    var text = '{"id":"x", "data": [1,2,4], "fn": "x"}';
+    var text = '{"id":"x", "data": [1,2,4]}';
     var out = JSON.parse(text);
     out.id = "nl";
-    out.data = data;
-    socket.emit('ex', out);
-
-};
-
-ue.interface.nodelabelclicked = function (data) {
-    console.log(data);
-    var text = '{"id":"x", "data": -1, "fn": "nlc"}';
-    var out = JSON.parse(text);
     out.data = data;
     socket.emit('ex', out);
 
@@ -120,10 +111,6 @@ $(document).ready(function(){
 
             case 'cnl':
                 ue4("cnl", data);
-                break;
-
-            case 'nlc':
-                ue4("nlc", data);
                 break;
 
             case 'sel':

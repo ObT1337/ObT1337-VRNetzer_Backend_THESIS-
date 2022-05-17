@@ -1,1 +1,1 @@
-{"name": "climate", "layouts": ["powergrid_world_layout_geoXYZ"], "layoutsRGB": ["powergrid_world_layout_geoRGB"], "links": ["powergrid_world_edgelist_geoXYZ"], "linksRGB": ["powergrid_world_edgelist_geoRGB"], "selections": []}
+{"name": "climate", "layouts": ["nodes_geoXYZ"], "layoutsRGB": ["nodes_geoRGB"], "links": ["continentsXYZ", "edgesXYZ"], "linksRGB": ["continentsRGB", "edgesRGB"], "selections": []}
