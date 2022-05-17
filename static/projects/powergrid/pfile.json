@@ -1,0 +1,1 @@
+{"name": "powergrid", "layouts": ["world_layout_geoXYZ", "world_layout_geoXYZ", "world_layout2_geoXYZ"], "layoutsRGB": ["world_layout_geoRGB", "world_layout_geoRGB", "world_layout2_geoRGB"], "links": ["world_edgelist_geoXYZ", "world_edgelist_geoXYZ"], "linksRGB": ["world_edgelist_geoRGB", "world_edgelist_geoRGB"], "selections": []}

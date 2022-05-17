@@ -1,0 +1,1 @@
+{"name": "climate", "layouts": ["nodes_geoXYZ"], "layoutsRGB": ["nodes_geoRGB"], "links": ["continentsXYZ", "edgesXYZ"], "linksRGB": ["continentsRGB", "edgesRGB"], "selections": []}
