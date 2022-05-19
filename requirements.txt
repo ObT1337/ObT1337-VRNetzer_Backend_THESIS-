@@ -8,3 +8,4 @@ requests
 flask_cors
 Pillow >= 8.3.2
 gunicorn
+numpy

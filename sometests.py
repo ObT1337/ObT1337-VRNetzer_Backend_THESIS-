@@ -1,6 +1,8 @@
 
+import PIL
 from PIL import Image
 import random
+import numpy
 
 new_menu = ['Hawaiian', 'Margherita', 'Mushroom', 'Prosciutto', 'Meat Feast', 'Hawaiian', 'Bacon', 'Black Olive Special', 'Sausage', 'Sausage']
 
@@ -27,3 +29,13 @@ def write_image():
     url = 'static/img/test.bmp'
     new_im.save(url)
     
+def rescaleImg():
+    new_im = Image.new('RGB', (512, 512))
+
+    img = PIL.Image.open("test10.bmp").convert("RGB")
+    imgarr = numpy.array(img)
+    print(imgarr[0][0,0])
+    #for i in imgarr[0]:
+    #   print(imgarr[0][i])
+
+rescaleImg()
