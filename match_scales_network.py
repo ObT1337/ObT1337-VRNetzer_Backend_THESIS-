@@ -12,7 +12,7 @@ def write_csv(
     """
     scales = {}
     ## Extract information from UniProt Mapping file
-    with open("./uniprot_mapping.csv") as f:
+    with open(mapping_file) as f:
         lines = f.readlines()
         uniProt_Mapping = {}
         for line in lines:
@@ -21,7 +21,7 @@ def write_csv(
             uniProt_Mapping[network_identifier] = UniProt
 
     ## Extract scale information
-    with open("./scales.csv") as f:
+    with open(scales_file) as f:
         scale_Mapping = f.readlines()
         for line in scale_Mapping[1:]:
             protein, scale = line.split(",")
