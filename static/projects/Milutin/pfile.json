@@ -1,1 +1,0 @@
-{"name": "Milutin", "layouts": ["nodes_ray_bellXYZ", "nodes_ray_sqrtXYZ", "nodes_sphereXYZ", "nodes_ray_bellXYZ", "nodes_ray_sqrtXYZ", "nodes_sphereXYZ"], "layoutsRGB": ["nodes_ray_bellRGB", "nodes_ray_sqrtRGB", "nodes_sphereRGB", "nodes_ray_bellRGB", "nodes_ray_sqrtRGB", "nodes_sphereRGB"], "links": ["edges_ray_bellXYZ"], "linksRGB": ["edges_ray_bellRGB"], "selections": []}
