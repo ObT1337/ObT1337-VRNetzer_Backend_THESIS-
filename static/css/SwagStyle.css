@@ -558,7 +558,7 @@ input[type=checkbox] {
   padding: 5px;
   border-image: url("images/frame1.png") 10 stretch;
   background-color:rgba(20,20,20,1); 
-  min-height:200px;
+  min-height:58px;
 }
 
 .swagBox:hover,
