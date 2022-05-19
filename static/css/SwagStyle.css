@@ -76,6 +76,7 @@ div {
   line-height: 1.6rem;
   padding:0%;
   margin:0%;
+  color:rgb(255,255,255);
 }
 * {
   box-sizing: border-box;
@@ -93,7 +94,11 @@ p {
   margin:0%;
 } */
 
-
+.texthidden {
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
 
 /* ######################################################
 #########################################################
@@ -548,12 +553,14 @@ input[type=checkbox] {
     /*font-weight: lighter;*/
 }
 
-.swagBox{
+.swagBox {
   border: 10px solid transparent;
   padding: 5px;
   border-image: url("images/frame1.png") 10 stretch;
-  background-color:rgba(20,20,20,1);
+  background-color:rgba(20,20,20,1); 
+  min-height:58px;
 }
+
 .swagBox:hover,
 .swagBox:focus,
 .swagBox:active {
@@ -699,7 +706,6 @@ input[type=checkbox] {
 
 .lineglowslow {
   background-image: url("images/lineglow2_mod-slow.gif");
-
   height:30px;
   background-size: contain;
   background-position: left;

@@ -174,14 +174,12 @@ def test():
 @app.route('/nodepanel',methods=['GET'])
 def nodepanel():
     id = int(request.args.get("id"))
-
     if "ppi" in pfile["name"]:
-        data = "this is ppi specific nodeinfopanel"
+        data = names['names'][id]
         return render_template('nodepanelppi.html', data = data)
     else:
         data = names['names'][id]
         return render_template('nodepanel.html', data = data)
-
 
 
 
