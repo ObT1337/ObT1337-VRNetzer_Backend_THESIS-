@@ -1,1 +1,0 @@
-{"name": "C_ppi", "layouts": ["01_2Dinit_layoutXYZ", "02_3Dhubs_layoutXYZ", "03_3Ddisease_layoutXYZ"], "layoutsRGB": ["01_2Dinit_layoutRGB", "02_3Dhubs_layoutRGB", "03_3Ddisease_layoutRGB"], "links": ["01_2Dinit_linksXYZ", "02_3Dhubs_linksXYZ", "03_3Ddisease_linksXYZ"], "linksRGB": ["01_2Dinit_linksRGB", "02_3Dhubs_linksRGB", "03_3Ddisease_linksRGB"], "selections": []}
