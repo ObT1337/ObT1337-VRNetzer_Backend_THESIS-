@@ -88,7 +88,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
         <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
-        <div id = 'box' name = 'box' class = 'swagBox' style = 'width: 300px; height: 120px; overflow:auto;display: inline-block; border-color: rgb(10, 24, 221);'>
+        <div id = 'box' name = 'box' class = 'swagBox'>
         
         </div>
     </template>
@@ -191,7 +191,7 @@
 
                                 <div class="twelve columns">
                                     <div id="projects-section" class="five columns">   
-                                            <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
+                                            <h3 class="lineglowslow" style="background-size: contain; margin:15px"><span>PROJECT</span></h3>
                                         </div>
                                             <div class="seven columns">
                                                 <div class="cornerBox">
@@ -302,7 +302,8 @@
                                     <input type="button"  id = 'play' class="swagPlayButton"></button> 
                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
-                                            initToggle('play', ['PLAY','PAUSE']);
+                                            initToggle('play', 
+                                            ['PLAY','PAUSE']);
                                         </script>
                                     </div>  
 
@@ -322,97 +323,24 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                     tab 2 - template elements for UI
+                                     tab 2 - general Network information 
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-2" class="container">
                             <div class="twelve columns">
-                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">UI MODS</h2>
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO BASE</h2>
                             </div>
-                            <div>
-                                This tab contains diverse UI elements.
-                                <br>
-                        
-                                <!-- FONTS 
-                                Fonts:
-                                <h1>h1 text</h1>
-                                <h2>h2 text</h2>
-                                <h3>h3 text</h3>
-                                <h4>h4 text</h4>
-                                <div>div text</div> 
-                            
-                                -->
-                                ___________________________________
-                                
-                                <!-- SLIDER ON/OFF -->
-                                <br></br>
-                                Slider for "on/off":
-                                <div class="slideTwo">
-                                        <input type="checkbox" value="None" id = "slideTwo" name="check"></checkbox>
-                                        <label for="slideTwo"></label> 
-                                        <!-- <script>
-                                            Here goes the function /also: in "input" and "label": replace "id" and "for" with respective functional id for slider 
-                                        </script> -->
-                                </div>
 
-                                <br></br>
-                                ___________________________________
-
-                                <!-- DROPDOWN --> 
-                                <br></br>
-                                Dropdown Template
-                                <div class="cornerBox">
-                                    <select id='template_id'></select>
+                            <div class="twelve columns">
+                                <h4 class="six columns">No. of Nodes: </h4>
+                                <h4 class="six columns"> 
                                     <script>
-                                        initDropdown('template_id', ["firstitem","seconditem","thirditem"], "firstitem");
+                                        document.write(pdata);
                                     </script>
-                                </div>
-
-                                ___________________________________
-
-                                <!-- BUTTON -->
-                                <br></br>
-                                <div class="twelve columns">
-                                    <div class="six columns">
-                                    Button with Text
-                                    <input type="button"  id = 'button_id' class="swagTextButton" value="play"></button> 
-                                        <script>
-                                            initToggle('button_id', ['play','pause']);
-                                        </script>
-                                    </div>
-
-                                    <div class="six columns">
-                                        Button with Image 
-                                        <input type="button"  id = 'button_id' class="swagPlayButton"></button> 
-                                            <script>
-                                                initButton('button_id');
-                                            </script>
-                                        </div>
-                                </div>
-                                ___________________________________
-
-                                <!-- SCROLL BOX -->
-                                <br></br>
-                                mc-Scrollbox: 
-                                    <script>
-                                        // fill scrollbox with buttons
-                                        //$('document').ready(function(){
-                                            var b = document.createElement("mc-scrollbox");
-                                                b.setAttribute("id", "somename");
-                                                b.setAttribute("name","somename");
-                                            document.getElementById("tabs-2").appendChild(b);
-                        
-                                            for (let i = 0; i < 50; i++) {
-                                                var p = document.createElement("mc-rbutton");
-                                                p.setAttribute("id", i);
-                                                p.setAttribute("name", makeid(Math.floor(Math.random() * 3) + 4));
-                                                p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
-                                                document.getElementById("somename").shadowRoot.getElementById("box").appendChild(p);
-                                            }
-                        
-                                        //});
-                                    </script>
+                                </h4>
                             </div>
+
+
                         </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -424,16 +352,16 @@
                             <div class="twelve columns">
                                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
                             </div>
-                                <!-- SLIDERS -->
+                                <!-- SLIDERS 
                                 <h3 class="border">SCALE</h3>
-                                <div id="slider_scale"></div>
+                                <div id="slider_scale"></div> -->
                                 <h3 class="border">NODE SIZE</h3>
                                 <div id="slider-node_size"></div>
                                 <h3 class="border">LINK SIZE</h3>
                                 <div id="slider-link_size"></div>
                                 <h3 class="border">LINK OPACITY</h3>
                                 <div id="slider-link_transparency"></div>
-                                <h3 class="border">LABELS SCALE</h3>
+                                <h3 class="border">LABEL SIZE</h3>
                                 <div id="slider-label_scale"></div>
                                 <script>
                                     initSlider('slider_scale');
@@ -447,12 +375,12 @@
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 4
+                                        tab 4 - search 
                                         
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-4">
                             <div class="twelve columns">
-                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ANALYSIS</h2>
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px;">QUERY</h2>
                             </div>
                                     <mc-textbox id = 'search' ></mc-textbox>
                                     <br><br>
@@ -468,7 +396,7 @@
                         <div id="tabs-5">
                                     
                             <div class="twelve columns">
-                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">ROOMS</h2>
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VR ROOMS</h2>
                             </div>
 
                             <div class="twelve columns">
@@ -489,14 +417,14 @@
                         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <div id="tabs-6" class="container">
                             <div class="twelve columns">
-                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO</h2>
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">USER LOG</h2>
                             </div>
                                     <div  id= "url" class="texthidden"></div>
                                     <h4>logged in as {{session['username']}}</h4>
                                     <script>
                                         document.getElementById('url').innerHTML = window.location.href;
                                     </script>
-                        
+
                         </div>
 
                     </div>
