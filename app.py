@@ -177,15 +177,15 @@ def nodepanel():
         id = int(request.args.get("id"))
     except:
         id = 0
-        #print("C_DEBUG: node id random init")
+        print("C_DEBUG: node id random init")
    
     if "ppi" in pfile["name"]:
         data = names['names'][id]
-        #print("C_DEBUG: PPI nodepanel")
+        print("C_DEBUG: PPI nodepanel")
         return render_template('nodepanelppi.html', data = data)
     else:
         data = names['names'][id]
-        #print("C_DEBUG: general nodepanel")
+        print("C_DEBUG: general nodepanel")
         return render_template('nodepanel.html', data = data)
 
 
