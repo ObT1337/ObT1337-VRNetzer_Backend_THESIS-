@@ -32,11 +32,7 @@
 
     
     <body>
-        
-        <script>
-            var nodedata = JSON.parse({{data|tojson}});
-        </script>
-        
+
         <div id="tabsUL"><a href="nodepanel.html" id="" title="Nodepanel"></a>
             <ul>
               <li><a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
@@ -46,12 +42,17 @@
             <div id="nodefragment-1">
 
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Information</h2>
+                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
                 </div>
 
                 <div class="twelve columns">
-                        <h4>Functional Information</h4>
+                    <div class="five columns">
+                        <h4>Annotation/ID :: </h4>
                     </div>
+                    <div class="six columns"> 
+                        <h5>  {{data}} </h5>
+                    </div>
+                </div>
             </div>
 
             </div>

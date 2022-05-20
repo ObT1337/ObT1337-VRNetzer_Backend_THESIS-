@@ -173,12 +173,19 @@ def test():
 
 @app.route('/nodepanel',methods=['GET'])
 def nodepanel():
-    id = int(request.args.get("id"))
+    try: 
+        id = int(request.args.get("id"))
+    except:
+        id = 0
+        print("C_DEBUG: node id random init")
+   
     if "ppi" in pfile["name"]:
         data = names['names'][id]
+        print("C_DEBUG: PPI nodepanel")
         return render_template('nodepanelppi.html', data = data)
     else:
         data = names['names'][id]
+        print("C_DEBUG: general nodepanel")
         return render_template('nodepanel.html', data = data)
 
 
@@ -217,8 +224,17 @@ def ex(message):
     if message['id'] == 'nl':
         message['names'] = []
         message['fn'] = 'cnl'
+        message['prot'] = []
+        message['protsize'] = []
         for id in message['data']:
             message['names'].append(names['names'][id][0])
+            
+            if len(names['names'][id]) == 5:
+                message['prot'].append(names['names'][id][3])
+                message['protsize'].append(names['names'][id][4])
+            else:
+                message['prot'].append("x")
+                message['protsize'].append(-1)
             
         print(message)
         emit('ex', message, room=room)

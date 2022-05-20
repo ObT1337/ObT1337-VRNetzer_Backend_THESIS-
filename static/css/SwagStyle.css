@@ -68,6 +68,16 @@ h4 {
   color:rgb(42, 113, 148);
   font-weight:lighter;
 }
+h5 { /* same as h4 but non italic and white*/
+  /*font-family: 'Venus', sans-serif;*/
+  font-family: 'Michr', sans-serif;  /*'Akshar-reg', sans-serif; */
+  font-size: 16px;
+  padding: 0%;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  color:rgb(255,255,255);
+  font-weight:lighter;
+}
 
 div {
   font-family: 'Bal-lig', sans-serif;
@@ -345,14 +355,15 @@ input[type="radio"]
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 input[type="button"]
 {
-  /*-moz-padding-start: calc(10px - 3px);
-  padding-left: 10px;*/
-  height: 40px !important;
+  /*-moz-padding-start: calc(10px - 3px);*/
+  width: 100%;/* 40px;*/
+  height: 60px !important;
   font-size:12px;
   font-family: 'Michr', sans-serif;
   text-transform: uppercase;
   cursor: pointer;
-  margin: 8px; 
+  padding: 12px; 
+  margin:12px;
   /*background:rgba(66, 66, 66, 0);*/
   border: 10px solid transparent;
   border-image: url("images/frame1.png") 10 stretch;
@@ -371,22 +382,18 @@ input[type="button"]
 }
 .swagPlayButton { 
   color:rgba(0, 0, 0, 0);
-  width: 39px;
-  /*min-width: max-content;*/
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url("images/arrow_playpause-new.png");
 }
 .swagForwardButton {
-  width: 40px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url("images/arrow_forward-new.png");
 }
 .swagBackwardButton {
-  width: 40px;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

@@ -284,21 +284,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="twelve columns"> 
-                                    <div class="eight columns"> 
+                                <!--<div class="twelve columns">-->
+                                <div class="cornerBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;"> 
+                                    <!-- <div class="eight columns"> 
                                         <br></br>
-                                    </div>
+                                    </div> -->
 
                                     <!-- backward button -->
-                                    <div class="onehalf columns" style="width:40px;">
+                                    <div class="four columns" > <!-- class="onehalf columns"  style="width:40px;"-->
                                         <input type="button"  id = 'backwardstep' class="swagBackwardButton"></button> 
                                         <script>
                                             initButton('backwardstep');
                                         </script>
                                     </div> 
 
-                                    <!-- Play Pause button -->
-                                    <div class="two columns" style="width:40px;">
+                                    <!-- Play Pause button --> 
+                                    <div class="four columns" style="margin-left:4px; margin-right:4px"> <!-- class="two columns"  style="width:40px;"-->
                                     <input type="button"  id = 'play' class="swagPlayButton"></button> 
                                         <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
@@ -308,13 +309,14 @@
                                     </div>  
 
                                     <!-- forward button -->
-                                    <div class="onehalf columns" style="width:40px;">
+                                    <div class="four columns" > <!-- class="onehalf columns" style="width:40px;" -->
                                         <input type="button"  id = 'forwardstep' class="swagForwardButton"></button> 
                                         <script>
                                             initButton('forwardstep');
                                         </script>
                                     </div> 
                                 </div>
+                                <!--</div> -->
                                 <!-- <div class="twelve columns"> 
                                     <div  class="lineglowslow"><br></br></div>
                                 </div>-->
@@ -332,14 +334,22 @@
                             </div>
 
                             <div class="twelve columns">
-                                <h4 class="six columns">No. of Nodes: </h4>
-                                <h4 class="six columns"> 
+                                <h4 class="six columns">Nr. of Layouts: </h4>
+                                <h5 class="fivecolumns" > 
                                     <script>
-                                        document.write(pdata);
+                                        count_layouts = pdata["layouts"].length;
+                                        document.write(count_layouts );
                                     </script>
-                                </h4>
+                                </h5>
                             </div>
+                            <div class="twelve columns">
+                                <h4 class="six columns">Nr. of Nodes: </h4>
+                                <h5 class="fivecolumns"> 
+                                <div>{{names}}</div> 
+                                </h5>
 
+                            </div>
+                            
 
                         </div>
 
