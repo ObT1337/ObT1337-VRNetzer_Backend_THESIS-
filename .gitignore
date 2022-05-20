@@ -3,3 +3,5 @@ flask_session/
 venv/
 MAPS/
 Electrostatic_Surface_MAPS/
+
+.DS_Store
