@@ -33,10 +33,11 @@
     
     <body>
         
+        <!--
         <script>
-            var nodedata = JSON.parse({{data|tojson}});
+            var nodedata = JSON.parse({{names.values|tojson}});
         </script>
-        
+        -->
         <div id="tabsUL"><a href="nodepanel.html" id="" title="Nodepanel"></a>
             <ul>
               <li><a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
@@ -46,11 +47,27 @@
             <div id="nodefragment-1">
 
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Information</h2>
+                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
                 </div>
 
                 <div class="twelve columns">
-                        <h4>Functional Information</h4>
+                    <div class="four columns">
+                        <h4>ID : </h4>
+                    </div>
+                    <div class="six columns"> 
+                        <h5>some text here </h5>
+                    </div>
+                </div>
+
+                <div class="twelve columns">
+                    <div class="four columns">
+                        <h4>Annotation : </h4>
+                    </div>
+                    <div class="six columns"> 
+                        <script>
+                            document.write(nodedata);
+                        </script>
+                    </div>
                     </div>
             </div>
 
