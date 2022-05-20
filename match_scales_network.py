@@ -1,3 +1,6 @@
+import pandas as pd
+
+
 def write_csv_noHeader(
     network_file="./1_spring.csv",
     scales_file="./scales.csv",
@@ -115,6 +118,77 @@ def write_csv_WithHeader(
         for line in list(network_Mapping.values())[1:-1]:
             w.write(f"{line}\n")
         w.write(f"{list(network_Mapping.values())[-1]}")
+
+
+def pandas_writing(
+    network_file="./static/csv/ID_entrez_sym.csv",
+    network_col_idx="Genesym",
+    scales_file="./static/csv/scales_Cartoon.csv",
+    scales_col_idx="UniProtID",
+    mapping_file="./static/csv/uniprot_mapping.csv",
+    mapping_col_idx="Approved symbol",
+):
+    """
+    Will add UniProt IDs to each Gene Name and, if available, the scale of the corresponding protein structure.
+    Needs 3 files:
+    - network file which contains the network information.
+    - scale file which contains the scaling information for each protein structure
+    - mapping_file to map UniProt IDs to Gene Names
+    Applied on ID_entrez_sym.csv format
+    """
+    # TODO use pandas to use header for column targeting
+    scales = {}
+    ## Extract information from UniProt Mapping file
+    uniProt_Mapping = pd.read_csv(mapping_file, index_col=mapping_col_idx, header=0)
+    # ## Extract scale information
+    scales = pd.read_csv(scales_file, index_col=scales_col_idx, header=0)
+    # ## extract network information
+    network_Mapping = pd.read_csv(network_file, index_col=network_col_idx)
+    output_dataframe = pd.DataFrame(
+        columns=["x", "y", "z", "r", "g", "b", "a", "annotations"]
+    )
+    annotation_dataframe = pd.DataFrame(
+        columns=[
+            "Approved symbol",
+            "NCBI Gene ID",
+            "description",
+            "UniProt ID",
+            "scale of structure map",
+        ]
+    )
+    ## write new network information
+    with open(f"{network_file[:-4]}_mapping.csv", "w+") as w:
+        for protein in network_Mapping.index:
+            ncbi = network_Mapping.loc[protein]["entrez"]
+            scale = -1
+            uniProt = -1
+            if protein in uniProt_Mapping.index:
+                print(protein, uniProt_Mapping.loc[protein])
+                uniProt = uniProt_Mapping.loc[protein][
+                    "UniProt ID(supplied by UniProt)"
+                ]
+                ncbi = uniProt_Mapping.loc[protein]["NCBI Gene ID(supplied by NCBI)"]
+                if uniProt in scales.index:
+                    scale = scales.loc[uniProt]["scale"]
+            newAnnotations = {
+                "Approved symbol": protein,
+                "NCBI Gene ID": ncbi,
+                "description": "TEST",
+                "UniProt ID": uniProt,
+                "scale of structure map": scale,
+            }
+            newRow = {
+                "x": "",
+                "y": "",
+                "z": "",
+                "r": "",
+                "g": "",
+                "b": "",
+                "annotations": newAnnotations,
+            }
+            output_dataframe.append(newRow, ignore_index=True)
+            print(output_dataframe.iloc[-1:]["annotations"])
+            exit()
 
 
 write_csv_WithHeader()
