@@ -69,6 +69,7 @@ def write_csv_WithHeader(
     - mapping_file to map UniProt IDs to Gene Names
     Applied on ID_entrez_sym.csv format
     """
+    # TODO use pandas to use header for column targeting
     scales = {}
     ## Extract information from UniProt Mapping file
     with open(mapping_file) as f:
