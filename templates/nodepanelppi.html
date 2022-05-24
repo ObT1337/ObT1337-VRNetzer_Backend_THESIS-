@@ -32,6 +32,17 @@
 
 <body>
 
+    <script>
+        var node_data = '{{data}}';
+
+        var node_sym = '{{data[0]}}';
+        var node_id = '{{data[1]}}';
+        var node_annot = '{{data[2]}}';
+        var alphafold_id = '{{data[3]}}';
+        var alphafold_size = '{{data[4]}}';
+        var additional = '{{data[5]}}';
+    </script>
+
     <div id="tabsUL">
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
         <ul>
@@ -48,18 +59,79 @@
 
             <div class="twelve columns">
                 <div class="five columns">
-                    <h4>Node Identifier :: </h4>
+                    <h4>Identifier :: </h4>
                 </div>
                 <div class="six columns">
-                    <h5> {{data}}[0]</h5>
+                    <h5>
+                        <script>
+                            document.write(node_id);
+                        </script>
+                    </h5>
                 </div>
             </div>
+
             <div class="twelve columns">
                 <div class="five columns">
-                    <h4>Node Annotation :: </h4>
+                    <h4>Symbol :: </h4>
                 </div>
                 <div class="six columns">
-                    <h5> {{data}} </h5>
+                    <h5>
+                        <script>
+                            document.write(node_sym);
+                        </script>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <div class="five columns">
+                    <h4>Annotation :: </h4>
+                </div>
+                <div class="six columns">
+                    <h5>
+                        <script>
+                            document.write(node_annot);
+                        </script>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <div class="five columns">
+                    <h4>Alphafold ID :: </h4>
+                </div>
+                <div class="six columns">
+                    <h5>
+                        <script>
+                            document.write(alphafold_id);
+                        </script>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <div class="five columns">
+                    <h4>Alphafold Size :: </h4>
+                </div>
+                <div class="six columns">
+                    <h5>
+                        <script>
+                            document.write(alphafold_size);
+                        </script>
+                    </h5>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <div class="five columns">
+                    <h4>Additional :: </h4>
+                </div>
+                <div class="six columns">
+                    <h5>
+                        <script>
+                            document.write(additional);
+                        </script>
+                    </h5>
                 </div>
             </div>
 
