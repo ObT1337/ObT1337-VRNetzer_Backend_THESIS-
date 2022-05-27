@@ -1,6 +1,7 @@
 __pycache__/
 flask_session/
 venv/
+c_vrnetzer_env/
 MAPS/
 Electrostatic_Surface_MAPS/
 

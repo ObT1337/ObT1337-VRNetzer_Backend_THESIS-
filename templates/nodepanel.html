@@ -1,27 +1,26 @@
-
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-      
-        <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
-        <!-- rel = "stylesheet"> -->
-        <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
-        <script src="https://d3js.org/d3.v4.js"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-      
-        <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-      
-    </head>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+    <!-- rel = "stylesheet"> -->
+    <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+
+</head>
 
 
-    
-    <template id="mcTextBox-template" >
+
+<template id="mcTextBox-template">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
@@ -30,34 +29,97 @@
     </template>
 
 
-    
-    <body>
 
-        <div id="tabsUL"><a href="nodepanel.html" id="" title="Nodepanel"></a>
-            <ul>
-              <li><a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
-                src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a></li>
-            </ul>
 
-            <div id="nodefragment-1">
 
+<body>
+
+    <script>
+        var node_data = '{{data}}';
+
+        var node_sym = '{{data[0]}}';
+        var node_id = '{{data[1]}}';
+        var node_annot = '{{data[2]}}';
+        var additional = '{{data[3]}}';
+    </script>
+
+    <div id="tabsUL">
+        <a href="nodepanel.html" id="" title="Nodepanel"></a>
+        <ul>
+            <li>
+                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+        </ul>
+
+        <div id="nodefragment-1">
+
+
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+
+            <!-- <h3>Protein Identifier</h3> -->
+            <div class="frameBox">
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+                    <div class="five columns">
+                        <h4>Identifier :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_id);
+                            </script>
+                        </h5>
+                    </div>
                 </div>
 
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4>Annotation/ID :: </h4>
+                        <h4>Name :: </h4>
                     </div>
-                    <div class="six columns"> 
-                        <h5>  {{data}} </h5>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_sym);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Annotation :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_annot);
+                            </script>
+                        </h5>
                     </div>
                 </div>
             </div>
 
+            <!-- <h3>Additional</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Additional :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(additional);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
             </div>
         </div>
-    </body>
+
+    </div>
+    </div>
+</body>
 
 
 

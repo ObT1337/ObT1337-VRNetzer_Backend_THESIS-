@@ -124,7 +124,7 @@ def main():
             with open(folder + 'pfile.json', 'r') as json_file:
                 global pfile
                 pfile = json.load(json_file)
-                print(pfile)
+                #print(pfile)
             json_file.close()
 
             with open(folder + 'names.json', 'r') as json_file:
@@ -171,22 +171,27 @@ def chat():
 def test():
     return render_template('test.html')
 
+
 @app.route('/nodepanel',methods=['GET'])
 def nodepanel():
     try: 
         id = int(request.args.get("id"))
     except:
-        id = 0
+        id = 10
         print("C_DEBUG: node id random init")
    
-    if "ppi" in pfile["name"]:
+    if "ppi" in pfile["name"].lower():
         data = names['names'][id]
+        #node_sym = data[0]
+        #node_id = data[1]
         print("C_DEBUG: PPI nodepanel")
-        return render_template('nodepanelppi.html', data = data)
+       
+        return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
     else:
         data = names['names'][id]
         print("C_DEBUG: general nodepanel")
-        return render_template('nodepanel.html', data = data)
+    
+        return render_template('nodepanel.html',data=data)
 
 
 
