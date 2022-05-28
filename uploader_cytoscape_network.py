@@ -3,10 +3,10 @@ import json
 import os
 from io import StringIO
 
-from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
-from GlobalData import *
+from flask import Flask, jsonify, redirect, render_template, request
 from PIL import Image
+
+from GlobalData import *
 
 
 def makeProjectFolders(name):
@@ -76,7 +76,7 @@ def listProjects():
 
 
 # TODO other name for variable filename. maybe Layout name
-def makeNodeTex(project: str, filenname: str, nodes: dict):
+def makeNodeTex(project: str, filenname: str, nodes: dict) -> str:
     """Generates Node textures from a dictionary of nodes."""
 
     elem = len(nodes)
@@ -95,22 +95,28 @@ def makeNodeTex(project: str, filenname: str, nodes: dict):
     new_imgc = Image.new("RGBA", (128, hight))
     attrlist = {}
     attrlist["names"] = []
-    for elem in nodes:
+    for i, elem in enumerate(nodes):
         position = elem["pos"]
-        attrlist["names"] = elem["uniprotid"]
+        try:
+            if "uniprotid" in elem.keys():
+                attrlist["names"] = elem["uniprotid"]
+            if "display name" in elem.keys():
+                gene_name = elem["display name"]
+                attrlist["names"] = f"GENENAME={gene_name}"
+        except KeyError:
+            attrlist["names"] = "NA"
         coords = [0, 0, 0]  # x,y,z
         color = [255, 0, 0, 255]  # r,g,b
-
-        for i, _ in enumerate(position):
-            coords[i] = int(float(position[i]) * 65280)
-            # channels[i] = int(float()) # TODO deside on color
+        for d, _ in enumerate(position):
+            coords[d] = int(float(position[d]) * 65280)
+            # channels[i] = int(float()) # TODO decide on color
         high = [value // 255 for value in coords]
         low = [value % 255 for value in coords]
 
         texh[i] = tuple(high)
         texl[i] = tuple(low)
         texc[i] = tuple(color)
-
+    print(texh)
     new_imgh.putdata(texh)
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
@@ -139,7 +145,7 @@ def makeNodeTex(project: str, filenname: str, nodes: dict):
 
 
 # TODO other name for variable filename. maybe Layout name
-def makeLinkTex(project: str, filenname: str, edges: dict, nodes: dict):
+def makeLinkTex(project: str, filenname: str, edges: dict, nodes: list) -> str:
     """Generate a Link texture from a dictionary of edges."""
 
     # elem = len(edges)
@@ -153,10 +159,10 @@ def makeLinkTex(project: str, filenname: str, edges: dict, nodes: dict):
     node_ids = {}
     for i, node in enumerate(nodes):
         node_ids[node] = i
-    i = 0
-    for edge in edges:
+
+    for i, edge in enumerate(edges):
         source = node_ids[edge["source"]]
-        target = node_ids(edge["target"])
+        target = node_ids[edge["target"]]
         sx = int(source) % 128
         syl = int(int(source) / 128) % 128
         syh = int(int(source) / 16384)
@@ -180,8 +186,6 @@ def makeLinkTex(project: str, filenname: str, edges: dict, nodes: dict):
         texl[i * 2] = pixell1
         texl[i * 2 + 1] = pixell2
         texc[i] = pixelc
-
-        i += 1
 
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
@@ -224,9 +228,9 @@ def upload_files(project: str, filename: str, node_data: dict, edge_data: dict):
     json_file.close()
 
     state = ""
-    layout_files = request.files.getlist("layouts")  # If a network has multiple layouts
+    # layout_files = request.files.getlist("layouts")  # If a network has multiple layouts
 
-    state = state + " <br>" + makeNodeTex(project, filename, node_data)
+    state = state + " <br>" + makeNodeTex(project, filename, node_data.values())
     pfile["layouts"].append(filename + "XYZ")
     pfile["layoutsRGB"].append(filename + "RGB")
 
@@ -240,7 +244,11 @@ def upload_files(project: str, filename: str, node_data: dict, edge_data: dict):
     # GET EDGES
     pfile["links"].append(filename + "XYZ")
     pfile["linksRGB"].append(filename + "RGB")
-    state = state + " <br>" + makeLinkTex(project, filename, edge_data, node_data)
+    state = (
+        state
+        + " <br>"
+        + makeLinkTex(project, filename, edge_data.values(), node_data.keys())
+    )
 
     # update the projects file
     with open(folder + "pfile.json", "w") as json_file:
