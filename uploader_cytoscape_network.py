@@ -58,6 +58,7 @@ def loadProjectInfo(name):
 
 
 def loadAnnotations(name):
+    """Return all annotations corresponding to a project name."""
     namefile = "static/projects/" + name + "/names.json"
     f = open(namefile)
     data = json.load(f)
@@ -65,6 +66,7 @@ def loadAnnotations(name):
 
 
 def listProjects():
+    """Returns a list of all projects."""
     folder = "static/projects"
     sub_folders = [
         name for name in os.listdir(folder) if os.path.isdir(os.path.join(folder, name))
@@ -73,7 +75,9 @@ def listProjects():
     return sub_folders
 
 
-def makeNodeTex(project, name, nodes):
+# TODO other name for variable filename. maybe Layout name
+def makeNodeTex(project: str, filenname: str, nodes: dict):
+    """Generates Node textures from a dictionary of nodes."""
 
     elem = len(nodes)
     hight = 128 * (int(elem / 16384) + 1)
@@ -113,22 +117,30 @@ def makeNodeTex(project, name, nodes):
 
     with open(path + "/names.json", "w") as outfile:
         json.dump(attrlist, outfile)
-    pathXYZ = path + "/layouts/" + name + "XYZ.bmp"
-    pathXYZl = path + "/layoutsl/" + name + "XYZl.bmp"
-    pathRGB = path + "/layoutsRGB/" + name + "RGB.png"
+    pathXYZ = path + "/layouts/" + filenname + "XYZ.bmp"
+    pathXYZl = path + "/layoutsl/" + filenname + "XYZl.bmp"
+    pathRGB = path + "/layoutsRGB/" + filenname + "RGB.png"
 
     if os.path.exists(pathXYZ):
         return (
-            '<a style="color:red;">ERROR </a>' + name + " Nodelist already in project"
+            '<a style="color:red;">ERROR </a>'
+            + filenname
+            + " Nodelist already in project"
         )
     else:
         new_imgh.save(pathXYZ)
         new_imgl.save(pathXYZl)
         new_imgc.save(pathRGB, "PNG")
-        return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
+        return (
+            '<a style="color:green;">SUCCESS </a>'
+            + filenname
+            + " Node Textures Created"
+        )
 
 
-def makeLinkTex(project, name, edges, nodes):
+# TODO other name for variable filename. maybe Layout name
+def makeLinkTex(project: str, filenname: str, edges: dict, nodes: dict):
+    """Generate a Link texture from a dictionary of edges."""
 
     # elem = len(edges)
     hight = 512  # int(elem / 512)+1
@@ -173,43 +185,38 @@ def makeLinkTex(project, name, edges, nodes):
 
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
-    pathl = path + "/links/" + name + "XYZ.bmp"
-    pathRGB = path + "/linksRGB/" + name + "RGB.png"
+    pathl = path + "/links/" + filenname + "XYZ.bmp"
+    pathRGB = path + "/linksRGB/" + filenname + "RGB.png"
 
     if os.path.exists(pathl):
         return (
-            '<a style="color:red;">ERROR </a>' + name + " linklist already in project"
+            '<a style="color:red;">ERROR </a>'
+            + filenname
+            + " linklist already in project"
         )
     else:
         new_imgl.save(pathl, "PNG")
         new_imgc.save(pathRGB, "PNG")
-        return '<a style="color:green;">SUCCESS </a>' + name + " Link Textures Created"
+        return (
+            '<a style="color:green;">SUCCESS </a>'
+            + filenname
+            + " Link Textures Created"
+        )
 
 
-def upload_files(request):
-    # print("namespace", request.args.get("namespace"))
-    form = request.form.to_dict()
-    # print(request.files)
-    # print(form)
+# TODO other name for variable filename. maybe Layout name
+def upload_files(project: str, filename: str, node_data: dict, edge_data: dict):
+    """Generates textures and upload the needed network files."""
     prolist = listProjects()
-    namespace = ""
-    if form["namespace"] == "New":
-        namespace = form["new_name"]
-
-    else:
-        namespace = form["existing_namespace"]
-    if not namespace:
-        return "namespace fail"
-
     # GET LAYOUT
 
-    if namespace in prolist:
+    if project in prolist:
         print("project exists")
     else:
         # Make Folders
-        makeProjectFolders(namespace)
+        makeProjectFolders(project)
 
-    folder = "static/projects/" + namespace + "/"
+    folder = "static/projects/" + project + "/"
     pfile = {}
 
     with open(folder + "pfile.json", "r") as json_file:
@@ -217,37 +224,23 @@ def upload_files(request):
     json_file.close()
 
     state = ""
-    layout_files = request.files.getlist("layouts")
+    layout_files = request.files.getlist("layouts")  # If a network has multiple layouts
 
-    if len(layout_files) > 0 and len(layout_files[0].filename) > 0:
-        print("loading layouts", len(layout_files))
-        print(layout_files[0])
-        for file in layout_files:
-            # TODO: fix the below line to account for dots in filenames
-            name = file.filename.split(".")[0]
-            contents = file.read().decode("utf-8")
-            state = state + " <br>" + makeNodeTex(namespace, name, contents)
-            pfile["layouts"].append(name + "XYZ")
-            pfile["layoutsRGB"].append(name + "RGB")
+    state = state + " <br>" + makeNodeTex(project, filename, node_data)
+    pfile["layouts"].append(filename + "XYZ")
+    pfile["layoutsRGB"].append(filename + "RGB")
 
-            # print(contents)
-            # x = validate_layout(contents.split("\n"))
-            # print("layout errors are", x)
-            # if x[1] == 0:
+    # print(contents)
+    # x = validate_layout(contents.split("\n"))
+    # print("layout errors are", x)
+    # if x[1] == 0:
 
-        # Upload.upload_layouts(namespace, layout_files)
+    # Upload.upload_layouts(namespace, layout_files)
 
     # GET EDGES
-    edge_files = request.files.getlist("links")
-    if len(edge_files) > 0 and len(edge_files[0].filename) > 0:
-        print("loading links", len(edge_files))
-        # Upload.upload_edges(namespace, edge_files)
-        for file in edge_files:
-            name = file.filename.split(".")[0]
-            contents = file.read().decode("utf-8")
-            pfile["links"].append(name + "XYZ")
-            pfile["linksRGB"].append(name + "RGB")
-            state = state + " <br>" + makeLinkTex(namespace, name, contents)
+    pfile["links"].append(filename + "XYZ")
+    pfile["linksRGB"].append(filename + "RGB")
+    state = state + " <br>" + makeLinkTex(project, filename, edge_data, node_data)
 
     # update the projects file
     with open(folder + "pfile.json", "w") as json_file:
