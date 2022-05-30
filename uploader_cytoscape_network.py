@@ -260,4 +260,21 @@ def upload_files(project: str, filename: str, node_data: dict, edge_data: dict):
     return state
 
 
+def prepare_networkx_network(G: nx.Graph, positions: dict = None):
+    """Transforms a basic networkx graph into a correct data structure to be uploaded by the Cytoscape uploader. If the positions are not given, the positions are calculated using the spring layout algorithm of networkx."""
+    if positions is None:
+        positions = nx.spring_layout(G, dim=3)
+    nodes_data = {}
+    edges_data = {}
+    for node in G.nodes():
+        nodes_data[node] = {
+            "pos": positions[node],
+            "uniprotid": node,
+            "display name": "Gene Name of the Protein",
+        }
+    for edge in G.edges():
+        edges_data[edge] = {"source": edge[0], "target": edge[1]}
+    return nodes_data, edges_data
+
+
 sessionData["proj"] = listProjects()
