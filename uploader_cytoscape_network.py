@@ -98,12 +98,12 @@ def makeNodeTex(project: str, filenname: str, nodes: dict) -> str:
     attrlist["names"] = []
     for i, elem in enumerate(nodes):
         position = elem["pos"]
-        name = "NA"
+        name = ["NA"]
         if "uniprotid" in elem.keys():
-            name = elem["uniprotid"]
+            name = [elem["uniprotid"]]
         elif "display name" in elem.keys():
             gene_name = elem["display name"]
-            name = f"GENENAME={gene_name}"
+            name = [f"GENENAME={gene_name}"]
         attrlist["names"].append(name)
         coords = [0, 0, 0]  # x,y,z
         color = [255, 0, 255, 255]  # r,g,b
