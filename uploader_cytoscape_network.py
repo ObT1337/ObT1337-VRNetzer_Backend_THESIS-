@@ -3,6 +3,7 @@ import json
 import os
 from io import StringIO
 
+import networkx as nx
 from flask import Flask, jsonify, redirect, render_template, request
 from PIL import Image
 
@@ -97,16 +98,15 @@ def makeNodeTex(project: str, filenname: str, nodes: dict) -> str:
     attrlist["names"] = []
     for i, elem in enumerate(nodes):
         position = elem["pos"]
-        try:
-            if "uniprotid" in elem.keys():
-                attrlist["names"] = elem["uniprotid"]
-            if "display name" in elem.keys():
-                gene_name = elem["display name"]
-                attrlist["names"] = f"GENENAME={gene_name}"
-        except KeyError:
-            attrlist["names"] = "NA"
+        name = "NA"
+        if "uniprotid" in elem.keys():
+            name = elem["uniprotid"]
+        elif "display name" in elem.keys():
+            gene_name = elem["display name"]
+            name = f"GENENAME={gene_name}"
+        attrlist["names"].append(name)
         coords = [0, 0, 0]  # x,y,z
-        color = [255, 0, 0, 255]  # r,g,b
+        color = [255, 0, 255, 255]  # r,g,b
         for d, _ in enumerate(position):
             coords[d] = int(float(position[d]) * 65280)
             # channels[i] = int(float()) # TODO decide on color
@@ -116,7 +116,7 @@ def makeNodeTex(project: str, filenname: str, nodes: dict) -> str:
         texh[i] = tuple(high)
         texl[i] = tuple(low)
         texc[i] = tuple(color)
-    print(texh)
+
     new_imgh.putdata(texh)
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
@@ -127,6 +127,10 @@ def makeNodeTex(project: str, filenname: str, nodes: dict) -> str:
     pathXYZl = path + "/layoutsl/" + filenname + "XYZl.bmp"
     pathRGB = path + "/layoutsRGB/" + filenname + "RGB.png"
 
+    # new_imgh.save(pathXYZ)
+    # new_imgl.save(pathXYZl)
+    # new_imgc.save(pathRGB, "PNG")
+    # return '<a style="color:green;">SUCCESS </a>' + filenname + " Node Textures Created"
     if os.path.exists(pathXYZ):
         return (
             '<a style="color:red;">ERROR </a>'
@@ -161,15 +165,15 @@ def makeLinkTex(project: str, filenname: str, edges: dict, nodes: list) -> str:
         node_ids[node] = i
 
     for i, edge in enumerate(edges):
-        source = node_ids[edge["source"]]
-        target = node_ids[edge["target"]]
-        sx = int(source) % 128
-        syl = int(int(source) / 128) % 128
-        syh = int(int(source) / 16384)
+        source = int(node_ids[edge["source"]])
+        target = int(node_ids[edge["target"]])
+        sx = source % 128
+        syl = source // 128 % 128
+        syh = source // 16384
 
-        ex = int(target) % 128
-        eyl = int(int(target) / 128) % 128
-        eyh = int(int(target) / 16384)
+        ex = target % 128
+        eyl = target // 128 % 128
+        eyh = target // 16384
         # TODO Add Color if wished
         r = 0
         g = 100
@@ -186,12 +190,14 @@ def makeLinkTex(project: str, filenname: str, edges: dict, nodes: list) -> str:
         texl[i * 2] = pixell1
         texl[i * 2 + 1] = pixell2
         texc[i] = pixelc
-
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
     pathl = path + "/links/" + filenname + "XYZ.bmp"
     pathRGB = path + "/linksRGB/" + filenname + "RGB.png"
 
+    # new_imgl.save(pathl, "PNG")
+    # new_imgc.save(pathRGB, "PNG")
+    # return '<a style="color:green;">SUCCESS </a>' + filenname + " Link Textures Created"
     if os.path.exists(pathl):
         return (
             '<a style="color:red;">ERROR </a>'
@@ -260,7 +266,7 @@ def upload_files(project: str, filename: str, node_data: dict, edge_data: dict):
     return state
 
 
-def prepare_networkx_network(G: nx.Graph, positions: dict = None):
+def prepare_networkx_network(G: nx.Graph, positions: dict = None) -> tuple[dict, dict]:
     """Transforms a basic networkx graph into a correct data structure to be uploaded by the Cytoscape uploader. If the positions are not given, the positions are calculated using the spring layout algorithm of networkx."""
     if positions is None:
         positions = nx.spring_layout(G, dim=3)
