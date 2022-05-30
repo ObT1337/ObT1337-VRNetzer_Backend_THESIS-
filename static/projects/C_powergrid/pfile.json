@@ -1,1 +1,1 @@
-{"name": "C_powergrid", "layouts": ["C_powergrid_layoutXYZ"], "layoutsRGB": ["C_powergrid_layoutRGB"], "links": ["C_powergrid_linksXYZ"], "linksRGB": ["C_powergrid_linksRGB"], "selections": []}
+{"name": "C_powergrid", "layouts": ["C_powergrid_layoutXYZ", "C_powergrid_layout_geoXYZ"], "layoutsRGB": ["C_powergrid_layoutRGB", "C_powergrid_layout_geoRGB"], "links": ["C_powergrid_linksXYZ", "C_powergrid_links_geoXYZ"], "linksRGB": ["C_powergrid_linksRGB", "C_powergrid_links_geoRGB"], "selections": []}
