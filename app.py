@@ -182,9 +182,6 @@ def nodepanel():
 
     if "ppi" in pfile["name"].lower():
         data = names['names'][id]
-
-        #node_sym = data[0]
-        node_id = data[1]
         print("C_DEBUG: PPI nodepanel")
        
         return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
