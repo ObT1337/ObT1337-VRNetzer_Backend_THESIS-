@@ -113,7 +113,6 @@ def main():
 
     if(request.method=='GET'):
 
-         
         room = 1
         #Store the data in session
         session['username'] = username
@@ -180,18 +179,23 @@ def nodepanel():
     except:
         id=0
 
-    if "ppi" in pfile["name"].lower():
-        data = names['names'][id]
-        print("C_DEBUG: PPI nodepanel")
-       
-        return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
+    if pfile:
+
+        if "ppi" in pfile["name"].lower():
+            data = names['names'][id]
+            print("C_DEBUG: PPI nodepanel")
+        
+            return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
+        else:
+            data = names['names'][id]
+            print("C_DEBUG: general nodepanel")
+        
+            return render_template('nodepanel.html',data=data)
     else:
-        data = names['names'][id]
+        data = {'names':[0]}
         print("C_DEBUG: general nodepanel")
-    
+        
         return render_template('nodepanel.html',data=data)
-
-
 
 ###SocketIO ROUTES###
 
