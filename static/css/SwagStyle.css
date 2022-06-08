@@ -135,11 +135,24 @@ h5 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 16px;
+    font-size: 22px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     color: rgb(255, 255, 255);
+    font-weight: lighter;
+}
+
+h6 {
+    /*font-family: 'Venus', sans-serif;*/
+    font-family: 'Michr', sans-serif;
+    /*'Akshar-reg', sans-serif; */
+    font-size: 16px;
+    padding: 0%;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    font-style: italic;
+    color: rgb(42, 113, 148);
     font-weight: lighter;
 }
 
@@ -419,10 +432,10 @@ input[type="submit"] {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 input[type="radio"] {
-    height: 1em;
+    height: 1rem;
     padding: 0;
     margin: 0;
-    margin-top: 6px;
+    margin-top: 20px;
 }
 
 
@@ -684,7 +697,7 @@ input[type=checkbox] {
     width: 100%;
     position: relative;
     margin-top: 5px;
-    padding-left: 10px;
+    padding: 10px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
 }
