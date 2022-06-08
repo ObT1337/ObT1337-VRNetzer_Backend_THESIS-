@@ -434,22 +434,24 @@ input[type="button"] {
     /*-moz-padding-start: calc(10px - 3px);*/
     width: 100%;
     /* 40px;*/
-    height: 60px !important;
-    font-size: 12px;
+    height: 80px !important;
+    font-size: 18px;
     font-family: 'Michr', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
     padding: 12px;
-    margin: 12px;
+    margin-top: 10px;
+    margin-left:6px;
+    margin-left:6px;
     /*background:rgba(66, 66, 66, 0);*/
     border: 10px solid transparent;
     border-image: url("images/frame1.png") 10 stretch;
 }
 
 .swagTextButton {
-    display: inline-block;
     min-width: max-content;
     color: rgb(255, 255, 255);
+   
 }
 
 .swagTextButton:hover {
@@ -469,15 +471,6 @@ input[type="button"] {
     background-image: url("images/arrow_playpause-new.png");
 }
 
-
-.swagResetButton {
-    color: rgba(255, 255, 255, 0);
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    display:inline-block;
-    /*background-image: url("images/arrow_playpause-new.png");*/
-}
 
 .swagForwardButton {
     background-position: center;

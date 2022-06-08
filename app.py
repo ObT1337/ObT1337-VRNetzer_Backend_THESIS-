@@ -185,7 +185,7 @@ def nodepanel():
             data = names['names'][id]
             print("C_DEBUG: PPI nodepanel")
         
-            return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
+            return render_template('nodepanelppi.html', data=data) 
         else:
             data = names['names'][id]
             print("C_DEBUG: general nodepanel")
