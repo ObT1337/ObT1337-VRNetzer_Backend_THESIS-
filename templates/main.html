@@ -166,16 +166,16 @@
                         <ul>
                             <li><a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_open.png') }}" /></a></li>
-                            <li><a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>
+                            <!--<li><a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>-->
                             <li><a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_tune.png') }}" /></a></li>
-                            <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
-                            <li><a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>
-                            <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
+                            <!--<li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>-->
+                            <!--<li><a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>-->
+                            <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>-->
                         </ul>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -191,7 +191,7 @@
 
                                 <div class="twelve columns">
                                     <div id="projects-section" class="five columns">   
-                                            <h3 class="lineglowslow" style="background-size: contain; margin:15px"><span>PROJECT</span></h3>
+                                            <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
                                         </div>
                                             <div class="seven columns">
                                                 <div class="cornerBox">
@@ -202,120 +202,146 @@
                                                 </div>
                                             </div>
                                 </div>  
-
+                                <br></br>
                                 <div class="twelve columns">
-                                    <h4 class="eight columns">LAYOUTS</h4>
-                                    <h4 class="four columns" style="padding-left:20px;">MORPH</h4>
+                                    <h3> LAYOUT MORPHING SEQUENCE</h3>
+                                    <!--<h4 class="eight columns">LAYOUTS</h4>
+                                    <h4 class="four columns" style="padding-left:20px;"> MORPH</h4>-->
                                 </div>
 
-                                <div class="twelve columns">
-                                    <div class="eight columns">
-                                        <div class="cornerBox">
-                                            <select id = 'layouts'></select>
-                                            <script>
-                                                initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
-                                            </script>
-                                        </div>
-                                    </div>
-                                    <div class="four columns"> 
-                                            <!-- <input type="checkbox" id = 'chbXYZ' class="swagCheckbox"></checkbox>-->
-                                            <div class="slideTwo">	
-                                                <input type="checkbox" value="None" id = "chbXYZ" name="check"></checkbox>
-                                                <label for="chbXYZ"></label>
-                                            <script>
-                                                initCheckbox("chbXYZ");
-                                            </script>
-                                            </div>
-                                    </div>
-                                </div>
-                              
-                                <h4 class="twelve columns">NODE COLORS</h4>
-                                <div class="twelve columns">
-                                    <div class="eight columns">
-                                        <div class="cornerBox">
-                                            <select id = 'nodecolors'></select>
-                                            <script>
-                                                initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
-                                            </script>
-                                        </div>  
-                                    </div>
-                                    <div class="four columns">
-                                        <!-- <input type="checkbox" id = 'chbNrgb' class="swagCheckbox"></button>-->
-                                        <div class="slideTwo">	
-                                            <input type="checkbox" value="None" id = "chbNrgb" name="check"></checkbox>
-                                            <label for="chbNrgb"></label>
-                                        <script>
-                                            initCheckbox("chbNrgb");
-                                        </script>
-                                        </div>
-                                    </div>
-                                </div>
                                 
-                                <h4 class="twelve columns">LINKS</h4>
-                                <div class="twelve columns">
-                                    <div class="eight columns">                 
+                                <div class="frameBox">
+                                    <div class="twelve columns">
+                                        <h4 class="eight columns">POSITION</h4>
+                                        <!--
                                             <div class="cornerBox">
-                                            <select id = 'links'></select>
-                                            <script>
-                                                initDropdown('links',pdata["links"],pdata["links"][0]);
-                                            </script>
+                                                <select id = 'layouts'></select>
+                                                <script>
+                                                    initDropdown('layouts',pdata["layouts"],pdata["layouts"][0]);
+                                                </script>
                                             </div>
+                                        -->
+                                        <div class="four columns"> 
+                                                <!-- <input type="checkbox" id = 'chbXYZ' class="swagCheckbox"></checkbox>-->
+                                                <div class="slideTwo">	
+                                                    <input type="checkbox" value="None" id = "chbXYZ" name="check"></checkbox>
+                                                    <label for="chbXYZ"></label>
+                                                <script>
+                                                    initCheckbox("chbXYZ");
+                                                </script>
+                                                </div>
+                                        </div>
                                     </div>
-                                </div>
+                                
+                                
+                                    <div class="twelve columns">
+                                        <h4 class="eight columns"> NODE COLOR</h4>
+                                        
+                                        <!--
+                                            <div class="cornerBox">
+                                                <select id = 'nodecolors'></select>
+                                                <script>
+                                                    initDropdown('nodecolors',pdata["layoutsRGB"],pdata["layoutsRGB"][0]);
+                                                </script>
+                                            </div>  
+                                        </div>
+                                        -->
 
-                                <h4 class="twelve columns">LINK COLORS</h4>
-                                <div class="twelve columns">
-                                    <div class="eight columns">
-                                            <div class="cornerBox">
-                                            <select id = 'linkcolors'></select>
+                                        <div class="four columns">
+                                            <!-- <input type="checkbox" id = 'chbNrgb' class="swagCheckbox"></button>-->
+                                            <div class="slideTwo">	
+                                                <input type="checkbox" value="None" id = "chbNrgb" name="check"></checkbox>
+                                                <label for="chbNrgb"></label>
                                             <script>
-                                                initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
+                                                initCheckbox("chbNrgb");
                                             </script>
                                             </div>
+                                        </div>
                                     </div>
-                                    <div class="four columns">
-                                        <!-- <input type="checkbox" id = 'chbLrgb' class="swagCheckbox"></button>-->
-                                        <div class="slideTwo">	
-                                            <input type="checkbox" value="None" id = "chbLrgb" name="check"></checkbox>
-                                            <label for="chbLrgb"></label>
-                                        <script>
-                                            initCheckbox("chbLrgb");
-                                        </script>
+                                
+                                    <!--
+                                    <h4 class="twelve columns">LINKS</h4>
+                                    <div class="twelve columns">
+                                        <div class="eight columns">                 
+                                                <div class="cornerBox">
+                                                <select id = 'links'></select>
+                                                <script>
+                                                    initDropdown('links',pdata["links"],pdata["links"][0]);
+                                                </script>
+                                                </div>
+                                        </div>
+                                    </div>
+                                    -->
+
+                                    <div class="twelve columns">
+                                        <h4 class="eight columns"> LINK COLOR</h4>
+                                        
+                                        <!--       
+                                        <div class="cornerBox">
+                                                <select id = 'linkcolors'></select>
+                                                <script>
+                                                    initDropdown('linkcolors',pdata["linksRGB"],pdata["linksRGB"][0]);
+                                                </script>
+                                        </div> 
+                                        -->
+
+                                        <div class="four columns">
+                                            <!-- <input type="checkbox" id = 'chbLrgb' class="swagCheckbox"></button>-->
+                                            <div class="slideTwo">	
+                                                <input type="checkbox" value="None" id = "chbLrgb" name="check"></checkbox>
+                                                <label for="chbLrgb"></label>
+                                            <script>
+                                                initCheckbox("chbLrgb");
+                                            </script>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <!--<div class="twelve columns">-->
-                                <div class="cornerBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;"> 
+                                <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;"> 
                                     <!-- <div class="eight columns"> 
                                         <br></br>
                                     </div> -->
 
                                     <!-- backward button -->
-                                    <div class="four columns" > <!-- class="onehalf columns"  style="width:40px;"-->
+                                    <div class="four columns">
                                         <input type="button"  id = 'backwardstep' class="swagBackwardButton"></button> 
                                         <script>
                                             initButton('backwardstep');
                                         </script>
                                     </div> 
 
-                                    <!-- Play Pause button --> 
-                                    <div class="four columns" style="margin-left:4px; margin-right:4px"> <!-- class="two columns"  style="width:40px;"-->
+                                    <!-- Play Pause button  --> 
+                                    <!--
+                                    <div class="four columns" style="margin-left:4px; margin-right:4px">
                                     <input type="button"  id = 'play' class="swagPlayButton"></button> 
-                                        <!--style = "width: 100px; height: 50px; display: inline-block; padding: 4px 2px"-->
                                         <script>
                                             initToggle('play', 
                                             ['PLAY','PAUSE']);
                                         </script>
-                                    </div>  
+                                    </div> 
+                                    --> 
 
                                     <!-- forward button -->
-                                    <div class="four columns" > <!-- class="onehalf columns" style="width:40px;" -->
+                                    <div class="four columns"> 
                                         <input type="button"  id = 'forwardstep' class="swagForwardButton"></button> 
                                         <script>
                                             initButton('forwardstep');
                                         </script>
                                     </div> 
+                                
+
+                                    <div class="four columns">
+                                        <input type="button" value="RESET" id = 'reset' class="swagTextButton"></button> 
+                                            <script>
+                                                initButton('reset');
+                                            </script>
+                                    </div>
+
                                 </div>
+
                                 <!--</div> -->
                                 <!-- <div class="twelve columns"> 
                                     <div  class="lineglowslow"><br></br></div>
@@ -327,7 +353,7 @@
 
                                      tab 2 - general Network information 
                                         
-                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         <div id="tabs-2" class="container">
                             <div class="twelve columns">
                                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO BASE</h2>
@@ -351,7 +377,7 @@
                             </div>
                             
 
-                        </div>
+                        </div>-->
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -387,7 +413,7 @@
 
                                         tab 4 - search 
                                         
-                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         <div id="tabs-4">
                             <div class="twelve columns">
                                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px;">QUERY</h2>
@@ -395,14 +421,14 @@
                                     <mc-textbox id = 'search' ></mc-textbox>
                                     <br><br>
                                     <mc-scrollbox id = 'sres'></mc-scrollbox>
-                        </div>
+                        </div>-->
 
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                                         tab 5 - Arch Worlds 
 
-                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         <div id="tabs-5">
                                     
                             <div class="twelve columns">
@@ -418,13 +444,13 @@
                                 </div>
                             </div>
 
-                        </div>
+                        </div>-->
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                                         tab 6 - SETTINGS
                                         
-                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                         <div id="tabs-6" class="container">
                             <div class="twelve columns">
                                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">USER LOG</h2>
@@ -435,7 +461,7 @@
                                         document.getElementById('url').innerHTML = window.location.href;
                                     </script>
 
-                        </div>
+                        </div>-->
 
                     </div>
 

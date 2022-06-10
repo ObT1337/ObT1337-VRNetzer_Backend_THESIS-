@@ -121,7 +121,7 @@ h4 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 16px;
+    font-size: 22px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
@@ -135,11 +135,24 @@ h5 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 16px;
+    font-size: 22px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     color: rgb(255, 255, 255);
+    font-weight: lighter;
+}
+
+h6 {
+    /*font-family: 'Venus', sans-serif;*/
+    font-family: 'Michr', sans-serif;
+    /*'Akshar-reg', sans-serif; */
+    font-size: 16px;
+    padding: 0%;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    font-style: italic;
+    color: rgb(42, 113, 148);
     font-weight: lighter;
 }
 
@@ -419,10 +432,10 @@ input[type="submit"] {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 input[type="radio"] {
-    height: 1em;
+    height: 1rem;
     padding: 0;
     margin: 0;
-    margin-top: 6px;
+    margin-top: 20px;
 }
 
 
@@ -434,22 +447,24 @@ input[type="button"] {
     /*-moz-padding-start: calc(10px - 3px);*/
     width: 100%;
     /* 40px;*/
-    height: 60px !important;
-    font-size: 12px;
+    height: 80px !important;
+    font-size: 18px;
     font-family: 'Michr', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
     padding: 12px;
-    margin: 12px;
+    margin-top: 10px;
+    margin-left:6px;
+    margin-left:6px;
     /*background:rgba(66, 66, 66, 0);*/
     border: 10px solid transparent;
     border-image: url("images/frame1.png") 10 stretch;
 }
 
 .swagTextButton {
-    display: inline-block;
     min-width: max-content;
     color: rgb(255, 255, 255);
+   
 }
 
 .swagTextButton:hover {
@@ -468,6 +483,7 @@ input[type="button"] {
     background-repeat: no-repeat;
     background-image: url("images/arrow_playpause-new.png");
 }
+
 
 .swagForwardButton {
     background-position: center;
@@ -681,7 +697,7 @@ input[type=checkbox] {
     width: 100%;
     position: relative;
     margin-top: 5px;
-    padding-left: 10px;
+    padding: 10px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
 }

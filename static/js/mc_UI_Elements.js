@@ -223,6 +223,7 @@ function initButton (id){
   });
 }
 
+
 function initToggle (id, texts){
   $('#'+ id).on("click", function(){
     var $this = $(this);
@@ -235,6 +236,8 @@ function initToggle (id, texts){
   });
 
 }
+
+
 
 
 function initCheckbox (id){
