@@ -93,7 +93,7 @@ h2 {
     font-family: 'Square', sans-serif;
     font-size: 96px;
     font-weight: lighter;
-    color: rgba(42, 113, 148, 0.2);
+    color: rgba(52, 148, 196, 0.25);
 }
 
 h3 {
@@ -121,13 +121,13 @@ h4 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 22px;
+    font-size: 19px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     font-style: italic;
-    color: rgb(42, 113, 148);
-    font-weight: lighter;
+    color: rgb(52, 148, 196);
+    font-weight: bold;
 }
 
 h5 {
@@ -135,7 +135,7 @@ h5 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 22px;
+    font-size: 19px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
@@ -152,9 +152,17 @@ h6 {
     margin-bottom: 10px;
     margin-top: 15px;
     font-style: italic;
-    color: rgb(42, 113, 148);
+    color: rgb(59, 157, 206);
     font-weight: lighter;
 }
+
+h7 {
+    font-family: 'Michr', sans-serif;
+    font-size: 16px;
+    font-style: bolder;
+    color: rgb(165, 165, 165);
+}
+
 
 div {
     font-family: 'Bal-lig', sans-serif;
@@ -695,8 +703,8 @@ input[type=checkbox] {
     min-height: max-content;
     width: 100%;
     position: relative;
-    margin-top: 5px;
-    padding: 10px;
+    margin:0px;
+    padding:6px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
 }
