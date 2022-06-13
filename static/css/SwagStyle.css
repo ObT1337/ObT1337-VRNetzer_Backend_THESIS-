@@ -218,7 +218,7 @@ body {
 .columns {
     height: 100%;
     width: 100%;
-    float: left;
+    float: left; 
 }
 
 
@@ -233,7 +233,7 @@ body {
     .columns {
         padding-left: 2px;
         padding-right: 2px;
-        width: 100%;
+
     }
     .column:first-child,
     .columns:first-child {
@@ -274,7 +274,7 @@ body {
         width: 50%;
     }
     .seven.columns {
-        width: 59%;
+        width: 60.5%;
     }
     .eight.columns {
         width: 68%;
@@ -681,10 +681,9 @@ input[type=checkbox] {
   --w:10px; 
   --h:10px;*/
     width: 100%;
+    align-items: flex-end;
     box-sizing: border-box;
-    margin: 0;
-    padding: 3px;
-    padding-right: 8px;
+    padding-right: 7px;
     border: solid 1.5px #222222;
     background-origin: border-box;
     background-repeat: no-repeat;

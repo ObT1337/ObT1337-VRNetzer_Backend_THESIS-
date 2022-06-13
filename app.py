@@ -175,9 +175,11 @@ def test():
 def nodepanel():
     try:
         id = int(request.args.get("id"))
-        #print("printing ID:",id)
+        if id is None:
+            print("ID is none.")
+            id=0
     except:
-        id=0
+        pass 
 
     if pfile:
 
