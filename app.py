@@ -173,22 +173,34 @@ def test():
 
 @app.route('/nodepanel',methods=['GET'])
 def nodepanel():
-    try:
-        id = int(request.args.get("id"))
-        if id is None:
-            print("ID is none.")
-            id=0
-    except:
-        pass 
+    #try:
+    #    id = int(request.args.get("id"))
+    #    if id is None:
+    #        print("ID is none.")
+    #        id=0
+    #except:
+    #    pass 
 
     if pfile:
-
+        
         if "ppi" in pfile["name"].lower():
+            try:
+                id = int(request.args.get("id"))
+            except:
+                print("ID is none.")
+                id=0
+                    
             data = names['names'][id]
             print("C_DEBUG: PPI nodepanel")
         
             return render_template('nodepanelppi.html', data=data) 
         else:
+            try:
+                id = int(request.args.get("id"))
+            except:
+                print("ID is none.")
+                id=0
+                
             data = names['names'][id]
             print("C_DEBUG: general nodepanel")
         
