@@ -166,8 +166,8 @@
                         <ul>
                             <li><a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_open.png') }}" /></a></li>
-                            <!--<li><a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>-->
+                            <li><a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>
                             <li><a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_tune.png') }}" /></a></li>
                             <!--<li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
@@ -333,11 +333,41 @@
 
                                 </div>
 
+                                <!--</div> -->
+                                <!-- <div class="twelve columns"> 
+                                    <div  class="lineglowslow"><br></br></div>
+                                </div>-->
 
+                        </div> 
 
-                                <br></br>
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+                                     tab 2 - general Network information 
+                                        
+                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                        <div id="tabs-2" class="container">
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">SELECT</h2>
+                            </div>
 
+                            <!--<div class="twelve columns">
+                                <h4 class="six columns">Nr. of Layouts: </h4>
+                                <h5 class="fivecolumns" > 
+                                    <script>
+                                        count_layouts = pdata["layouts"].length;
+                                        document.write(count_layouts );
+                                    </script>
+                                </h5>
+                            </div>
+                            <div class="twelve columns">
+                                <h4 class="six columns">Nr. of Nodes: </h4>
+                                <h5 class="fivecolumns"> 
+                                <div>{{names}}</div> 
+                                </h5>
+
+                            </div> -->
+                            
+                            
                                 <!-- DROPDOWNS FOR LAYOUT SWITCH WITHOUT MORPHING  --> 
                                 <div class="twelve columns">
                                     <h4 class="four columns">NODE POS</h4>
@@ -386,42 +416,7 @@
                                     </div>      
                                 </div>
 
-                                <!--</div> -->
-                                <!-- <div class="twelve columns"> 
-                                    <div  class="lineglowslow"><br></br></div>
-                                </div>-->
-
-                        </div> 
-
-                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                                     tab 2 - general Network information 
-                                        
-                        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                        <div id="tabs-2" class="container">
-                            <div class="twelve columns">
-                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">INFO BASE</h2>
-                            </div>
-
-                            <div class="twelve columns">
-                                <h4 class="six columns">Nr. of Layouts: </h4>
-                                <h5 class="fivecolumns" > 
-                                    <script>
-                                        count_layouts = pdata["layouts"].length;
-                                        document.write(count_layouts );
-                                    </script>
-                                </h5>
-                            </div>
-                            <div class="twelve columns">
-                                <h4 class="six columns">Nr. of Nodes: </h4>
-                                <h5 class="fivecolumns"> 
-                                <div>{{names}}</div> 
-                                </h5>
-
-                            </div>
-                            
-
-                        </div>-->
+                        </div>
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
