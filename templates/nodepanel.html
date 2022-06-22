@@ -37,8 +37,13 @@
     <script>
         var node_data = '{{data}}';
 
+<<<<<<< HEAD
         var node_id = '{{data[0]}}';
         var node_attr = '{{data[1]}}';
+=======
+        var node_sym = '{{data[0]}}';
+        var node_att = '{{data[1]}}';
+>>>>>>> parent of af6f436 (Revert "change minor text at nodepanel general")
         var node_annot = '{{data[2]}}';
         var additional = '{{data[3]}}';
     </script>
@@ -67,7 +72,7 @@
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_id);
+                                document.write(node_sym);
                             </script>
                         </h5>
                     </div>
@@ -80,7 +85,11 @@
                     <div class="six columns">
                         <h5>
                             <script>
+<<<<<<< HEAD
                                 document.write(node_attr);
+=======
+                                document.write(node_att);
+>>>>>>> parent of af6f436 (Revert "change minor text at nodepanel general")
                             </script>
                         </h5>
                     </div>
