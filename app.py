@@ -175,27 +175,20 @@ def test():
 def nodepanel():
     try:
         id = int(request.args.get("id"))
-        data = names['names'][id]
     except:
         if id is None:
-            id=0
-            data = names['names'][id]
-            
+            id=0            
        
-    if pfile:
-        if "ppi" in pfile["name"].lower():
+    if pfile and "ppi" in pfile["name"].lower():
             data = names['names'][id]
             return render_template('nodepanelppi.html', data=data) 
             
-        else:
+    else:
             data = names['names'][id]
             print("C_DEBUG: general nodepanel")
             return render_template('nodepanel.html',data=data)
         
-    else: 
-        data = {'names':[id]}
-        return render_template('nodepanel.html',data=data)
-    
+
     
 ###SocketIO ROUTES###
 
