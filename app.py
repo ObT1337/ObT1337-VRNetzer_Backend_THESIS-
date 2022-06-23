@@ -176,6 +176,7 @@ def nodepanel():
     try:
         id = int(request.args.get("id"))
     except:
+        print('C_DEBUG: in except at start')
         if id is None:
             id=0            
        
@@ -184,7 +185,8 @@ def nodepanel():
         return render_template('nodepanelppi.html', data=data) 
             
     else:
-        data = names['names'][id]
+        print('C_DEBUG: in else (nopfile, no ppi in name')
+        data = {'names':[id]}
         print("C_DEBUG: general nodepanel")
         return render_template('nodepanel.html',data=data)
         
