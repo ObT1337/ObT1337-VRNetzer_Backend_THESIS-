@@ -180,18 +180,18 @@ def nodepanel():
 
        
     if pfile:
-            if "ppi" in pfile["name"].lower():
-                data = names['names'][id]
-                return render_template('nodepanelppi.html', data=data) 
+        if "ppi" in pfile["name"].lower():
+            data = names['names'][id]
+            return render_template('nodepanelppi.html', data=data) 
             
-            else:
-                data = names['names'][id]
-                print("C_DEBUG: general nodepanel")
-                return render_template('nodepanel.html',data=data)
+        else:
+            data = names['names'][id]
+            print("C_DEBUG: general nodepanel")
+            return render_template('nodepanel.html',data=data)
         
     else: 
-            data = names['names'][id]
-            return render_template('nodepanel.html',data=data)
+        data = names['names'][id]
+        return render_template('nodepanel.html',data=data)
     
     
 ###SocketIO ROUTES###
