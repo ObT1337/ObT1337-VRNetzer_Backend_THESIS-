@@ -190,7 +190,7 @@ def nodepanel():
             return render_template('nodepanel.html',data=data)
         
     else: 
-        data = names['names'][id]
+        data = {'names':[id]}
         return render_template('nodepanel.html',data=data)
     
     
