@@ -175,9 +175,12 @@ def test():
 def nodepanel():
     try:
         id = int(request.args.get("id"))
+        data = names['names'][id]
     except:
-        id=0
-
+        if id is None:
+            id=0
+            data = names['names'][id]
+            
        
     if pfile:
         if "ppi" in pfile["name"].lower():
