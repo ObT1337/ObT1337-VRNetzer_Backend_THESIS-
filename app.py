@@ -211,7 +211,7 @@ def nodepanel():
         except:
             print("ID is none.")
             id=0
-        data = {'names':[0]}
+        data = {'names':[id]}
         print("C_DEBUG: general nodepanel")
         
         return render_template('nodepanel.html',data=data)
