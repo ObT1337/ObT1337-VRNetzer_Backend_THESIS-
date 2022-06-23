@@ -181,11 +181,25 @@ def nodepanel():
             id=0            
        
     if pfile and "ppi" in pfile["name"].lower():
+        try:
+            id = int(request.args.get("id"))
+        except:
+            print('C_DEBUG: in except at start')
+            if id is None:
+                id=0   
+
         data = names['names'][id]
         return render_template('nodepanelppi.html', data=data) 
             
     else:
-        print('C_DEBUG: in else (nopfile, no ppi in name')
+        try:
+            id = int(request.args.get("id"))
+        except:
+            print('C_DEBUG: in except at start')
+            if id is None:
+                id=0   
+                
+        print('C_DEBUG: in else (nopfile, no ppi in name)')
         data = {'names':[id]}
         print("C_DEBUG: general nodepanel")
         return render_template('nodepanel.html',data=data)
