@@ -206,6 +206,11 @@ def nodepanel():
         
             return render_template('nodepanel.html',data=data)
     else:
+        try:
+            id = int(request.args.get("id"))
+        except:
+            print("ID is none.")
+            id=0
         data = {'names':[0]}
         print("C_DEBUG: general nodepanel")
         
