@@ -141,6 +141,7 @@ h5 {
     margin-top: 15px;
     color: rgb(255, 255, 255);
     font-weight: lighter;
+
 }
 
 h6 {
@@ -225,7 +226,7 @@ body {
 .column,
 .columns {
     height: 100%;
-    width: 100%;
+    width:100%;
     float: left; 
 }
 
@@ -239,6 +240,8 @@ body {
     }
     .column,
     .columns {
+        height: 100%;
+        width: 100%;
         padding-left: 2px;
         padding-right: 2px;
 
@@ -707,6 +710,7 @@ input[type=checkbox] {
     padding:6px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
+    word-wrap: break-word;
 }
 
 

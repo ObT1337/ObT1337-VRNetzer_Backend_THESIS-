@@ -33,8 +33,8 @@
         <script>
             var node_data = '{{data}}';
             var node_id = '{{data[0]}}';
-            var node_attr = '{{data[1]}}';
-            var node_annot = '{{data[2]}}';
+            var node_attribute = '{{data[1]}}';
+            var node_annotation = '{{data[2]}}';
             var additional = '{{data[3]}}';
         </script>
 
@@ -53,7 +53,7 @@
                     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
                 </div>
 
-                <!-- <h3>Protein Identifier</h3> -->
+                <!-- <h3> Identifier</h3> -->
                 <div class="frameBox">
                     <div class="twelve columns">
                         <div class="five columns">
@@ -75,7 +75,7 @@
                         <div class="six columns">
                             <h5>
                                 <script>
-                                    document.write(node_attr);
+                                    document.write(node_attribute); 
                                 </script>
                             </h5>
                         </div>
@@ -88,7 +88,7 @@
                         <div class="six columns">
                             <h5>
                                 <script>
-                                    document.write(node_annot);
+                                    document.write(node_annotation);
                                 </script>
                             </h5>
                         </div>
