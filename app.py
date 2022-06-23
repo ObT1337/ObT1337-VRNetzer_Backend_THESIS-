@@ -187,7 +187,7 @@ def nodepanel():
             try:
                 id = int(request.args.get("id"))
             except:
-                print("ID is none.")
+                print("ID is none - ppi.")
                 id=0
                     
             data = names['names'][id]
@@ -208,10 +208,10 @@ def nodepanel():
     else:
         try:
             id = int(request.args.get("id"))
+            data = {'names':[id]} 
         except:
-            print("ID is none.")
-            id=0
-        data = {'names':[id]}
+            print("ID is none - in outer if.")
+            data = {'names':[0]}
         print("C_DEBUG: general nodepanel")
         
         return render_template('nodepanel.html',data=data)
