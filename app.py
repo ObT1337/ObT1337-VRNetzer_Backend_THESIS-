@@ -201,8 +201,12 @@ def nodepanel():
             print("C_DEBUG: general nodepanel")
             return render_template('nodepanel.html',data=data)
     else:
+        try:
+            id = int(request.args.get("id"))
+        except:
+            id=0 
         print('C_DEBUG: in except else (no pfile)')     
-        data = {'names':[0]}
+        data = {'names':[id]}
         return render_template('nodepanel.html',data=data)
 
     
