@@ -93,7 +93,7 @@ h2 {
     font-family: 'Square', sans-serif;
     font-size: 96px;
     font-weight: lighter;
-    color: rgba(42, 113, 148, 0.2);
+    color: rgba(52, 148, 196, 0.25);
 }
 
 h3 {
@@ -121,13 +121,13 @@ h4 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 16px;
+    font-size: 19px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     font-style: italic;
-    color: rgb(42, 113, 148);
-    font-weight: lighter;
+    color: rgb(52, 148, 196);
+    font-weight: bold;
 }
 
 h5 {
@@ -135,13 +135,35 @@ h5 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 16px;
+    font-size: 19px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     color: rgb(255, 255, 255);
     font-weight: lighter;
+
 }
+
+h6 {
+    /*font-family: 'Venus', sans-serif;*/
+    font-family: 'Michr', sans-serif;
+    /*'Akshar-reg', sans-serif; */
+    font-size: 16px;
+    padding: 0%;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    font-style: italic;
+    color: rgb(59, 157, 206);
+    font-weight: lighter;
+}
+
+h7 {
+    font-family: 'Michr', sans-serif;
+    font-size: 16px;
+    font-style: bolder;
+    color: rgb(165, 165, 165);
+}
+
 
 div {
     font-family: 'Bal-lig', sans-serif;
@@ -204,8 +226,8 @@ body {
 .column,
 .columns {
     height: 100%;
-    width: 100%;
-    float: left;
+    width:100%;
+    float: left; 
 }
 
 
@@ -218,9 +240,11 @@ body {
     }
     .column,
     .columns {
+        height: 100%;
+        width: 100%;
         padding-left: 2px;
         padding-right: 2px;
-        width: 100%;
+
     }
     .column:first-child,
     .columns:first-child {
@@ -261,7 +285,7 @@ body {
         width: 50%;
     }
     .seven.columns {
-        width: 59%;
+        width: 60.5%;
     }
     .eight.columns {
         width: 68%;
@@ -419,10 +443,10 @@ input[type="submit"] {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 input[type="radio"] {
-    height: 1em;
+    height: 1rem;
     padding: 0;
     margin: 0;
-    margin-top: 6px;
+    margin-top: 20px;
 }
 
 
@@ -434,22 +458,24 @@ input[type="button"] {
     /*-moz-padding-start: calc(10px - 3px);*/
     width: 100%;
     /* 40px;*/
-    height: 60px !important;
-    font-size: 12px;
+    height: 80px !important;
+    font-size: 18px;
     font-family: 'Michr', sans-serif;
     text-transform: uppercase;
     cursor: pointer;
     padding: 12px;
-    margin: 12px;
+    margin-top: 10px;
+    margin-left:6px;
+    margin-left:6px;
     /*background:rgba(66, 66, 66, 0);*/
     border: 10px solid transparent;
     border-image: url("images/frame1.png") 10 stretch;
 }
 
 .swagTextButton {
-    display: inline-block;
     min-width: max-content;
     color: rgb(255, 255, 255);
+   
 }
 
 .swagTextButton:hover {
@@ -468,6 +494,7 @@ input[type="button"] {
     background-repeat: no-repeat;
     background-image: url("images/arrow_playpause-new.png");
 }
+
 
 .swagForwardButton {
     background-position: center;
@@ -665,10 +692,9 @@ input[type=checkbox] {
   --w:10px; 
   --h:10px;*/
     width: 100%;
+    align-items: flex-end;
     box-sizing: border-box;
-    margin: 0;
-    padding: 3px;
-    padding-right: 8px;
+    padding-right: 7px;
     border: solid 1.5px #222222;
     background-origin: border-box;
     background-repeat: no-repeat;
@@ -680,10 +706,11 @@ input[type=checkbox] {
     min-height: max-content;
     width: 100%;
     position: relative;
-    margin-top: 5px;
-    padding-left: 10px;
+    margin:0px;
+    padding:6px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
+    word-wrap: break-word;
 }
 
 

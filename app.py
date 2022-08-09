@@ -113,7 +113,6 @@ def main():
 
     if(request.method=='GET'):
 
-         
         room = 1
         #Store the data in session
         session['username'] = username
@@ -174,27 +173,43 @@ def test():
 
 @app.route('/nodepanel',methods=['GET'])
 def nodepanel():
-    try: 
-        id = int(request.args.get("id"))
-    except:
-        id = 10
-        print("C_DEBUG: node id random init")
-   
-    if "ppi" in pfile["name"].lower():
-        data = names['names'][id]
-        #node_sym = data[0]
-        #node_id = data[1]
-        print("C_DEBUG: PPI nodepanel")
+    #try:
+    #    id = int(request.args.get("id"))
+    #except:
+    #    print('C_DEBUG: in except at start')
+    #    if id is None:
+    #        id=0            
        
-        return render_template('nodepanelppi.html', data=data) #, node_sym = node_sym, node_id=node_id)
+    if pfile:
+        if "ppi" in pfile["name"].lower():
+            try:
+                id = int(request.args.get("id"))
+            except:
+                id=0   
+
+            data = names['names'][id]
+            return render_template('nodepanelppi.html', data=data) 
+                
+        else:
+            try:
+                id = int(request.args.get("id"))
+            except:
+                print('C_DEBUG: in except else with pfile')
+                id=0   
+                    
+            data = names['names'][id]
+            print("C_DEBUG: general nodepanel")
+            return render_template('nodepanel.html',data=data)
     else:
-        data = names['names'][id]
-        print("C_DEBUG: general nodepanel")
-    
+        try:
+            id = int(request.args.get("id"))
+        except:
+            id=0 
+        print('C_DEBUG: in except else (no pfile)')     
+        data = {'names':[id]}
         return render_template('nodepanel.html',data=data)
 
-
-
+    
 ###SocketIO ROUTES###
 
 
