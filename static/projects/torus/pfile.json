@@ -1,1 +1,0 @@
-{"name": "torus", "layouts": ["torusnodes_01XYZ", "torusnodes_02XYZ", "torusnodes_03XYZ"], "layoutsRGB": ["torusnodes_01RGB", "torusnodes_02RGB", "torusnodes_03RGB"], "links": ["torus_elistXYZ"], "linksRGB": ["torus_elistRGB"], "selections": []}
