@@ -191,25 +191,24 @@
             <div id="tabs-1" class="container">
 
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VRNetzer</h2>
+                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Project</h2>
                 </div>
 
                 <div class="twelve columns">
-                    <div id="projects-section" class="five columns">
+                    <!--<div id="projects-section" class="five columns">
                         <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
                     </div>
-                    <div class="seven columns">
+                    <div class="seven columns">-->
                         <div class="cornerBox">
                             <select id='projects'></select>
                             <script>
                                 initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
                             </script>
                         </div>
-                    </div>
+                    <!--</div>-->
                 </div>
 
-                <br></br>
-
+                <!--
                 <div class="twelve columns">
                     <h3 class="seven columns">Nr. of Layouts : : </h3>
                     <div class="four columns">
@@ -224,7 +223,7 @@
                 </div>
 
                 <br></br>
-
+                -->
                 <!-- ADD NETWORK LAYOUT SELECTED TO SHOW UP IN UI ??
                                     <div class="twelve columns">
                                         <div class="frameBox">
@@ -238,21 +237,23 @@
                                     </div> 
                                     -->
 
-                <div class="frameBox">
+                <!--<div class="frameBox">
                     <div class="twelve columns">
 
                         <h7> LAYOUT MORPHING</h7>
-                        <!--<h4 class="eight columns">LAYOUTS</h4>
+                            <h4 class="eight columns">LAYOUTS</h4>
                                             <h4 class="four columns" style="padding-left:20px;"> MORPH</h4>-->
-                    </div>
+                    <!--</div>
                     <br>
                     </br>
                     <div class="twelve columns">
-                        <h4 class="eight columns">POSITION</h4>
+                        <h4 class="eight columns">POSITION</h4> 
 
-                        <div class="four columns">
+                        <div class="four columns"> -->
+
                             <!-- <input type="checkbox" id = 'chbXYZ' class="swagCheckbox"></checkbox>-->
-                            <div class="slideTwo">
+                            
+                            <!-- <div class="slideTwo">
                                 <input type="checkbox" value="None" id="chbXYZ" name="check"></checkbox>
                                 <label for="chbXYZ"></label>
                                 <script>
@@ -266,9 +267,11 @@
                     <div class="twelve columns">
                         <h4 class="eight columns"> NODE COLOR</h4>
 
-                        <div class="four columns">
+                        <div class="four columns"> -->
+
                             <!-- <input type="checkbox" id = 'chbNrgb' class="swagCheckbox"></button>-->
-                            <div class="slideTwo">
+                            
+                            <!-- <div class="slideTwo">
                                 <input type="checkbox" value="None" id="chbNrgb" name="check"></checkbox>
                                 <label for="chbNrgb"></label>
                                 <script>
@@ -281,9 +284,11 @@
                     <div class="twelve columns">
                         <h4 class="eight columns"> LINK COLOR</h4>
 
-                        <div class="four columns">
+                        <div class="four columns"> -->
+                            
                             <!-- <input type="checkbox" id = 'chbLrgb' class="swagCheckbox"></button>-->
-                            <div class="slideTwo">
+                                
+                            <!-- <div class="slideTwo">
                                 <input type="checkbox" value="None" id="chbLrgb" name="check"></checkbox>
                                 <label for="chbLrgb"></label>
                                 <script>
@@ -291,17 +296,45 @@
                                 </script>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </div> 
+                </div> -->
 
 
                 <!--<div class="twelve columns">-->
-                <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
+                <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
                     <!-- <div class="eight columns"> 
                                             <br></br>
                                         </div> -->
 
+                    <h5 style="text-align:end"> Visual Settings </h5>
+
+                    <div class="twelve columns"> 
+                        <!-- <div  class="lineglowslow"><br></br></div>
+                                        </div> -->
+
+                        <h6 class="border">NODE SIZE</h6>
+                        <div id="slider-node_size"></div>
+                        <h6 class="border">LINK SIZE</h6>
+                        <div id="slider-link_size"></div>
+                        <h6 class="border">LINK OPACITY</h6>
+                        <div id="slider-link_transparency"></div>
+                        <h6 class="border">LABEL SIZE</h6>
+                        <div id="slider-label_scale"></div>
+                        <script>
+                            initSlider('slider_scale');
+                            initSlider('slider-node_size');
+                            initSlider('slider-link_size');
+                            initSlider('slider-link_transparency');
+                            initSlider('slider-label_scale');
+                        </script>  
+                    </div>  
+                </div>
+                <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                    
+                    <h5 style="text-align:end"> Layout Morphing </h5>
+                    
                     <!-- backward button -->
+
                     <div class="four columns">
                         <input type="button" id='backwardstep' class="swagBackwardButton"></button>
                         <script>
@@ -338,18 +371,14 @@
 
                 </div>
 
-                <!--</div> -->
-                <!-- <div class="twelve columns"> 
-                                        <div  class="lineglowslow"><br></br></div>
-                                    </div>-->
-
+                <!-- </div> -->            
             </div>
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 2 - general Network information 
+                     tab 2 - general Network information 
                                             
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
             <div id="tabs-2" class="container">
                 <div class="twelve columns">
                     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">SELECT</h2>
@@ -425,16 +454,16 @@
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                        tab 3 - sliders for visual network mods
+                 tab 3 - sliders for visual network mods
                                             
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-3">
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
-                </div>
+                   <!-- <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
+                </div> -->
                 <!-- SLIDERS 
                                     <h3 class="border">SCALE</h3>
-                                    <div id="slider_scale"></div> -->
+                                    <div id="slider_scale"></div>
                 <h3 class="border">NODE SIZE</h3>
                 <div id="slider-node_size"></div>
                 <h3 class="border">LINK SIZE</h3>
@@ -451,7 +480,7 @@
                     initSlider('slider-label_scale');
                 </script>
 
-            </div>
+            </div> -->
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
