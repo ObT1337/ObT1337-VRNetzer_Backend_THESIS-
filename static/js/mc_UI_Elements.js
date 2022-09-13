@@ -217,7 +217,7 @@ function initSlider (id){
 
 
 function initCheckbox (id){
-  $('#'+ id).on("load", function(){ //"change"
+  $('#'+ id).on("change", function(){ 
     socket.emit('ex', {id: id, val: $('#'+ id).is(":checked"), fn: "chk"});
   });
 
@@ -225,7 +225,6 @@ function initCheckbox (id){
 
 
 function initButton (id){
-
   $('#'+ id).on("click", function(){
     var $this = $(this);
     socket.emit('ex', {id: id, val: $this.val(), fn: "but"}); 
