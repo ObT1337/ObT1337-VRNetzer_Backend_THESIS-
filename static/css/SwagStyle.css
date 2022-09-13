@@ -137,9 +137,9 @@ h5 {
     /*'Akshar-reg', sans-serif; */
     font-size: 19px;
     padding: 0%;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    color: rgb(255, 255, 255);
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: rgba(255, 255, 255,0.5);
     font-weight: lighter;
 
 }
@@ -150,8 +150,8 @@ h6 {
     /*'Akshar-reg', sans-serif; */
     font-size: 16px;
     padding: 0%;
-    margin-bottom: 10px;
-    margin-top: 15px;
+    margin-bottom: 0px;
+    margin-top: 10px;
     font-style: italic;
     color: rgb(59, 157, 206);
     font-weight: lighter;
@@ -215,12 +215,13 @@ p {
 
 html,
 body {
-    background: #000000;
+    background: rgba(0,0,0,0.5);
 }
 
 .container {
     height: fit-content;
     width: 100%;
+    background: rgba(0,0,0,0.1);
 }
 
 .column,
@@ -237,6 +238,7 @@ body {
     .container {
         width: 100%;
         height: fit-content;
+        background: rgba(0,0,0,0.1);
     }
     .column,
     .columns {
@@ -276,7 +278,7 @@ body {
         width: 28%;
     }
     .four.columns {
-        width: 30.6666666667%;
+        width: 33.25%;
     }
     .five.columns {
         width: 39.3333333333%;
@@ -465,9 +467,6 @@ input[type="button"] {
     cursor: pointer;
     padding: 12px;
     margin-top: 10px;
-    margin-left:6px;
-    margin-left:6px;
-    /*background:rgba(66, 66, 66, 0);*/
     border: 10px solid transparent;
     border-image: url("images/frame1.png") 10 stretch;
 }
@@ -479,7 +478,7 @@ input[type="button"] {
 }
 
 .swagTextButton:hover {
-    background-color: rgba(2, 77, 114, 0.45);
+    background-color: rgba(2, 77, 114, 0.5);
 }
 
 .swagTextButton:focus {
@@ -572,7 +571,6 @@ input[type=checkbox] {
 
 /* SLIDE TWO */
 
-
 /* slider background */
 
 .slideTwo {
@@ -622,8 +620,8 @@ input[type=checkbox] {
     position: absolute;
     top: 7px;
     left: 4px;
-    z-index: 1;
-    background: rgb(41, 41, 41);
+    z-index: 0;
+    background: rgb(41, 41, 41, 0);
 }
 
 .slideTwo label:after {
@@ -676,7 +674,7 @@ input[type=checkbox] {
     border: 10px solid transparent;
     padding: 5px;
     border-image: url("images/frame1.png") 10 stretch;
-    background-color: rgba(20, 20, 20, 1);
+    background-color: rgba(20, 20, 20, 0.5);
     min-height: 58px;
 }
 
