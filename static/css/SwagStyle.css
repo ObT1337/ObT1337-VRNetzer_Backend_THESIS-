@@ -535,44 +535,17 @@ input[type="button"] {
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              Slider Checkbox (on/off)
+              Slider SWITCH Checkbox (on/off)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-
-/* ----------- O L D ---------------
-input[type="checkbox"]
-    {
-      width: 1em;
-      height: 1em;
-      background: rgb(75, 114, 2);
-      /*-moz-padding-start: calc(10px - 3px);
-      font-family: 'Future', sans-serif;
-      font-size: 20px;
-      font-weight: 10;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      background:rgb(255, 136, 136);
-      border: 0px solid transparent;
-      padding: 10px;
-      border-image: url("images/frame1.png") 10 stretch;
-    }
-
-.swagCheckbox {
-  background: rgba(2, 77, 114, 1.0);
-  }*/
-
-
-/* --------------- N E W --------------- */
 
 input[type=checkbox] {
     visibility: hidden;
 }
 
 
-/* SLIDE TWO */
+/* SLIDER SWITCH */
 
 /* slider background */
-
 .slideTwo {
     height: 50px;
     width: 90px;
@@ -586,9 +559,7 @@ input[type=checkbox] {
     display: inline-block;
 }
 
-
 /* the grey slider background line */
-
 .slideTwo:after {
     content: '';
     position: absolute;
@@ -604,7 +575,6 @@ input[type=checkbox] {
 
 
 /* the moving element of the slider */
-
 .slideTwo label {
     width: 62px;
     height: 36px;

@@ -161,7 +161,7 @@ button.ui-button::-moz-focus-inner {
     /*-moz-padding-start: calc(10px - 3px);*/
     padding:0px;
 	color: rgb(255, 255, 255);
-    background:rgb(20,20,20,1);
+    background:rgb(20,20,20,0.7);
     border-image: url("images/frame1.png") 10 stretch;    
     cursor: pointer;
 }
@@ -190,7 +190,6 @@ button.ui-button::-moz-focus-inner {
 .ui-selectmenu-icon.ui-icon {
 	float: right;
 	margin-top: 3px;
-	background-color:#00000000;
 }
 
 .ui-front {
@@ -198,14 +197,10 @@ button.ui-button::-moz-focus-inner {
 }
 .ui-button .ui-icon {
 	background-image: url("images/ui-icons_cccccc_256x240.png");
-	background-color: rgb(66,66,66);
+	background-color: rgba(66,66,66,0);
 }
 
 /* ---------- DROPDOWN ACTIVE ---------- */
-.ui-button.ui-state-active:hover,
-.ui-button.ui-state-active:focus {
-	font-weight: normal;
-}
 /* We use html here because we need a greater specificity to make sure disabled
 works properly when clicked or hovered */
 html .ui-button.ui-state-disabled:hover,
@@ -240,7 +235,6 @@ a.ui-button:active,
 }
 .ui-selectmenu-menu {
 	/*position: relative;*/
-	background-color:rgba(0, 0, 0, 0);
 	display: none;
 }
 .ui-selectmenu-open {
@@ -264,9 +258,9 @@ a.ui-button:active,
 }
 .ui-menu .ui-menu-item {
 	margin: 0;
-	margin-left:10px;
 	cursor: pointer;
-	text-overflow:hidden;
+	text-overflow: hidden;
+
 	/* support: IE10, see #8844 
 	list-style-image: url("data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7");*/
 }
@@ -277,15 +271,16 @@ a.ui-button:active,
 }
 /* open dropdown*/
 .ui-menu .ui-menu-item-wrapper {
-	display:block;
-	line-height:2.2rem;
+	display: block;
+	line-height:2.4rem;
+	padding-left: 10px;
+	background-color: rgba(0,0,0,0.2);
 }
 /* open dropdown hover item*/
 .ui-menu .ui-state-focus,
 .ui-menu .ui-state-active {
-	margin: -2px; /*to make text pop out when hovering */
-	padding:0px;
-	background-color:rgba(2, 77, 114, 0.45);
+	margin: 2x; /*to make text pop out when hovering */
+	background-color:rgba(2, 77, 114, 0.5);
 }
 /* icon support */
 .ui-menu-icons {
@@ -299,7 +294,7 @@ a.ui-button:active,
 	position: absolute;
 	top: 0;
 	bottom: 0;
-	left: .2em;
+	left: 0em;
 	margin: 0;
 }
 /* right-aligned */
@@ -359,45 +354,38 @@ a.ui-button:active,
 
 
 /* ------------------------------------------
-            S L I D E R S 
+          R A N G E  S L I D E R S 
 ------------------------------------------ */
 .ui-slider {
 	position: relative;
-	width:100%;
-	margin-bottom:8px;
-
+	width:89%; /* temporary fix for slider to not exceed range limits in UI position */
+	margin-bottom: 20px;
 }
+
 .ui-slider-handle {
-	position: absolute;
+	position:absolute;
 	cursor: pointer;
 	-ms-touch-action: auto;
 	touch-action: auto;
-	width:60px;
 	height: 24px;
-	margin-top:6px;
+	margin-top: 8px;
 	z-index:2;
 }
 
 .ui-slider-handle.ui-state-default {
-	background-color: rgba(71, 117, 138,1) !important;
+	background-color: rgba(71, 117, 138, 0.5) !important;
 	background-image: none;
+	border-color: rgba(71, 117, 138, 1);
 	border-radius: 8px;
-
 }
-
 
 .ui-slider.ui-slider-horizontal {
 	height: 24px;
 	background: transparent url(images/slider_blue2.png);
-
 }
-.ui-slider-range.ui-corner-all.ui-widget-header.ui-slider-range-max{
-	background: #222222 solid url(images/slider_blue2.png);
-}
-
 
 .ui-slider-handle.ui-state-hover {
-	background-color:#ffffff !important; 
+	background-color:rgba(255,255,255,0.7) !important; 
 }
 
 .ui-slider-range {
@@ -414,15 +402,15 @@ a.ui-button:active,
 }
 
 .ui-slider-horizontal {
-	width:100%;
 	z-index:0;
 }
 .ui-slider-horizontal .ui-slider-handle {
 	top: 0px;
 	margin-left: 0;
+	padding-right: 60px;
 }
 .ui-slider-horizontal .ui-slider-range {
-	top: 0;
+	top: 0px;
 	height: 100%;
 }
 
@@ -430,19 +418,16 @@ a.ui-button:active,
 	left: 0px;
 }
 .ui-slider-horizontal .ui-slider-range-max {
-	right: 0px;
 	border-radius: 8px;
+	right:0px;
 	z-index:0;
 	background-image: none;
-	background-color: rgba(0, 0, 0, 0.25);
-	margin-top:6px;
-
+	background-color: rgba(0, 0, 0, 0.5);
+	margin-top: 8px;
 }
 
 .ui-slider-vertical .ui-slider-handle {
 	left: -.3em;
-	margin-left: 0;
-	margin-bottom: 0em;
 }
 
   

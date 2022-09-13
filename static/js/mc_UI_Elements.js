@@ -238,10 +238,7 @@ function initToggle (id, texts){
 }
 
 
-
-
 function initCheckbox (id){
-
   $('#'+ id).on("change", function(){
     socket.emit('ex', {id: id, val: $('#'+ id).is(":checked"), fn: "chk"}); 
   });
