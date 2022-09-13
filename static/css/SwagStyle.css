@@ -804,7 +804,10 @@ input[type=checkbox] {
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
-    margin: 10px 0 0px;
+    margin-left:10px;
+    font-size: 48px; 
+    margin-bottom:20px;
+    margin-top:20px
 }
 
 .lineglowslow {
@@ -813,6 +816,10 @@ input[type=checkbox] {
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
+    margin-left:10px;
+    font-size: 48px; 
+    margin-bottom:20px;
+    margin-top:20px
 }
 
 .lineglow-particles {
