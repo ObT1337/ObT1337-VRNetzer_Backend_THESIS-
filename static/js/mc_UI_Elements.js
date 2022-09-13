@@ -215,6 +215,15 @@ function initSlider (id){
 
 }
 
+
+function initCheckbox (id){
+  $('#'+ id).on("load", function(){ //"change"
+    socket.emit('ex', {id: id, val: $('#'+ id).is(":checked"), fn: "chk"});
+  });
+
+}
+
+
 function initButton (id){
 
   $('#'+ id).on("click", function(){
@@ -237,13 +246,6 @@ function initToggle (id, texts){
 
 }
 
-
-function initCheckbox (id){
-  $('#'+ id).on("change", function(){
-    socket.emit('ex', {id: id, val: $('#'+ id), fn: "chk"});  //after (...id) > .is(":checked"), fn: "chk"}); 
-  });
-
-}
 
 
 
