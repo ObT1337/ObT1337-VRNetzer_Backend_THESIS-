@@ -9,6 +9,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
             <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/StringStlye.css') }}">
                 
 
                     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
@@ -170,8 +171,8 @@
                                             src="{{ url_for('static', filename='img/active_sel.png') }}" /></a></li>-->
                             <li><a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_tune.png') }}" /></a></li>
-                            <!--<li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                            src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>-->
+                            <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                            src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
                             <!--<li><a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
                                             src="{{ url_for('static', filename='img/active_pin.png') }}" /></a></li>-->
                             <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
@@ -408,6 +409,86 @@
                                 </script> 
                                                           
                         </div>
+                        <div id="tabs-4" class="container">
+
+                            <div class="twelve columns">
+                                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">String App</h2>
+                            </div>
+
+                                <div class="twelve columns">
+                                    <div id="evidence-section" class="five columns">
+                                    <div class="twelve columns">
+                                            <h3> Evidence filter</h3>
+                                            <h4 class="five columns" style="padding-left:20px;background-color:#c8c8c8;
+                                            border-radius: 20px;">
+                                                All</h4>
+                                            <script>
+                                                // TODO script for selecting "all" layout
+                                            </script>
+                                </div>
+                                <div class="twelve columns">
+                                        <h3> Known interactions</h3>
+                                            <h4 class="five columns" style="padding-left:20px;background-color:#ff00ff;
+                                            border-radius: 20px;">
+                                            Experiments</h4>
+                                            <script>
+                                                // TODO script for selecting "Experiments" layout
+                                            </script>
+                                            <h4 class="five columns" style="padding-left:20px;background-color:#00ffff;
+                                            border-radius: 20px;"> Database</h4>
+                                            <script>
+                                                // TODO script for selecting "Database" layout
+                                            </script>
+                                </div>
+                                <div class="twelve columns">
+                                    <h3> Predicted interactions</h3>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#00ff00;
+                                        border-radius: 20px;"> 
+                                            Neighborhood</h4>
+                                            <script>
+                                                // TODO script for selecting "Neighborhood" layout
+                                            </script>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#ff0000;
+                                        border-radius: 20px;">
+                                            Fusion</h4>
+                                            <script>
+                                                // TODO script for selecting "Fusion" layout
+                                            </script>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#0000ff;
+                                        border-radius: 20px;"> 
+                                            Cooccurrence</h4>
+                                            <script>
+                                                // TODO script for selecting "cooccurrence" layout
+                                            </script>
+                                </div>
+                                <div class="twelve columns">
+                                    <h3> Other Evidences</h3>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#c6ea46;
+                                        border-radius: 20px;"> 
+                                            Textmining</h4>
+                                            <script>
+                                                // TODO script for selecting "Textmining" layout
+                                            </script>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#323232;
+                                        border-radius: 20px;"> 
+                                            Coexpression</h4>
+                                            <script>
+                                                // TODO script for selecting "Coexpression" layout
+                                            </script>
+                                        <h4 class="five columns" style="padding-left:20px;background-color:#9d9df8;border-radius: 20px;">
+                                            Homology</h4>
+                                            <script>
+                                                // TODO script for selecting "similarity"/"homology" layout
+                                            </script>
+                                </div>
+                                <div class="twelve columns">
+                                    <h3> Information</h3>
+                                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+                                </div>
+                                <br></br>
+                        </div> 
+                        
+
 
                         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
