@@ -35,6 +35,7 @@
                 }
             ],
             "n": "name",
+            "attr":["what","ever"],
             "optionalUserKeys": "whaterver you want..."
         },
         {},
