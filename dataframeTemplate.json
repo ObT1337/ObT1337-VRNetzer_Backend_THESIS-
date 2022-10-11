@@ -4,7 +4,7 @@
             "id": 666,
             "layouts": [
                 {   
-                    "n":"this layout Name",
+                    "n":"1st layout Name",
                     "p": [
                         0.002,
                         0.99,
@@ -18,7 +18,7 @@
                     ]
                 },
                 {
-                    "n":"this layout Name",
+                    "n":"2nd layout Name",
                     "p": [
                         0.002,
                         0.99,
@@ -50,24 +50,22 @@
             "e": 456,
             "c": [
                 {
-                    "n":"this linklist Name",
+                    "n":"1st linklist Name",
                     "c": [
                         0,
                         255,
                         255,
                         128
-                    ],
-                    "optionalWeight": 0.75
+                    ]
                 },
                 {
-                    "n":"this linklist Name",
+                    "n":"2nd linklist Name",
                     "c": [
                         0,
                         255,
                         255,
                         128
-                    ],
-                    "optionalWeight": 0.75
+                    ]
                 }
             ],
             "optionalUserKeys": "whaterver you want..."

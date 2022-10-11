@@ -67,6 +67,10 @@ def ServerSideVarR():
 def test3():
     return render_template('test.html')
 
+@app.route('/Graph')
+def test4():
+   # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
+    return render_template('threeJSTest1.html', data = '{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}')
 
 
 
