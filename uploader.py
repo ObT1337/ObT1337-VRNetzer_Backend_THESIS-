@@ -106,11 +106,13 @@ def makeNodeTex(project, name, file):
             #print(row[7])
             my_list = row[7].split(";")
             attrlist['names'].append(my_list)
+            
             thisnode = {}
             thisnode["id"] = i
-            thisnode["name"] = my_list[0]
+            thisnode["n"] = my_list[0]
             thisnode["attrlist"] = my_list
             nodelist["nodes"].append(thisnode)
+
             x = int(float(row[0])*65280)
             y = int(float(row[1])*65280)
             z = int(float(row[2])*65280)
@@ -158,8 +160,7 @@ def makeNodeTex(project, name, file):
         new_imgc.save(pathRGB, "PNG")
         return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
     
-    
-    
+       
 def makeLinkTex(project, name, file):
     
     f = StringIO(file)

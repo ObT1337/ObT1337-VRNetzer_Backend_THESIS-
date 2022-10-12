@@ -1,3 +1,4 @@
+from cgi import print_arguments
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_socketio import SocketIO, join_room, leave_room, emit
 #from flask_session import Session
@@ -106,6 +107,55 @@ def test4():
     #print(testNetwork)
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template('threeJSNav.html', data =  json.dumps(testNetwork))
+
+@app.route('/GraphfromIMG')
+def test44():
+    #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
+    y = '{"nodes": [], "links":[]}'
+    testNetwork = json.loads(y)
+    scale = 0.000254
+
+    
+
+    im = Image.open('static/projects/tea/layouts/teapot_nodesXYZ.bmp', 'r')
+    iml = Image.open('static/projects/tea/layoutsl/teapot_nodesXYZl.bmp', 'r')
+    width, height = im.size
+    pixel_values = list(im.getdata())
+    pixel_valuesl = list(iml.getdata())
+    #print(pixel_values[len(pixel_values)-1])
+    i = 0
+    for x in pixel_values:
+        if x[0] == 0 and x[1] == 0 and x[1] == 0:
+            y = 1
+        else:
+            newnode = {}
+            newnode['p'] = [float(x[0]*255 + pixel_valuesl[i][0])*scale,float(x[1]*255 + pixel_valuesl[i][1])*scale,float(x[2]*255 + pixel_valuesl[i][2])*scale]
+            testNetwork["nodes"].append(newnode)
+            i= i + 1
+    #print(testNetwork)
+
+
+    name = "static/projects/tea/links"
+    f = open(name + ".json", "r")
+    links = json.load(f)
+    length = len(links["links"])
+    
+    
+    for x in range (length-1):
+        newLink = {}
+        newLink["id"] = x
+        newLink["s"] = links["links"][x]["s"]
+        newLink["e"] = links["links"][x]["e"]
+        testNetwork["links"].append(newLink)
+        #print(links["links"][x])
+
+
+
+    #print(testNetwork)
+   # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
+    return render_template('threeJSNav.html', data =  json.dumps(testNetwork))
+
+    
 
 
 
