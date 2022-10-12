@@ -60,7 +60,47 @@
             
             // mesh
             mesh = new THREE.Mesh( geometry, material );
-            scene.add( mesh );
+            //scene.add( mesh );
+
+            var data = JSON.parse({{data|tojson}});
+
+            const nscale = .025;
+            // Draw Nodes
+
+            for (let i = 0; i < data['nodes'].length; i++) {
+                const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
+                const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(255,255,0)} );//"rgb(155, 102, 102)" 
+                const cube = new THREE.Mesh( ngeometry, nmaterial );
+                //console.log(data['nodes'][i]["p"]);
+                scene.add( cube );
+                //cube.position.set(0, 10, 0);
+                cube.position.set(data['nodes'][i]["p"][0],data['nodes'][i]["p"][1],data['nodes'][i]["p"][2]); //0x00ff00
+                }
+
+            // Draw Links
+
+            for (let l = 0; l < data['links'].length; l++) {
+                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(128,0,128) } );
+                const points = [];
+                const start =  data['links'][l]["s"];
+                const end =  data['links'][l]["e"];
+                points.push( new THREE.Vector3( data['nodes'][start]["p"][0], data['nodes'][start]["p"][1], data['nodes'][start]["p"][2] ) );
+                points.push( new THREE.Vector3( data['nodes'][end]["p"][0], data['nodes'][end]["p"][1], data['nodes'][end]["p"][2] ) );
+
+                const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line( geometry1, material1 );
+                scene.add(line);
+                }
+
+            //renderer.render( scene, camera );
+            console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" )
+            // camera rotation-> https://jsfiddle.net/8kn4qrz0/
+
+            function RGB2HTML(red, green, blue)
+            {
+                var decColor =0x1000000+ blue + 0x100 * green + 0x10000 *red ;
+                return '#'+decColor.toString(16).substr(1);
+            }
             
         }
 

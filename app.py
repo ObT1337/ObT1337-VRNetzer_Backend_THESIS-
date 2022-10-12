@@ -76,7 +76,7 @@ def test4():
     #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
-    scale = 100.0
+    scale = 10.0
 
     name = "static/csv/teapot_nodes"
     f = open(name + ".csv", "r")
@@ -105,7 +105,7 @@ def test4():
 
     #print(testNetwork)
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template('threeJSGraph.html', data =  json.dumps(testNetwork))
+    return render_template('threeJSNav.html', data =  json.dumps(testNetwork))
 
 
 
