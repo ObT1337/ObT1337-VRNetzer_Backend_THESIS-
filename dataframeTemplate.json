@@ -2,72 +2,23 @@
     "nodes": [
         {
             "id": 666,
-            "layouts": [
-                {   
-                    "n":"1st layout Name",
-                    "p": [
-                        0.002,
-                        0.99,
-                        0.5
-                    ],
-                    "c": [
-                        0,
-                        255,
-                        255,
-                        128
-                    ]
-                },
-                {
-                    "n":"2nd layout Name",
-                    "p": [
-                        0.002,
-                        0.99,
-                        0.5
-                    ],
-                    "c": [
-                        0,
-                        255,
-                        255,
-                        128
-                    ]
-                }
-            ],
+            
             "n": "name",
             "optionalUserKeys": "whaterver you want...",
             "optionalAttr":["ABC","UVW"]
         },
         {},
         {}
-    ],
-    "linkColors": [
-        "name1",
-        "name2"
-    ],
+    ]
+}
+
+{
     "links": [
         {
             "id": 666,
             "s": 123,
             "e": 456,
-            "c": [
-                {
-                    "n":"1st linklist Name",
-                    "c": [
-                        0,
-                        255,
-                        255,
-                        128
-                    ]
-                },
-                {
-                    "n":"2nd linklist Name",
-                    "c": [
-                        0,
-                        255,
-                        255,
-                        128
-                    ]
-                }
-            ],
+            
             "optionalUserKeys": "whaterver you want..."
         },
         {},

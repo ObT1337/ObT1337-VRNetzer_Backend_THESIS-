@@ -68,6 +68,7 @@
             // Draw Nodes
 
             for (let i = 0; i < data['nodes'].length; i++) {
+            //for (let i = 0; i < 300; i++) {
                 const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
                 const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(255,255,0)} );//"rgb(155, 102, 102)" 
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
