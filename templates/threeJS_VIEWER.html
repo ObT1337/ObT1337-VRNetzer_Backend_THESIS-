@@ -32,7 +32,7 @@
             // camera
             camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
             camera.position.set( 20, 0, 0 );
-            camera.layers.enable( 1 );
+            camera.layers.enable( 1 );// camera shows layers 0 + 1, only 0 (cubes) gets racasted
             raycaster = new THREE.Raycaster();
             mouse = new THREE.Vector2()
             // controls
@@ -65,6 +65,7 @@
             //scene.add( mesh );
 
             var data = JSON.parse({{data|tojson}});
+            console.log(data);
 
             const nscale = .01;
             // Draw Nodes
@@ -123,8 +124,8 @@
 
             raycaster.setFromCamera(mouse, camera);
 
-            var intersects = raycaster.intersectObject(scene, true);
-            console.log("click")
+            var intersects = raycaster.intersectObject(scene, true); 
+             
             if (intersects.length > 0) {
             
                 var object = intersects[0].object;

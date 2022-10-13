@@ -15,7 +15,7 @@
     <script>
       var container, stats, controls;
       var camera, scene, renderer;
-
+      var data = JSON.parse({{data|tojson}});
       var raycaster, mouse;
 
       init();
@@ -29,13 +29,15 @@
         container = document.createElement('div');
         document.body.appendChild(container);
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.25, 20);
-        camera.position.set(-1.8, 0.9, 2.7);
+        camera.position.set(-5, 0.9, 2.7);
+        camera.layers.enable( 1 );
         scene = new THREE.Scene();
         raycaster = new THREE.Raycaster();
+        raycaster.layers.set(0);
         mouse = new THREE.Vector2()
 
 
-
+/*  //RANDOM CUBES
         const nscale = 0.02;
 
 
@@ -58,9 +60,43 @@
                 //cube.position.set(0, 10, 0);
                 cube.position.set(Math.random()*10,Math.random()*10,Math.random()*10); //0x00ff00
         }
+*/
 
+// IMPORT NETWORK FROM FLASK
 
+        
 
+        const nscale = .03;
+        // Draw Nodes
+
+        for (let i = 0; i < data['nodes'].length; i++) {
+        //for (let i = 0; i < 300; i++) {
+            const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
+            const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(255,255,0)} );//"rgb(155, 102, 102)" 
+            const cube = new THREE.Mesh( ngeometry, nmaterial );
+            cube.name = i;
+            cube.layers.set(0);
+            //console.log(data['nodes'][i]["p"]);
+            scene.add( cube );
+            //cube.position.set(0, 10, 0);
+            cube.position.set(data['nodes'][i]["p"][0],data['nodes'][i]["p"][1],data['nodes'][i]["p"][2]); //0x00ff00
+            }
+
+        // Draw Links
+
+        for (let l = 0; l < data['links'].length; l++) {
+            const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(128,0,128) } );
+            const points = [];
+            const start =  data['links'][l]["s"];
+            const end =  data['links'][l]["e"];
+            points.push( new THREE.Vector3( data['nodes'][start]["p"][0], data['nodes'][start]["p"][1], data['nodes'][start]["p"][2] ) );
+            points.push( new THREE.Vector3( data['nodes'][end]["p"][0], data['nodes'][end]["p"][1], data['nodes'][end]["p"][2] ) );
+
+            const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
+            const line = new THREE.Line( geometry1, material1 );
+            line.layers.set(1);
+            scene.add(line);
+        }
 
 
 
@@ -96,7 +132,7 @@
 
         window.addEventListener('resize', onWindowResize, false);
 
-        renderer.domElement.addEventListener('click', onClick, false);
+        //renderer.domElement.addEventListener('click', onClick, false);
 
       }
 
@@ -114,7 +150,8 @@
         if (intersects.length > 0) {
         
           var object = intersects[0].object;
-          console.log(object.name)
+          console.log(object.name);
+          console.log(data["nodes"][object.name]);
 
           object.material.color.set( Math.random() * 0xffffff );
 

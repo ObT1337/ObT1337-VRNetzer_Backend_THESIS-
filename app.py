@@ -106,7 +106,7 @@ def test4():
 
     #print(testNetwork)
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template('threeJSNav.html', data =  json.dumps(testNetwork))
+    return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork))
 
 @app.route('/GraphfromIMG')
 def test44():
@@ -115,7 +115,11 @@ def test44():
     testNetwork = json.loads(y)
     scale = 0.000254
 
-    
+    name = "static/projects/tea/nodes"
+    n = open(name + ".json", "r")
+    nodes = json.load(n)
+    nlength = len(nodes["nodes"])
+    print(nlength)
 
     im = Image.open('static/projects/tea/layouts/teapot_nodesXYZ.bmp', 'r')
     iml = Image.open('static/projects/tea/layoutsl/teapot_nodesXYZl.bmp', 'r')
@@ -124,14 +128,16 @@ def test44():
     pixel_valuesl = list(iml.getdata())
     #print(pixel_values[len(pixel_values)-1])
     i = 0
-    for x in pixel_values:
-        if x[0] == 0 and x[1] == 0 and x[1] == 0:
-            y = 1
-        else:
+    for x in pixel_values :
+        if i < nlength:
             newnode = {}
-            newnode['p'] = [float(x[0]*255 + pixel_valuesl[i][0])*scale,float(x[1]*255 + pixel_valuesl[i][1])*scale,float(x[2]*255 + pixel_valuesl[i][2])*scale]
+            pos = [float(x[0]*255 + pixel_valuesl[i][0])*scale,float(x[1]*255 + pixel_valuesl[i][1])*scale,float(x[2]*255 + pixel_valuesl[i][2])*scale]
+            #pos1 = [float(pixel_values[x][0]*255 + pixel_valuesl[x][0])*scale,float(pixel_values[x][1]*255 + pixel_valuesl[x][1])*scale,float(pixel_values[x][2]*255 + pixel_valuesl[i][2])*scale]
+            newnode['p'] = pos
+            newnode['n'] = "reeee"
             testNetwork["nodes"].append(newnode)
             i= i + 1
+
     #print(testNetwork)
 
 
@@ -153,7 +159,7 @@ def test44():
 
     #print(testNetwork)
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template('threeJSNav.html', data =  json.dumps(testNetwork))
+    return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork))
 
     
 
