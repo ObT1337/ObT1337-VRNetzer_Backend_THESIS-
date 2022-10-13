@@ -32,7 +32,8 @@
             // camera
             camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
             camera.position.set( 20, 20, 20 );
-
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2()
             // controls
             controls = new THREE.OrbitControls( camera, renderer.domElement );
             
@@ -102,7 +103,45 @@
                 var decColor =0x1000000+ blue + 0x100 * green + 0x10000 *red ;
                 return '#'+decColor.toString(16).substr(1);
             }
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            renderer.domElement.addEventListener('click', onClick, false);
             
+        }
+
+        function onClick() {
+
+            event.preventDefault();
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObject(scene, true);
+            console.log("click")
+            if (intersects.length > 0) {
+            
+                var object = intersects[0].object;
+                console.log(object)
+                object.material.color.set( Math.random() * 0xffffff );
+
+            }
+            
+            //render();
+
+        }
+
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            //render();
+
         }
 
         function animate() {
@@ -116,17 +155,10 @@
         }
 
         function rigth(){
-
-
-            camera.position.set(0,0,20);
-        
-            
-        camera.lookAt(0,0,0);
-        camera.rotation.z += Math.PI/2
-        
-        camera.updateProjectionMatrix();	
-        
-
+            camera.position.set(0,0,20);   
+            camera.lookAt(0,0,0);
+            camera.rotation.z += Math.PI/2
+            camera.updateProjectionMatrix();	
         }
 		</script>
 	</body>

@@ -70,7 +70,7 @@ def test3():
 
 @app.route('/Nav')
 def nav():
-    return render_template('threeJSNav.html')
+    return render_template('threeJSLinetrace.html')
 
 @app.route('/Graph')
 def test4():
