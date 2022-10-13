@@ -7,6 +7,7 @@
 			body { margin: 0; }
 		</style>
 	</head>
+
 	<body>
         
 		<script src="static/js/three.js"></script>
@@ -14,7 +15,7 @@
         <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 		<script>
         var mesh, renderer, scene, camera, controls;
-
+        var data = JSON.parse({{data|tojson}});
         init();
         animate();
         rigth();
@@ -28,7 +29,8 @@
 
             // scene
             scene = new THREE.Scene();
-            
+
+
             // camera
             camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
             camera.position.set( 20, 0, 0 );
@@ -37,7 +39,9 @@
             mouse = new THREE.Vector2()
             // controls
             controls = new THREE.OrbitControls( camera, renderer.domElement );
-            
+            // axes
+            scene.add( new THREE.AxesHelper( 20 ) );
+            /*
             // ambient
             scene.add( new THREE.AmbientLight( 0x222222 ) );
             
@@ -46,8 +50,7 @@
             light.position.set( 20,20, 0 );
             scene.add( light );
             
-            // axes
-            scene.add( new THREE.AxesHelper( 20 ) );
+
 
             // geometry
             var geometry = new THREE.SphereGeometry( 5, 12, 8 );
@@ -63,17 +66,17 @@
             // mesh
             mesh = new THREE.Mesh( geometry, material );
             //scene.add( mesh );
-
-            var data = JSON.parse({{data|tojson}});
+*/
+           
             console.log(data);
 
-            const nscale = .01;
+            const nscale = .03;
             // Draw Nodes
-
+            console.log(data['nodes'][0]['c'][0])
             for (let i = 0; i < data['nodes'].length; i++) {
             //for (let i = 0; i < 300; i++) {
                 const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
-                const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(255,255,0)} );//"rgb(155, 102, 102)" 
+                const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
                 cube.name = i;
                 cube.layers.set(0);
@@ -86,7 +89,7 @@
             // Draw Links
 
             for (let l = 0; l < data['links'].length; l++) {
-                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(128,0,128) } );
+                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(data['links'][l]["c"][0],data['links'][l]["c"][1],data['links'][l]["c"][2]) } );
                 const points = [];
                 const start =  data['links'][l]["s"];
                 const end =  data['links'][l]["e"];
@@ -129,8 +132,9 @@
             if (intersects.length > 0) {
             
                 var object = intersects[0].object;
-                console.log(object.name)
+                console.log(data["nodes"][object.name]["n"]);
                 object.material.color.set( Math.random() * 0xffffff );
+
 
             }
             
@@ -166,5 +170,6 @@
             camera.updateProjectionMatrix();	
         }
 		</script>
+        
 	</body>
 </html>

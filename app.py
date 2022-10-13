@@ -108,12 +108,18 @@ def test4():
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork))
 
-@app.route('/GraphfromIMG')
+@app.route('/GraphfromIMG', methods=['GET'])
 def test44():
     #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
+    print(request.args.get("project"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
+
+    pname = "static/projects/" + request.args.get("project") + "/pfile"
+    p = open(pname + ".json", "r")
+    thispfile = json.load(p)
+    print(thispfile["layouts"])
 
     name = "static/projects/tea/nodes"
     n = open(name + ".json", "r")
@@ -123,18 +129,24 @@ def test44():
 
     im = Image.open('static/projects/tea/layouts/teapot_nodesXYZ.bmp', 'r')
     iml = Image.open('static/projects/tea/layoutsl/teapot_nodesXYZl.bmp', 'r')
+    imc = Image.open('static/projects/tea/layoutsRGB/teapot_nodesRGB.png', 'r')
+    imlc = Image.open('static/projects/tea/linksRGB/teapot_linksRGB.png', 'r')
+
     width, height = im.size
     pixel_values = list(im.getdata())
     pixel_valuesl = list(iml.getdata())
+    pixel_valuesc = list(imc.getdata())
+    pixel_valueslc = list(imlc.getdata())
     #print(pixel_values[len(pixel_values)-1])
     i = 0
     for x in pixel_values :
         if i < nlength:
             newnode = {}
             pos = [float(x[0]*255 + pixel_valuesl[i][0])*scale,float(x[1]*255 + pixel_valuesl[i][1])*scale,float(x[2]*255 + pixel_valuesl[i][2])*scale]
-            #pos1 = [float(pixel_values[x][0]*255 + pixel_valuesl[x][0])*scale,float(pixel_values[x][1]*255 + pixel_valuesl[x][1])*scale,float(pixel_values[x][2]*255 + pixel_valuesl[i][2])*scale]
+            
             newnode['p'] = pos
-            newnode['n'] = "reeee"
+            newnode['c'] = pixel_valuesc[i]
+            newnode['n'] = nodes["nodes"][i]["n"]
             testNetwork["nodes"].append(newnode)
             i= i + 1
 
@@ -152,6 +164,7 @@ def test44():
         newLink["id"] = x
         newLink["s"] = links["links"][x]["s"]
         newLink["e"] = links["links"][x]["e"]
+        newLink['c'] = pixel_valueslc[x]
         testNetwork["links"].append(newLink)
         #print(links["links"][x])
 
