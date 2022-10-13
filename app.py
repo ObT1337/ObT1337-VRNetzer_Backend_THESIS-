@@ -121,16 +121,22 @@ def test44():
     thispfile = json.load(p)
     print(thispfile["layouts"])
 
-    name = "static/projects/tea/nodes"
+    name = "static/projects/" + request.args.get("project") + "/nodes"
     n = open(name + ".json", "r")
     nodes = json.load(n)
     nlength = len(nodes["nodes"])
     print(nlength)
 
-    im = Image.open('static/projects/tea/layouts/teapot_nodesXYZ.bmp', 'r')
-    iml = Image.open('static/projects/tea/layoutsl/teapot_nodesXYZl.bmp', 'r')
-    imc = Image.open('static/projects/tea/layoutsRGB/teapot_nodesRGB.png', 'r')
-    imlc = Image.open('static/projects/tea/linksRGB/teapot_linksRGB.png', 'r')
+    
+    lname = "static/projects/" + request.args.get("project") + "/links"
+    f = open(lname + ".json", "r")
+    links = json.load(f)
+    length = len(links["links"])
+
+    im = Image.open('static/projects/'+ request.args.get("project") + '/layouts/' + thispfile["layouts"][0] + '.bmp', 'r')
+    iml = Image.open('static/projects/'+ request.args.get("project") + '/layoutsl/' + thispfile["layouts"][0] + 'l.bmp', 'r')
+    imc = Image.open('static/projects/'+ request.args.get("project") + '/layoutsRGB/' + thispfile["layoutsRGB"][0] + '.png', 'r')
+    imlc = Image.open('static/projects/'+ request.args.get("project") + '/linksRGB/' + thispfile["linksRGB"][0] + '.png', 'r')
 
     width, height = im.size
     pixel_values = list(im.getdata())
@@ -153,19 +159,16 @@ def test44():
     #print(testNetwork)
 
 
-    name = "static/projects/tea/links"
-    f = open(name + ".json", "r")
-    links = json.load(f)
-    length = len(links["links"])
     
     
     for x in range (length-1):
-        newLink = {}
-        newLink["id"] = x
-        newLink["s"] = links["links"][x]["s"]
-        newLink["e"] = links["links"][x]["e"]
-        newLink['c'] = pixel_valueslc[x]
-        testNetwork["links"].append(newLink)
+        if x < 1000:
+            newLink = {}
+            newLink["id"] = x
+            newLink["s"] = links["links"][x]["s"]
+            newLink["e"] = links["links"][x]["e"]
+            newLink['c'] = pixel_valueslc[x]
+            testNetwork["links"].append(newLink)
         #print(links["links"][x])
 
 
