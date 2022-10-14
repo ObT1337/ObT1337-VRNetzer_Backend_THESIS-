@@ -110,15 +110,35 @@ def test4():
 
 @app.route('/GraphfromIMG', methods=['GET'])
 def test44():
-    #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
     if request.args.get("project") is None:
-        print ("Argument not provided")
-        
+        print ("project Argument not provided - redirecting to menu page")
         data = {}
         data["projects"] = listProjects()
         return render_template('threeJS_VIEWER_Menu.html', data=json.dumps(data))
 
-    print(request.args.get("project"))
+    #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
+    layoutindex = 0
+    layoutRGBIndex = 0
+    linkRGBIndex = 0
+
+    if request.args.get("layout") is None:
+        layoutindex = 0
+    else:
+        layoutindex = int(request.args.get("layout"))
+
+    if request.args.get("ncol") is None:
+        layoutRGBIndex = 0
+    else:
+        layoutRGBIndex = int(request.args.get("ncol"))
+
+    if request.args.get("lcol") is None:
+        linkRGBIndex = 0
+    else:
+        linkRGBIndex = int(request.args.get("lcol"))
+
+
+
+    print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
@@ -140,10 +160,10 @@ def test44():
     links = json.load(f)
     length = len(links["links"])
 
-    im = Image.open('static/projects/'+ request.args.get("project") + '/layouts/' + thispfile["layouts"][0] + '.bmp', 'r')
-    iml = Image.open('static/projects/'+ request.args.get("project") + '/layoutsl/' + thispfile["layouts"][0] + 'l.bmp', 'r')
-    imc = Image.open('static/projects/'+ request.args.get("project") + '/layoutsRGB/' + thispfile["layoutsRGB"][0] + '.png', 'r')
-    imlc = Image.open('static/projects/'+ request.args.get("project") + '/linksRGB/' + thispfile["linksRGB"][0] + '.png', 'r')
+    im = Image.open('static/projects/'+ request.args.get("project") + '/layouts/' + thispfile["layouts"][layoutindex] + '.bmp', 'r')
+    iml = Image.open('static/projects/'+ request.args.get("project") + '/layoutsl/' + thispfile["layouts"][layoutindex] + 'l.bmp', 'r')
+    imc = Image.open('static/projects/'+ request.args.get("project") + '/layoutsRGB/' + thispfile["layoutsRGB"][layoutRGBIndex] + '.png', 'r')
+    imlc = Image.open('static/projects/'+ request.args.get("project") + '/linksRGB/' + thispfile["linksRGB"][linkRGBIndex] + '.png', 'r')
 
     width, height = im.size
     pixel_values = list(im.getdata())

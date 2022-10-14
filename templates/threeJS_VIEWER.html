@@ -19,14 +19,23 @@
                 <input type="submit" value="PROJECTS"   style = "height: 50px;
                 width: 180px;"/>
             </form>
+            <h1 style = 'font-size: 35px;'>VRNetzer</h1>
+            <div style = 'font-size: 30px;'>WebGL PREVIEW</div>
             <h1 id = 'prname'>NAME</h1>
-            <h2>WebGL PREVIEW</h2>
-            <div id = 'label'>NODE</div>
+            <div id = 'size'>SIZE</div>
+            
             <p></p>
             <div>LAYOUT</div>
             <select id='layouts'></select>
-            
-               
+            <div>NODE COLOR</div>
+            <select id='layoutsRGB'></select>
+            <div>LINK COLOR</div>
+            <select id='linksRGB'></select>
+            <p></p>
+            <input type="submit" value="RELOAD" id="reload"  style = "height: 50px;
+            width: 180px;"/>
+            <p></p> 
+            <div id = 'label' style = 'font-size: 30px;'></div> 
             
         </div>
 
@@ -35,21 +44,22 @@
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
         console.log(pdata);
-        //initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
-        //$('#layouts').selectmenu();
-        select = document.getElementById('layouts');
 
 
-        for (let i = 0; i < pdata["layouts"].length; i++) {
-            console.log(pdata["layouts"][i]);
-            var opt = document.createElement('option');
-            opt.value = i;
-            opt.innerHTML = pdata["layouts"][i];
-            select.appendChild(opt);
-        }
+        initDropdownNOsocket("layouts", pdata["layouts"]);
+        initDropdownNOsocket("layoutsRGB", pdata["layoutsRGB"]);
+        initDropdownNOsocket("linksRGB", pdata["linksRGB"]);
+        // realod button
+        $('#reload').on('click', function () {
+            var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
+            console.log($('#layouts option:selected').val());
+            console.log(url);
 
-        ///logger($('#selectMode').val());
+            window.location.href = url;
+            });
 
+
+        document.getElementById("prname").innerHTML = pdata["name"];
 
         init();
         animate();
@@ -138,7 +148,8 @@
                 }
 
             //renderer.render( scene, camera );
-            console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" )
+            console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" );
+            document.getElementById("size").innerHTML = data["links"].length + " LINKS, " + data["nodes"].length + " NODES";
             // camera rotation-> https://jsfiddle.net/8kn4qrz0/
 
             function RGB2HTML(red, green, blue)
@@ -203,6 +214,26 @@
             camera.lookAt(0,0,0);
             camera.rotation.z += Math.PI/2
             camera.updateProjectionMatrix();	
+        }
+
+        function initDropdownNOsocket (id, data){
+
+            //select = document.getElementById('layouts');
+
+            for (let i = 0; i < data.length; i++) {
+            $('#'+ id).append(new Option(data[i]));
+            }
+           // $('#'+ id).val(0);
+           // $('#'+ id).selectmenu("refresh");
+           //$('#projects').on('change', function() {
+            $('#'+ id).on('change', function () {
+            var name =  $('#'+ id).find(':selected').text();
+            console.log(name);
+
+            //socket.emit('ex', {id: id, opt: name, fn: "sel"});
+            ///logger($('#selectMode').val());
+            });
+
         }
 		</script>
         

@@ -1,1 +1,1 @@
-{"name": "tea", "layouts": ["teapot_nodesXYZ"], "layoutsRGB": ["teapot_nodesRGB"], "links": ["teapot_linksXYZ"], "linksRGB": ["teapot_linksRGB"], "selections": []}
+{"name": "tea", "layouts": ["teapot_nodesXYZ"], "layoutsRGB": ["teapot_nodesRGB","teapot_nodesRGB1"], "links": ["teapot_linksXYZ"], "linksRGB": ["teapot_linksRGB","teapot_linksRGB1"], "selections": []}
