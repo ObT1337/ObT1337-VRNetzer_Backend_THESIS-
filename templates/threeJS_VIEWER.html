@@ -14,36 +14,48 @@
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
         <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white" >&nbsp;
+            
+                <form action="/GraphfromIMG">
+                    <input type="submit" value="PROJECTS"   style = "height: 50px; width: 150px;"/>
+                </form>
+                
+                <h1 style = 'font-size: 24px; margin-bottom: 0px; color:rgb(95, 95, 95)'>VRNetzer</h1>
+                <div style = 'font-size: 20px; color:rgb(255, 255, 255)'>WebGL PREVIEW</div>
+            
+            <p></p> 
 
-            <form action="/GraphfromIMG">
-                <input type="submit" value="PROJECTS"   style = "height: 50px;
-                width: 180px;"/>
-            </form>
-            <h1 style = 'font-size: 35px;'>VRNetzer</h1>
-            <div style = 'font-size: 30px;'>WebGL PREVIEW</div>
-            <h1 id = 'prname'>NAME</h1>
+
+            <h1 id = 'prname' style = 'font-size: 24px; margin-bottom: 0px;'>NAME</h1>
             <div id = 'size'>SIZE</div>
             
             <p></p>
-            <div>LAYOUT</div>
-            <select id='layouts'></select>
-            <div>NODE COLOR</div>
-            <select id='layoutsRGB'></select>
-            <div>LINK COLOR</div>
-            <select id='linksRGB'></select>
-            <p></p>
-            <input type="submit" value="RELOAD" id="reload"  style = "height: 50px;
-            width: 180px;"/>
-            <p></p> 
-            <div id = 'label' style = 'font-size: 30px;'></div> 
+            <div class="frameBox">
+                    <div>LAYOUT</div>
+                    <select id='layouts'></select>
+                    <p></p>
+                    <div>NODE COLOR</div>
+                    <select id='layoutsRGB'></select>
+                    <p></p>
+                    <div>LINK COLOR</div>
+                    <select id='linksRGB'></select>
+                
+                <p></p>
+                
+                <p></p> 
+                
             
+                <input type="submit" value="RELOAD" id="reload"  style = "height: 50px; width: 150px;"/>
+            </div>
+        <p></p>
+        <div id = 'label' style = 'font-size: 30px;'></div> 
         </div>
-
 		<script>
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
         console.log(pdata);
+        var scale = 20;
+        const nscale = .03;
 
 
         initDropdownNOsocket("layouts", pdata["layouts"]);
@@ -64,6 +76,7 @@
         init();
         animate();
         rigth();
+        
 
         function init() {
 
@@ -115,7 +128,7 @@
            
             //console.log(data);
 
-            const nscale = .01;
+            
             // Draw Nodes
             console.log(data['nodes'][0]['c'][0])
             for (let i = 0; i < data['nodes'].length; i++) {
@@ -128,7 +141,7 @@
                 //console.log(data['nodes'][i]["p"]);
                 scene.add( cube );
                 //cube.position.set(0, 10, 0);
-                cube.position.set(data['nodes'][i]["p"][0],data['nodes'][i]["p"][1],data['nodes'][i]["p"][2]); //0x00ff00
+                cube.position.set(data['nodes'][i]["p"][0]*scale,data['nodes'][i]["p"][1]*scale,data['nodes'][i]["p"][2]*scale); //0x00ff00
                 }
 
             // Draw Links
@@ -138,8 +151,8 @@
                 const points = [];
                 const start =  data['links'][l]["s"];
                 const end =  data['links'][l]["e"];
-                points.push( new THREE.Vector3( data['nodes'][start]["p"][0], data['nodes'][start]["p"][1], data['nodes'][start]["p"][2] ) );
-                points.push( new THREE.Vector3( data['nodes'][end]["p"][0], data['nodes'][end]["p"][1], data['nodes'][end]["p"][2] ) );
+                points.push( new THREE.Vector3( data['nodes'][start]["p"][0]*scale, data['nodes'][start]["p"][1]*scale, data['nodes'][start]["p"][2]*scale ) );
+                points.push( new THREE.Vector3( data['nodes'][end]["p"][0]*scale, data['nodes'][end]["p"][1]*scale, data['nodes'][end]["p"][2]*scale ) );
 
                 const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
                 const line = new THREE.Line( geometry1, material1 );
@@ -162,8 +175,9 @@
 
             renderer.domElement.addEventListener('click', onClick, false);
             
+            
         }
-
+        
         function onClick() {
 
             event.preventDefault();
@@ -203,7 +217,7 @@
 
             requestAnimationFrame( animate );
             
-            //controls.update();
+            controls.update();
 
             renderer.render( scene, camera );
 

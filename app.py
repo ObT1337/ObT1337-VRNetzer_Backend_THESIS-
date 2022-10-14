@@ -175,7 +175,7 @@ def test44():
     for x in pixel_values :
         if i < nlength:
             newnode = {}
-            pos = [float(x[0]*255 + pixel_valuesl[i][0])*scale,float(x[1]*255 + pixel_valuesl[i][1])*scale,float(x[2]*255 + pixel_valuesl[i][2])*scale]
+            pos = [float(x[0]*255 + pixel_valuesl[i][0])/65536 - 0.5,float(x[1]*255 + pixel_valuesl[i][1])/65536 - 0.5,float(x[2]*255 + pixel_valuesl[i][2])/65536 - 0.5]
             
             newnode['p'] = pos
             newnode['c'] = pixel_valuesc[i]
