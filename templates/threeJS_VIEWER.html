@@ -7,15 +7,50 @@
 			body { margin: 0; }
 		</style>
 	</head>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="static/js/three.js"></script>
+    <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
-        
-		<script src="static/js/three.js"></script>
-        
-        <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white" >&nbsp;
+
+            <form action="/GraphfromIMG">
+                <input type="submit" value="PROJECTS"   style = "height: 50px;
+                width: 180px;"/>
+            </form>
+            <h1 id = 'prname'>NAME</h1>
+            <h2>WebGL PREVIEW</h2>
+            <div id = 'label'>NODE</div>
+            <p></p>
+            <div>LAYOUT</div>
+            <select id='layouts'></select>
+            
+               
+            
+        </div>
+
 		<script>
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
+        var pdata = JSON.parse({{pfile|tojson}});
+        console.log(pdata);
+        //initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
+        //$('#layouts').selectmenu();
+        select = document.getElementById('layouts');
+
+
+        for (let i = 0; i < pdata["layouts"].length; i++) {
+            console.log(pdata["layouts"][i]);
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.innerHTML = pdata["layouts"][i];
+            select.appendChild(opt);
+        }
+
+        ///logger($('#selectMode').val());
+
+
         init();
         animate();
         rigth();
@@ -68,9 +103,9 @@
             //scene.add( mesh );
 */
            
-            console.log(data);
+            //console.log(data);
 
-            const nscale = .03;
+            const nscale = .01;
             // Draw Nodes
             console.log(data['nodes'][0]['c'][0])
             for (let i = 0; i < data['nodes'].length; i++) {
@@ -134,7 +169,7 @@
                 var object = intersects[0].object;
                 console.log(data["nodes"][object.name]["n"]);
                 object.material.color.set( Math.random() * 0xffffff );
-
+                document.getElementById("label").innerHTML = data["nodes"][object.name]["n"];
 
             }
             

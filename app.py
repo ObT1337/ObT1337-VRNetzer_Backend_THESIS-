@@ -111,6 +111,13 @@ def test4():
 @app.route('/GraphfromIMG', methods=['GET'])
 def test44():
     #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
+    if request.args.get("project") is None:
+        print ("Argument not provided")
+        
+        data = {}
+        data["projects"] = listProjects()
+        return render_template('threeJS_VIEWER_Menu.html', data=json.dumps(data))
+
     print(request.args.get("project"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
@@ -162,7 +169,7 @@ def test44():
     
     
     for x in range (length-1):
-        if x < 30000:
+        if x < 30000: # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
             newLink = {}
             newLink["id"] = x
             newLink["s"] = links["links"][x]["s"]
@@ -175,7 +182,7 @@ def test44():
 
     #print(testNetwork)
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork))
+    return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork), pfile = json.dumps(thispfile))
 
     
 
