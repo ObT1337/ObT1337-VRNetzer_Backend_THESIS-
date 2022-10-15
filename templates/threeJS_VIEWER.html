@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 	<head>
 		<meta charset="utf-8">
 		<title>WEBGL Preview</title>
 		<style>
 			body { margin: 0; }
+            #slider {
+                margin: 10px;
+            }
+
+            .ui-slider-horizontal {
+                height: 5px;
+                width: 150px;
+            }
+
+            .ui-slider .ui-slider-handle {
+                height: 13px;
+                width: 13px;
+            }
 		</style>
 	</head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script src="static/js/three.js"></script>
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
-        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white" >&nbsp;
+        
+        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; margin-left: 10px" >&nbsp;
             
                 <form action="/GraphfromIMG">
                     <input type="submit" value="PROJECTS"   style = "height: 50px; width: 150px;"/>
@@ -25,11 +43,10 @@
             <p></p> 
 
 
-            <h1 id = 'prname' style = 'font-size: 24px; margin-bottom: 0px;'>NAME</h1>
+            <h1 id = 'prname' style = 'font-size: 24px; margin-bottom: 3px;'>NAME</h1>
             <div id = 'size'>SIZE</div>
-            
+            <br>
             <p></p>
-            <div class="frameBox">
                     <div>LAYOUT</div>
                     <select id='layouts'></select>
                     <p></p>
@@ -38,29 +55,38 @@
                     <p></p>
                     <div>LINK COLOR</div>
                     <select id='linksRGB'></select>
-                
-                <p></p>
-                
-                <p></p> 
+
+                    <p></p> 
                 
             
                 <input type="submit" value="RELOAD" id="reload"  style = "height: 50px; width: 150px;"/>
-            </div>
+                <p></p>
+                <br>
+                <div style = 'margin-bottom: 8px;'>NODE SIZE</div>
+                
+                <div id = 'nsize'></div>
+            
         <p></p>
-        <div id = 'label' style = 'font-size: 30px;'></div> 
+        <p></p>
+        <div id = 'label' style = 'font-size: 30px;'></div>
+
+        
         </div>
 		<script>
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
         console.log(pdata);
+
         var scale = 20;
         const nscale = .03;
+        var nodemeshes = [];
+   
 
-
-        initDropdownNOsocket("layouts", pdata["layouts"]);
-        initDropdownNOsocket("layoutsRGB", pdata["layoutsRGB"]);
-        initDropdownNOsocket("linksRGB", pdata["linksRGB"]);
+        initSliderNOsocket ('nsize');
+        initDropdownNOsocket("layouts", pdata["layouts"], pdata["selected"][0]);
+        initDropdownNOsocket("layoutsRGB", pdata["layoutsRGB"], pdata["selected"][1]);
+        initDropdownNOsocket("linksRGB", pdata["linksRGB"], pdata["selected"][2]);
         // realod button
         $('#reload').on('click', function () {
             var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
@@ -97,6 +123,12 @@
             mouse = new THREE.Vector2()
             // controls
             controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.keys = {
+                LEFT: 'ArrowLeft', //left arrow
+                UP: 'ArrowUp', // up arrow
+                RIGHT: 'ArrowRight', // right arrow
+                BOTTOM: 'ArrowDown' // down arrow
+            }
             // axes
             scene.add( new THREE.AxesHelper( 20 ) );
             /*
@@ -135,9 +167,11 @@
             //for (let i = 0; i < 300; i++) {
                 const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
                 const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
+                
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
                 cube.name = i;
                 cube.layers.set(0);
+                nodemeshes.push(cube);
                 //console.log(data['nodes'][i]["p"]);
                 scene.add( cube );
                 //cube.position.set(0, 10, 0);
@@ -147,7 +181,7 @@
             // Draw Links
 
             for (let l = 0; l < data['links'].length; l++) {
-                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(data['links'][l]["c"][0],data['links'][l]["c"][1],data['links'][l]["c"][2]) } );
+                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(data['links'][l]["c"][0],data['links'][l]["c"][1],data['links'][l]["c"][2]),} );
                 const points = [];
                 const start =  data['links'][l]["s"];
                 const end =  data['links'][l]["e"];
@@ -157,12 +191,13 @@
                 const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
                 const line = new THREE.Line( geometry1, material1 );
                 line.layers.set(1);
+                line.linewidth
                 scene.add(line);
                 }
 
             //renderer.render( scene, camera );
             console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" );
-            document.getElementById("size").innerHTML = data["links"].length + " LINKS, " + data["nodes"].length + " NODES";
+            document.getElementById("size").innerHTML = data["links"].length + " LINKS<br>" + data["nodes"].length + " NODES";
             // camera rotation-> https://jsfiddle.net/8kn4qrz0/
 
             function RGB2HTML(red, green, blue)
@@ -178,6 +213,9 @@
             
         }
         
+
+
+
         function onClick() {
 
             event.preventDefault();
@@ -230,24 +268,51 @@
             camera.updateProjectionMatrix();	
         }
 
-        function initDropdownNOsocket (id, data){
+        function initDropdownNOsocket (id, data, opt){
 
-            //select = document.getElementById('layouts');
+            
 
             for (let i = 0; i < data.length; i++) {
             $('#'+ id).append(new Option(data[i]));
             }
-           // $('#'+ id).val(0);
-           // $('#'+ id).selectmenu("refresh");
-           //$('#projects').on('change', function() {
+            document.getElementById(id).selectedIndex = opt;
+
             $('#'+ id).on('change', function () {
             var name =  $('#'+ id).find(':selected').text();
             console.log(name);
-
-            //socket.emit('ex', {id: id, opt: name, fn: "sel"});
-            ///logger($('#selectMode').val());
             });
 
+
+
+        }
+
+
+        function initSliderNOsocket (id){
+
+            $('#'+ id).slider({
+                animate: true,
+                range: "max",
+                min: 0,
+                max: 255,
+                value: 128,
+                slide: function (event, ui) {
+                //console.log(ui.value/100)//socket.emit('ex', {id: id, val: ui.value, fn: "sli"});
+                nodescale(ui.value/100 + 0.5);
+                }
+            });
+
+        }
+
+        function nodescale(scale){
+            console.log(scale);
+
+            for (let l = 0; l < nodemeshes.length; l++) {
+                
+                //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
+                nodemeshes[l].scale.set(scale,scale,scale);
+            }
+        
+            //render();
         }
 		</script>
         

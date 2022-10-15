@@ -110,16 +110,16 @@ def test4():
 
 @app.route('/GraphfromIMG', methods=['GET'])
 def test44():
-    if request.args.get("project") is None:
-        print ("project Argument not provided - redirecting to menu page")
-        data = {}
-        data["projects"] = listProjects()
-        return render_template('threeJS_VIEWER_Menu.html', data=json.dumps(data))
-
-    #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
+    data = {}
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
+
+    if request.args.get("project") is None:
+        print ("project Argument not provided - redirecting to menu page")
+        
+        data["projects"] = listProjects()
+        return render_template('threeJS_VIEWER_Menu.html', data=json.dumps(data))
 
     if request.args.get("layout") is None:
         layoutindex = 0
@@ -136,7 +136,7 @@ def test44():
     else:
         linkRGBIndex = int(request.args.get("lcol"))
 
-
+     
 
     print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
@@ -146,13 +146,14 @@ def test44():
     pname = "static/projects/" + request.args.get("project") + "/pfile"
     p = open(pname + ".json", "r")
     thispfile = json.load(p)
-    print(thispfile["layouts"])
+    thispfile["selected"] = [layoutindex,layoutRGBIndex,linkRGBIndex]
+    #print(thispfile["layouts"])
 
     name = "static/projects/" + request.args.get("project") + "/nodes"
     n = open(name + ".json", "r")
     nodes = json.load(n)
     nlength = len(nodes["nodes"])
-    print(nlength)
+    #print(nlength)
 
     
     lname = "static/projects/" + request.args.get("project") + "/links"
