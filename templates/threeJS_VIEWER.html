@@ -12,13 +12,13 @@
             }
 
             .ui-slider-horizontal {
-                height: 5px;
+                height: 4px;
                 width: 150px;
             }
 
             .ui-slider .ui-slider-handle {
-                height: 13px;
-                width: 13px;
+                height: 16px;
+                width: 12px;
             }
 		</style>
 	</head>
@@ -45,6 +45,7 @@
 
             <h1 id = 'prname' style = 'font-size: 24px; margin-bottom: 3px;'>NAME</h1>
             <div id = 'size'>SIZE</div>
+            <div id = "warning" style = 'font-size: 20px; color:rgb(255,0, 0)'></div>
             <br>
             <p></p>
                     <div>LAYOUT</div>
@@ -65,7 +66,9 @@
                 <div style = 'margin-bottom: 8px;'>NODE SIZE</div>
                 
                 <div id = 'nsize'></div>
-            
+                <p></p>
+                <br>
+                <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)">
         <p></p>
         <p></p>
         <div id = 'label' style = 'font-size: 30px;'></div>
@@ -76,11 +79,12 @@
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
-        console.log(pdata);
+        console.log(data);
 
         var scale = 20;
         const nscale = .03;
         var nodemeshes = [];
+        var indexsphere;
    
 
         initSliderNOsocket ('nsize');
@@ -91,7 +95,7 @@
         $('#reload').on('click', function () {
             var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
             console.log($('#layouts option:selected').val());
-            console.log(url);
+            //console.log(url);
 
             window.location.href = url;
             });
@@ -131,6 +135,18 @@
             }
             // axes
             scene.add( new THREE.AxesHelper( 20 ) );
+            const geometry = new THREE.SphereGeometry(nscale, 32, 16 );
+            
+            var material = new THREE.MeshBasicMaterial( {
+                color: 0xFFFFFF, 
+               
+                transparent: true,
+                
+                opacity: 0.4,
+            } );
+            const sphere = new THREE.Mesh( geometry, material );
+            indexsphere = sphere;
+            scene.add( sphere );
             /*
             // ambient
             scene.add( new THREE.AmbientLight( 0x222222 ) );
@@ -169,7 +185,7 @@
                 const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
                 
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
-                cube.name = i;
+                cube.name = data['nodes'][i]['n'];
                 cube.layers.set(0);
                 nodemeshes.push(cube);
                 //console.log(data['nodes'][i]["p"]);
@@ -196,7 +212,11 @@
                 }
 
             //renderer.render( scene, camera );
-            console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" );
+            //console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" );
+            if (data['links'].length == 30000){
+                document.getElementById("warning").innerHTML = "TOO MANY LINKS<br>FOR PREVIEW";
+            }
+            
             document.getElementById("size").innerHTML = data["links"].length + " LINKS<br>" + data["nodes"].length + " NODES";
             // camera rotation-> https://jsfiddle.net/8kn4qrz0/
 
@@ -231,8 +251,12 @@
             
                 var object = intersects[0].object;
                 console.log(data["nodes"][object.name]["n"]);
-                object.material.color.set( Math.random() * 0xffffff );
+                //object.material.color.set( Math.random() * 0xffffff );
                 document.getElementById("label").innerHTML = data["nodes"][object.name]["n"];
+                console.log(object.position["x"]);
+                indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
+                
+
 
             }
             
@@ -311,8 +335,24 @@
                 //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
                 nodemeshes[l].scale.set(scale,scale,scale);
             }
-        
+            indexsphere.scale.set(scale + 2,scale+ 2,scale + 2);
             //render();
+        }
+
+        function search(ele) {
+            if(event.key === 'Enter') {
+                console.log(ele.value)
+                for (let l = 0; l < nodemeshes.length; l++) {
+                
+                //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
+                    if (nodemeshes[l].name == ele.value){
+                       
+    
+                        indexsphere.position.set(nodemeshes[l].position["x"],nodemeshes[l].position["y"],nodemeshes[l].position["z"]);
+
+                    }
+                }       
+            }
         }
 		</script>
         
