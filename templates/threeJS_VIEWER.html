@@ -68,7 +68,8 @@
                 <div id = 'nsize'></div>
                 <p></p>
                 <br>
-                <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)">
+                <div>SEARCH</div>
+                <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)" style = "height: 50px; width: 150px;">
         <p></p>
         <p></p>
         <div id = 'label' style = 'font-size: 30px;'></div>
@@ -145,6 +146,7 @@
                 opacity: 0.4,
             } );
             const sphere = new THREE.Mesh( geometry, material );
+            sphere.layers.set(1);
             indexsphere = sphere;
             scene.add( sphere );
             /*
@@ -178,17 +180,18 @@
 
             
             // Draw Nodes
-            console.log(data['nodes'][0]['c'][0])
+            //onsole.log(data['nodes'][0]['c'][0])
             for (let i = 0; i < data['nodes'].length; i++) {
             //for (let i = 0; i < 300; i++) {
                 const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
                 const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
                 
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
-                cube.name = data['nodes'][i]['n'];
+                
+                cube.name = i;//;
                 cube.layers.set(0);
                 nodemeshes.push(cube);
-                //console.log(data['nodes'][i]["p"]);
+                console.log(data['nodes'][i]["n"]);
                 scene.add( cube );
                 //cube.position.set(0, 10, 0);
                 cube.position.set(data['nodes'][i]["p"][0]*scale,data['nodes'][i]["p"][1]*scale,data['nodes'][i]["p"][2]*scale); //0x00ff00
@@ -250,10 +253,10 @@
             if (intersects.length > 0) {
             
                 var object = intersects[0].object;
-                console.log(data["nodes"][object.name]["n"]);
+                //console.log(data["nodes"][object.name]["n"]);
                 //object.material.color.set( Math.random() * 0xffffff );
                 document.getElementById("label").innerHTML = data["nodes"][object.name]["n"];
-                console.log(object.position["x"]);
+                
                 indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
                 
 
@@ -342,14 +345,14 @@
         function search(ele) {
             if(event.key === 'Enter') {
                 console.log(ele.value)
-                for (let l = 0; l < nodemeshes.length; l++) {
+                for (let l = 0; l < data['nodes'].length; l++) {
                 
                 //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
-                    if (nodemeshes[l].name == ele.value){
+                    if (data['nodes'][l]['n'] == ele.value){
                        
     
                         indexsphere.position.set(nodemeshes[l].position["x"],nodemeshes[l].position["y"],nodemeshes[l].position["z"]);
-
+                        document.getElementById("label").innerHTML = data["nodes"][l]["n"];
                     }
                 }       
             }
