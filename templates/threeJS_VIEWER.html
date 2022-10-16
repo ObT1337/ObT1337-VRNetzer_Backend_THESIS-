@@ -6,7 +6,7 @@
 		<meta charset="utf-8">
 		<title>WEBGL Preview</title>
 		<style>
-			body { margin: 0; }
+			body {margin: 0px; overflow: hidden;}
             #slider {
                 margin: 10px;
             }
@@ -31,9 +31,9 @@
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
         
-        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; margin-left: 10px" >&nbsp;
+        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; padding-left: 10px;  background-color: #000000c4; " >&nbsp;
             
-                <form action="/GraphfromIMG">
+                <form action="/preview">
                     <input type="submit" value="PROJECTS"   style = "height: 50px; width: 150px;"/>
                 </form>
                 
@@ -72,15 +72,16 @@
                 <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)" style = "height: 50px; width: 150px;">
         <p></p>
         <p></p>
-        <div id = 'label' style = 'font-size: 30px;'></div>
+        
 
         
         </div>
+        <div id = 'label' style = 'z-index: 2; position: absolute; top: 0; left: 0; color:white; margin-left: 10px; font-size: 30px;'></div>
 		<script>
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
-        console.log(data);
+        //console.log(data);
 
         var scale = 20;
         const nscale = .03;
@@ -115,11 +116,8 @@
             renderer = new THREE.WebGLRenderer();
             renderer.setSize( window.innerWidth, window.innerHeight );
             document.body.appendChild( renderer.domElement );
-
             // scene
             scene = new THREE.Scene();
-
-
             // camera
             camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
             camera.position.set( 20, 0, 0 );
@@ -128,12 +126,10 @@
             mouse = new THREE.Vector2()
             // controls
             controls = new THREE.OrbitControls( camera, renderer.domElement );
-            controls.keys = {
-                LEFT: 'ArrowLeft', //left arrow
-                UP: 'ArrowUp', // up arrow
-                RIGHT: 'ArrowRight', // right arrow
-                BOTTOM: 'ArrowDown' // down arrow
-            }
+            controls.addEventListener('change', function() {
+                onCameraChange();
+            });
+
             // axes
             scene.add( new THREE.AxesHelper( 20 ) );
             const geometry = new THREE.SphereGeometry(nscale, 32, 16 );
@@ -145,6 +141,7 @@
                 
                 opacity: 0.4,
             } );
+
             const sphere = new THREE.Mesh( geometry, material );
             sphere.layers.set(1);
             indexsphere = sphere;
@@ -160,40 +157,19 @@
             
 
 
-            // geometry
-            var geometry = new THREE.SphereGeometry( 5, 12, 8 );
-            
-            // material
-            var material = new THREE.MeshPhongMaterial( {
-                color: 0x00ffff, 
-                flatShading: true,
-                transparent: true,
-                opacity: 0.7,
-            } );
-            
-            // mesh
-            mesh = new THREE.Mesh( geometry, material );
-            //scene.add( mesh );
 */
            
-            //console.log(data);
 
-            
-            // Draw Nodes
-            //onsole.log(data['nodes'][0]['c'][0])
             for (let i = 0; i < data['nodes'].length; i++) {
-            //for (let i = 0; i < 300; i++) {
+            
                 const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
                 const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
-                
                 const cube = new THREE.Mesh( ngeometry, nmaterial );
-                
                 cube.name = i;//;
                 cube.layers.set(0);
                 nodemeshes.push(cube);
-                console.log(data['nodes'][i]["n"]);
+                //console.log(data['nodes'][i]["n"]);
                 scene.add( cube );
-                //cube.position.set(0, 10, 0);
                 cube.position.set(data['nodes'][i]["p"][0]*scale,data['nodes'][i]["p"][1]*scale,data['nodes'][i]["p"][2]*scale); //0x00ff00
                 }
 
@@ -214,8 +190,7 @@
                 scene.add(line);
                 }
 
-            //renderer.render( scene, camera );
-            //console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" );
+
             if (data['links'].length == 30000){
                 document.getElementById("warning").innerHTML = "TOO MANY LINKS<br>FOR PREVIEW";
             }
@@ -228,12 +203,8 @@
                 var decColor =0x1000000+ blue + 0x100 * green + 0x10000 *red ;
                 return '#'+decColor.toString(16).substr(1);
             }
-
             window.addEventListener('resize', onWindowResize, false);
-
             renderer.domElement.addEventListener('click', onClick, false);
-            
-            
         }
         
 
@@ -258,13 +229,10 @@
                 document.getElementById("label").innerHTML = data["nodes"][object.name]["n"];
                 
                 indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
-                
+                setLabelPos();
 
 
             }
-            
-            //render();
-
         }
 
         function onWindowResize() {
@@ -274,16 +242,12 @@
 
             renderer.setSize(window.innerWidth, window.innerHeight);
 
-            //render();
-
         }
 
         function animate() {
 
             requestAnimationFrame( animate );
-            
             controls.update();
-
             renderer.render( scene, camera );
 
         }
@@ -297,8 +261,6 @@
 
         function initDropdownNOsocket (id, data, opt){
 
-            
-
             for (let i = 0; i < data.length; i++) {
             $('#'+ id).append(new Option(data[i]));
             }
@@ -308,9 +270,6 @@
             var name =  $('#'+ id).find(':selected').text();
             console.log(name);
             });
-
-
-
         }
 
 
@@ -335,7 +294,6 @@
 
             for (let l = 0; l < nodemeshes.length; l++) {
                 
-                //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
                 nodemeshes[l].scale.set(scale,scale,scale);
             }
             indexsphere.scale.set(scale + 2,scale+ 2,scale + 2);
@@ -349,13 +307,47 @@
                 
                 //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
                     if (data['nodes'][l]['n'] == ele.value){
-                       
-    
                         indexsphere.position.set(nodemeshes[l].position["x"],nodemeshes[l].position["y"],nodemeshes[l].position["z"]);
                         document.getElementById("label").innerHTML = data["nodes"][l]["n"];
+                        setLabelPos(l);
                     }
                 }       
             }
+        }
+
+        function setLabelPos(l)
+        {
+            var proj = toScreenPosition(indexsphere, camera);
+                  
+            document.getElementById("label").style.left = Math.floor(proj.x) + 'px';
+            document.getElementById("label").style.top = Math.floor(proj.y) + 'px';  
+        }
+        function onCameraChange()
+        {
+            setLabelPos();
+        }
+
+        function toScreenPosition(obj, camera)
+        {
+            camera.updateMatrixWorld();
+            var vector = new THREE.Vector3();
+            
+            // TODO: need to update this when resize window
+            var widthHalf = 0.5*window.innerWidth;
+            var heightHalf = 0.5*window.innerHeight;
+            
+            obj.updateMatrixWorld();
+            vector.setFromMatrixPosition(obj.matrixWorld);
+            vector.project(camera);
+            
+            vector.x = ( vector.x * widthHalf ) + widthHalf;
+            vector.y = - ( vector.y * heightHalf ) + heightHalf;
+            
+            return { 
+                x: vector.x,
+                y: vector.y
+            };
+
         }
 		</script>
         

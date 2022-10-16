@@ -70,7 +70,7 @@ def test3():
 
 @app.route('/Nav')
 def nav():
-    return render_template('threeJSLinetrace.html')
+    return render_template('threeJSLabel.html')
 
 @app.route('/Graph')
 def test4():
@@ -108,7 +108,7 @@ def test4():
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork))
 
-@app.route('/GraphfromIMG', methods=['GET'])
+@app.route('/preview', methods=['GET'])
 def test44():
     data = {}
     layoutindex = 0
