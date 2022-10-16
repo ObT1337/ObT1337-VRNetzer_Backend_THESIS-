@@ -114,6 +114,7 @@ def test44():
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
+    maxLinks = 30000
 
     if request.args.get("project") is None:
         print ("project Argument not provided - redirecting to menu page")
@@ -136,6 +137,10 @@ def test44():
     else:
         linkRGBIndex = int(request.args.get("lcol"))
 
+    if request.args.get("maxlinks") is None:
+        maxLinks = 30000
+    else:
+        maxLinks = int(request.args.get("maxlinks"))
      
 
     print(request.args.get("layout"))
@@ -190,7 +195,7 @@ def test44():
     
     
     for x in range (length-1):
-        if x < 30000: # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
+        if x < maxLinks: # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
             newLink = {}
             newLink["id"] = x
             newLink["s"] = links["links"][x]["s"]
