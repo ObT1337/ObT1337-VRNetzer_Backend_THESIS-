@@ -40,6 +40,8 @@ The VRNetzer acts as a multiplayer gameserver for one or more VR clients.
 Its purpose is to serve the connected players with quite big network datasets - as quickly as possible.
 That is the reason why most properties are stored (and transmitted over the network) as images.
 
+
+
 Every folder in "static/projects/ contains 3 JSON files (check out the file dataframeTemplate.json for the exact structure)
     - nodes  a nodelist
     - links  a linklist
@@ -52,13 +54,18 @@ as well as 5 subfolders containing textures
     - links         LINKLIST
     - linksRGB  LINK COLORS
 
-These folders contain .bmp and .png files that the VR client uses to display the actual network.
-Think as a texture as a dataset of the following format: [[R,G,B],[R,G,B],[R,G,B],..]
-The nodes position is saved as a pixel in the .bmp in layouts (X->R Y->G Z->B)
-Because a .bmp only has 8 bit depth we have to use a second texture to get a resolution of 65536 per axis. this is the one in "layoutsl"
-node positions need to be in a 0 - 1 range
 
-x = 0.3
+layouts + layoutsl -> Node Positions
+
+this needs a little explaining:
+Think as a texture as a dataset of the following format: [[R,G,B],[R,G,B],[R,G,B],..] where every [R,G,B] is a pixel.
+This can be used to store a location (X->R Y->G Z->B) per pixel.
+Because a .bmp only has 8 bit depth we need a second texture to get a resolution of 65536 per axis. this is where "layoutsl" comes into play.
+NOTE: node positions need to be in a 0 - 1 range (!), the conversion works like this:
+
+floor(x * 256) -> layouts
+floor(x * 65536 % 256) -> layoutsl
+
 
 
 
