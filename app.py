@@ -10,13 +10,21 @@ from io import StringIO
 # from flask_session import Session
 # from flask_session import Session
 import requests
+
+try:
+    import SVRNetzer
+except ImportError:
+    pass
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
+import string_app
 from GlobalData import *
 from search import *
+from string_app import string_pages
 from uploader import *
 from websocket_functions import *
 
@@ -30,7 +38,7 @@ app = Flask(__name__)
 app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
-
+app.register_blueprint(string_pages)
 
 socketio = SocketIO(app, manage_session=False)
 
