@@ -466,6 +466,22 @@ input[type="button"] {
     color: rgb(255, 255, 255);
    
 }
+.swagEvidenceButton {
+    width:50%;
+    padding: 10px;
+    border-radius: 20px;
+    /*font-family: 'Venus', sans-serif;*/
+    font-family: 'Michr', sans-serif;
+    /*'Akshar-reg', sans-serif; */
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-left: 20px;
+    font-style: italic;
+    color: white;
+    font-weight: lighter;
+    text-align: left;
+}
 
 .swagTextButton:hover {
     background-color: rgba(2, 77, 114, 0.45);

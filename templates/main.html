@@ -411,75 +411,96 @@
                         </div>
                         <div id="tabs-4" class="container">
 
-                            <div class="twelve columns">
+                            <div class="ten columns">
                                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">String App</h2>
                             </div>
 
                                 <div class="twelve columns">
                                     <div id="evidence-section" class="five columns">
                                     <div class="twelve columns">
-                                            <h3> Evidence filter</h3>
-                                            <h4 class="five columns" style="padding-left:20px;background-color:#c8c8c8;
-                                            border-radius: 20px;">
-                                                All</h4>
+                                        <h3> Evidence filter</h3>
+
+                                        <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
+
+                                            <button class="swagEvidenceButton" style="background-color:#c8c8c8;
+                                            color:black;"
+                                            id="evidence-all">
+                                                All</button>
                                             <script>
-                                                // TODO script for selecting "all" layout
+                                                initButton("evidence-all");
                                             </script>
+                                        </div>
                                 </div>
                                 <div class="twelve columns">
                                         <h3> Known interactions</h3>
-                                            <h4 class="five columns" style="padding-left:20px;background-color:#ff00ff;
-                                            border-radius: 20px;">
-                                            Experiments</h4>
-                                            <script>
-                                                // TODO script for selecting "Experiments" layout
-                                            </script>
-                                            <h4 class="five columns" style="padding-left:20px;background-color:#00ffff;
-                                            border-radius: 20px;"> Database</h4>
-                                            <script>
-                                                // TODO script for selecting "Database" layout
-                                            </script>
+                                            <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
+                                                <button class="swagEvidenceButton" style="background-color:#ff00ff;"
+                                                id="evidence-experiments">
+                                                Experiments</button>
+                                                <script>
+                                                    initButton("evidence-experiments");
+                                                </script>
+
+                                                <button class="swagEvidenceButton" style="background-color:#00ffff;color:black;"
+                                                id="evidence-database"> Database</button>
+                                                <script>
+                                                    initButton("evidence-database");
+                                                </script>
+                                            </div>
                                 </div>
                                 <div class="twelve columns">
                                     <h3> Predicted interactions</h3>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#00ff00;
-                                        border-radius: 20px;"> 
-                                            Neighborhood</h4>
-                                            <script>
-                                                // TODO script for selecting "Neighborhood" layout
-                                            </script>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#ff0000;
-                                        border-radius: 20px;">
-                                            Fusion</h4>
-                                            <script>
-                                                // TODO script for selecting "Fusion" layout
-                                            </script>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#0000ff;
-                                        border-radius: 20px;"> 
-                                            Cooccurrence</h4>
-                                            <script>
-                                                // TODO script for selecting "cooccurrence" layout
-                                            </script>
+
+                                        <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
+                                            <button class="swagEvidenceButton" style="background-color:#00ff00;
+                                            color:black;"
+                                            id="evidence-neighborhood"> 
+                                                Neighborhood</button>
+                                                <script>
+                                                    initButton("evidence-neighborhood");
+                                                </script>
+
+                                            <button class="swagEvidenceButton" style="background-color:#ff0000;"
+                                            id="evidence-fusion">
+                                                Fusion</button>
+                                                <script>
+                                                    initButton("evidence-fusion");
+                                                </script>
+
+                                            <button class="swagEvidenceButton" style="background-color:#0000ff;"
+                                            id="evidence-cooccurrence"> 
+                                                Cooccurrence</button>
+                                                <script>
+                                                    initButton("evidence-cooccurrence");
+                                                </script>
+                                        </div>
                                 </div>
                                 <div class="twelve columns">
                                     <h3> Other Evidences</h3>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#c6ea46;
-                                        border-radius: 20px;"> 
-                                            Textmining</h4>
-                                            <script>
-                                                // TODO script for selecting "Textmining" layout
-                                            </script>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#323232;
-                                        border-radius: 20px;"> 
-                                            Coexpression</h4>
-                                            <script>
-                                                // TODO script for selecting "Coexpression" layout
-                                            </script>
-                                        <h4 class="five columns" style="padding-left:20px;background-color:#9d9df8;border-radius: 20px;">
-                                            Homology</h4>
-                                            <script>
-                                                // TODO script for selecting "similarity"/"homology" layout
-                                            </script>
+                                        
+                                        <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
+                                            <button class="swagEvidenceButton" style="background-color:#c6ea46;color:black;"
+                                            id="evidence-textmining"> 
+                                                Textmining</button>
+                                                <script>
+                                                    initButton("evidence-textmining");
+                                                </script>
+
+                                            <button class="swagEvidenceButton" style="background-color:#323232;"
+                                            id="evidence-coexpression"> 
+                                                Coexpression</button>
+                                                <script>
+                                                    initButton("evidence-coexpression");
+                                                </script>
+
+                                            <button class="swagEvidenceButton" style="background-color:#9d9df8;
+                                            color:black;"
+                                            id="evidence-homology">
+                                                Homology</button>
+                                                <script>
+                                                    initButton("evidence-homology");
+                                                </script>
+                                        </div>
                                 </div>
                                 <div class="twelve columns">
                                     <h3> Information</h3>

@@ -216,10 +216,9 @@ function initSlider (id){
 }
 
 function initButton (id){
-
   $('#'+ id).on("click", function(){
     var $this = $(this);
-    socket.emit('ex', {id: id, val: $this.val(), fn: "but"}); 
+    socket.emit('ex', { id: id, val: $this.val(), fn: "but" });
   });
 }
 
