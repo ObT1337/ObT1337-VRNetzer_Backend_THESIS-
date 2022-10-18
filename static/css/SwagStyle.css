@@ -93,7 +93,7 @@ h2 {
     font-family: 'Square', sans-serif;
     font-size: 96px;
     font-weight: lighter;
-    color: rgba(52, 148, 196, 0.25);
+    color: rgba(42, 113, 148, 0.2);
 }
 
 h3 {
@@ -121,13 +121,13 @@ h4 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 19px;
+    font-size: 22px;
     padding: 0%;
     margin-bottom: 10px;
     margin-top: 15px;
     font-style: italic;
-    color: rgb(52, 148, 196);
-    font-weight: bold;
+    color: rgb(42, 113, 148);
+    font-weight: lighter;
 }
 
 h5 {
@@ -135,13 +135,12 @@ h5 {
     /*font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
     /*'Akshar-reg', sans-serif; */
-    font-size: 19px;
+    font-size: 22px;
     padding: 0%;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    color: rgba(255, 255, 255,0.5);
+    margin-bottom: 10px;
+    margin-top: 15px;
+    color: rgb(255, 255, 255);
     font-weight: lighter;
-
 }
 
 h6 {
@@ -150,20 +149,12 @@ h6 {
     /*'Akshar-reg', sans-serif; */
     font-size: 16px;
     padding: 0%;
-    margin-bottom: 0px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-top: 15px;
     font-style: italic;
-    color: rgb(59, 157, 206);
+    color: rgb(42, 113, 148);
     font-weight: lighter;
 }
-
-h7 {
-    font-family: 'Michr', sans-serif;
-    font-size: 16px;
-    font-style: bolder;
-    color: rgb(165, 165, 165);
-}
-
 
 div {
     font-family: 'Bal-lig', sans-serif;
@@ -215,19 +206,18 @@ p {
 
 html,
 body {
-    background: rgba(0,0,0,0);
+    background: #000000;
 }
 
 .container {
     height: fit-content;
     width: 100%;
-    background: rgba(0,0,0,0.1);
 }
 
 .column,
 .columns {
     height: 100%;
-    width:100%;
+    width: 100%;
     float: left;
 }
 
@@ -238,15 +228,12 @@ body {
     .container {
         width: 100%;
         height: fit-content;
-        background: rgba(0,0,0,0.1);
     }
     .column,
     .columns {
-        height: 100%;
-        width: 100%;
         padding-left: 2px;
         padding-right: 2px;
-
+        width: 100%;
     }
     .column:first-child,
     .columns:first-child {
@@ -278,7 +265,7 @@ body {
         width: 28%;
     }
     .four.columns {
-        width: 33.25%;
+        width: 30.6666666667%;
     }
     .five.columns {
         width: 39.3333333333%;
@@ -287,7 +274,7 @@ body {
         width: 50%;
     }
     .seven.columns {
-        width: 60.5%;
+        width: 59%;
     }
     .eight.columns {
         width: 68%;
@@ -467,6 +454,9 @@ input[type="button"] {
     cursor: pointer;
     padding: 12px;
     margin-top: 10px;
+    margin-left:6px;
+    margin-left:6px;
+    /*background:rgba(66, 66, 66, 0);*/
     border: 10px solid transparent;
     border-image: url("images/frame1.png") 10 stretch;
 }
@@ -494,7 +484,7 @@ input[type="button"] {
 }
 
 .swagTextButton:hover {
-    background-color: rgba(2, 77, 114, 0.5);
+    background-color: rgba(2, 77, 114, 0.45);
 }
 
 .swagTextButton:focus {
@@ -551,17 +541,45 @@ input[type="button"] {
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-              Slider SWITCH Checkbox (on/off)
+              Slider Checkbox (on/off)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+
+/* ----------- O L D ---------------
+input[type="checkbox"]
+    {
+      width: 1em;
+      height: 1em;
+      background: rgb(75, 114, 2);
+      /*-moz-padding-start: calc(10px - 3px);
+      font-family: 'Future', sans-serif;
+      font-size: 20px;
+      font-weight: 10;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      background:rgb(255, 136, 136);
+      border: 0px solid transparent;
+      padding: 10px;
+      border-image: url("images/frame1.png") 10 stretch;
+    }
+
+.swagCheckbox {
+  background: rgba(2, 77, 114, 1.0);
+  }*/
+
+
+/* --------------- N E W --------------- */
 
 input[type=checkbox] {
     visibility: hidden;
 }
 
 
-/* SLIDER SWITCH */
+/* SLIDE TWO */
+
 
 /* slider background */
+
 .slideTwo {
     height: 50px;
     width: 90px;
@@ -575,7 +593,9 @@ input[type=checkbox] {
     display: inline-block;
 }
 
+
 /* the grey slider background line */
+
 .slideTwo:after {
     content: '';
     position: absolute;
@@ -591,6 +611,7 @@ input[type=checkbox] {
 
 
 /* the moving element of the slider */
+
 .slideTwo label {
     width: 62px;
     height: 36px;
@@ -606,8 +627,8 @@ input[type=checkbox] {
     position: absolute;
     top: 7px;
     left: 4px;
-    z-index: 0;
-    background: rgb(41, 41, 41, 0);
+    z-index: 1;
+    background: rgb(41, 41, 41);
 }
 
 .slideTwo label:after {
@@ -660,7 +681,7 @@ input[type=checkbox] {
     border: 10px solid transparent;
     padding: 5px;
     border-image: url("images/frame1.png") 10 stretch;
-    background-color: rgba(20, 20, 20, 0.5);
+    background-color: rgba(20, 20, 20, 1);
     min-height: 58px;
 }
 
@@ -676,9 +697,10 @@ input[type=checkbox] {
   --w:10px; 
   --h:10px;*/
     width: 100%;
-    align-items: flex-end;
     box-sizing: border-box;
-    padding-right: 7px;
+    margin: 0;
+    padding: 3px;
+    padding-right: 8px;
     border: solid 1.5px #222222;
     background-origin: border-box;
     background-repeat: no-repeat;
@@ -690,11 +712,10 @@ input[type=checkbox] {
     min-height: max-content;
     width: 100%;
     position: relative;
-    margin:0px;
-    padding:6px;
+    margin-top: 5px;
+    padding: 10px;
     border: 8px solid transparent;
     border-image: url("images/frame1_transparent.png") 10 stretch;
-    word-wrap: break-word;
 }
 
 
@@ -820,10 +841,7 @@ input[type=checkbox] {
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
-    margin-left:10px;
-    font-size: 48px; 
-    margin-bottom:20px;
-    margin-top:20px
+    margin: 10px 0 0px;
 }
 
 .lineglowslow {
@@ -832,10 +850,6 @@ input[type=checkbox] {
     background-size: contain;
     background-position: left;
     background-repeat: no-repeat;
-    margin-left:10px;
-    font-size: 48px; 
-    margin-bottom:20px;
-    margin-top:20px
 }
 
 .lineglow-particles {
