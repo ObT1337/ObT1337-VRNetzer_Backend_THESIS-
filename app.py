@@ -72,6 +72,17 @@ def test3():
 def nav():
     return render_template('threeJSLabel.html')
 
+@app.route('/ForceLayout')
+def force():
+    nname = "static/csv/force/nodes/" + request.args.get("nname")
+    nodestxt = open(nname + ".json", "r")
+    nodes = json.load(nodestxt)
+
+    lname = "static/csv/force/links/" + request.args.get("lname")
+    linkstxt = open(lname + ".json", "r")
+    links = json.load(linkstxt)
+    return render_template('threeJSForceLayout.html', nodes = json.dumps(nodes), links = json.dumps(links))
+
 @app.route('/Graph')
 def test4():
     #y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
