@@ -98,12 +98,21 @@ def makeNodeTex(project, name, file):
     attrlist = {}
     attrlist['names'] = []
 
+    nodelist = {}
+    nodelist["nodes"] = []
+
     try:
         for row in csvreader:
             #print(row[7])
             my_list = row[7].split(";")
             attrlist['names'].append(my_list)
             
+            thisnode = {}
+            thisnode["id"] = i
+            thisnode["n"] = my_list[0]
+            thisnode["attrlist"] = my_list
+            nodelist["nodes"].append(thisnode)
+
             x = int(float(row[0])*65280)
             y = int(float(row[1])*65280)
             z = int(float(row[2])*65280)
@@ -132,6 +141,9 @@ def makeNodeTex(project, name, file):
     with open(path + '/names.json', 'w') as outfile:
         json.dump(attrlist, outfile)
 
+    with open(path + '/nodes.json', 'w') as outfile:
+        json.dump(nodelist, outfile)
+
     new_imgh.putdata(texh)
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
@@ -148,8 +160,7 @@ def makeNodeTex(project, name, file):
         new_imgc.save(pathRGB, "PNG")
         return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
     
-    
-    
+       
 def makeLinkTex(project, name, file):
     
     f = StringIO(file)
@@ -168,8 +179,16 @@ def makeLinkTex(project, name, file):
     new_imgl = Image.new('RGB', (1024, hight))
     new_imgc = Image.new('RGBA', (512, hight))
     i = 0
+
+    linklist = {}
+    linklist["links"] = []
     try:
         for row in csvreader:
+            thislink = {}
+            thislink["id"] = i
+            thislink["s"] = row[0]
+            thislink["e"] = row[1]
+            linklist["links"].append(thislink)
 
             sx = int(row[0]) % 128
             syl = int(int(row[0]) / 128) % 128
@@ -206,6 +225,9 @@ def makeLinkTex(project, name, file):
 
     except (IndexError, ValueError):
         return '<a style="color:red;">ERROR </a>'  +  name + " Linkfile malformated?" 
+
+    with open(path + '/links.json', 'w') as outfile:
+        json.dump(linklist, outfile)
 
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)

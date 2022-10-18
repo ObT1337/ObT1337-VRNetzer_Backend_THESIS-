@@ -1,0 +1,1 @@
+{"name": "1testcube", "layouts": ["cube2nodesXYZ", "test_nodesXYZ"], "layoutsRGB": ["cube2nodesRGB", "test_nodesRGB"], "links": ["cube2_linksXYZ", "test_linksXYZ"], "linksRGB": ["cube2_linksRGB", "test_linksRGB"], "selections": []}

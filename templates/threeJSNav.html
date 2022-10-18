@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>WEBGL Preview</title>
+		<style>
+			body { margin: 0; }
+		</style>
+	</head>
+	<body>
+        
+		<script src="static/js/three.js"></script>
+        
+        <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+		<script>
+        var mesh, renderer, scene, camera, controls;
+
+        init();
+        animate();
+        rigth();
+
+        function init() {
+
+            // renderer
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+
+            // scene
+            scene = new THREE.Scene();
+            
+            // camera
+            camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+            camera.position.set( 20, 0, 0 );
+            camera.layers.enable( 1 );
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2()
+            // controls
+            controls = new THREE.OrbitControls( camera, renderer.domElement );
+            
+            // ambient
+            scene.add( new THREE.AmbientLight( 0x222222 ) );
+            
+            // light
+            var light = new THREE.DirectionalLight( 0xffffff, 1 );
+            light.position.set( 20,20, 0 );
+            scene.add( light );
+            
+            // axes
+            scene.add( new THREE.AxesHelper( 20 ) );
+
+            // geometry
+            var geometry = new THREE.SphereGeometry( 5, 12, 8 );
+            
+            // material
+            var material = new THREE.MeshPhongMaterial( {
+                color: 0x00ffff, 
+                flatShading: true,
+                transparent: true,
+                opacity: 0.7,
+            } );
+            
+            // mesh
+            mesh = new THREE.Mesh( geometry, material );
+            //scene.add( mesh );
+
+            var data = JSON.parse({{data|tojson}});
+
+            const nscale = .01;
+            // Draw Nodes
+
+            for (let i = 0; i < data['nodes'].length; i++) {
+            //for (let i = 0; i < 300; i++) {
+                const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
+                const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(255,255,0)} );//"rgb(155, 102, 102)" 
+                const cube = new THREE.Mesh( ngeometry, nmaterial );
+                cube.name = i;
+                cube.layers.set(0);
+                //console.log(data['nodes'][i]["p"]);
+                scene.add( cube );
+                //cube.position.set(0, 10, 0);
+                cube.position.set(data['nodes'][i]["p"][0],data['nodes'][i]["p"][1],data['nodes'][i]["p"][2]); //0x00ff00
+                }
+
+            // Draw Links
+
+            for (let l = 0; l < data['links'].length; l++) {
+                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(128,0,128) } );
+                const points = [];
+                const start =  data['links'][l]["s"];
+                const end =  data['links'][l]["e"];
+                points.push( new THREE.Vector3( data['nodes'][start]["p"][0], data['nodes'][start]["p"][1], data['nodes'][start]["p"][2] ) );
+                points.push( new THREE.Vector3( data['nodes'][end]["p"][0], data['nodes'][end]["p"][1], data['nodes'][end]["p"][2] ) );
+
+                const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line( geometry1, material1 );
+                line.layers.set(1);
+                scene.add(line);
+                }
+
+            //renderer.render( scene, camera );
+            console.log(data["links"].length + " links, " + data["nodes"].length + " nodes" )
+            // camera rotation-> https://jsfiddle.net/8kn4qrz0/
+
+            function RGB2HTML(red, green, blue)
+            {
+                var decColor =0x1000000+ blue + 0x100 * green + 0x10000 *red ;
+                return '#'+decColor.toString(16).substr(1);
+            }
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            renderer.domElement.addEventListener('click', onClick, false);
+            
+        }
+
+        function onClick() {
+
+            event.preventDefault();
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObject(scene, true);
+            console.log("click")
+            if (intersects.length > 0) {
+            
+                var object = intersects[0].object;
+                console.log(object.name)
+                object.material.color.set( Math.random() * 0xffffff );
+
+            }
+            
+            //render();
+
+        }
+
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            //render();
+
+        }
+
+        function animate() {
+
+            requestAnimationFrame( animate );
+            
+            //controls.update();
+
+            renderer.render( scene, camera );
+
+        }
+
+        function rigth(){
+            camera.position.set(0,0,20);   
+            camera.lookAt(0,0,0);
+            camera.rotation.z += Math.PI/2
+            camera.updateProjectionMatrix();	
+        }
+		</script>
+	</body>
+</html>
