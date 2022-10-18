@@ -59,6 +59,12 @@ def upload():
     return render_template("upload.html", namespaces=prolist)
 
 
+@app.route("/string", methods=["GET"])
+def uploadString():
+    prolist = uploader.Uploader.listProjects()
+    return render_template("string_upload.html", namespace=prolist)
+
+
 @app.route("/Examples/CustomElements1")
 def CustomElements1R():
     return render_template("geneElement.html")
@@ -229,58 +235,59 @@ def join(message):
     )
 
 
-# @socketio.on("ex", namespace="/chat")
-# def ex(message):
-#     room = session.get("room")
-#     print(
-#         bcolors.WARNING
-#         + session.get("username")
-#         + "ex: "
-#         + json.dumps(message)
-#         + bcolors.ENDC
-#     )
-#     message["usr"] = session.get("username")
-
-#     if message["id"] == "projects":
-#         global sessionData
-#         sessionData["actPro"] = message["opt"]
-
-#         print("changed activ project " + message["opt"])
-
-#     if message["id"] == "search":
-#         if len(message["val"]) > 1:
-#             x = '{"id": "sres", "val":[], "fn": "sres"}'
-#             results = json.loads(x)
-#             results["val"] = search(message["val"])
-
-#             emit("ex", results, room=room)
-
-#     if message["id"] == "nl":
-#         message["names"] = []
-#         message["fn"] = "cnl"
-#         message["prot"] = []
-#         message["protsize"] = []
-#         for id in message["data"]:
-#             message["names"].append(names["names"][id][0])
-
-#             if len(names["names"][id]) == 5:
-#                 message["prot"].append(names["names"][id][3])
-#                 message["protsize"].append(names["names"][id][4])
-#             else:
-#                 message["prot"].append("x")
-#                 message["protsize"].append(-1)
-
-#         print(message)
-#         emit("ex", message, room=room)
-
-#     else:
-#         emit("ex", message, room=room)
-#     # sendUE4('http://127.0.0.1:3000/in',  {'msg': session.get('username') + ' : ' + message['msg']})
-
-
-@socketio.on("ex")
+@socketio.on("ex", namespace="/chat")
 def ex(message):
-    return message
+    print(message)
+    room = session.get("room")
+    print(
+        bcolors.WARNING
+        + session.get("username")
+        + "ex: "
+        + json.dumps(message)
+        + bcolors.ENDC
+    )
+    message["usr"] = session.get("username")
+
+    if message["id"] == "projects":
+        global sessionData
+        sessionData["actPro"] = message["opt"]
+
+        print("changed activ project " + message["opt"])
+
+    if message["id"] == "search":
+        if len(message["val"]) > 1:
+            x = '{"id": "sres", "val":[], "fn": "sres"}'
+            results = json.loads(x)
+            results["val"] = search(message["val"])
+
+            emit("ex", results, room=room)
+
+    if message["id"] == "nl":
+        message["names"] = []
+        message["fn"] = "cnl"
+        message["prot"] = []
+        message["protsize"] = []
+        for id in message["data"]:
+            message["names"].append(names["names"][id][0])
+
+            if len(names["names"][id]) == 5:
+                message["prot"].append(names["names"][id][3])
+                message["protsize"].append(names["names"][id][4])
+            else:
+                message["prot"].append("x")
+                message["protsize"].append(-1)
+
+        print(message)
+        emit("ex", message, room=room)
+
+    else:
+        emit("ex", message, room=room)
+    # sendUE4('http://127.0.0.1:3000/in',  {'msg': session.get('username') + ' : ' + message['msg']})
+
+
+# @socketio.on("ex")
+# def ex(message):
+#     return message
 
 
 @socketio.on("left", namespace="/chat")
