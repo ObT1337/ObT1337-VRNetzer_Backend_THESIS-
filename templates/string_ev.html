@@ -9,7 +9,6 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
             <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-            <link rel="stylesheet" href="{{ url_for('static', filename='css/StringStlye.css') }}">
                 
 
                     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
@@ -424,10 +423,11 @@
 
                                             <button class="swagEvidenceButton" style="background-color:#c8c8c8;
                                             color:black;"
-                                            id="evidence-all">
+                                            id="evidence-all"
+                                            type="VRNetzer">
                                                 All</button>
                                             <script>
-                                                initButton("evidence-all");
+                                                selectEvidence("evidence-all","anyRGB");
                                             </script>
                                         </div>
                                 </div>
@@ -435,16 +435,18 @@
                                         <h3> Known interactions</h3>
                                             <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
                                                 <button class="swagEvidenceButton" style="background-color:#ff00ff;"
-                                                id="evidence-experiments">
+                                                id="evidence-experiments"
+                                                type="VRNetzer">
                                                 Experiments</button>
                                                 <script>
-                                                    initButton("evidence-experiments");
+                                                    selectEvidence("evidence-experiments","stringdb_experimentsRGB");
                                                 </script>
 
                                                 <button class="swagEvidenceButton" style="background-color:#00ffff;color:black;"
-                                                id="evidence-database"> Database</button>
+                                                id="evidence-database"
+                                                type="VRNetzer"> Database</button>
                                                 <script>
-                                                    initButton("evidence-database");
+                                                    selectEvidence("evidence-database","stringdb_databasesRGB");
                                                 </script>
                                             </div>
                                 </div>
@@ -454,24 +456,27 @@
                                         <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
                                             <button class="swagEvidenceButton" style="background-color:#00ff00;
                                             color:black;"
-                                            id="evidence-neighborhood"> 
+                                            id="evidence-neighborhood"
+                                            type="VRNetzer"> 
                                                 Neighborhood</button>
                                                 <script>
-                                                    initButton("evidence-neighborhood");
+                                                    selectEvidence("evidence-neighborhood","stringdb_neighborhoodRGB");
                                                 </script>
 
                                             <button class="swagEvidenceButton" style="background-color:#ff0000;"
-                                            id="evidence-fusion">
+                                            id="evidence-fusion"
+                                            type="VRNetzer">
                                                 Fusion</button>
                                                 <script>
-                                                    initButton("evidence-fusion");
+                                                    selectEvidence("evidence-fusion","stringdb_fusionRGB");
                                                 </script>
 
                                             <button class="swagEvidenceButton" style="background-color:#0000ff;"
-                                            id="evidence-cooccurrence"> 
+                                            id="evidence-cooccurrence"
+                                            type="VRNetzer"> 
                                                 Cooccurrence</button>
                                                 <script>
-                                                    initButton("evidence-cooccurrence");
+                                                    selectEvidence("evidence-cooccurrence","stringdb_cooccurrenceRGB");
                                                 </script>
                                         </div>
                                 </div>
@@ -480,25 +485,28 @@
                                         
                                         <div class="frameBox" style="display:inline-block; margin-top:8px; margin-bottom:8px;">
                                             <button class="swagEvidenceButton" style="background-color:#c6ea46;color:black;"
-                                            id="evidence-textmining"> 
+                                            id="evidence-textmining"
+                                            type="VRNetzer"> 
                                                 Textmining</button>
                                                 <script>
-                                                    initButton("evidence-textmining");
+                                                    selectEvidence("evidence-textmining","stringdb_textminingRGB");
                                                 </script>
 
                                             <button class="swagEvidenceButton" style="background-color:#323232;"
-                                            id="evidence-coexpression"> 
+                                            id="evidence-coexpression"
+                                            type="VRNetzer"> 
                                                 Coexpression</button>
                                                 <script>
-                                                    initButton("evidence-coexpression");
+                                                    selectEvidence("evidence-coexpression","stringdb_coexpressionRGB");
                                                 </script>
 
                                             <button class="swagEvidenceButton" style="background-color:#9d9df8;
                                             color:black;"
-                                            id="evidence-homology">
+                                            id="evidence-homology"
+                                            type="VRNetzer">
                                                 Homology</button>
                                                 <script>
-                                                    initButton("evidence-homology");
+                                                    selectEvidence("evidence-homology","stringdb_similarityRGB");
                                                 </script>
                                         </div>
                                 </div>
