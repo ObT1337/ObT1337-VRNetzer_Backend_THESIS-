@@ -206,16 +206,15 @@ function selectEvidence(id, opt) {
       {
         console.log(links[i].text);
         document.getElementById("linksRGB").selectedIndex = i;
+        console.log($('#linksRGB option:selected').index())
+        console.log($('#linksRGB option:selected').text())
+        socket.emit('ex', { id: "projects", opt: opt, fn: "sel" });
+        var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
+        console.log($('#layouts option:selected').val());
+        window.location.href = url;
+        break;
       }
       }
-    console.log($('#linksRGB option:selected').index())
-    console.log($('#linksRGB option:selected').text())
-    socket.emit('ex', { id: "projects", opt: opt, fn: "sel" });
-    var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
-    console.log($('#layouts option:selected').val());
-    //console.log(url);
-
-    window.location.href = url;
   });
 }
 
