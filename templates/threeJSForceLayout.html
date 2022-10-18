@@ -10,10 +10,43 @@
   <div id="3d-graph"></div>
 
   <script>
-    let nodestxt = '[{"size": 0.15000000000000002, "caption": "Addam-Marbrand", "id": 0, "label": "Character"},{"size": 0.15000000000000002, "caption": "REEEEE", "id": 1, "label": "Character"},{"size": 0.15000000000000002, "caption": "Pferdinand", "id": 2, "label": "Character"}]';
-    let linkstxt = '[{"source": 0, "target": 1, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 1, "target": 2, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 2, "target": 0, "weight": 1.0986122886681098, "type": "INTERACTS45"}]'
-    const nnodes = JSON.parse(nodestxt); 
-    const nlinks = JSON.parse(linkstxt); 
+    var nodes = JSON.parse({{nodes|tojson}});
+    var links = JSON.parse({{links|tojson}});
+
+    console.log(nodes);
+    const nnodes = [];
+    const nlinks = [];
+
+    for (let i = 0; i < nodes['nodes'].length; i++) {
+      var newnode = {};
+      newnode["size"] = 0.2;
+      newnode["id"] = i;
+      newnode["caption"] = nodes['nodes'][i]["n"];
+      newnode['label'] = ":"
+
+      nnodes.push(newnode);
+    }
+    
+    for (let i = 0; i < links['links'].length; i++) {
+      var newlink = {};
+      newlink["id"] = links['links'][i]["id"];
+      newlink["source"] = parseInt(links['links'][i]["s"]);
+      newlink["target"] = parseInt(links['links'][i]["e"]);
+      links['weight'] = 1;
+      links['type'] = "idk";
+      nlinks.push(newlink);
+    }
+    console.log(nnodes);
+    console.log(nlinks);
+
+    //let nodestxt = '[{"size": 0.15000000000000002, "caption": "Addam-Marbrand", "id": 0, "label": "Character"},{"size": 0.15000000000000002, "caption": "REEEEE", "id": 1, "label": "Character"},{"size": 0.15000000000000002, "caption": "Pferdinand", "id": 2, "label": "Character"}]';
+    //let linkstxt = '[{"source": 0, "target": 1, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 1, "target": 2, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 2, "target": 0, "weight": 1.0986122886681098, "type": "INTERACTS45"}]'
+    //const nnodes = JSON.parse(nodestxt); 
+    //const nlinks = JSON.parse(linkstxt); 
+
+
+
+
     const elem = document.getElementById('3d-graph');
     const driver = neo4j.driver("bolt://demo.neo4jlabs.com", neo4j.auth.basic("gameofthrones", "gameofthrones"),{encrypted: true});
 	//const session = driver.session({database:"gameofthrones"});
