@@ -248,6 +248,51 @@ def test3():
     return render_template("test.html")
 
 
+@app.route("/evidences", methods=["GET"])
+def evidencePanel():
+    username = request.args.get("usr")
+    project = request.args.get("project")
+    if username is None:
+        username = str(random.randint(1001, 9998))
+    else:
+        username = username + str(random.randint(1001, 9998))
+        print(username)
+
+    if project is None:
+        project = "none"
+    else:
+        print(project)
+
+    if request.method == "GET":
+
+        room = 1
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        # prolist = listProjects()
+        if project != "none":
+            folder = "static/projects/" + project + "/"
+            with open(folder + "pfile.json", "r") as json_file:
+                global pfile
+                pfile = json.load(json_file)
+                # print(pfile)
+            json_file.close()
+
+            with open(folder + "names.json", "r") as json_file:
+                global names
+                names = json.load(json_file)
+                # print(names)
+            json_file.close()
+        return render_template(
+            "STRING_evidence_panel.html",
+            session=session,
+            sessionData=json.dumps(sessionData),
+            pfile=json.dumps(pfile),
+        )
+    else:
+        return "error"
+
+
 ### DATA ROUTES###
 
 ###RECEIVE INCOMING WEBSOCKET MSG FROM NODE.JS
