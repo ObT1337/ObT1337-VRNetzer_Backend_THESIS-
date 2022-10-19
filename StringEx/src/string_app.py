@@ -3,10 +3,10 @@ import os
 import random
 
 from flask import Blueprint, render_template, request, session
-from GlobalData import pfile, sessionData
 from PIL import Image
 from websocket_functions import bcolors
 
+from GlobalData import pfile, sessionData
 from uploader import listProjects
 
 from .settings import (
@@ -162,7 +162,16 @@ def string_preview():
 def uploadString():
     prolist = listProjects()
     html_page = "string_upload.html"
-    return render_template(html_page, namespace=prolist)
+    return render_template(
+        html_page,
+        namespace=prolist,
+        sessionData=json.dumps(sessionData),
+    )
+
+
+@string_ex.route("/uploadfiles", methods=["GET", "POST"])
+def execute_upload():
+    return Uploader.upload_files(request)
 
 
 @string_ex.route("/evidences", methods=["GET"])
