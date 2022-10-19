@@ -20,3 +20,21 @@ function selectEvidenceVRNetzer(id, opt) {
         socket.emit('ex', { id: "projects", opt: opt, fn: "sel" });
     });
 }
+function layoutDropdown (id, data, active){
+
+    $('#'+ id).selectmenu();
+  
+    for (let i = 0; i < data.length; i++) {
+      $('#'+ id).append(new Option(data[i]));
+    }
+    $('#'+ id).val(active);
+    $('#'+ id).selectmenu("refresh");
+  
+    $('#'+ id).on('selectmenuselect', function () {
+      var name =  $('#'+ id).find(':selected').text();
+      socket.emit('ex', {id: id, opt: name, fn: "sel"});
+      ///logger($('#selectMode').val());
+    });
+  
+  }
+  

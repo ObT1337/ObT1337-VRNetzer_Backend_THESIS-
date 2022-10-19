@@ -165,7 +165,6 @@ def uploadString():
     return render_template(
         html_page,
         namespace=prolist,
-        sessionData=json.dumps(sessionData),
     )
 
 
