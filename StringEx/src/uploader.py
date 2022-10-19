@@ -1,20 +1,24 @@
 import json
 import os
+import sys
 
-import numpy as np
+from .settings import _WORKING_DIR
+
+sys.path.append(os.path.join(_WORKING_DIR, "..",".."))
+
 from flask import jsonify
+from GlobalData import sessionData
 from PIL import Image
-from SVRNetzer.util.settings import _PROJECTS_PATH
-from SVRNetzer.util.settings import AttrTags as AT
-from SVRNetzer.util.settings import EdgeTags as ET
-from SVRNetzer.util.settings import Evidences as EV
-from SVRNetzer.util.settings import LayoutTags as LT
-from SVRNetzer.util.settings import NodeTags as NT
-from SVRNetzer.util.settings import ProjectTag as PT
-from SVRNetzer.util.settings import VRNetzElements as VRNE
-from SVRNetzer.util.util import clean_filename
 
-from .GlobalData import sessionData
+from .settings import _PROJECTS_PATH
+from .settings import AttrTags as AT
+from .settings import Evidences as EV
+from .settings import LayoutTags as LT
+from .settings import LinkTags as LiT
+from .settings import NodeTags as NT
+from .settings import ProjectTag as PT
+from .settings import VRNetzElements as VRNE
+from .util import clean_filename
 
 
 def os_join(*args):
@@ -42,15 +46,20 @@ class Uploader:
         self.p_path = os_join(_PROJECTS_PATH, self.p_name)
         self.pfile_file = os_join(self.p_path, "pfile.json")
         self.names_file = os_join(self.p_path, "names.json")
+        self.nodes_file = os_join(self.p_path, "nodes.json")
+        self.links_file = os_join(self.p_path, "links.json")
 
-        self.pfile = {}
+        pfile = {}
         self.attr_list = {}
-        self.pfile["name"] = self.p_name
-        self.pfile["layouts"] = []
-        self.pfile["layoutsRGB"] = []
-        self.pfile["links"] = []
-        self.pfile["linksRGB"] = []
-        self.pfile["selections"] = []
+        pfile["name"] = self.p_name
+        pfile["layouts"] = []
+        pfile["layoutsRGB"] = []
+        pfile["links"] = []
+        pfile["linksRGB"] = []
+        pfile["selections"] = []
+        self.pfile = pfile
+        self.nodes = {"nodes": []}
+        self.links = {"links": []}
 
         path = self.p_path
 
@@ -88,6 +97,19 @@ class Uploader:
             )
         else:
             return "no such project"
+
+    def write_json_files(self) -> None:
+        # update the projects file
+        files = [self.pfile_file, self.names_file, self.nodes_file, self.links_file]
+
+        contents = [self.pfile, self.attr_list, self.nodes, self.links]
+
+        for file, content in zip(
+            files,
+            contents,
+        ):
+            with open(file, "w") as json_file:
+                json.dump(content, json_file)
 
     @staticmethod
     def loadAnnotations(p_path: str) -> dict:
@@ -144,10 +166,10 @@ class Uploader:
     @staticmethod
     def extract_link_data(elem, layouts):
         tex = None
-        if ET.layouts in elem.keys():
-            elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[ET.layouts])}
-            start = elem[ET.start]
-            end = elem[ET.end]
+        if LiT.layouts in elem.keys():
+            elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[LiT.layouts])}
+            start = elem[LiT.start]
+            end = elem[LiT.end]
             sx = start % 128
             syl = start // 128 % 128
             syh = start // 16384
@@ -161,7 +183,7 @@ class Uploader:
                 tex.append([])
                 if layout in elem_lays:
                     layout_idx = elem_lays[layout]
-                    layout = elem[ET.layouts][layout_idx]
+                    layout = elem[LiT.layouts][layout_idx]
                     if LT.color in layout:
                         if isinstance(layout[LT.color], tuple):
                             color = layout[LT.color]
@@ -202,6 +224,12 @@ class Uploader:
             )
 
         for idx, elem in enumerate(nodes):
+            node = {
+                NT.id: elem[NT.id],
+                NT.name: elem[NT.name],
+                NT.attr_lst: [elem[NT.name]],
+            }
+            self.nodes[VRNE.nodes].append(node)
             tex = self.extract_node_data(elem, layouts, self.attr_list, skip_attr)
             for l, _ in enumerate(layouts):
                 for d in range(3):
@@ -268,6 +296,12 @@ class Uploader:
 
         l_idx = [0 for _ in layouts]
         for elem in links:
+            link = {
+                LiT.id: elem[LiT.id],
+                LiT.start: elem[LiT.start],
+                LiT.end: elem[LiT.end],
+            }
+            self.links[VRNE.links].append(link)
             tex = self.extract_link_data(elem, layouts)
             if tex is None:
                 continue
@@ -391,12 +425,7 @@ class Uploader:
 
         state += self.makeLinkTex(links, nodes, l_lay)
 
-        # update the projects file
-        with open(self.pfile_file, "w") as json_file:
-            json.dump(self.pfile, json_file)
-
-        with open(self.names_file, "w") as json_file:
-            json.dump(self.attr_list, json_file)
+        self.write_json_files()
 
         global sessionData
         sessionData["proj"] = self.listProjects(self.pf_path)

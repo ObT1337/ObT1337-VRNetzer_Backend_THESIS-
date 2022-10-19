@@ -461,10 +461,11 @@ def ex(message):
     message["usr"] = session.get("username")
 
     if message["id"] == "projects":
+
         global sessionData
         sessionData["actPro"] = message["opt"]
 
-        print("changed activ project " + message["opt"])
+        print("changed active project " + message["opt"])
 
     if message["id"] == "search":
         if len(message["val"]) > 1:
