@@ -4,11 +4,12 @@ import sys
 
 from .settings import _WORKING_DIR
 
-sys.path.append(os.path.join(_WORKING_DIR, "..",".."))
+sys.path.append(os.path.join(_WORKING_DIR, "..", ".."))
 
 from flask import jsonify
-from GlobalData import sessionData
 from PIL import Image
+
+from GlobalData import sessionData
 
 from .settings import _PROJECTS_PATH
 from .settings import AttrTags as AT
@@ -30,15 +31,15 @@ class Uploader:
         self,
         network: dict,
         p_name: str,
-        skip_exists: bool,
-        stringify: bool,
+        skip_exists: bool = False,
+        stringify: bool = True,
         p_path: str = _PROJECTS_PATH,
     ) -> None:
         self.network = network
         self.p_name = p_name  # Name of the project
         self.pf_path = p_path  # Path to the directory that contains all projects
         self.skip_exists = skip_exists  # boolean that indicates whether to skip existing project files or to update them
-        self.strigify = (
+        self.stringify = (
             stringify  # boolean that indicates whether a network should be stringified
         )
 
@@ -412,8 +413,12 @@ class Uploader:
 
         nodes = network[VRNE.nodes]
         links = network[VRNE.links]
-        n_lay = network[VRNE.node_layouts]  # Node layouts
-        l_lay = network[VRNE.link_layouts]
+        n_lay = []
+        l_lay = []
+        if VRNE.node_layouts in network:
+            n_lay = network[VRNE.node_layouts]  # Node layouts
+        if VRNE.link_layouts in network:
+            l_lay = network[VRNE.link_layouts]
 
         with open(self.names_file, "r") as json_file:
             self.attr_list = json.load(json_file)

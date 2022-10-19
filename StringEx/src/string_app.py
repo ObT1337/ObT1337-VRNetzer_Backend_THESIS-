@@ -14,9 +14,12 @@ from .settings import (
     _FLASK_TEMPLATE_PATH,
     _PROJECTS_PATH,
     _STATIC_PATH,
+    LayoutAlgroithms,
 )
-from .uploader import Uploader
+from .workflows import VRNetzer_upload_workflow
 
+sessionData["layoutAlgos"] = LayoutAlgroithms.all_algos
+sessionData["actAlgo"] = LayoutAlgroithms.spring
 string_ex = Blueprint(
     "StringEx",
     __name__,
@@ -164,13 +167,14 @@ def uploadString():
     html_page = "string_upload.html"
     return render_template(
         html_page,
-        namespace=prolist,
+        namespaces=prolist,
+        algorithms=LayoutAlgroithms.all_algos,
     )
 
 
 @string_ex.route("/uploadfiles", methods=["GET", "POST"])
 def execute_upload():
-    return Uploader.upload_files(request)
+    return VRNetzer_upload_workflow(request)
 
 
 @string_ex.route("/evidences", methods=["GET"])

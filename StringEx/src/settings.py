@@ -1,14 +1,14 @@
 import os
 
 _WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
-_VRNETZER_PATH = os.path.join(_WORKING_DIR,"..","..")
+_VRNETZER_PATH = os.path.join(_WORKING_DIR, "..", "..")
 _STATIC_PATH = os.path.join(_VRNETZER_PATH, "static")
 _PROJECTS_PATH = os.path.join(_STATIC_PATH, "projects")
 _NETWORKS_PATH = os.path.join(_STATIC_PATH, "networks")
-_FLASK_TEMPLATE_PATH = os.path.join(_WORKING_DIR,"..", "templates")
-_FLASK_STATIC_PATH = os.path.join(_WORKING_DIR,"..", "static")
-_VRNETZER_PATH = os.path.join(_WORKING_DIR,"..","..")
-_VRNETZER_TEMPLATE_PATH = os.path.join(_VRNETZER_PATH,"templates")
+_FLASK_TEMPLATE_PATH = os.path.join(_WORKING_DIR, "..", "templates")
+_FLASK_STATIC_PATH = os.path.join(_WORKING_DIR, "..", "static")
+_VRNETZER_PATH = os.path.join(_WORKING_DIR, "..", "..")
+_VRNETZER_TEMPLATE_PATH = os.path.join(_VRNETZER_PATH, "templates")
 # _STYLES_PATH = os.path.join(_STATIC_PATH, "styles")
 
 os.makedirs(_PROJECTS_PATH, exist_ok=os.X_OK)
@@ -101,6 +101,16 @@ class LayoutAlgroithms:
     cartoGRAPH_importance = "importance"
     cartoGRAPH_tsne = "tsne"
     cartoGRAPH_umap = "umap"
+    all_algos = [
+        spring,
+        kamada_kawai,
+        f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_tsne}",
+        f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_umap}",
+        f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_tsne}",
+        f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_umap}",
+        f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_tsne}",
+        f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_umap}",
+    ]
 
 
 class Evidences:

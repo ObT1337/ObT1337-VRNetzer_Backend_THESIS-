@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from pydoc import ispath
 
 import networkx as nx
 
@@ -92,15 +93,22 @@ logger.setLevel(logging.DEBUG)
 
 
 def apply_layout_workflow(
-    file_name: str,
+    network: str,
     gen_layout: bool = True,
     layout_algo: str = None,
     cy_layout: bool = True,
     stringify: bool = True,
 ) -> Layouter:
     layouter = Layouter()
-    layouter.read_from_vrnetz(file_name)
-    logger.info(f"Network extracted from: {file_name}")
+    if type(network) is dict:
+        layouter.network = network
+        nodes = layouter.network["nodes"]
+        links = layouter.network["links"]
+        layouter.gen_graph(nodes, links)
+    else:
+
+        layouter.read_from_vrnetz(network)
+        logger.info(f"Network extracted from: {network}")
 
     if gen_layout:
         layouter.apply_layout(layout_algo)
@@ -132,23 +140,38 @@ def apply_layout_workflow(
 def VRNetzer_upload_workflow(request):
     """Used from the StringEX/uploadfiles route"""
     form = request.form.to_dict()
-    namespace = ""
+    network = request.files.getlist("vrnetz")[0].read().decode("utf-8")
+    network = json.loads(network)
+
+    project_name = ""
+
     if form["namespace"] == "New":
-        namespace = form["new_name"]
+        project_name = form["new_name"]
 
     else:
-        namespace = form["existing_namespace"]
-    if not namespace:
+        project_name = form["existing_namespace"]
+    if not project_name:
         return "namespace fail"
-    uploader = Uploader(network, project_name, skip_exists, stringifiy, projects_path)
+    print(form.keys())
+    algo = form["algo"]
+    stringify = False
+    if "stringify" in form:
+        stringify = True
+
+    # create layout
+    layouter = apply_layout_workflow(network, layout_algo=algo, stringify=stringify)
+    network = layouter.network
+
+    # upload network
+    uploader = Uploader(network, p_name=project_name, stringify=stringify)
     state = uploader.upload_files(network)
-    if keep_tmp:
-        outfile = f"{_NETWORKS_PATH}/{project_name}_with_3D_Coords.VRNetz"
-        print(f"OUTFILE:{outfile}")
-        with open(outfile, "w") as f:
-            json.dump(network, f)
-        logging.info(f"Saved network as {outfile}")
-    if stringifiy and cy_layout:
+    # if keep_tmp:
+    #     outfile = f"{_NETWORKS_PATH}/{project_name}_with_3D_Coords.VRNetz"
+    #     print(f"OUTFILE:{outfile}")
+    #     with open(outfile, "w") as f:
+    #         json.dump(network, f)
+    #     logging.info(f"Saved network as {outfile}")
+    if stringify:
         uploader.stringify_project()
         logging.info(f"Layouts stringified: {project_name}")
     return state

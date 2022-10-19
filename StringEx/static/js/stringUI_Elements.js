@@ -21,7 +21,7 @@ function selectEvidenceVRNetzer(id, opt) {
     });
 }
 function layoutDropdown (id, data, active){
-
+    console.log(id,data,active)
     $('#'+ id).selectmenu();
   
     for (let i = 0; i < data.length; i++) {

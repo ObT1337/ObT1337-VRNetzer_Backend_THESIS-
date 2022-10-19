@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
+    <!-- String Style -->
+    <link rel="stylesheet" href="{{ url_for('StringEx.static', filename='css/StringStyle.css') }}">
     <!-- external scripts -->
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -27,7 +29,7 @@
 
     <!-- VRNetzer backend scripts -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('StringEx.static', filename='js/upload_UI.js') }}"></script>
 
 
 
@@ -35,7 +37,7 @@
     <script src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
 
     <!-- connect Socket IO -->
-    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script> -->
 
 </head>
 
@@ -50,7 +52,11 @@
         <div id="fragment-1">
             <div class="twelve columns">
                 <div class="eight columns">
-                    <h2 class="lineglowslow" style="margin-top:30px">VRNetzer</h2>
+                    <h2 class="lineglowslow" style="margin-top:30px">STRING
+                        <br>
+                        <br>
+                        &ensp;VRNetzer
+                    </h2>
                 </div>
                 <div class="four columns">
                     <div class="swagLogo"><br></br></div>
@@ -109,10 +115,10 @@
 
                             <!--<h3 class="lineglowslow"><span>PROJECT</span></h3>-->
                             <br>
-
                             <div class="cornerBox">
                                 <select name="namespaces" id="namespaces">
                                     {% for namespace in namespaces %}
+                                    print(namespace);
                                     <option value="{{namespace}}">{{namespace}}</option>
                                     {% endfor %}
                                 </select>
@@ -133,33 +139,56 @@
                     <div class="twelve columns">
                         <h4 class="nine columns">VRNetz</h4>
                         <input type=file name=vrnetz multiple value="placeholder">
+                    </div>
+                </div>
 
-                        <!--
+                <!--
             <label>N O D E S</label><br>
             <input type=file name=nodes multiple><br><br>
             -->
+                <div class="twelve columns">
+                    <div class="six columns">
+                        <div class="frameBox">
+                            <h4> LAYOUT<br>&ensp;ALGORITHM</h4>
+                            <br>
+                            <div class="cornerBox">
+                                <select name="algo" id="algo">
+                                    {% for algo in algorithms %}
+                                    <option value="{{algo}}">{{algo}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="six columns">
+                        <div class="frameBox">
+                            <div class="two columns">
+                                <input type="checkbox" name="stringify" value="stringify" unchecked>
+                            </div>
+                            <label for="stringify">
+                                <h6>STRING NETWORK</h6>
+                            </label><br>
+                        </div>
+                    </div>
+                </div>
 
-                        <!-- <h4 class="nine columns">Layout algorithm</h4>
-                        <select id='layout_algo'></select>
-                        <script>
-                            layoutDropdown('layout_algo', sessiondata["layoutAlgo"], sessiondata["actAlgo"]);
-                        </script> -->
 
 
-                        <!--
+
+
+                <!--
             <label>A T T R I B U T E S (optional) </label><br>
             <input type=file name=attributes multiple><br><br>
           
             <label>L A B E L S (optional) </label><br>
             <input type=file name=labels multiple><br><br>
             -->
-                    </div>
-                </div>
 
                 <div class="frameBox">
                     <div class="twelve columns">
                         <div class="two columns"><input type=submit value=Upload id=upload_button
-                                class="swagSubmit"></button> </div>
+                                class="swagSubmit"></button>
+                        </div>
                         <div class="nine columns" id="upload_message"></div>
                         <br>
 

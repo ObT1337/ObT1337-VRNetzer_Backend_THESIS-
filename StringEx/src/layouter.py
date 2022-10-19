@@ -17,13 +17,7 @@ class Layouter:
 
     graph: nx.Graph = nx.Graph()
 
-    def read_from_vrnetz(self, file: str) -> nx.Graph:
-        network = json.load(open(file))
-        self.network = network
-        nodes = network[VRNE.nodes]
-        links = network[VRNE.links]
-        # self.node_map = {}
-        # self.edge_map = {}
+    def gen_graph(self, nodes, links):
         for node_data in nodes:
             self.graph.add_node(node_data[NT.id], data=node_data)
             # self.node_map[node_data["id"]] = node_data
@@ -31,6 +25,13 @@ class Layouter:
             self.graph.add_edge(link[LiT.start], link[LiT.end], data=link)
             # self.edge_map[(str(edge["s"]), str(edge["e"]))] = edge
         return self.graph
+
+    def read_from_vrnetz(self, file: str) -> nx.Graph:
+        network = json.load(open(file))
+        self.network = network
+        nodes = network[VRNE.nodes]
+        links = network[VRNE.links]
+        return self.gen_graph(nodes, links)
 
     def get_node_data(self, node):
         if "data" not in self.graph.nodes[node]:
@@ -73,7 +74,6 @@ class Layouter:
 
     def apply_layout(self, layout_algo: str = None) -> nx.layout:
         """Applies a networkx layout algorithm and adds the node positions to the self.nodes_data dictionary."""
-
         if layout_algo is None:
             layout_algo = LA.spring
 
@@ -85,6 +85,7 @@ class Layouter:
                 LA.kamada_kawai: self.create_kamada_kawai_layout,
             }
             layout = layouts[layout_algo]()  # Will use the desired layout algorithm
+            print(layout)
 
         points = np.array(list(layout.values()))
         points = self.to_positive(points, 3)
