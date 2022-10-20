@@ -4,10 +4,10 @@ import random
 
 import flask
 from PIL import Image
-from websocket_functions import bcolors
 
 import GlobalData as GD
 import uploader
+from websocket_functions import bcolors
 
 from .settings import (_FLASK_STATIC_PATH, _FLASK_TEMPLATE_PATH,
                        _PROJECTS_PATH, _VRNETZER_PATH, LayoutAlgroithms)
