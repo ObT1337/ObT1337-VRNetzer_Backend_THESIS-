@@ -16,10 +16,11 @@ def load(main_app: flask.Flask):
                     module.blueprint, url_prefix=module.url_prefix
                 )
                 print(f"Loaded extension: {ext}")
-            except ImportError:
+            except ImportError as e:
                 print(f"Failed to load extension: {ext}")
                 print(f"Make sure you installed a necessary python modules.")
                 print(
                     f"You can use:\n\npython3 -m pip install -r {ext}/requirements.txt\n\nTo install all requirements"
                 )
+                print(e)
     return main_app

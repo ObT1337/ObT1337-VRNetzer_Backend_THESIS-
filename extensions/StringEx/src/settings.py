@@ -1,7 +1,9 @@
 import os
+import sys
 
-import bla
-import pkg_resources
+try: from pip._internal.operations import freeze
+except ImportError: # pip < 10.0
+    from pip.operations import freeze
 
 _WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 _EXTENSION_PATH = os.path.join(_WORKING_DIR, "..", "..")
@@ -108,7 +110,8 @@ class LayoutAlgroithms:
     cartoGRAPH_importance = "importance"
     cartoGRAPH_tsne = "tsne"
     cartoGRAPH_umap = "umap"
-    if "cartoGRAPHs" in {pkg.key for pkg in pkg_resources.working_set}:
+
+    if "cartoGRAPHs" in [module.split("=")[0] for module in list(freeze.freeze())]:
         all_algos += [
             f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_tsne}",
             f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_umap}",
@@ -151,3 +154,6 @@ class Evidences:
             Evidences.stringdb_similarity: (157, 157, 248, 255),  # #9d9df8
         }
         return ev
+
+
+print(LayoutAlgroithms.all_algos)
