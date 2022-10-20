@@ -215,7 +215,7 @@ p {
 
 html,
 body {
-    background: rgba(0,0,0,0);
+    background: rgba(0,0,0,1); /* need to set alpha to 0 later!!! */
 }
 
 .container {

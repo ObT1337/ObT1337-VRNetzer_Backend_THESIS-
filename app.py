@@ -250,29 +250,44 @@ def main():
     else:
         print(project)
 
-    if(request.method=='GET'):
+    if(request.method != 'GET'):
+        return "error" 
 
-        room = 1
-        #Store the data in session
-        session['username'] = username
-        session['room'] = room
-        #prolist = listProjects()
-        if project != "none":
-            folder = 'static/projects/' + project + '/'
-            with open(folder + 'pfile.json', 'r') as json_file:
-                global pfile
-                pfile = json.load(json_file)
-                #print(pfile)
-            json_file.close()
+    room = 1
+    #Store the data in session
+    session['username'] = username
+    session['room'] = room
+    data = None
+    node_id = 0
+    node_count = 0
+    #prolist = listProjects()
+    if project != "none":
+        folder = 'static/projects/' + project + '/'
+        with open(folder + 'pfile.json', 'r') as json_file:
+            global pfile
+            pfile = json.load(json_file)
+            #print(pfile)
+        json_file.close()
 
-            with open(folder + 'names.json', 'r') as json_file:
-                global names
-                names = json.load(json_file)
-                #print(names)
-            json_file.close()
-        return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile))
-    else:
-        return "error"    
+        with open(folder + 'names.json', 'r') as json_file:
+            global names
+            names = json.load(json_file)
+            print(names)
+        json_file.close()
+
+
+        try:
+            id = int(request.args.get("id"))
+        except:
+            id=0   
+        data = names['names']
+        node_id = data[id][0]
+        node_count = len(data)
+
+        print("\n\n", data)
+        print(project, node_count)
+    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_data=data, node_id=node_id, node_count=node_count)
+  
 
 @app.route('/login/<usr>', methods=['GET'])
 def loginR(usr):

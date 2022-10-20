@@ -142,6 +142,9 @@
             var username = '{{session['username']}}';
             console.log(username);
             
+            var nodeData = '{{node_data}}';
+            var nodeID = '{{node_id}}';
+            var nodeCount = '{{node_count}}'
         </script>
 
 
@@ -179,6 +182,9 @@
                 </li>
                 <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
                                                 src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>-->
+                <li>
+                    <a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_chart.png') }}" /></a>
+                </li>
             </ul>
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -466,7 +472,6 @@
                 </div>
 
             </div>
-
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                          tab 6 - SETTINGS
@@ -483,6 +488,94 @@
                                         </script>
 
                             </div>-->
+        
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                          tab 6 - Node Analytics 
+
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <div id="tabs-6">
+                <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+                <script>
+                </script>
+
+
+
+                <div class="twelve columns">
+                    <h2 class="lineglowslow">Node Analytics</h2>
+                </div>
+
+                <div class="twelve columns">
+                    <div class="frameBox">
+                        <h5 style="text-align:end; margin-bottom:5px;"> Node ID </h5>
+                        <div class="four columns">
+                            <h6>                               
+                                <script>
+
+                                    console.log("Node ID: ", nodeID)
+
+                                    if (nodeID !== undefined){
+                                        document.write(nodeID);
+                                    }
+                                    else{
+                                        document.write("Select Node");
+                                    }
+                                </script>
+                            </h6>  
+                        </div>
+                    </div>
+                </div>
+                <div class="twelve columns" style="display:inline-block; margin-top:12px;">
+                    <div class="frameBox">
+                        <h5 style="text-align:end; margin-bottom:5px;"> Settings </h5>
+
+                        <div class="twelve columns"> 
+                            <h6 class="border">param 1</h6>
+                            <div id="slider_barplot_param_1"></div>
+                            <h6 class="border">param 2</h6>
+                            <div id="slider_barplot_param_2"></div>
+                            <h6 class="border">param 3</h6>
+                            <div id="slider_barplot_param_3"></div>
+                            <script>
+                                initSlider('slider_barplot_param_1');
+                                $("#slider_barplot_param_1").slider("option", "max", 1);
+                                $("#slider_barplot_param_1").slider("option", "step", 0.01);
+                                $("#slider_barplot_param_1").slider("option", "value", 0.5);
+
+                                initSlider('slider_barplot_param_2');
+                                $("#slider_barplot_param_2").slider("option", "max", 1);
+                                $("#slider_barplot_param_2").slider("option", "step", 0.01);
+                                $("#slider_barplot_param_2").slider("option", "value", 0.5);
+                                initSlider('slider_barplot_param_3');
+                                
+                                $("#slider_barplot_param_3").slider("option", "min", 1);
+                                $("#slider_barplot_param_3").slider("option", "max", nodeCount);
+                                $("#slider_barplot_param_3").slider("option", "value", Math.round(nodeCount / 2));
+                            </script>  
+                        </div>
+                        <div class="five columns">
+                            <input type="button" id='button_barplot_run' class="swagTextButton" value="RUN"></button>
+                            <script>
+                                initButton('button_barplot_run');
+                            </script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="twelve columns" style="display:inline-block; margin-top:12px;">
+                    <div class="frameBox">
+                        <h5 style="text-align:end; margin-bottom:5px;"> Result </h5>
+                        <div class="seven columns result_image" id="barplot_image_result">
+                            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                            plot here 
+                                   v
+                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                            <a href=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
 
