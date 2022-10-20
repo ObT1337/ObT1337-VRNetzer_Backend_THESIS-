@@ -31,6 +31,7 @@ app = Flask(__name__)
 app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
+
 app = load_extensions.load(app)
 
 socketio = SocketIO(app, manage_session=False)
@@ -535,4 +536,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app)  # , port=3000, debug=True)
+    socketio.run(app, port=3000, debug=True)

@@ -1,5 +1,8 @@
 import os
 
+import bla
+import pkg_resources
+
 _WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 _EXTENSION_PATH = os.path.join(_WORKING_DIR, "..", "..")
 _VRNETZER_PATH = os.path.join(_EXTENSION_PATH, "..")
@@ -96,23 +99,24 @@ class VRNetzElements:
 
 class LayoutAlgroithms:
     spring = "spring"
+
     kamada_kawai = "kamada_kawai"
+    all_algos = [spring, kamada_kawai]
     cartoGRAPH = "cg"
     cartoGRAPH_local = "local"
     cartoGRAPH_global = "global"
     cartoGRAPH_importance = "importance"
     cartoGRAPH_tsne = "tsne"
     cartoGRAPH_umap = "umap"
-    all_algos = [
-        spring,
-        kamada_kawai,
-        f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_tsne}",
-        f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_umap}",
-        f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_tsne}",
-        f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_umap}",
-        f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_tsne}",
-        f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_umap}",
-    ]
+    if "cartoGRAPHs" in {pkg.key for pkg in pkg_resources.working_set}:
+        all_algos += [
+            f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_tsne}",
+            f"{cartoGRAPH}_{cartoGRAPH_local}_{cartoGRAPH_umap}",
+            f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_tsne}",
+            f"{cartoGRAPH}_{cartoGRAPH_global}_{cartoGRAPH_umap}",
+            f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_tsne}",
+            f"{cartoGRAPH}_{cartoGRAPH_importance}_{cartoGRAPH_umap}",
+        ]
 
 
 class Evidences:
