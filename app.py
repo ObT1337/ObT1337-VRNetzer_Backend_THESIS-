@@ -143,15 +143,12 @@ def test44():
     else:
         linkRGBIndex = int(request.args.get("lcol"))
 
-<<<<<<< HEAD
     if request.args.get("maxlinks") is None:
         maxLinks = 30000
     else:
         maxLinks = int(request.args.get("maxlinks"))
      
 
-=======
->>>>>>> main
     print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
@@ -231,17 +228,10 @@ def test44():
 
     # print(testNetwork)
 
-<<<<<<< HEAD
-    
-    
-    for x in range (length-1):
-        if x < maxLinks: # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
-=======
     for x in range(length - 1):
         if (
             x < 30000
         ):  # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
->>>>>>> main
             newLink = {}
             newLink["id"] = x
             newLink["s"] = links["links"][x]["s"]
@@ -553,4 +543,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app, port=3000, debug=True)
+    socketio.run(app) #, port=3000, debug=True)
