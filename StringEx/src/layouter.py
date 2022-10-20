@@ -85,7 +85,6 @@ class Layouter:
                 LA.kamada_kawai: self.create_kamada_kawai_layout,
             }
             layout = layouts[layout_algo]()  # Will use the desired layout algorithm
-            print(layout)
 
         points = np.array(list(layout.values()))
         points = self.to_positive(points, 3)
@@ -202,20 +201,22 @@ class Layouter:
                 continue
 
             # Color each link with the color of the evidence
-            for idx, link in enumerate(cur_links):
-                if ev == Evidences.any:
-                    color = evidences[ev]
-                    # TODO extract the alpha value with the highest score.
+            for idx, link in enumerate(links):
+                if link in cur_links:
+                    if ev == Evidences.any:
+                        color = evidences[ev]
+                        # TODO extract the alpha value with the highest score.
+                    else:
+                        color = evidences[ev][:3] + (
+                            int(link[ev] * 255),
+                        )  # Alpha scales with score
                 else:
-                    color = evidences[ev][:2] + (
-                        int(link[ev] * 255),
-                    )  # Alpha scales with score
+                    color = (0, 0, 0, 0)  # No evidence
                 if LiT.layouts not in self.network[VRNE.links][idx]:
                     self.network[VRNE.links][idx][LiT.layouts] = []
                 self.network[VRNE.links][idx][LiT.layouts].append(
                     {LT.name: ev, LT.color: color}
                 )
-
         return self.network[VRNE.links]
 
 

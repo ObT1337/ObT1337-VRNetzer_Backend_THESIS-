@@ -154,9 +154,11 @@ def VRNetzer_upload_workflow(request):
         return "namespace fail"
     print(form.keys())
     algo = form["algo"]
-    stringify = False
-    if "stringify" in form:
-        stringify = True
+
+    stringify, write_VRNetz = False, False
+    for tag in ["stringify", "write"]:
+        if tag in form:
+            stringify = True
 
     # create layout
     layouter = apply_layout_workflow(network, layout_algo=algo, stringify=stringify)
@@ -165,12 +167,12 @@ def VRNetzer_upload_workflow(request):
     # upload network
     uploader = Uploader(network, p_name=project_name, stringify=stringify)
     state = uploader.upload_files(network)
-    # if keep_tmp:
-    #     outfile = f"{_NETWORKS_PATH}/{project_name}_with_3D_Coords.VRNetz"
-    #     print(f"OUTFILE:{outfile}")
-    #     with open(outfile, "w") as f:
-    #         json.dump(network, f)
-    #     logging.info(f"Saved network as {outfile}")
+    outfile = f"{_NETWORKS_PATH}/{project_name}_processed.VRNetz"
+    if write_VRNetz:
+        print(f"processed network saved at:{outfile}")
+    with open(outfile, "w") as f:
+        json.dump(network, f)
+    logging.info(f"Saved network as {outfile}")
     if stringify:
         uploader.stringify_project()
         logging.info(f"Layouts stringified: {project_name}")

@@ -171,6 +171,7 @@ class Uploader:
             elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[LiT.layouts])}
             start = elem[LiT.start]
             end = elem[LiT.end]
+
             sx = start % 128
             syl = start // 128 % 128
             syh = start // 16384
@@ -190,6 +191,8 @@ class Uploader:
                             color = layout[LT.color]
                 else:
                     color = [0, 0, 0, 0]
+                if elem[LiT.id] == 0:
+                    print(layout, color)
 
                 tex[idx].append((sx, syl, syh))
                 tex[idx].append((ex, eyl, eyh))
@@ -224,7 +227,7 @@ class Uploader:
                 ]
             )
 
-        for idx, elem in enumerate(nodes):
+        for _, elem in enumerate(nodes):
             node = {
                 NT.id: elem[NT.id],
                 NT.name: elem[NT.name],
@@ -234,7 +237,7 @@ class Uploader:
             tex = self.extract_node_data(elem, layouts, self.attr_list, skip_attr)
             for l, _ in enumerate(layouts):
                 for d in range(3):
-                    l_tex[l][d][idx] = tex[l][d]
+                    l_tex[l][d][elem[NT.id]] = tex[l][d]
         output = ""
 
         for l, layout in enumerate(layouts):
@@ -304,6 +307,12 @@ class Uploader:
             }
             self.links[VRNE.links].append(link)
             tex = self.extract_link_data(elem, layouts)
+            if elem[LiT.id] == 0:
+                for t, l in zip(tex, layouts):
+                    if l in elem:
+                        print(elem[l], l, t)
+                    else:
+                        print("NOT", t, l)
             if tex is None:
                 continue
             for l, layout in enumerate(layouts):
