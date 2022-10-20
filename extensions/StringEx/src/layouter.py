@@ -230,4 +230,3 @@ if __name__ == "__main__":
         )
     )
     layouter.apply_layout()
-    print(layouter.graph)

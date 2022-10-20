@@ -77,7 +77,7 @@ class Uploader:
         with open(self.names_file, "w") as outfile:
             json.dump(self.attr_list, outfile)
 
-        print("Successfully created directories in %s " % path)
+        print(f"Successfully created directories in {path} ")
 
     def loadProjectInfo(self) -> dict or str:
         self.folder = os_join(self.p_path)
@@ -191,8 +191,6 @@ class Uploader:
                             color = layout[LT.color]
                 else:
                     color = [0, 0, 0, 0]
-                if elem[LiT.id] == 0:
-                    print(layout, color)
 
                 tex[idx].append((sx, syl, syh))
                 tex[idx].append((ex, eyl, eyh))
@@ -307,12 +305,6 @@ class Uploader:
             }
             self.links[VRNE.links].append(link)
             tex = self.extract_link_data(elem, layouts)
-            if elem[LiT.id] == 0:
-                for t, l in zip(tex, layouts):
-                    if l in elem:
-                        print(elem[l], l, t)
-                    else:
-                        print("NOT", t, l)
             if tex is None:
                 continue
             for l, layout in enumerate(layouts):

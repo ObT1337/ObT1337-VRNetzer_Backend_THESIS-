@@ -11,7 +11,8 @@ from io import StringIO
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
