@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+	<head>
+		<meta charset="utf-8">
+		<title>WEBGL Preview</title>
+		<style>
+			body {margin: 0px; overflow: hidden;}
+            #slider {
+                margin: 10px;
+            }
+
+            .ui-slider-horizontal {
+                height: 4px;
+                width: 150px;
+            }
+
+            .ui-slider .ui-slider-handle {
+                height: 16px;
+                width: 12px;
+            }
+		</style>
+	</head>
+    
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="static/js/three.js"></script>
+    <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+	<body>
+        
+        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; padding-left: 20px; padding-right: 20px;  background-color: #0000009d; overflow: hidden; width: 190px; " >&nbsp;
+            
+                <form action="/preview">
+                    <input type="submit" value="PROJECTS"   style = "height: 50px; width: 150px;"/>
+                </form>
+                
+                <h1 style = 'font-size: 24px; margin-bottom: 0px; color:rgb(95, 95, 95)'>VRNetzer</h1>
+                <div style = 'font-size: 20px; color:rgb(255, 255, 255)'>WebGL PREVIEW</div>
+            
+            <p></p> 
+
+
+            <h1 id = 'prname' style = 'font-size: 24px; margin-bottom: 3px; word-break:break-all;'>NAME</h1>
+            <div id = 'size'>SIZE</div>
+            <div id = "warning" style = 'font-size: 20px; color:rgb(255,0, 0)'></div>
+            <br>
+            <p></p>
+                    <div>LAYOUT</div>
+                    <select id='layouts'></select>
+                    <p></p>
+                    <div>NODE COLOR</div>
+                    <select id='layoutsRGB'></select>
+                    <p></p>
+                    <div>LINK COLOR</div>
+                    <select id='linksRGB'></select>
+
+                    <p></p> 
+                
+            
+                <input type="submit" value="RELOAD" id="reload"  style = "height: 50px; width: 150px;"/>
+                <p></p>
+                <br>
+                <div style = 'margin-bottom: 8px;'>NODE SIZE</div>
+                
+                <div id = 'nsize'></div>
+                <p></p>
+                <br>
+                <div>SEARCH</div>
+                <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)" style = "height: 50px; width: 150px;">
+        <p></p>
+        <p></p>
+        
+
+        
+        </div>
+        <div id = 'label' style = 'z-index: 2; position: absolute; top: 0; left: 0; color:white; margin-left: 10px; font-size: 30px;'></div>
+		<script>
+        var mesh, renderer, scene, camera, controls;
+        var data = JSON.parse({{data|tojson}});
+        var pdata = JSON.parse({{pfile|tojson}});
+        //console.log(data);
+
+        var scale = 20;
+        const nscale = .03;
+        var nodemeshes = [];
+        var indexsphere;
+   
+
+        initSliderNOsocket ('nsize');
+        initDropdownNOsocket("layouts", pdata["layouts"], pdata["selected"][0]);
+        initDropdownNOsocket("layoutsRGB", pdata["layoutsRGB"], pdata["selected"][1]);
+        initDropdownNOsocket("linksRGB", pdata["linksRGB"], pdata["selected"][2]);
+        // realod button
+        $('#reload').on('click', function () {
+            var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
+            console.log($('#layouts option:selected').val());
+            //console.log(url);
+
+            window.location.href = url;
+            });
+
+
+        document.getElementById("prname").innerHTML = pdata["name"];
+
+        init();
+        animate();
+        rigth();
+        
+
+        function init() {
+
+            // renderer
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            document.body.appendChild( renderer.domElement );
+            // scene
+            scene = new THREE.Scene();
+            // camera
+            camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+            camera.position.set( 20, 0, 0 );
+            camera.layers.enable( 1 );// camera shows layers 0 + 1, only 0 (cubes) gets racasted
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2()
+            // controls
+            controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.addEventListener('change', function() {
+                onCameraChange();
+            });
+
+            // axes
+            scene.add( new THREE.AxesHelper( 20 ) );
+            const geometry = new THREE.SphereGeometry(nscale, 32, 16 );
+            
+            var material = new THREE.MeshBasicMaterial( {
+                color: 0xFFFFFF, 
+               
+                transparent: true,
+                
+                opacity: 0.4,
+            } );
+
+            const sphere = new THREE.Mesh( geometry, material );
+            sphere.layers.set(1);
+            indexsphere = sphere;
+            scene.add( sphere );
+            /*
+            // ambient
+            scene.add( new THREE.AmbientLight( 0x222222 ) );
+            
+            // light
+            var light = new THREE.DirectionalLight( 0xffffff, 1 );
+            light.position.set( 20,20, 0 );
+            scene.add( light );
+            
+
+
+*/
+           
+
+            for (let i = 0; i < data['nodes'].length; i++) {
+            
+                const ngeometry = new THREE.BoxGeometry( nscale, nscale, nscale);
+                const nmaterial = new THREE.MeshBasicMaterial( { color:RGB2HTML(data['nodes'][i]['c'][0],data['nodes'][i]['c'][1],data['nodes'][i]['c'][2])} );//"rgb(155, 102, 102)" 
+                const cube = new THREE.Mesh( ngeometry, nmaterial );
+                cube.name = i;//;
+                cube.layers.set(0);
+                nodemeshes.push(cube);
+                //console.log(data['nodes'][i]["n"]);
+                scene.add( cube );
+                cube.position.set(data['nodes'][i]["p"][0]*scale,data['nodes'][i]["p"][1]*scale,data['nodes'][i]["p"][2]*scale); //0x00ff00
+                }
+
+            // Draw Links
+
+            for (let l = 0; l < data['links'].length; l++) {
+                const material1 = new THREE.LineBasicMaterial( { color:RGB2HTML(data['links'][l]["c"][0],data['links'][l]["c"][1],data['links'][l]["c"][2]),} );
+                const points = [];
+                const start =  data['links'][l]["s"];
+                const end =  data['links'][l]["e"];
+                points.push( new THREE.Vector3( data['nodes'][start]["p"][0]*scale, data['nodes'][start]["p"][1]*scale, data['nodes'][start]["p"][2]*scale ) );
+                points.push( new THREE.Vector3( data['nodes'][end]["p"][0]*scale, data['nodes'][end]["p"][1]*scale, data['nodes'][end]["p"][2]*scale ) );
+
+                const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
+                const line = new THREE.Line( geometry1, material1 );
+                line.layers.set(1);
+                line.linewidth
+                scene.add(line);
+                }
+
+
+            if (data['links'].length == 30000){
+                document.getElementById("warning").innerHTML = "TOO MANY LINKS<br>FOR PREVIEW";
+            }
+            
+            document.getElementById("size").innerHTML = data["links"].length + " LINKS<br>" + data["nodes"].length + " NODES";
+            // camera rotation-> https://jsfiddle.net/8kn4qrz0/
+
+            function RGB2HTML(red, green, blue)
+            {
+                var decColor =0x1000000+ blue + 0x100 * green + 0x10000 *red ;
+                return '#'+decColor.toString(16).substr(1);
+            }
+            window.addEventListener('resize', onWindowResize, false);
+            renderer.domElement.addEventListener('click', onClick, false);
+        }
+        
+
+
+
+        function onClick() {
+
+            event.preventDefault();
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            var intersects = raycaster.intersectObject(scene, true); 
+             
+            if (intersects.length > 0) {
+            
+                var object = intersects[0].object;
+                //console.log(data["nodes"][object.name]["n"]);
+                //object.material.color.set( Math.random() * 0xffffff );
+                document.getElementById("label").innerHTML = data["nodes"][object.name]["n"];
+                
+                indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
+                setLabelPos();
+
+
+            }
+        }
+
+        function onWindowResize() {
+
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+        }
+
+        function animate() {
+
+            requestAnimationFrame( animate );
+            controls.update();
+            renderer.render( scene, camera );
+
+        }
+
+        function rigth(){
+            camera.position.set(0,0,20);   
+            camera.lookAt(0,0,0);
+            camera.rotation.z += Math.PI/2
+            camera.updateProjectionMatrix();	
+        }
+
+        function initDropdownNOsocket (id, data, opt){
+
+            for (let i = 0; i < data.length; i++) {
+            $('#'+ id).append(new Option(data[i]));
+            }
+            document.getElementById(id).selectedIndex = opt;
+
+            $('#'+ id).on('change', function () {
+            var name =  $('#'+ id).find(':selected').text();
+            console.log(name);
+            });
+        }
+
+
+        function initSliderNOsocket (id){
+
+            $('#'+ id).slider({
+                animate: true,
+                range: "max",
+                min: 0,
+                max: 255,
+                value: 128,
+                slide: function (event, ui) {
+                //console.log(ui.value/100)//socket.emit('ex', {id: id, val: ui.value, fn: "sli"});
+                nodescale(ui.value/100 + 0.5);
+                }
+            });
+
+        }
+
+        function nodescale(scale){
+            console.log(scale);
+
+            for (let l = 0; l < nodemeshes.length; l++) {
+                
+                nodemeshes[l].scale.set(scale,scale,scale);
+            }
+            indexsphere.scale.set(scale + 2,scale+ 2,scale + 2);
+            //render();
+        }
+
+        function search(ele) {
+            if(event.key === 'Enter') {
+                console.log(ele.value)
+                for (let l = 0; l < data['nodes'].length; l++) {
+                
+                //nodemeshes[l].material.color.set( Math.random() * 0xffffff );
+                    if (data['nodes'][l]['n'] == ele.value){
+                        indexsphere.position.set(nodemeshes[l].position["x"],nodemeshes[l].position["y"],nodemeshes[l].position["z"]);
+                        document.getElementById("label").innerHTML = data["nodes"][l]["n"];
+                        setLabelPos(l);
+                    }
+                }       
+            }
+        }
+
+        function setLabelPos(l)
+        {
+            var proj = toScreenPosition(indexsphere, camera);
+                  
+            document.getElementById("label").style.left = Math.floor(proj.x) + 'px';
+            document.getElementById("label").style.top = Math.floor(proj.y) + 'px';  
+        }
+        function onCameraChange()
+        {
+            setLabelPos();
+        }
+
+        function toScreenPosition(obj, camera)
+        {
+            camera.updateMatrixWorld();
+            var vector = new THREE.Vector3();
+            
+            // TODO: need to update this when resize window
+            var widthHalf = 0.5*window.innerWidth;
+            var heightHalf = 0.5*window.innerHeight;
+            
+            obj.updateMatrixWorld();
+            vector.setFromMatrixPosition(obj.matrixWorld);
+            vector.project(camera);
+            
+            vector.x = ( vector.x * widthHalf ) + widthHalf;
+            vector.y = - ( vector.y * heightHalf ) + heightHalf;
+            
+            return { 
+                x: vector.x,
+                y: vector.y
+            };
+
+        }
+		</script>
+        
+	</body>
+</html>
