@@ -17,7 +17,7 @@ function selectEvidenceWebGL(id, opt) {
 }
 function selectEvidenceVRNetzer(id, opt) {
     $('#' + id).on("click", function() {
-        socket.emit('ex', { id: "projects", opt: opt, fn: "sel" });
+        socket.emit('ex', { id: "linkcolors", opt: opt, fn: "sel" });
     });
 }
 function layoutDropdown (id, data, active){
