@@ -14,6 +14,7 @@ from .settings import (
     _FLASK_TEMPLATE_PATH,
     _PROJECTS_PATH,
     _STATIC_PATH,
+    _VRNETZER_PATH,
     LayoutAlgroithms,
 )
 from .workflows import VRNetzer_upload_workflow
@@ -162,7 +163,7 @@ def string_preview():
 
 
 @string_ex.route("/upload", methods=["GET"])
-def uploadString():
+def upload_string():
     prolist = listProjects()
     html_page = "string_upload.html"
     return render_template(
