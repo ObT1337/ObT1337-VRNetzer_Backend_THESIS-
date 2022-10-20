@@ -28,11 +28,7 @@
 
   <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-  <script>
-    $(function() {
-        $("#includedContent").load("{{ url_for('StringEx.upload_string')}}");
-    });
-</script>
+
 </head>
 
 <body>
@@ -166,8 +162,8 @@
       </form>
 
          
-  </div>
-  <div id="includedContent"></div>
+    </div>
+
 
   </div>
 
