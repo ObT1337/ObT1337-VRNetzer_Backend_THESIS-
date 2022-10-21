@@ -142,7 +142,6 @@
             var username = '{{session['username']}}';
             console.log(username);
             
-            var nodeData = '{{node_data}}';
             var nodeID = '{{node_id}}';
             var nodeCount = '{{node_count}}'
         </script>
@@ -495,12 +494,7 @@
 
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-6">
-                <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-                <script>
-                </script>
-
-
-
+                <script src="{{ url_for('static', filename='js/tab_UI_Elements.js') }}"></script>
                 <div class="twelve columns">
                     <h2 class="lineglowslow">Node Analytics</h2>
                 </div>
@@ -514,7 +508,7 @@
 
                                     console.log("Node ID: ", nodeID)
 
-                                    if (nodeID !== undefined){
+                                    if (nodeID != "undefined"){
                                         document.write(nodeID);
                                     }
                                     else{
@@ -556,22 +550,28 @@
                         <div class="five columns">
                             <input type="button" id='button_barplot_run' class="swagTextButton" value="RUN"></button>
                             <script>
-                                initButton('button_barplot_run');
+                                initButtonFunction('button_barplot_run', 
+                                    function(){
+                                        if(nodeID == "undefined"){
+                                            console.log("Select Node first");
+                                            return;
+                                        }
+                                        console.log("RUN Node Analytics");
+                                        let img_wrapper = $("#barplot_image_result");
+                                        img_wrapper.removeClass("image-wrapper-disabled");
+                                        img_wrapper.addClass("image-wrapper-active");
+                                    }
+                                );
                             </script>
                         </div>
                     </div>
                 </div>
 
-                <div class="twelve columns" style="display:inline-block; margin-top:12px;">
+                <div class="twelve columns" style="display:inline-block; margin-top:12px; margin-bottom:12px;">
                     <div class="frameBox">
                         <h5 style="text-align:end; margin-bottom:5px;"> Result </h5>
-                        <div class="seven columns result_image" id="barplot_image_result">
-                            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                            plot here 
-                                   v
-                            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-                            <a href=""></a>
+                        <div class="five columns">
+                            <img src="https://pbs.twimg.com/media/EwH4tW2XYAMaIBS?format=png&name=900x900" alt="Image of barplot." class="image-wrapper-disabled" id="barplot_image_result">
                         </div>
                     </div>
                 </div>

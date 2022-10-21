@@ -215,7 +215,7 @@ p {
 
 html,
 body {
-    background: rgba(0,0,0,1); /* need to set alpha to 0 later!!! */
+    background: rgba(0,0,0,0);
 }
 
 .container {
@@ -852,6 +852,17 @@ input[type=checkbox] {
     background-position: left;
     height: 100%;
     background-size: 100%;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
+               Images and Content related
+++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+.image-wrapper-active{
+    width: 100%;
+    object-fit: cover;
+}
+.image-wrapper-disabled{
+    display: none;
 }
 
 

@@ -258,7 +258,7 @@ def main():
     session['username'] = username
     session['room'] = room
     data = None
-    node_id = 0
+    node_id = "undefined"
     node_count = 0
     #prolist = listProjects()
     if project != "none":
@@ -272,21 +272,17 @@ def main():
         with open(folder + 'names.json', 'r') as json_file:
             global names
             names = json.load(json_file)
-            print(names)
+            # print(names)
         json_file.close()
-
 
         try:
             id = int(request.args.get("id"))
+            node_id = names['names'][id][0]
         except:
-            id=0   
-        data = names['names']
-        node_id = data[id][0]
-        node_count = len(data)
+            pass
+        node_count = len(names['names'])
 
-        print("\n\n", data)
-        print(project, node_count)
-    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_data=data, node_id=node_id, node_count=node_count)
+    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, node_count=node_count)
   
 
 @app.route('/login/<usr>', methods=['GET'])
