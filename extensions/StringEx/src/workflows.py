@@ -134,6 +134,7 @@ def apply_layout_workflow(
 
 def VRNetzer_upload_workflow(request):
     """Used from the StringEX/uploadfiles route"""
+    stringify, write_VRNetz,gen_layout,algo = False, False, False, None
     form = request.form.to_dict()
     network = request.files.getlist("vrnetz")[0].read().decode("utf-8")
     network = json.loads(network)
@@ -148,28 +149,31 @@ def VRNetzer_upload_workflow(request):
     if not project_name:
         return "namespace fail"
     print(form.keys())
-    algo = form["algo"]
+    if algo in form:
+        algo = form["algo"]
 
-    stringify, write_VRNetz = False, False
-    for tag in ["stringify", "write"]:
-        if tag in form:
-            stringify = True
-
+    tags = {"stringify":stringify,
+     "write":write_VRNetz,"calc_lay":gen_layout}
+    for key,_ in tags.items():
+        if key in form:
+            tags[key] = True
+    stringify, write_VRNetz,gen_layout = tags["stringify"], tags["write"], tags["calc_lay"]        
     # create layout
-    layouter = apply_layout_workflow(network, layout_algo=algo, stringify=stringify)
+    layouter = apply_layout_workflow(network, layout_algo=algo, stringify=stringify,gen_layout=gen_layout)
     network = layouter.network
 
     # upload network
     uploader = Uploader(network, p_name=project_name, stringify=stringify)
     state = uploader.upload_files(network)
-    outfile = f"{_NETWORKS_PATH}/{project_name}_processed.VRNetz"
     if write_VRNetz:
+        outfile = f"{_NETWORKS_PATH}/{project_name}_processed.VRNetz"
         print(f"processed network saved at:{outfile}")
-    with open(outfile, "w") as f:
-        json.dump(network, f)
-    logging.info(f"Saved network as {outfile}")
+        with open(outfile, "w") as f:
+            json.dump(network, f)
+        logging.info(f"Saved network as {outfile}")
     if stringify:
         uploader.stringify_project()
+        print("stringified")
         logging.info(f"Layouts stringified: {project_name}")
     return state
 

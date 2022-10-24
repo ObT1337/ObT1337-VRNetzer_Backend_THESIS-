@@ -149,15 +149,21 @@
                 <div class="twelve columns">
                     <div class="six columns">
                         <div class="frameBox">
-                            <h4> LAYOUT<br>&ensp;ALGORITHM</h4>
-                            <br>
-                            <div class="cornerBox">
-                                <select name="algo" id="algo">
-                                    {% for algo in algorithms %}
-                                    <option value="{{algo}}">{{algo}}</option>
-                                    {% endfor %}
-                                </select>
+                            <div class="six columns">
+                                <div class="two columns">
+                                    <input type="checkbox" id="calc_lay" name="calc_lay" value="calc_lay" checked>
+                                </div>
+                                <h4> LAYOUT<br>&ensp;ALGORITHM</h4>
+                                <br>
+                                <div class="cornerBox">
+                                    <select name="algo" id="algo">
+                                        {% for algo in algorithms %}
+                                        <option value="{{algo}}">{{algo}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="six columns">
