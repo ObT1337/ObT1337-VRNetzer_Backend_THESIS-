@@ -183,8 +183,8 @@
                 <a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/active_tune.png') }}" /></a>
             </li>
-            <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
+            <!-- <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li> -->
             <li>
                 <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
@@ -440,7 +440,7 @@
                             </div>
                         </div>
                         <div class="six columns">
-                            <h4> Known interactions</h4>
+                            <h4> Known<br>interactions</h4>
                             <div class="frameBox" style="display:inline-block; margin-bottom:8px;">
                                 <button class="stringEvidenceButton" style="background-color:#ff00ff;"
                                     id="evidence-experiments" type="VRNetzer">
@@ -457,12 +457,15 @@
 
                             </div>
                         </div>
+
+                        <div class="twelve columns"><br></div>
+
                         <div class="six columns">
                             <h4> Predicted<br>interactions</h4>
 
-                            <div class="frameBox" style="display:inline-block;  margin-bottom:8px;">
-                                <button class="stringEvidenceButton" style="background-color:#00ff00;
-                                            color:black;" id="evidence-neighborhood" type="VRNetzer">
+                            <div class="frameBox" style="display:inline-block;margin-top:8px;  margin-bottom:8px;">
+                                <button class="stringEvidenceButton" style="background-color:#0ab10a;
+                                            color:white;" id="evidence-neighborhood" type="VRNetzer">
                                     Neighborhood</button>
                                 <script>
                                     selectEvidenceVRNetzer("evidence-neighborhood", "stringdb_neighborhoodRGB");
@@ -512,15 +515,7 @@
                 </div>
                 <div class="twelve columns">
                     <h3> Information</h3>
-                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                        Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu
-                        libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend
-                        leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum
-                        sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt
-                        condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in
-                        turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor
-                        neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi,
-                        tincidunt quis, accumsan porttitor, facilisis luctus, metus</p>
+                    <p>This panel is used to switch between the different association evidences that come with a STRING network. If your current network is not a STRING network, this panel will not effect anything.</p>
                 </div>
 
                 <br></br>
@@ -559,169 +554,7 @@
                             tab 4 - search 
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div id="tabs-4" src="{{ url_for('static', filename='img/upload.png') }}">
-            <div id="fragment-1">
-                <div class="twelve columns">
-                    <div class="eight columns">
-                        <h2 class="lineglowslow" style="margin-top:30px">STRING
-                            <br>
-                            <br>
-                            &ensp;VRNetzer
-                        </h2>
-                    </div>
-                    <div class="four columns">
-                        <div class="swagLogo"><br></br></div>
-                    </div>
-                </div>
-                <div>Check out the new webGL preview!</div>
-                <form action="/StringEx/preview">
-                    <input type="submit" value="webGL PREVIEW" style="height: 50px; width: 250px;" />
-                </form>
-                <div class="twelve columns">
-                    <h3><span>UPLOAD NEW DATA</span></h3>
-                    <p>For file structure and VRNetz composition refer to files in VRNetzer_Backend/static/networks</p>
-                </div>
-
-                <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                            Project + Namespace Dropdown
-              +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-                <form id="upload_form" method=post enctype=multipart/form-data>
-
-                    <div class="twelve columns">
-
-                        <div class="six columns">
-                            <div class="frameBox">
-                                <div class="two columns">
-                                    <input type="radio" name="namespace" id="radio_new_namespace" value="New">
-                                </div>
-                                <h6>CREATE NEW PROJECT</h6>
-                                <br>
-
-                                <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-                                <p id="submit_warnings" style="display:inline"></p>
-
-                                <!-- The Popup window warning :
-                    <script>
-                      function popupWarning() {
-                        var popup = document.getElementById("myPopup");
-                        popup.classList.toggle("show");
-                      }
-                    </script>
-                    <div class="popup" onclick="popupWarning()">
-                      <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-                      <span class="popuptext" id="submit_warnings"></span>
-                    </div>
-                    -->
-
-                            </div>
-                        </div>
-
-                        <div class="six columns">
-                            <div class="frameBox">
-                                <div class="two columns">
-                                    <input type="radio" name="namespace" value="existing" checked><br>
-                                </div>
-                                <h6> ADD TO PROJECT</h6>
-
-                                <!--<h3 class="lineglowslow"><span>PROJECT</span></h3>-->
-                                <br>
-                                <div class="cornerBox">
-                                    <select name="namespaces" id="namespaces">
-                                        {% for namespace in namespaces %}
-                                        print(namespace);
-                                        <option value="{{namespace}}">{{namespace}}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <br>
-
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-
-
-                    <!-- original position before radio buttons <form id="upload_form" method=post enctype=multipart/form-data> -->
-
-                    <div class="frameBox">
-                        <div class="twelve columns">
-                            <h4 class="nine columns">VRNetz</h4>
-                            <input type=file name=vrnetz multiple value="placeholder">
-                        </div>
-                    </div>
-
-                    <!--
-                    <label>N O D E S</label><br>
-                    <input type=file name=nodes multiple><br><br>
-                    -->
-                    <div class="twelve columns">
-                        <div class="six columns">
-                            <div class="frameBox">
-                                <h4> LAYOUT<br>&ensp;ALGORITHM</h4>
-                                <br>
-                                <div class="cornerBox">
-                                    <select name="algo" id="algo">
-                                        {% for algo in algorithms %}
-                                        <option value="{{algo}}">{{algo}}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="six columns">
-                            <div class="frameBox">
-                                <div class="two columns">
-                                    <input type="string_checkbox" name="stringify" value="stringify" checked>
-                                </div>
-                                <label for="stringify">
-                                    <h6>STRING NETWORK</h6>
-                                </label><br>
-                                <div class="two columns">
-                                    <input type="string_checkbox" name="write" value="write" checked>
-                                </div>
-                                <label for="write">
-                                    <h6>SAVE NETWORK WITH COORDS</h6>
-                                </label><br>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-
-                    <!--
-                    <label>A T T R I B U T E S (optional) </label><br>
-                    <input type=file name=attributes multiple><br><br>
-                  
-                    <label>L A B E L S (optional) </label><br>
-                    <input type=file name=labels multiple><br><br>
-                    -->
-
-                    <div class="frameBox">
-                        <div class="twelve columns">
-                            <div class="two columns"><input type=submit value=Upload id=upload_button
-                                    class="swagSubmit"></button>
-                            </div>
-                            <div class="nine columns" id="upload_message"></div>
-                            <br>
-
-
-                        </div>
-                    </div>
-                    <!--<div class="twelve columns"> 
-                  <div  class="lineglow" style="background-position: center;"><br></br></div>
-                </div>-->
-
-            </div>
-
-            </form>
-
-
-        </div>
+        
         <!--
                             <div id="tabs-4">
                                 <div class="twelve columns">
