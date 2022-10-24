@@ -1,183 +1,231 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('StringEx.static', filename='css/StringStyle.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
-        <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
-        <!-- rel = "stylesheet"> -->
-        <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
-        <script src="https://d3js.org/d3.v4.js"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+    <!-- rel = "stylesheet"> -->
+    <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-        <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
 
-    </head>
+</head>
 
-    <template id="mcTextBox-template">
+<template id="mcTextBox-template">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-        <div id = "label" class = "swagLabelSmall">TEXT</div>
-        <input type="Text" id = "text" autocomplete="off">
-    </template>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
 
+    <div id="label" class="swagLabelSmall">TEXT</div>
+    <input type="Text" id="text" autocomplete="off">
+</template>
 
-    <body>
 
-        <script>
-            var node_data = '{{data}}';
-            var node_id = '{{data[0]}}';
-            var node_attribute = '{{data[1]}}';
-            var node_annotation = '{{data[2]}}';
-            var additional = '{{data[3]}}';
-        </script>
+<body>
 
-        <div id="tabsUL">
-            <a href="nodepanel.html" id="" title="Nodepanel"></a>
-            <ul>
-                <li>
-                    <a href="#tissue-panel"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
-                </li>
-                <li>
-                    <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
-                </li>
-            </ul>
+    <script>
+        var node_data = '{{data}}';
+        var node_id = '{{data[0]}}';
+        var node_attribute = '{{data[1]}}';
+        var node_annotation = '{{data[2]}}';
+        var additional = '{{data[3]}}';
+        var node_description = '{{data["description"]}}';
+        var node_uniprot = '{{data["uniprot"]}}';
+    </script>
 
-            <div id="nodefragment-1">
+    <div id="tabsUL">
+        <a href="nodepanel.html" id="" title="Nodepanel"></a>
+        <ul>
+            <li>
+                <a href="#nodefragment-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+        </ul>
 
+        <div id="nodefragment-1">
+
+
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+
+            <!-- <h3> Identifier</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Identifier :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_id);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
 
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
-                </div>
-
-                <!-- <h3> Identifier</h3> -->
-                <div class="frameBox">
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Identifier :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_id);
-                                </script>
-                            </h5>
-                        </div>
+                    <div class="five columns">
+                        <h4>Attribute :: </h4>
                     </div>
-
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Attribute :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_attribute); 
-                                </script>
-                            </h5>
-                        </div>
-                    </div>
-
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Annotation :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_annotation);
-                                </script>
-                            </h5>
-                        </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_attribute); 
+                            </script>
+                        </h5>
                     </div>
                 </div>
 
-                <!-- <h3>Additional</h3> -->
-                <div class="frameBox">
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Additional :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(additional);
-                                </script>
-                            </h5>
-                        </div>
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Annotation :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_annotation);
+                            </script>
+                        </h5>
                     </div>
                 </div>
             </div>
-            <div id="tissue-panel">
+
+            <!-- <h3>Additional</h3> -->
+            <div class="frameBox">
                 <div class="twelve columns">
-                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:50px;margin-top:30px">Node<br><br>Tissue Info</h2>
+                    <div class="five columns">
+                        <h4>Additional :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(additional);
+                            </script>
+                        </h5>
+                    </div>
                 </div>
-                <!-- <h3> Identifier</h3> -->
-                <div class="frameBox">
+            </div>
+            <div class="frameBox">
+                <div class="twelve columns">
                     <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Identifier :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_id);
-                                </script>
-                            </h5>
-                        </div>
+                        <h5 style="text-align:end"> Description</h5>
                     </div>
-
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Attribute :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_attribute); 
-                                </script>
-                            </h5>
-                        </div>
-                    </div>
-
-                    <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Annotation :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(node_annotation);
-                                </script>
-                            </h5>
-                        </div>
+                    <div class="six columns">
+                        <script>
+                            document.write(node_description);
+                        </script>
                     </div>
                 </div>
 
-                <!-- <h3>Additional</h3> -->
-                <div class="frameBox">
+            </div>
+            <div class="frameBox">
+                <div class="twelve columns">
                     <div class="twelve columns">
-                        <div class="five columns">
-                            <h4>Additional :: </h4>
-                        </div>
-                        <div class="six columns">
-                            <h5>
-                                <script>
-                                    document.write(additional);
-                                </script>
-                            </h5>
-                        </div>
+                        <h5 style="text-align:end"> Crosslinks</h5>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" href="https://www.uniprot.org/uniprotkb/P02655/entry" target="_blank"
+                            id="uniprot-cross" title="uniprot">UniProt</a>
+                        <script>
+                            setHref("uniprot-cross", node_uniprot);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" href="https://alphafold.ebi.ac.uk/entry/P02655" target="_blank"
+                            id="alphafold-cross" title="alphafold">
+                            AlphaFold
+                        </a>
+                        <script>
+                            setHref("alphafold-cross", node_uniprot);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" href="https://genecards.org/Search/Keyword?queryString=P02655"
+                            target="_blank" id="genecards-cross" title="genecards">
+                            GeneCards
+                        </a>
+                        <script>
+                            setHref("genecards-cross", node_uniprot);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks"
+                            href="https://tissues.jensenlab.org/Entity?figures=tissues_body_%%&knowledge=10&experiments=10&textmining=10&homologs=10&type1=9606&type2=-25&id1=ENSP00000466775"
+                            target="_blank" id="tissue-cross" title="tissue">
+                            TISSUE
+                        </a>
+                        <script>
+                            setHref("tissue-cross", node_uniprot);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks"
+                            href="https://diseases.jensenlab.org/Entity?order=textmining,knowledge,experiments&textmining=10&knowledge=10&experiments=10&type1=9606&type2=-26&id1=ENSP00000466775"
+                            target="_blank" id="disease-cross" title="disease">
+                            DISEASES
+                        </a>
+                        <script>
+                            setHref("disease-cross", node_uniprot);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" href="https://pharos.ncats.nih.gov/targets/P02655" target="_blank"
+                            id="pharos-cross" title="pharos">
+                            Pharos
+                        </a>
+                        <script>
+                            setHref("pharos-cross", node_uniprot);
+                        </script>
                     </div>
                 </div>
+
             </div>
         </div>
-    </body>
+        <div id="nodefragment-2">
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:50px;margin-top:30px">Node Info</h2>
+            </div>
+            <!-- <h3> Identifier</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <input type="button" value="3D Model" id='3d-structure-model' class="swagTextButton">
+                    <!-- <script> -->
+                        <h5 style="color:violet">TODO: ADD Script to show/hide model, when model is hidden, make button less visible</h5>
+                    <!-- </script> -->
+                </div>
+            </div>
+
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <h5 style="text-align:end"> Tag Search</h5>
+                    <form>
+                        <input type="text" id="tag-search" name="tag-search" placeholder="Search for tag.." class="swagBox">
+                    </form>
+                <div class="twelve columns">
+                    <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
+                    <!-- <script> -->
+                        <h5 style="color:violet">TODO: Add Search Button to find certain tag value and add them to the list of selected tags</h5>
+                    <!-- </script> -->
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</body>
 
 
 

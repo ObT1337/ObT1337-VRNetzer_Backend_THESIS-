@@ -50,7 +50,10 @@ class Uploader:
         self.nodes_file = os_join(self.p_path, "nodes.json")
         self.links_file = os_join(self.p_path, "links.json")
 
-        pfile = {}
+        pfile = {"network":"NA"}
+        if self.stringify:
+            pfile["network"] = "string"
+            
         self.attr_list = {}
         pfile["name"] = self.p_name
         pfile["layouts"] = []
@@ -100,7 +103,7 @@ class Uploader:
             return "no such project"
 
     def write_json_files(self) -> None:
-        # update the projects file
+        """Will update the project files: pfile, names, nodes, links"""
         files = [self.pfile_file, self.names_file, self.nodes_file, self.links_file]
 
         contents = [self.pfile, self.attr_list, self.nodes, self.links]

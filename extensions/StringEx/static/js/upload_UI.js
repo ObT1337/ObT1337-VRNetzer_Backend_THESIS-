@@ -18,6 +18,17 @@ $(document).ready(function () {
     console.log("22: name: " + name);
     //UpdateNamespace(name);
   });
+  $(function() {
+    const checkbox = document.getElementById('calc_lay')
+
+    checkbox.addEventListener('change', (event) => {
+      if (event.currentTarget.checked) {
+        document.getElementById("algo").disabled = false;
+      } else {
+        document.getElementById("algo").disabled = true;
+      }
+    });
+  });
 
   $("#upload_button").button();
   $("input:radio[name='namespace']").change(function () {
