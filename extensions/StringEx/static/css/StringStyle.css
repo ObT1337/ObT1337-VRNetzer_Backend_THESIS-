@@ -1,21 +1,21 @@
-input[type="checkbox"]
-    {
-      width: 1em;
-      height: 1em;
-      background: rgb(75, 114, 2);
-      margin-top: 17px;
-      /*-moz-padding-start: calc(10px - 3px);*/
-      font-family: 'Future', sans-serif;
-      font-size: 20px;
-      font-weight: 10;
-      color: rgb(255, 255, 255);
-      cursor: pointer;
-      background:rgb(0, 0, 0);
-      border: 1px solid transparent;
-      padding: 10px;
-      border-image: url("images/frame1.png") 10 stretch;
-      visibility: visible;
-    }
+input[type="checkbox"] {
+    width: 1em;
+    height: 1em;
+    background: rgb(75, 114, 2);
+    margin-top: 17px;
+    /*-moz-padding-start: calc(10px - 3px);*/
+    font-family: 'Future', sans-serif;
+    font-size: 20px;
+    font-weight: 10;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    background: rgb(0, 0, 0);
+    border: 1px solid transparent;
+    padding: 10px;
+    border-image: url("/static/css/images/frame1.png") 10 stretch;
+    visibility: visible;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Buttons
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -30,7 +30,7 @@ font-family: 'Venus', sans-serif;*/
     font-family: 'Michr', sans-serif;
 
     font-size: 15px;
-    margin:2px;
+    margin: 2px;
     font-style: italic;
     color: white;
     font-weight: lighter;
@@ -51,6 +51,16 @@ font-family: 'Venus', sans-serif;*/
     color: white;
     font-weight: lighter;
     text-align: left;
+}
+
+a.crosslinks {
+    font-size: 20px;
+    color:rgb(42, 113, 148);
+}
+
+a.crosslinks:visited {
+    font-size: 20px;
+    color:rgb(42, 113, 148);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++
