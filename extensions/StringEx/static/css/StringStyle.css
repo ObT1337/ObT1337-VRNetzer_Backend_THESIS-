@@ -24,19 +24,17 @@ Buttons
 font-family: 'Venus', sans-serif;*/
 
 .stringEvidenceButton[type="VRNetzer"] {
-    width: 50%;
-    padding: 10px;
+    width: 100%;
+    padding: 2px;
     border-radius: 20px;
     font-family: 'Michr', sans-serif;
 
-    font-size: 22px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    margin-left: 20px;
+    font-size: 15px;
+    margin:2px;
     font-style: italic;
     color: white;
     font-weight: lighter;
-    text-align: left;
+    text-align: center;
 }
 
 .stringEvidenceButton[type="WebGL"] {
@@ -45,8 +43,8 @@ font-family: 'Venus', sans-serif;*/
     border-radius: 20px;
     font-family: 'Michr', sans-serif;
     font-size: 12px;
-    margin-bottom: 10px;
-    margin-top: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     margin-left: 5px;
     margin-right: 5px;
     font-style: italic;

@@ -268,3 +268,14 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginRight= "0";
 }
+
+$(function() {
+  var includes = $('[data-include]')
+  $.each(includes, function() {
+    var file = $(this).data('include')
+    $(this).load(file)
+  })
+});
+// $(function() {
+//   $("#includedContent").load("{{ url_for('StringEx.ev_tab') }}");
+// });

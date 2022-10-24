@@ -2,27 +2,22 @@ import json
 import os
 import random
 
-from flask import Blueprint, render_template, request, session
+import flask
 from PIL import Image
 from websocket_functions import bcolors
 
-from GlobalData import pfile, sessionData
-from uploader import listProjects
+import GlobalData as GD
+import uploader
 
-from .settings import (
-    _FLASK_STATIC_PATH,
-    _FLASK_TEMPLATE_PATH,
-    _PROJECTS_PATH,
-    _STATIC_PATH,
-    _VRNETZER_PATH,
-    LayoutAlgroithms,
-)
+from .settings import (_FLASK_STATIC_PATH, _FLASK_TEMPLATE_PATH,
+                       _PROJECTS_PATH, _STATIC_PATH, _VRNETZER_PATH,
+                       LayoutAlgroithms)
 from .workflows import VRNetzer_upload_workflow
 
-sessionData["layoutAlgos"] = LayoutAlgroithms.all_algos
-sessionData["actAlgo"] = LayoutAlgroithms.spring
+GD.sessionData["layoutAlgos"] = LayoutAlgroithms.all_algos
+GD.sessionData["actAlgo"] = LayoutAlgroithms.spring
 url_prefix = "/StringEx"
-blueprint = Blueprint(
+blueprint = flask.Blueprint(
     "StringEx",
     __name__,
     url_prefix=url_prefix,
@@ -39,30 +34,30 @@ def string_preview():
     linkRGBIndex = 0
     html_preview = "threeJS_VIEWER_string.html"
     html_menu = "threeJS_VIEWER_Menu.html"
-    if request.args.get("project") is None:
+    if flask.request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
 
-        data["projects"] = listProjects()
+        data["projects"] = uploader.listProjects()
         print(data["projects"])
-        return render_template(html_menu, data=json.dumps(data))
+        return flask.render_template(html_menu, data=json.dumps(data))
 
-    if request.args.get("layout") is None:
+    if flask.request.args.get("layout") is None:
         layoutindex = 0
     else:
-        layoutindex = int(request.args.get("layout"))
+        layoutindex = int(flask.request.args.get("layout"))
 
-    if request.args.get("ncol") is None:
+    if flask.request.args.get("ncol") is None:
         layoutRGBIndex = 0
     else:
-        layoutRGBIndex = int(request.args.get("ncol"))
+        layoutRGBIndex = int(flask.request.args.get("ncol"))
 
-    if request.args.get("lcol") is None:
+    if flask.request.args.get("lcol") is None:
         linkRGBIndex = 0
     else:
-        linkRGBIndex = int(request.args.get("lcol"))
+        linkRGBIndex = int(flask.request.args.get("lcol"))
 
-    project = request.args.get("project")
-    sessionData["actPro"] = project
+    project = flask.request.args.get("project")
+    GD.sessionData["actPro"] = project
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
@@ -154,12 +149,12 @@ def string_preview():
         # print(links["links"][x])
 
     # print(testNetwork)
-    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template(
+    # return flask.render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
+    return flask.render_template(
         html_preview,
         data=json.dumps(testNetwork),
         pfile=json.dumps(thispfile),
-        sessionData=json.dumps(sessionData),
+        sessionData=json.dumps(GD.sessionData),
     )
 
 
@@ -167,7 +162,7 @@ def string_preview():
 def upload_string():
     prolist = listProjects()
     html_page = "string_upload.html"
-    return render_template(
+    return flask.render_template(
         html_page,
         namespaces=prolist,
         algorithms=LayoutAlgroithms.all_algos,
@@ -176,14 +171,14 @@ def upload_string():
 
 @blueprint.route("/uploadfiles", methods=["GET", "POST"])
 def execute_upload():
-    return VRNetzer_upload_workflow(request)
+    return VRNetzer_upload_workflow(flask.request)
 
 
 @blueprint.route("/evidences", methods=["GET"])
 def string_ev():
     html_page = "string_ev.html"
-    username = request.args.get("usr")
-    project = request.args.get("project")
+    username = flask.request.args.get("usr")
+    project = flask.request.args.get("project")
     if username is None:
         username = str(random.randint(1001, 9998))
     else:
@@ -195,18 +190,18 @@ def string_ev():
     else:
         print(project)
 
-    if request.method == "GET":
+    if flask.request.method == "GET":
 
         room = 1
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
+        # Store the data in flask.session
+        flask.session["username"] = username
+        flask.session["room"] = room
         # prolist = listProjects()
         if project != "none":
             folder = os.path.join(_VRNETZER_PATH, "static", "projects" + project + "/")
             with open(folder + "pfile.json", "r") as json_file:
-                global pfile
-                pfile = json.load(json_file)
+                # global pfile
+                GD.pfile = json.load(json_file)
                 # print(pfile)
             json_file.close()
 
@@ -215,20 +210,45 @@ def string_ev():
                 names = json.load(json_file)
                 # print(names)
             json_file.close()
-        return render_template(
+        return flask.render_template(
             html_page,
-            session=session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
+            session=flask.session,
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
         )
     else:
         return "error"
 
-
+@blueprint.route("/ev_tab", methods=["GET","POST"])
+def ev_tab():
+    return flask.render_template("string_ev.html")
+    
+@blueprint.route("/up_tab", methods=["GET","POST"])
+def up_tab():
+    return flask.render_template("string_upload_panel.html")
 def prepare_session_data():
-    username = request.args.get("usr")
+    username = flask.request.args.get("usr")
     if username is None:
         username = str(random.randint(1001, 9998))
     else:
         username = username + str(random.randint(1001, 9998))
-    session["username"] = username
+    flask.session["username"] = username
+
+@blueprint.route("/nodepanel",  methods=["GET"])
+def string_nodepanel():
+    username = flask.request.args.get("usr")
+    project = flask.request.args.get("project")
+    if username is None:
+            username = str(random.randint(1001, 9998))
+    else:
+        username = username + str(random.randint(1001, 9998))
+        print(username)
+    if flask.request.method == "GET":
+        room = 1
+        # Store the data in flask.session
+        flask.session["username"] = username
+        flask.session["room"] = room
+        # prolist = listProjects()
+        data = {"names": [0]}
+        return flask.render_template("string_nodepanel.html",data=data)
+
