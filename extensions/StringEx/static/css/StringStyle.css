@@ -23,7 +23,7 @@ Buttons
 /* 'Akshar-reg', sans-serif;
 font-family: 'Venus', sans-serif;*/
 
-.stringEvidenceButton[type="VRNetzer"] {
+.stringEvidenceButton{
     width: 100%;
     padding: 2px;
     border-radius: 20px;
@@ -31,26 +31,21 @@ font-family: 'Venus', sans-serif;*/
 
     font-size: 15px;
     margin: 2px;
-    font-style: italic;
+    font-style: normal;
     color: white;
     font-weight: lighter;
     text-align: center;
 }
 
 .stringEvidenceButton[type="WebGL"] {
-    width: 100%;
-    padding: 10px;
+    min-width: fit-content;
+    max-width: 100%;
+    padding: 2px;
     border-radius: 20px;
     font-family: 'Michr', sans-serif;
-    font-size: 12px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    font-style: italic;
-    color: white;
-    font-weight: lighter;
-    text-align: left;
+    font-size: 18px;
+    margin:5px;
+
 }
 
 a.crosslinks {
