@@ -10,8 +10,7 @@ import GlobalData as GD
 import uploader
 
 from .settings import (_FLASK_STATIC_PATH, _FLASK_TEMPLATE_PATH,
-                       _PROJECTS_PATH, _STATIC_PATH, _VRNETZER_PATH,
-                       LayoutAlgroithms)
+                       _PROJECTS_PATH, _VRNETZER_PATH, LayoutAlgroithms)
 from .workflows import VRNetzer_upload_workflow
 
 GD.sessionData["layoutAlgos"] = LayoutAlgroithms.all_algos
@@ -160,7 +159,7 @@ def string_preview():
 
 @blueprint.route("/upload", methods=["GET"])
 def upload_string():
-    prolist = listProjects()
+    prolist = uploader.listProjects()
     html_page = "string_upload.html"
     return flask.render_template(
         html_page,
