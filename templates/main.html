@@ -212,8 +212,30 @@
                 <div class="cornerBox">
                     <select id='projects'></select>
                     <script>
+                        console.log("pdata is:" + pdata["network"]);
                         initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
                     </script>
+
+                    <!-- <script>
+                        // Should be used to diasable forward backward button, if network is a string network
+                        $(function() {
+                            var proj = document.getElementById("projects");
+                            proj.addEventListener('change', (event) => {
+                                console.log(pdata["network"]);
+                                var back = document.getElementById('backwardstep');
+                                var forw = document.getElementById('projects');
+                                if (pdata["network"] == "string") {
+                                    back.disabled = true;
+                                    forw.disabled = true;
+                                } else {
+                                    if (back.disabled == true) {
+                                        back.disabled = false;
+                                        forw.disabled = false;
+                                    }
+                                }
+                            });
+                        });
+                    </script> -->
                 </div>
                 <!--</div>-->
             </div>
@@ -515,7 +537,9 @@
                 </div>
                 <div class="twelve columns">
                     <h3> Information</h3>
-                    <p>This panel is used to switch between the different association evidences that come with a STRING network. If your current network is not a STRING network, this panel will not effect anything.</p>
+                    <p>This panel is used to switch between the different association evidences that come with a STRING
+                        network. If your current network is not a STRING network, this panel will not effect anything.
+                    </p>
                 </div>
 
                 <br></br>
@@ -554,7 +578,7 @@
                             tab 4 - search 
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        
+
         <!--
                             <div id="tabs-4">
                                 <div class="twelve columns">
