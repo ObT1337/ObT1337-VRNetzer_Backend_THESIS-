@@ -37,3 +37,8 @@ function layoutDropdown (id, data, active){
   
   }
   
+function setHref(id, uniprot,link) {
+    var href = link.replace("<toChange>", uniprot)
+    console.log(href)
+    $('#' + id).attr('href', href);
+}

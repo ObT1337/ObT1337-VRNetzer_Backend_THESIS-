@@ -370,7 +370,24 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
+    nodes = {"nodes":[]}
+    project = request.args.get("project")
+    if project is None:
+        project = "Uploader_test"
+        print(project)
+        folder = os.path.join("static","projects",project)
+        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+            global pfile
+            pfile = json.load(json_file)
 
+    if project:
+        print(project)
+        folder = os.path.join("static","projects",project)
+        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+            nodes = json.load(json_file)
+
+    nodes = json.dumps(nodes)
+        # nodes = {node["id"]: node for node in nodes}
     if pfile:
         if "ppi" in pfile["name"].lower():
             try:
@@ -378,8 +395,9 @@ def nodepanel():
             except:
                 id = 0
 
-            data = names["names"][id]
-            return render_template("nodepanelppi.html", data=data)
+            # data = names["names"][id]
+            data=[id]
+            return render_template("nodepanelppi.html", data=data,nodes=nodes)
 
         else:
             try:
@@ -388,9 +406,10 @@ def nodepanel():
                 print("C_DEBUG: in except else with pfile")
                 id = 0
 
-            data = names["names"][id]
+            # data = names["names"][id]
+            data=[id]
             print("C_DEBUG: general nodepanel")
-            return render_template("nodepanel.html", data=data)
+            return render_template("nodepanel.html", data=data, nodes=nodes)
     else:
         try:
             id = int(request.args.get("id"))
@@ -398,7 +417,7 @@ def nodepanel():
             id = 0
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
-        return render_template("nodepanel.html", data=data)
+        return render_template("nodepanel.html", data=data, nodes=nodes)
 
 @app.route("/project_tab")
 def project_tab():
@@ -498,4 +517,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app,debug=True) #, port=3000, debug=True)
+    socketio.run(app,debug=True, port=3000) #, port=3000, debug=True)
