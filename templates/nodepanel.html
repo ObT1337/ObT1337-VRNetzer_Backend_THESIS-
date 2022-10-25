@@ -16,6 +16,7 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
 
 </head>
 
@@ -39,6 +40,9 @@
         var additional = '{{data[3]}}';
         var node_description = '{{data["description"]}}';
         var node_uniprot = '{{data["uniprot"]}}';
+        var flask_nodes = '{{nodes}}';
+        var nodes = JSON.parse({{ nodes | tojson}})["nodes"];
+        var node = nodes[node_id];
     </script>
 
     <div id="tabsUL">
@@ -70,7 +74,7 @@
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_id);
+                                document.write(node.n);
                             </script>
                         </h5>
                     </div>
@@ -78,12 +82,12 @@
 
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4>Attribute :: </h4>
+                        <h4>Organism :: </h4>
                     </div>
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_attribute); 
+                                document.write(node.stringdb_species); 
                             </script>
                         </h5>
                     </div>
@@ -91,12 +95,12 @@
 
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4>Annotation :: </h4>
+                        <h4>Canonical<br>Name :: </h4>
                     </div>
-                    <div class="six columns">
+                    <div class="six columns" >
                         <h5>
                             <script>
-                                document.write(node_annotation);
+                                document.write(node["stringdb_canonical name"]);
                             </script>
                         </h5>
                     </div>
@@ -106,13 +110,24 @@
             <!-- <h3>Additional</h3> -->
             <div class="frameBox">
                 <div class="twelve columns">
-                    <div class="five columns">
-                        <h4>Additional :: </h4>
+                    <div class="twelve columns">
+                        <h5 style="text-align:end"> Description</h5>
+                        <script>
+                            var description = node.stringdb_description;
+                            document.write(description);
+                        </script>
                     </div>
-                    <div class="six columns">
+                </div>
+            </div>
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Sequence :: </h4>
+                    </div>
+                    <div class="six columns"style="overflow-y: scroll;">
                         <h5>
                             <script>
-                                document.write(additional);
+                                document.write(node.stringdb_sequence);
                             </script>
                         </h5>
                     </div>
@@ -121,76 +136,64 @@
             <div class="frameBox">
                 <div class="twelve columns">
                     <div class="twelve columns">
-                        <h5 style="text-align:end"> Description</h5>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sem mi, venenatis non fringilla at, maximus eget enim. Sed eget ex arcu. Aenean et tellus nec sapien consectetur posuere placerat eu ligula. Nunc ultrices pellentesque justo nec auctor. Vivamus iaculis nulla ut metus volutpat, non faucibus odio vulputate. Etiam in sagittis libero. Proin at purus nunc.
-
-                        Quisque interdum neque sed nulla gravida fermentum. Cras non aliquet libero, sed mattis nulla. Cras scelerisque, mi eget viverra dictum, tortor libero dapibus elit, ut finibus ante justo in lacus. Maecenas congue tempor vehicula. Interdum et malesuada fames ac ante ipsum primis in faucibus. Etiam sodales tempus ultrices. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                    </div>
-                    <div class="six columns">
-                        <script>
-                            document.write(node_description);
-                        </script>
-                    </div>
-                </div>
-
-            </div>
-            <div class="frameBox">
-                <div class="twelve columns">
-                    <div class="twelve columns">
                         <h5 style="text-align:end"> Crosslinks</h5>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" href="https://www.uniprot.org/uniprotkb/P02655/entry" target="_blank"
+                        <a class="crosslinks" target="_blank"
                             id="uniprot-cross" title="uniprot">UniProt</a>
                         <script>
-                            setHref("uniprot-cross", node_uniprot);
+                            var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
+                            setHref("uniprot-cross", node["stringdb_canonical name"],link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" href="https://alphafold.ebi.ac.uk/entry/P02655" target="_blank"
+                        <a class="crosslinks" target="_blank"
                             id="alphafold-cross" title="alphafold">
                             AlphaFold
                         </a>
                         <script>
-                            setHref("alphafold-cross", node_uniprot);
+                            var link = "https://alphafold.ebi.ac.uk/entry/<toChange>" 
+                            setHref("alphafold-cross", node["stringdb_canonical name"],link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" href="https://genecards.org/Search/Keyword?queryString=P02655"
+                        <a class="crosslinks"
                             target="_blank" id="genecards-cross" title="genecards">
                             GeneCards
                         </a>
                         <script>
-                            setHref("genecards-cross", node_uniprot);
+                            var link = "https://genecards.org/Search/Keyword?queryString=<toString>"
+                            setHref("genecards-cross", node["stringdb_canonical name"],link);
                         </script>
                     </div>
                     <div class="four columns">
                         <a class="crosslinks"
-                            href="https://tissues.jensenlab.org/Entity?figures=tissues_body_%%&knowledge=10&experiments=10&textmining=10&homologs=10&type1=9606&type2=-25&id1=ENSP00000466775"
                             target="_blank" id="tissue-cross" title="tissue">
-                            TISSUE
+                            TISSUES
                         </a>
                         <script>
-                            setHref("tissue-cross", node_uniprot);
+                            var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
+                            setHref("tissue-cross", node.n,link);
                         </script>
                     </div>
                     <div class="four columns">
                         <a class="crosslinks"
-                            href="https://diseases.jensenlab.org/Entity?order=textmining,knowledge,experiments&textmining=10&knowledge=10&experiments=10&type1=9606&type2=-26&id1=ENSP00000466775"
                             target="_blank" id="disease-cross" title="disease">
                             DISEASES
                         </a>
                         <script>
-                            setHref("disease-cross", node_uniprot);
+                            var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
+                            setHref("disease-cross", node.n,link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" href="https://pharos.ncats.nih.gov/targets/P02655" target="_blank"
+                        <a class="crosslinks" target="_blank"
                             id="pharos-cross" title="pharos">
                             Pharos
                         </a>
                         <script>
-                            setHref("pharos-cross", node_uniprot);
+                            var link = "https://pharos.nih.gov/targets/<toChange>"
+                            setHref("pharos-cross", node["stringdb_canonical name"],link);
                         </script>
                     </div>
                 </div>

@@ -10,11 +10,19 @@ $(document).ready(function () {
   });
 
   $(function () {
+    $("#algo").selectmenu();
+  });
+  $(function () {
     $("#tabsUL").tabs();
   });
 
   $("#namespaces").on("selectmenuselect", function () {
     var name = $("#namespaces").find(":selected").text();
+    console.log("22: name: " + name);
+    //UpdateNamespace(name);
+  });
+  $("#algo").on("selectmenuselect", function () {
+    var name = $("#algo").find(":selected").text();
     console.log("22: name: " + name);
     //UpdateNamespace(name);
   });
