@@ -168,7 +168,7 @@ class Uploader:
         return tex
 
     @staticmethod
-    def extract_link_data(elem, layouts):
+    def extract_link_data(elem:dict, layouts):
         tex = None
         if LiT.layouts in elem.keys():
             elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[LiT.layouts])}
@@ -184,7 +184,7 @@ class Uploader:
             eyh = end // 16384
             tex = []
             for idx, layout in enumerate(layouts):
-                color = [0, 100, 255, 255]
+                color = [0, 0, 0, 0]
                 tex.append([])
                 if layout in elem_lays:
                     layout_idx = elem_lays[layout]
@@ -192,8 +192,6 @@ class Uploader:
                     if LT.color in layout:
                         if isinstance(layout[LT.color], tuple):
                             color = layout[LT.color]
-                else:
-                    color = [0, 0, 0, 0]
 
                 tex[idx].append((sx, syl, syh))
                 tex[idx].append((ex, eyl, eyh))
@@ -229,12 +227,7 @@ class Uploader:
             )
 
         for _, elem in enumerate(nodes):
-            node = {
-                NT.id: elem[NT.id],
-                NT.name: elem[NT.name],
-                NT.attr_lst: [elem[NT.name]],
-            }
-            self.nodes[VRNE.nodes].append(node)
+            self.nodes[VRNE.nodes].append({k:v for k,v in elem.items() if k not in skip_attr})
             tex = self.extract_node_data(elem, layouts, self.attr_list, skip_attr)
             for l, _ in enumerate(layouts):
                 for d in range(3):
@@ -301,10 +294,11 @@ class Uploader:
 
         l_idx = [0 for _ in layouts]
         for elem in links:
+            elem:dict
             link = {
-                LiT.id: elem[LiT.id],
-                LiT.start: elem[LiT.start],
-                LiT.end: elem[LiT.end],
+                LiT.id: elem.get(LiT.id),
+                LiT.start: elem.get(LiT.start),
+                LiT.end: elem.get(LiT.end),
             }
             self.links[VRNE.links].append(link)
             tex = self.extract_link_data(elem, layouts)
@@ -415,14 +409,10 @@ class Uploader:
 
         state = ""
 
-        nodes = network[VRNE.nodes]
-        links = network[VRNE.links]
-        n_lay = []
-        l_lay = []
-        if VRNE.node_layouts in network:
-            n_lay = network[VRNE.node_layouts]  # Node layouts
-        if VRNE.link_layouts in network:
-            l_lay = network[VRNE.link_layouts]
+        nodes = network.get(VRNE.nodes)
+        links = network.get(VRNE.links)
+        n_lay = network.get(VRNE.node_layouts,[])  # Node layouts
+        l_lay = network.get(VRNE.link_layouts,[])  # Link layouts
 
         with open(self.names_file, "r") as json_file:
             self.attr_list = json.load(json_file)
@@ -436,6 +426,7 @@ class Uploader:
 
         self.write_json_files()
 
+        #TODO: don't use global...
         global sessionData
         sessionData["proj"] = self.listProjects(self.pf_path)
 
@@ -443,28 +434,29 @@ class Uploader:
 
 
 def extract_attributes(attr_list, elem, skip_attr):
-    if AT.names not in attr_list:
-        attr_list["names"] = []
-    name = ["NA"]
+    # if AT.names not in attr_list:
+    #     attr_list["names"] = []
+    # name = ["NA"]
 
-    if NT.stringdb_canoncial_name in elem.keys():
-        uniprod = elem[NT.stringdb_canoncial_name]
-        name = [
-            uniprod,  # identifier
-            "None",  # Attribute
-            uniprod,  # Annotation
-            50,  # Additional
-        ]
-        if NT.stringdb_sequence in elem.keys():
-            name[-1] = elem[NT.stringdb_sequence]
-    elif NT.name in elem.keys():
-        gene_name = elem[NT.name]
-        name = [f"GENENAME={gene_name}"]
+    # if NT.stringdb_canoncial_name in elem.keys():
+    #     uniprod = elem[NT.stringdb_canoncial_name]
+    #     name = [
+    #         uniprod,  # identifier
+    #         "None",  # Attribute
+    #         uniprod,  # Annotation
+    #         50,  # Additional
+    #     ]
+    #     if NT.stringdb_sequence in elem.keys():
+    #         name[-1] = elem[NT.stringdb_sequence]
+    # elif NT.name in elem.keys():
+    #     gene_name = elem[NT.name]
+    #     name = [f"GENENAME={gene_name}"]
 
-    attr_list["names"].append(name)
-    attributes = [k for k in elem.keys() if k not in skip_attr]
-    for attr in attributes:
-        if not attr in attr_list:
-            attr_list[attr] = []
-        attr_list[attr].append([elem[attr]])
+    # attr_list["names"].append(name)
+    # attributes = [k for k in elem.keys() if k not in skip_attr]
+    # for attr in attributes:
+    #     if not attr in attr_list:
+    #         attr_list[attr] = []
+    #     attr_list[attr].append([elem[attr]])
+    
     return attr_list

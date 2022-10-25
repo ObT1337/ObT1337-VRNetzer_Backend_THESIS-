@@ -134,6 +134,7 @@ def apply_layout_workflow(
 
 def VRNetzer_upload_workflow(request):
     """Used from the StringEX/uploadfiles route"""
+    print("Starting upload of VRNetz...")
     stringify, write_VRNetz,gen_layout,algo = False, False, False, None
     form = request.form.to_dict()
     network = request.files.getlist("vrnetz")[0].read().decode("utf-8")
