@@ -50,16 +50,105 @@
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
         <ul>
             <li>
-                <a href="#nodefragment-2"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
-            </li>
-            <li>
                 <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
             </li>
+            <li>
+                <a href="#nodefragment-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
         </ul>
-
         <div id="nodefragment-1">
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+
+            <!-- <h3> Identifier</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Identifier :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node.n);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Organism :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node.stringdb_species); 
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Canonical<br>Name :: </h4>
+                    </div>
+                    <div class="six columns" >
+                        <h5>
+                            <script>
+                                document.write(node["stringdb_canonical name"]);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <!-- <h3> Identifier</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <input type="button" value="3D Model" id='3d-structure-model' class="swagTextButton">
+                    <!-- <script> -->
+                    <h5 style="color:violet;opacity: 20%;">TODO: ADD Script to show/hide model, when model is hidden, make button less
+                        visible</h5>
+                    <!-- </script> -->
+                </div>
+            </div>
+
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <h5 style="text-align:end"> Tag Search</h5>
+                    <form>
+                        <input type="text" id="tag-search" name="tag-search" placeholder="Search for tag.."
+                            class="swagBox">
+                    </form>
+                    <div class="twelve columns">
+                        <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
+                        <!-- <script> -->
+                        <h5 style="color:violet;opacity: 20%;" >TODO: Add Search Button to find certain tag value and add them to the
+                            list of selected tags</h5>
+                        <!-- </script> -->
+                    </div>
+                    <h4> List of searched Node Tags</h5>
+                    <ul>
+                        <li>
+                            <p>Key:value</p>
+                        </li>
+                        <li>
+                            <p>Key:value</p>
+                        </li>
+                        <li>
+                            <p>Key:value</p>
+                        </li>
+                        <li>
+                            <p>Key:value</p>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div id="nodefragment-2">
 
 
             <div class="twelve columns">
@@ -208,57 +297,6 @@
                         </script>
                     </div>
                 </div>
-
-            </div>
-        </div>
-        <div id="nodefragment-2">
-            <div class="twelve columns">
-                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:50px;margin-top:30px">Node Info</h2>
-            </div>
-            <!-- <h3> Identifier</h3> -->
-            <div class="frameBox">
-                <div class="twelve columns">
-                    <input type="button" value="3D Model" id='3d-structure-model' class="swagTextButton">
-                    <!-- <script> -->
-                    <h5 style="color:violet;opacity: 20%;">TODO: ADD Script to show/hide model, when model is hidden, make button less
-                        visible</h5>
-                    <!-- </script> -->
-                </div>
-            </div>
-
-            <div class="frameBox">
-                <div class="twelve columns">
-                    <h5 style="text-align:end"> Tag Search</h5>
-                    <form>
-                        <input type="text" id="tag-search" name="tag-search" placeholder="Search for tag.."
-                            class="swagBox">
-                    </form>
-                    <div class="twelve columns">
-                        <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
-                        <!-- <script> -->
-                        <h5 style="color:violet;opacity: 20%;" >TODO: Add Search Button to find certain tag value and add them to the
-                            list of selected tags</h5>
-                        <!-- </script> -->
-                    </div>
-                    <h4> List of searched Node Tags</h5>
-                    <ul>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                    </ul>
-
-                </div>
-
-
 
             </div>
         </div>

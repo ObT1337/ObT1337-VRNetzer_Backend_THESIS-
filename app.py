@@ -374,14 +374,12 @@ def nodepanel():
     project = request.args.get("project")
     if project is None:
         project = "Uploader_test"
-        print(project)
         folder = os.path.join("static","projects",project)
         with open(os.path.join(folder, "pfile.json"), "r") as json_file:
             global pfile
             pfile = json.load(json_file)
 
     if project:
-        print(project)
         folder = os.path.join("static","projects",project)
         with open(os.path.join(folder, "nodes.json"), "r") as json_file:
             nodes = json.load(json_file)
