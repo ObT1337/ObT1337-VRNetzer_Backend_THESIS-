@@ -565,4 +565,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app,debug=True, port=3000)  # , port=3000, debug=True)
+    socketio.run(app,debug=True, port=3000)  # , port=3000, debug=True,debug=True) #, port=3000, debug=True)
