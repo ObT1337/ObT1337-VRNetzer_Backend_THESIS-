@@ -434,29 +434,19 @@ class Uploader:
 
 
 def extract_attributes(attr_list, elem, skip_attr):
-    # if AT.names not in attr_list:
-    #     attr_list["names"] = []
-    # name = ["NA"]
+    if AT.names not in attr_list:
+        attr_list["names"] = []
+    name = ["NA"]
 
-    # if NT.stringdb_canoncial_name in elem.keys():
-    #     uniprod = elem[NT.stringdb_canoncial_name]
-    #     name = [
-    #         uniprod,  # identifier
-    #         "None",  # Attribute
-    #         uniprod,  # Annotation
-    #         50,  # Additional
-    #     ]
-    #     if NT.stringdb_sequence in elem.keys():
-    #         name[-1] = elem[NT.stringdb_sequence]
-    # elif NT.name in elem.keys():
-    #     gene_name = elem[NT.name]
-    #     name = [f"GENENAME={gene_name}"]
+    if NT.stringdb_canoncial_name in elem.keys():
+        uniprod = elem[NT.stringdb_canoncial_name]
+        name = [
+            uniprod,  # identifier
+        ]
+    elif NT.name in elem.keys():
+        gene_name = elem[NT.name]
+        name = [f"GENENAME={gene_name}"]
 
-    # attr_list["names"].append(name)
-    # attributes = [k for k in elem.keys() if k not in skip_attr]
-    # for attr in attributes:
-    #     if not attr in attr_list:
-    #         attr_list[attr] = []
-    #     attr_list[attr].append([elem[attr]])
+    attr_list["names"].append(name)
     
     return attr_list
