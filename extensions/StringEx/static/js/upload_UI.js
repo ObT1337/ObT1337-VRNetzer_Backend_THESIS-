@@ -13,6 +13,9 @@ $(document).ready(function () {
     $("#algo").selectmenu();
   });
   $(function () {
+    $("#organism").selectmenu();
+  });
+  $(function () {
     $("#tabsUL").tabs();
   });
 
@@ -23,6 +26,11 @@ $(document).ready(function () {
   });
   $("#algo").on("selectmenuselect", function () {
     var name = $("#algo").find(":selected").text();
+    console.log("22: name: " + name);
+    //UpdateNamespace(name);
+  });
+  $("#algo").on("selectmenuselect", function () {
+    var name = $("#organism").find(":selected").text();
     console.log("22: name: " + name);
     //UpdateNamespace(name);
   });
@@ -39,6 +47,7 @@ $(document).ready(function () {
   });
 
   $("#upload_button").button();
+  $("#map_button").button();
   $("input:radio[name='namespace']").change(function () {
     if ($(this).val() == "New") {
       $("#new_namespace_name").show();
@@ -110,7 +119,9 @@ $(document).ready(function () {
       result = it.next();
     }
     console.log("107: dbprefix:", dbprefix);
+    dbprefix = "http://"+ window.location.href.split("/")[2]; // Not sure why no todo it like this. Maybe if the server runs on a different ip than the uploader?
     var url = dbprefix + "/StringEx/uploadfiles";
+    console.log(window.location.href);
     console.log("107: URL:", url);
     console.log("108: FormData:", formData);
     $.ajax({
@@ -122,11 +133,51 @@ $(document).ready(function () {
       processData: false,
       success: function (data) {
         console.log("117: Data: " + data);
-        $("#upload_message").html(data);
+        $("#upload_message").html("Upload successful: " +data);
       },
       error: function (err) {
         console.log("Uploaded failed!");
         $("#upload_message").html("Upload failed");
+      },
+    });
+  });
+
+  $("#map_form").submit(function (event) {
+    event.preventDefault();
+
+    var form = $(this);
+    var formData = new FormData(this);
+    if (formData.get("namespace") == "existing") {
+      formData.append("existing_namespace", $("#namespaces").val());
+    }
+    let it = formData.keys();
+
+    let result = it.next();
+    while (!result.done) {
+      console.log("101: Result: " + result); // 1 3 5 7 9
+      console.log("102: Result_value:" + formData.get(result.value));
+      result = it.next();
+    }
+    console.log("107: dbprefix:", dbprefix);
+    dbprefix = "http://"+ window.location.href.split("/")[2]; // Not sure why no todo it like this. Maybe if the server runs on a different ip than the uploader?
+    var url = dbprefix + "/StringEx/mapfiles";
+    console.log(window.location.href);
+    console.log("107: URL:", url);
+    console.log("108: FormData:", formData);
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: formData, // serializes the form's elements.
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        console.log("117: Data: " + data);
+        $("#map_message").html(data);
+      },
+      error: function (err) {
+        console.log("Uploaded failed!");
+        $("#map_message").html("Upload failed");
       },
     });
   });

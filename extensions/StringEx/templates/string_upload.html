@@ -45,8 +45,12 @@
     <div id="tabsUL"><a href="upload.html" id="" title="upload"></a>
         <!--upload-->
         <ul>
+            <li><a href="#fragment-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/upload.png') }}" /></a>
+            </li>
             <li><a href="#fragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/upload.png') }}" /></a></li>
+                        src="{{ url_for('static', filename='img/upload.png') }}" /></a>
+            </li>
         </ul>
 
         <div id="fragment-1">
@@ -68,15 +72,14 @@
             </form>
             <div class="twelve columns">
                 <h3><span>UPLOAD NEW DATA</span></h3>
-                <p>For file structure and VRNetz composition refer to files in VRNetzer_Backend/static/networks</p>
+                <p>This uploader is used to Upload VRNetz files exported by the VRNetzer Cytoscape app.</p>
             </div>
 
             <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                    Project + Namespace Dropdown
-      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                    Actual Form
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
             <form id="upload_form" method=post enctype=multipart/form-data>
-
                 <div class="twelve columns">
 
                     <div class="six columns">
@@ -87,7 +90,7 @@
                             <h6>CREATE NEW PROJECT</h6>
                             <br>
 
-                            <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+                            <input type="text" id="new_namespace_name" name="new_name" class="swagBox"placeholder="New Project">
                             <p id="submit_warnings" style="display:inline"></p>
 
                             <!-- The Popup window warning :
@@ -130,11 +133,7 @@
                     </div>
 
                 </div>
-
-
-
                 <!-- original position before radio buttons <form id="upload_form" method=post enctype=multipart/form-data> -->
-
                 <div class="frameBox">
                     <div class="twelve columns">
                         <h4 class="nine columns">VRNetz</h4>
@@ -185,10 +184,6 @@
                     </div>
                 </div>
 
-
-
-
-
                 <!--
             <label>A T T R I B U T E S (optional) </label><br>
             <input type=file name=attributes multiple><br><br>
@@ -200,8 +195,7 @@
                 <div class="frameBox">
                     <div class="twelve columns">
                         <div class="two columns">
-                            <input type=submit value=Upload id=upload_button
-                                class="swagSubmit"></button>
+                            <input type=submit value=Upload id=upload_button class="swagSubmit"></button>
                         </div>
                         <div class="nine columns" id="upload_message"></div>
                         <br>
@@ -209,15 +203,74 @@
 
                     </div>
                 </div>
-                <!--<div class="twelve columns"> 
-          <div  class="lineglow" style="background-position: center;"><br></br></div>
-        </div>-->
-
+            </form>
         </div>
 
-        </form>
+        <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    Tab 2 Map STRING networks on Interactomes
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <div id="fragment-2">
+            <div class="twelve columns">
+                <div class="eight columns">
+                    <h2 class="lineglowslow" style="margin-top:30px">STRING
+                        <br>
+                        <br>
+                        &ensp;VRNetzer
+                    </h2>
+                </div>
+                <div class="four columns">
+                    <div class="swagLogo"><br></br></div>
+                </div>
+            </div>
 
+            <div class="twelve columns">
+                <h3><span>MAP STRING NETWORK ON INTERACTOME</span></h3>
+                <p>This MAPPER is used to map STRING networks in the VRNetz format exported using the VRNetzer Cytoscape app onto organism interactomes.</p>
+            </div>
+            <form id="map_form" method=post enctype=multipart/form-data>
+                <!-- VRNetz file browse -->
+                <div class="frameBox">
+                    <div class="twelve columns">
+                        <h6>PROJECT NAME</h6>
+                        <input type="text" id="project_name" name="project_name" class="swagBox" placeholder="New Project">
+                        <p id="submit_warnings" style="display:inline"></p>
+                    </div>
+                </div>
+                <!-- VRNetz file browse -->
+                <div class="frameBox">
+                    <div class="twelve columns">
+                        <h4 class="nine columns">VRNetz</h4>
+                        <input type=file name=vrnetz multiple value="placeholder">
+                    </div>
+                </div>
+                <!-- Organism selection -->
+                <div class="frameBox">
+                        <h4 class="twelve columns">
+                            Organism
+                        </h4>
+                    <div class="twelve columns">
+                        <div class="cornerBox">
+                            <select name="organism" id="organism">
+                                {% for org in organisms %}
+                                <option value="{{org}}">{{org}}</option>
+                                {% endfor %}
+                            </select>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <!-- Map button -->
+                <div class="frameBox">
+                    <div class="twelve columns">
+                        <div class="two columns">
+                            <input type=submit value=Map id=map_button class="swagSubmit"></button>
+                        </div>
+                        <div class="nine columns" id="map_message"></div>
+                    </div>
+                </div>
 
+            </form>
+        </div>
     </div>
 
 
