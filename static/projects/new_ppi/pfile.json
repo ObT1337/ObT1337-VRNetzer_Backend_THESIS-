@@ -1,0 +1,1 @@
+{"name": "new_ppi", "layouts": ["1_springXYZ", "2_bioXYZ", "3_molXYZ", "4_diseaseXYZ", "5_cellXYZ"], "layoutsRGB": ["1_springRGB", "2_bioRGB", "3_molRGB", "4_diseaseRGB", "5_cellRGB"], "links": ["1_springXYZ"], "linksRGB": ["1_springRGB"], "selections": []}
