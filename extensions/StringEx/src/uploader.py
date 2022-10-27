@@ -192,6 +192,8 @@ class Uploader:
                     if LT.color in layout:
                         if isinstance(layout[LT.color], tuple):
                             color = layout[LT.color]
+                    else:
+                        color = [0, 255, 0, 255]
 
                 tex[idx].append((sx, syl, syh))
                 tex[idx].append((ex, eyl, eyh))

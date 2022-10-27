@@ -154,6 +154,28 @@ class Evidences:
             Evidences.stringdb_similarity: (157, 157, 248, 255),  # #9d9df8
         }
         return ev
-
-
-print(LayoutAlgroithms.all_algos)
+class Organisms:
+    human = "H.sapiens"
+    mouse = "M.musculus"
+    yeast = "S.cerevisiae"
+    worm = "C.elegans"
+    fly = "D.melanogaster"
+    arabidopsis = "A.thaliana"
+    zebrafish = "D.rerio"
+    rat = "R.norvegicus"
+    ecoli = "E.coli"
+    all_organisms = sorted([human, mouse, yeast, worm, fly, arabidopsis, zebrafish, rat, ecoli])
+    @staticmethod
+    def get_file_name(organism: str) -> str:
+        file_names={
+            Organisms.human: "biogrid_homo_sapiens_4.4.124",
+            Organisms.mouse: "biogrid_mus_musculus_4.4.124",
+            Organisms.yeast: "biogrid_saccharomyces_cerevisiae_4.4.124",
+            Organisms.worm: "biogrid_caenorhabditis_elegans_4.4.124",
+            Organisms.fly: "biogrid_drosophila_melanogaster_4.4.124",
+            Organisms.arabidopsis: "biogrid_arabidopsis_thaliana_4.4.124",
+            Organisms.zebrafish: "biogrid_danio_rerio_4.4.124",
+            Organisms.rat: "biogrid_rattus_norvegicus_4.4.124",
+            Organisms.ecoli: "biogrid_escherichia_coli_4.4.124",
+        }
+        return file_names.get(organism)
