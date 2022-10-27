@@ -98,7 +98,7 @@
                     <div class="five columns">
                         <h4>Canonical<br>Name :: </h4>
                     </div>
-                    <div class="six columns" >
+                    <div class="six columns">
                         <h5>
                             <script>
                                 document.write(node["stringdb_canonical name"]);
@@ -111,9 +111,27 @@
             <div class="frameBox">
                 <div class="twelve columns">
                     <input type="button" value="3D Model" id='3d-structure-model' class="swagTextButton">
+                    <div class="twelve columns">
+                        <div class="four columns">
+                            <input type="button" id='backwardstep' class="swagBackwardButton"
+                                style="text-align:left"></button>
+                            <script>
+                                //TODO: use last uniprot id for structure presentation
+                            </script>
+                        </div>
+                        <div class="four columns">
+                            <input type="button" id='forwardstep' class="swagForwardButton"
+                                style="text-align:right"></button>
+                            <script>
+                                //TODO: use next uniprot id for structure presentation
+                            </script>
+                        </div>
+                    </div>
                     <!-- <script> -->
-                    <h5 style="color:violet;opacity: 20%;">TODO: ADD Script to show/hide model, when model is hidden, make button less
-                        visible</h5>
+                    <h5 style="color:violet;opacity: 20%;">TODO: ADD Script to show/hide model, when model is hidden,
+                        make button less
+                        visible. Forward and backward buttons should change the loaded model using the next or last
+                        uniprot id in the list.</h5>
                     <!-- </script> -->
                 </div>
             </div>
@@ -128,25 +146,26 @@
                     <div class="twelve columns">
                         <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
                         <!-- <script> -->
-                        <h5 style="color:violet;opacity: 20%;" >TODO: Add Search Button to find certain tag value and add them to the
+                        <h5 style="color:violet;opacity: 20%;">TODO: Add Search Button to find certain tag value and add
+                            them to the
                             list of selected tags</h5>
                         <!-- </script> -->
                     </div>
                     <h4> List of searched Node Tags</h5>
-                    <ul>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                    </ul>
+                        <ul>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                        </ul>
 
                 </div>
             </div>
@@ -190,7 +209,7 @@
                     <div class="five columns">
                         <h4>Canonical<br>Name :: </h4>
                     </div>
-                    <div class="six columns" >
+                    <div class="six columns">
                         <h5>
                             <script>
                                 document.write(node["stringdb_canonical name"]);
@@ -207,7 +226,10 @@
                         <h5 style="text-align:end"> Description</h5>
                         <script>
                             var description = node.stringdb_description;
-                            document.write(description);
+                            document.write(
+                                "<p align='justify'>"
+                                + description
+                                + "<p>");
                         </script>
                     </div>
                 </div>
@@ -217,7 +239,7 @@
                     <div class="five columns">
                         <h4>Sequence :: </h4>
                     </div>
-                    <div class="six columns"style="overflow-y: scroll;">
+                    <div class="six columns" style="overflow-y: hidden;">
                         <h5>
                             <script>
                                 document.write(node.stringdb_sequence);
@@ -232,71 +254,64 @@
                         <h5 style="text-align:end"> Crosslinks</h5>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" target="_blank"
-                            id="uniprot-cross" title="uniprot">UniProt</a>
+                        <a class="crosslinks" target="_blank" id="uniprot-cross" title="uniprot">UniProt</a>
                         <script>
                             var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
-                            setHref("uniprot-cross", node["stringdb_canonical name"],link);
+                            setHref("uniprot-cross", node["stringdb_canonical name"], link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" target="_blank"
-                            id="alphafold-cross" title="alphafold">
+                        <a class="crosslinks" target="_blank" id="alphafold-cross" title="alphafold">
                             AlphaFold
                         </a>
                         <script>
-                            var link = "https://alphafold.ebi.ac.uk/entry/<toChange>" 
-                            setHref("alphafold-cross", node["stringdb_canonical name"],link);
+                            var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
+                            setHref("alphafold-cross", node["stringdb_canonical name"], link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks"
-                            target="_blank" id="genecards-cross" title="genecards">
+                        <a class="crosslinks" target="_blank" id="genecards-cross" title="genecards">
                             GeneCards
                         </a>
                         <script>
                             var link = "https://genecards.org/Search/Keyword?queryString=<toString>"
-                            setHref("genecards-cross", node["stringdb_canonical name"],link);
+                            setHref("genecards-cross", node["stringdb_canonical name"], link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks"
-                            target="_blank" id="tissue-cross" title="tissue">
+                        <a class="crosslinks" target="_blank" id="tissue-cross" title="tissue">
                             TISSUES
                         </a>
                         <script>
                             var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
-                            setHref("tissue-cross", node.n,link);
+                            setHref("tissue-cross", node.n, link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks"
-                            target="_blank" id="disease-cross" title="disease">
+                        <a class="crosslinks" target="_blank" id="disease-cross" title="disease">
                             DISEASES
                         </a>
                         <script>
                             var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
-                            setHref("disease-cross", node.n,link);
+                            setHref("disease-cross", node.n, link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks"
-                            target="_blank" id="compartments-cross" title="compartments">
+                        <a class="crosslinks" target="_blank" id="compartments-cross" title="compartments">
                             COMPARTMENTS
                         </a>
                         <script>
                             var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
-                            setHref("compartments-cross", node.n,link);
+                            setHref("compartments-cross", node.n, link);
                         </script>
                     </div>
                     <div class="four columns">
-                        <a class="crosslinks" target="_blank"
-                            id="pharos-cross" title="pharos">
+                        <a class="crosslinks" target="_blank" id="pharos-cross" title="pharos">
                             Pharos
                         </a>
                         <script>
                             var link = "https://pharos.nih.gov/targets/<toChange>"
-                            setHref("pharos-cross", node["stringdb_canonical name"],link);
+                            setHref("pharos-cross", node["stringdb_canonical name"], link);
                         </script>
                     </div>
                 </div>
