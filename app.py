@@ -218,7 +218,14 @@ def test44():
 
     
 
-
+@app.route('/node', methods=['GET', 'POST'])
+def nodeinfo():
+    id = request.args.get("id")
+    name = "static/projects/" + str(request.args.get("project")) + "/nodes"
+    nodestxt = open(name + ".json", "r")
+    nodes = json.load(nodestxt)
+    
+    return nodes["nodes"][int(id)]
 
 
 
