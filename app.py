@@ -2,14 +2,9 @@ import json
 import logging
 import os
 import random
-import re
-import string
-from cgi import print_arguments
-from io import StringIO
 
 # from flask_session import Session
 # from flask_session import Session
-import requests
 from engineio.payload import Payload
 from flask import (Flask, jsonify, redirect, render_template, request, session,
                    url_for)
@@ -265,11 +260,6 @@ def uploadR():
     return upload_files(request)
 
 
-@app.route("/string", methods=["GET"])
-def uploadString():
-    prolist = uploader.Uploader.listProjects()
-    return render_template("string_upload.html", namespace=prolist)
-
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
 def loadAllProjectsR():
@@ -330,50 +320,6 @@ def main():
     else:
         return "error"
 
-
-@app.route("/evidences", methods=["GET"])
-def string_ev():
-    username = request.args.get("usr")
-    project = request.args.get("project")
-    if username is None:
-        username = str(random.randint(1001, 9998))
-    else:
-        username = username + str(random.randint(1001, 9998))
-        print(username)
-
-    if project is None:
-        project = "none"
-    else:
-        print(project)
-
-    if request.method == "GET":
-
-        room = 1
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
-        # prolist = listProjects()
-        if project != "none":
-            folder = "static/projects/" + project + "/"
-            with open(folder + "pfile.json", "r") as json_file:
-                global pfile
-                pfile = json.load(json_file)
-                # print(pfile)
-            json_file.close()
-
-            with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
-                # print(names)
-            json_file.close()
-        return render_template(
-            "string_ev.html",
-            session=session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
-        )
-    else:
-        return "error"
 
 
 @app.route("/login/<usr>", methods=["GET"])
