@@ -29,6 +29,10 @@
 
     <script src="static/js/three.js"></script>
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+
+    <script src="{{ url_for('static', filename='js/tab_UI_Elements.js') }}"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
 	<body>
         
         <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; padding-left: 10px;  background-color: #000000c4; " >&nbsp;
@@ -70,6 +74,10 @@
                 <br>
                 <div>SEARCH</div>
                 <input type="Text" id = "text" autocomplete="off" class="search" onkeydown="search(this)" style = "height: 50px; width: 150px;">
+                <p></p>
+                <br>
+                <input type="submit" value="REQUEST" id="request_dummy"  style = "height: 50px; width: 150px;"/>
+        
         <p></p>
         <p></p>
         
@@ -81,6 +89,7 @@
         var mesh, renderer, scene, camera, controls;
         var data = JSON.parse({{data|tojson}});
         var pdata = JSON.parse({{pfile|tojson}});
+        var selectedNode;
         //console.log(data);
 
         var scale = 20;
@@ -100,7 +109,34 @@
             //console.log(url);
 
             window.location.href = url;
+        });
+
+        initButtonFunction("request_dummy",
+            function(){
+                if (selectedNode === undefined){
+                    return;
+                }
+
+                // ajax request 
+
+                // socket io request 
+                socket.emit("request", {id: "request_dummy", nodeID: selectedNode, project: pdata["name"], fn: "but"});
+            }    
+        );
+        
+        // client request event listener 
+        var socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+        socket.io.opts.transports = ['websocket'];
+        $(document).ready(function(){
+            socket.on("request", function(msg){
+                switch(msg.id){
+                    case "request_dummy_response":
+                        console.log(msg);
+                        break;
+                }
             });
+        });
+
 
 
         document.getElementById("prname").innerHTML = pdata["name"];
@@ -231,7 +267,7 @@
                 indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
                 setLabelPos();
 
-
+                selectedNode = data["nodes"][object.name]["n"];
             }
         }
 

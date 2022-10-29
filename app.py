@@ -423,6 +423,17 @@ def left(message):
     print(bcolors.WARNING + session.get('username') + ' has left the room.' + bcolors.ENDC)
 
 
+# server eventlistener for (dummy) requests
+@socketio.on("request", namespace="/chat")
+def request_connection(msg):
+    match msg["id"]:
+        case "request_dummy":
+            print(f"received request: {msg}")
+            emit("request", {"id": "request_dummy_response", "val": ["some", "response", "values", "for", "node", msg["nodeID"]]})
+
+        case _:
+            print(bcolors.WARNING + "unknown request received" + bcolors.ENDC)
+
+
 if __name__ == '__main__':
     socketio.run(app)
-

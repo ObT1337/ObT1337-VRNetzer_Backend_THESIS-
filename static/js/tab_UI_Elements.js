@@ -5,7 +5,7 @@
 function initButtonFunction (id, fun){
     $('#'+ id).on("click", function(){
       var $this = $(this);
-      socket.emit('ex', {id: id, val: $this.val(), fn: "but"});
+      // socket.emit('ex', {id: id, val: $this.val(), fn: "but"});
       fun(); 
     });
 }
