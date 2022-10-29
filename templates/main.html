@@ -184,6 +184,10 @@
                 <li>
                     <a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_chart.png') }}" /></a>
                 </li>
+                <li>
+                    <a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
+                            src="{{ url_for('static', filename='img/active_net.png') }}" /></a>
+                </li>
             </ul>
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -577,6 +581,34 @@
                 </div>
             </div>
 
+            <div id="tabs-7" class="container" style = "height: 30p0x; display: inline-block; padding: 4px 2px">
+                <h2 class="lineglowslow">Analytics</h2>
+                <div class="twelve columns">
+                    <h4 class="border">Node ID: {{node_id}}</h4>
+                    <div class="four columns">
+                        <h6 class="border">parameter 1</h6>
+                        <div id="slider-param1"></div>
+                        <h6 class="border">parameter 2</h6>
+                        <div id="slider-param2"></div>
+                        <h6 class="border">parameter 3</h6>
+                        <div id="slider-param3"></div>
+                        <script>
+                            initSlider01('slider-param1');
+                            initSlider01('slider-param2');
+                            initSlider('slider-param3');
+                            $("#slider-param3").slider("option", "min", 1);
+                            $("#slider-param3").slider("option", "max", nodeCount);
+                            $("#slider-param3").slider("option", "value", (nodeCount / 2));
+                        </script>
+                        <input type="button" value="RUN" id='node-barplot' class="swagTextButton"></button>
+                        <script>
+                            initButtonBarPlot("node-barplot");
+                        </script>
+                        <img id="barplot" draggable="false" onmousedown="return false" height='200' width='200' src="{{ url_for('static', filename='img/networkstructure_black.png') }}" hidden="true">
+                    </div>
+
+                </div>
+            </div>
         </div>
 
 
