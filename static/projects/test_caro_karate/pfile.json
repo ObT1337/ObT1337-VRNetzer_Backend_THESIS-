@@ -1,0 +1,1 @@
+{"name": "test_caro_karate", "layouts": ["caro_nodesXYZ", "caro_nodes_5XYZ", "caro_nodes_10XYZ", "caro_nodes_20XYZ", "caro_nodes_30XYZ"], "layoutsRGB": ["caro_nodesRGB", "caro_nodes_5RGB", "caro_nodes_10RGB", "caro_nodes_20RGB", "caro_nodes_30RGB"], "links": ["caro_linksXYZ"], "linksRGB": ["caro_linksRGB"], "selections": []}
