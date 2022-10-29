@@ -215,6 +215,20 @@ function initSlider (id){
 
 }
 
+function initSlider01 (id) {
+
+  $('#'+ id).slider({
+      animate: true,
+      range: "max",
+      min: 0,
+      max: 1,
+      step: 0.1,
+      value: 0.5,
+      slide: function (event, ui) {
+        socket.emit('ex', {id: id, val: ui.value, fn: "sli01"});
+      }
+  });
+}
 
 function initCheckbox (id){
   $('#'+ id, function(){ 
@@ -231,6 +245,13 @@ function initButton (id){
   });
 }
 
+function initButtonBarPlot (id){
+  $('#'+ id).on("click", function(){
+    var $this = $(this);
+    socket.emit('ex', {id: id, val: $this.val(), fn: "barplotbut"});
+    $("#barplot").show()
+  });
+}
 
 function initToggle (id, texts){
   $('#'+ id).on("click", function(){
