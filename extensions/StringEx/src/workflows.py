@@ -38,7 +38,7 @@ def VRNetzer_upload_workflow(request):
         project_name = form["existing_namespace"]
     if not project_name:
         return "namespace fail"
-    print(form.keys())
+    # print(form.keys())
     if algo in form:
         algo = form["algo"]
 

@@ -372,16 +372,17 @@ class Uploader:
         ev_rgb = [f"{ev}RGB" for ev in ev]
         self.pfile[PT.links] = [ev_xyz[0], ev_xyz[0]] + ev_xyz
         self.pfile[PT.links_rgb] = [ev_rgb[0], ev_rgb[0]] + ev_rgb
-        self.pfile[PT.layouts] = [
-            f"{LT.cy_layout}XYZ",
-            f"{LT.string_3d_no_z}XYZ",
-            f"{LT.string_3d}XYZ",
-        ]
-        self.pfile[PT.layouts_rgb] = [
-            f"{LT.cy_layout}RGB",
-            f"{LT.string_3d_no_z}RGB",
-            f"{LT.string_3d}RGB",
-        ]
+        if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
+            self.pfile[PT.layouts] = [
+                f"{LT.cy_layout}XYZ",
+                f"{LT.string_3d_no_z}XYZ",
+                f"{LT.string_3d}XYZ",
+            ]
+        else:
+            self.pfile[PT.layouts_rgb] = [
+                f"{LT.string_3d_no_z}RGB",
+                f"{LT.string_3d}RGB",
+            ]
         for _ in ev:
             self.pfile[PT.layouts].append(self.pfile[PT.layouts][-1])
             self.pfile[PT.layouts_rgb].append(self.pfile[PT.layouts_rgb][-1])
@@ -462,7 +463,8 @@ def extract_attributes(attr_list, elem, skip_attr):
     elif NT.name in elem.keys():
         gene_name = elem[NT.name]
         name = [f"GENENAME={gene_name}"]
-
+    if "names" not in attr_list:
+        attr_list["names"] = []
     attr_list["names"].append(name)
     
     return attr_list

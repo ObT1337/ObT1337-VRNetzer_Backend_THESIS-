@@ -1,4 +1,5 @@
 import json
+import random
 
 import networkx as nx
 import numpy as np
@@ -102,18 +103,23 @@ class Layouter:
         idx = 0
         for node, pos in layout.items():
             node = self.network[VRNE.nodes][idx]
+            color = [random.randint(0,255),random.randint(0,255),random.randint(0,255),255]
+            size = 1
 
             # find the correct layout
             cy_layout, _ = util.find_cy_layout(node)
-            if cy_layout is None:
+            if cy_layout:
                 idx += 1
-                continue
+                # extract color and (size) information
+                size = cy_layout[LT.size]
+                color = cy_layout[LT.color]
 
-            # extract color and (size) information
-            size = cy_layout[LT.size]
-            color = cy_layout[LT.color]
             if VRNE.node_layouts not in self.network:
                 self.network[VRNE.node_layouts] = []
+
+            if NT.layouts not in node:
+                node[NT.layouts] = []
+
             node[NT.layouts].append(
                 {
                     LT.name: LT.string_3d_no_z,
@@ -122,6 +128,7 @@ class Layouter:
                     LT.size: size,
                 }
             )  # Add 2D coordinates
+
             node[NT.layouts].append(
                 {
                     LT.name: LT.string_3d,
@@ -149,7 +156,9 @@ class Layouter:
 
                 # Get positions of only these
                 points.append(cy_layout[LT.position])
-
+                
+        if len(points) == 0:
+            return None
         # normalize positions between in [0,1]
         points = np.array(points)
         points = self.to_positive(points, 2)

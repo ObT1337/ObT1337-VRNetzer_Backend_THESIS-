@@ -101,7 +101,6 @@ def string_preview():
     GD.sessionData["actPro"] = project
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
-    scale = 0.000254
 
     pname = os.path.join(st._PROJECTS_PATH, project, "pfile")
     p = open(pname + ".json", "r")
