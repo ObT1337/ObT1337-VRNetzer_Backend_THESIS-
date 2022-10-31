@@ -19,6 +19,7 @@ import logging
 import re
 from search import *
 import random
+import time
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -205,8 +206,18 @@ def test44():
    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template('threeJS_VIEWER.html', data =  json.dumps(testNetwork), pfile = json.dumps(thispfile))
 
-    
 
+@app.route("/request/<id>/<val>", methods=["GET"])
+def process_request(id, val):  # id: request identifier; val: stringified json-object, containing structured information
+    print(f"received ajax get request: {id}, {val}")
+    time.sleep(5)  # simulate background process
+
+    match id:
+        case "request_dummy":
+            data = json.loads(val)
+            node_id = data["nodeID"]
+            project = data["project"]
+            return jsonify({"id": "request_dummy_response", "type": "AJAX", "node": node_id, "project": project})
 
 
 
@@ -423,13 +434,15 @@ def left(message):
     print(bcolors.WARNING + session.get('username') + ' has left the room.' + bcolors.ENDC)
 
 
-# server eventlistener for (dummy) requests
 @socketio.on("request", namespace="/chat")
 def request_connection(msg):
     match msg["id"]:
         case "request_dummy":
-            print(f"received request: {msg}")
-            emit("request", {"id": "request_dummy_response", "val": ["some", "response", "values", "for", "node", msg["nodeID"]]})
+            print(f"received SocketIO request: {msg}")
+            
+            time.sleep(5)  # simulate background process
+
+            emit("request", {"id": "request_dummy_response", "type": "SocketIO", "node": msg["nodeID"]})
 
         case _:
             print(bcolors.WARNING + "unknown request received" + bcolors.ENDC)

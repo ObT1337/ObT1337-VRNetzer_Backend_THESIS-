@@ -116,11 +116,24 @@
                 if (selectedNode === undefined){
                     return;
                 }
-
                 // ajax request 
+                let serverURL = "/request/";
+                let requestID = "request_dummy";
+                let requestData = {
+                    nodeID: selectedNode,
+                    project: pdata["name"]
+                };
+                let url = serverURL + requestID + "/" + JSON.stringify(requestData);
+                $.getJSON({url, function(){}})
+                .fail(function(jqXHR, textStatus, errorThrown){
+                    console.log("Server not responding: " + textStatus +": "+ errorThrown);
+                })
+                .done(function(response){
+                    console.log("AJAX: ", response);
+                })
 
                 // socket io request 
-                socket.emit("request", {id: "request_dummy", nodeID: selectedNode, project: pdata["name"], fn: "but"});
+                socket.emit("request", {id: "request_dummy", nodeID: selectedNode, project: pdata["name"]});
             }    
         );
         
@@ -128,10 +141,10 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
         socket.io.opts.transports = ['websocket'];
         $(document).ready(function(){
-            socket.on("request", function(msg){
-                switch(msg.id){
+            socket.on("request", function(response){
+                switch(response.id){
                     case "request_dummy_response":
-                        console.log(msg);
+                        console.log("SOCKET-IO: ", response);
                         break;
                 }
             });
