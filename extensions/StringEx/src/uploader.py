@@ -50,10 +50,10 @@ class Uploader:
         self.nodes_file = os_join(self.p_path, "nodes.json")
         self.links_file = os_join(self.p_path, "links.json")
 
-        pfile = {"network":"NA"}
+        pfile = {"network": "NA"}
         if self.stringify:
             pfile["network"] = "string"
-            
+
         self.attr_list = {}
         pfile["name"] = self.p_name
         pfile["layouts"] = []
@@ -168,7 +168,7 @@ class Uploader:
         return tex
 
     @staticmethod
-    def extract_link_data(elem:dict, layouts):
+    def extract_link_data(elem: dict, layouts):
         tex = None
         if LiT.layouts in elem.keys():
             elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[LiT.layouts])}
@@ -229,7 +229,9 @@ class Uploader:
             )
 
         for _, elem in enumerate(nodes):
-            self.nodes[VRNE.nodes].append({k:v for k,v in elem.items() if k not in skip_attr})
+            self.nodes[VRNE.nodes].append(
+                {k: v for k, v in elem.items() if k not in skip_attr}
+            )
             tex = self.extract_node_data(elem, layouts, self.attr_list, skip_attr)
             for l, _ in enumerate(layouts):
                 for d in range(3):
@@ -296,7 +298,7 @@ class Uploader:
 
         l_idx = [0 for _ in layouts]
         for elem in links:
-            elem:dict
+            elem: dict
             link = {
                 LiT.id: elem.get(LiT.id),
                 LiT.start: elem.get(LiT.start),
@@ -414,8 +416,8 @@ class Uploader:
 
         nodes = network.get(VRNE.nodes)
         links = network.get(VRNE.links)
-        n_lay = network.get(VRNE.node_layouts,[])  # Node layouts
-        l_lay = network.get(VRNE.link_layouts,[])  # Link layouts
+        n_lay = network.get(VRNE.node_layouts, [])  # Node layouts
+        l_lay = network.get(VRNE.link_layouts, [])  # Link layouts
 
         with open(self.names_file, "r") as json_file:
             self.attr_list = json.load(json_file)
@@ -429,7 +431,7 @@ class Uploader:
 
         self.write_json_files()
 
-        #TODO: don't use global...
+        # TODO: don't use global...
         global sessionData
         sessionData["proj"] = self.listProjects(self.pf_path)
 
@@ -454,17 +456,17 @@ def extract_attributes(attr_list, elem, skip_attr):
     # elif NT.name in elem.keys():
     #     gene_name = elem[NT.name]
     #     name = [f"GENENAME={gene_name}"]
+    uniprod = elem.get(NT.stringdb_canoncial_name)
+    if uniprod is None:
+        uniprod = elem.get(NT.uniprot)
+        if uniprod:
+            uniprod = uniprod[0]
+        else:
+            elem.get(NT.name)
+    if uniprod:
+        name = [uniprod]
+        if "names" not in attr_list:
+            attr_list["names"] = []
+        attr_list["names"].append(name)
 
-    if NT.stringdb_canoncial_name in elem.keys():
-        uniprod = elem[NT.stringdb_canoncial_name]
-        name = [
-            uniprod,  # identifier
-        ]
-    elif NT.name in elem.keys():
-        gene_name = elem[NT.name]
-        name = [f"GENENAME={gene_name}"]
-    if "names" not in attr_list:
-        attr_list["names"] = []
-    attr_list["names"].append(name)
-    
     return attr_list

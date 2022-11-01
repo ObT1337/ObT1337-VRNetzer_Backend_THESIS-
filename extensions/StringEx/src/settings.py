@@ -70,7 +70,7 @@ class NodeTags:
     ppi_id = "ppi_id"
     id = "id"
     attr_lst = "attrlist"
-
+    uniprot = "uniprot"
 
 class ProjectTag:
     layouts = "layouts"
