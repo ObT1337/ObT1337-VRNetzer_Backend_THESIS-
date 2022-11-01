@@ -19,6 +19,12 @@ function selectEvidenceVRNetzer(id, opt) {
         socket.emit('ex', { id: "linkcolors", opt: opt, fn: "sel" });
     });
 }
+function stringForwardButton(id,data) {
+    $('#' + id).on("click", function() {
+        console.log(data)
+        // socket.emit('ex', { id: "linkcolors", opt: opt, fn: "sel" });
+    });
+}
 function layoutDropdown (id, data, active){
     console.log(id,data,active)
     $('#'+ id).selectmenu();

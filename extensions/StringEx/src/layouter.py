@@ -74,8 +74,9 @@ class Layouter:
         )
 
     def apply_layout(self, layout_algo: str = None) -> nx.layout:
-        """Applies a networkx layout algorithm and adds the node positions to the self.nodes_data dictionary."""
+        """Applies a layout algorithm and adds the node positions to nodes in the self.network[VRNE.nodes] list."""
         if layout_algo is None:
+            """Select default layout algorithm"""
             layout_algo = LA.spring
 
         if LA.cartoGRAPH in layout_algo:
@@ -109,7 +110,6 @@ class Layouter:
             # find the correct layout
             cy_layout, _ = util.find_cy_layout(node)
             if cy_layout:
-                idx += 1
                 # extract color and (size) information
                 size = cy_layout[LT.size]
                 color = cy_layout[LT.color]

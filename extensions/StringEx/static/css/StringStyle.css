@@ -96,6 +96,11 @@ Scrollable Side Panel
     font-size: 36px;
     margin-left: 50px;
 }
+.todo{
+    color:violet;
+    opacity: 20%;
+    font-size: 24pt;
+}
 
 #main {
     transition: margin-left .5s;

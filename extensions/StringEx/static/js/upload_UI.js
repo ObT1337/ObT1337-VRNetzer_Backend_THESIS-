@@ -102,7 +102,13 @@ $(document).ready(function () {
             */
   });
 
-  $("#upload_form").submit(function (event) {
+  $("#upload_form").submit(function(event) {
+
+    $("#upload_message").html("Uploading...");
+    // document.getElementById("upload_button").style.backgroundImage = "{{ url_for('static', filename = 'img/active_gears.png') }}";
+    document.getElementById("upload_button").value = '...';
+    document.getElementById("upload_button").disabled = true;
+
     event.preventDefault();
 
     var form = $(this);
@@ -133,11 +139,15 @@ $(document).ready(function () {
       processData: false,
       success: function (data) {
         console.log("117: Data: " + data);
-        $("#upload_message").html("Upload successful: " +data);
+        $("#upload_message").html("Upload successful: " + data);
+        document.getElementById("upload_button").value = "Upload"; 
+        document.getElementById("upload_button").disabled = false;
       },
       error: function (err) {
         console.log("Uploaded failed!");
         $("#upload_message").html("Upload failed");
+        document.getElementById("upload_button").value = "Upload"; 
+        document.getElementById("upload_button").disabled = false;
       },
     });
   });
