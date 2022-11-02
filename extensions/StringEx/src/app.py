@@ -7,7 +7,6 @@ from PIL import Image
 
 import GlobalData as GD
 import uploader
-from websocket_functions import bcolors
 
 from . import settings as st
 from . import workflows as wf
