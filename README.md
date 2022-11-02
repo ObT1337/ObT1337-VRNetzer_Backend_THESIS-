@@ -1,8 +1,10 @@
-VRNetzer Backend
+# VRNetzer Backend
 
 This is a flask server that provides the network data to the UnrealEngine VRNetzer VR Clients
 
-1) run software
+## INSTALLATION
+
+1) run backend
     - install python 3.9 plus
     - windows: run ```Buildandrun.ps``` in console
     - mac:
@@ -23,7 +25,7 @@ This is a flask server that provides the network data to the UnrealEngine VRNetz
     - select your project from the dropdown
 
 4) run the VR
-you need:
+    you need:
     - a VR ready windows computer
     - a SteamVR compatible headset
     - SteamVR installed
@@ -32,35 +34,27 @@ you need:
     - run VRnetzer.exe
 
 
+## DOCUMENTATION
 
-
-The VRNetzer Dataformat explained
-
+<details>
+  <summary><h3> VRNetzer Dataformat</h3></summary>
+    
 The VRNetzer acts as a multiplayer gameserver for one or more VR clients.
-Its purpose is to serve the connected players with quite big network datasets - as quickly as possible.
+Its purpose is to serve the connected players with big network datasets - as quickly as possible.
 That is the reason why most properties are stored (and transmitted over the network) as images.
 
 
 
 Every folder in "static/projects/ contains 3 JSON files (check out the file dataframeTemplate.json for the exact structure)
-    - nodes  a nodelist
-    - links  a linklist
-    - pfile  a list of the textures in the sub folders
-
 as well as 5 subfolders containing textures
-    - layouts  POSITION
-    - layoutsl POSITION
-    - layoutsRGB    NODE COLOR
-    - links         LINKLIST
-    - linksRGB  LINK COLORS
     
-- static/projects/projectname
+- static/projects/projectname/
     - nodes.json
     - links.json
     - pfile.json
     - layouts  
     - layoutsl 
-    - layoutsRGB 
+    - layoutsRGB
     - links 
     - linksRGB   
 
@@ -83,5 +77,5 @@ floor(x * 65536 % 256) -> layoutsl
 | Row 3 Column 1 | Row 3 Column 2 | Row 3 Column 3 |
 
 
-
+</details>
 
