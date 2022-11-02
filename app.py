@@ -19,6 +19,9 @@ import logging
 import re
 from search import *
 import random
+import load_extensions
+
+
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -30,7 +33,7 @@ app.debug = False
 app.config['SECRET_KEY'] = 'secret'
 app.config['SESSION_TYPE'] = 'filesystem'
 
-
+app = load_extensions.load(app)
 
 socketio = SocketIO(app, manage_session=False)
 
