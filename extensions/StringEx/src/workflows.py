@@ -1,19 +1,19 @@
 import json
 import logging
 import os
-from pydoc import ispath
-
-import networkx as nx
 
 from .converter import VRNetzConverter
 # from .cytoscape_parser import CytoscapeParser
 from .layouter import Layouter
 from .map_small_on_large import map_source_to_target
 from .settings import _NETWORKS_PATH, _PROJECTS_PATH, UNIPROT_MAP, Organisms
-from .settings import VRNetzElements as VRNE
-from .string_commands import (StringCompoundQuery, StringDiseaseQuery,
-                              StringProteinQuery, StringPubMedQuery)
+# from .settings import VRNetzElements as VRNE
+# from .string_commands import (StringCompoundQuery, StringDiseaseQuery,
+#                               StringProteinQuery, StringPubMedQuery)
 from .uploader import Uploader
+
+# import networkx as nx
+
 
 # from extract_colors_from_style import get_node_mapping
 

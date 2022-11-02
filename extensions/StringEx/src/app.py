@@ -15,7 +15,9 @@ from . import workflows as wf
 GD.sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
 GD.sessionData["actAlgo"] = st.LayoutAlgroithms.spring
 GD.sessionData["organisms"] = st.Organisms.all_organisms
+
 url_prefix = "/StringEx"
+
 blueprint = flask.Blueprint(
     "StringEx",
     __name__,
@@ -27,6 +29,7 @@ blueprint = flask.Blueprint(
 
 @blueprint.route("/main")
 def string_main():
+    """Route to STRING Main panel"""
     username = flask.request.args.get("usr")
     project = flask.request.args.get("project")
     if username is None:
@@ -69,6 +72,7 @@ def string_main():
         return "error"
 @blueprint.route("/preview", methods=["GET"])
 def string_preview():
+    """Route to STRING WEBGL Preview."""
     data = {}
     layoutindex = 0
     layoutRGBIndex = 0
@@ -200,6 +204,7 @@ def string_preview():
 
 @blueprint.route("/upload", methods=["GET"])
 def upload_string():
+    """Route to STRING upload."""
     prolist = uploader.listProjects()
     html_page = "string_upload.html"
     return flask.render_template(
@@ -212,63 +217,14 @@ def upload_string():
 
 @blueprint.route("/uploadfiles", methods=["GET", "POST"])
 def execute_upload():
+    """Route to execute the upload of a VRNetz using the STRING Uploader."""
     return wf.VRNetzer_upload_workflow(flask.request)
 @blueprint.route("/mapfiles", methods=["GET", "POST"])
 def execute_map():
+    """Route to Map a small String network to a genome scale network."""
     return wf.VRNetzer_map_workflow(flask.request)
-@blueprint.route("/evidences", methods=["GET"])
-def string_ev():
-    html_page = "string_ev.html"
-    username = flask.request.args.get("usr")
-    project = flask.request.args.get("project")
-    if username is None:
-        username = str(random.randint(1001, 9998))
-    else:
-        username = username + str(random.randint(1001, 9998))
-        print(username)
-
-    if project is None:
-        project = "none"
-    else:
-        print(project)
-
-    if flask.request.method == "GET":
-
-        room = 1
-        # Store the data in flask.session
-        flask.session["username"] = username
-        flask.session["room"] = room
-        # prolist = listProjects()
-        if project != "none":
-            folder = os.path.join(st._PROJECTS_PATH, "static", "projects" + project + "/")
-            with open(folder + "pfile.json", "r") as json_file:
-                # global pfile
-                GD.pfile = json.load(json_file)
-                # print(pfile)
-            json_file.close()
-
-            with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
-                # print(names)
-            json_file.close()
-        return flask.render_template(
-            html_page,
-            session=flask.session,
-            sessionData=json.dumps(GD.sessionData),
-            pfile=json.dumps(GD.pfile),
-        )
-    else:
-        return "error"
-
-@blueprint.route("/ev_tab", methods=["GET","POST"])
-def ev_tab():
-    return flask.render_template("string_ev.html")
-    
-@blueprint.route("/up_tab", methods=["GET","POST"])
-def up_tab():
-    return flask.render_template("string_upload_panel.html")
 def prepare_session_data():
+    """This will setup the username in the flask.session."""
     username = flask.request.args.get("usr")
     if username is None:
         username = str(random.randint(1001, 9998))
