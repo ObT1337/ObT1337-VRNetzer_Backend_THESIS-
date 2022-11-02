@@ -393,16 +393,41 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
+    nodes = {"nodes": []}
+    project = request.args.get("project")
+    if project is None:
+        project = "new_ppi"
+        folder = os.path.join("static", "projects", project)
+        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+            global pfile
+            pfile = json.load(json_file)
 
+    if project:
+        folder = os.path.join("static", "projects", project)
+        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+            nodes = json.load(json_file)
+    add_key = "NA"  # Additional key to show under Structural Information
+    # nodes = {node["id"]: node for node in nodes}
+    global sessionData
     if pfile:
         if "ppi" in pfile["name"].lower():
             try:
                 id = int(request.args.get("id"))
             except:
                 id = 0
-
-            data = names["names"][id]
-            return render_template("nodepanelppi.html", data=data)
+            uniprots = nodes["nodes"][id].get("uniprot")
+            if uniprots:
+                sessionData["actStruc"] = uniprots[0]
+            # data = names["names"][id]
+            return render_template(
+                "nodepanelppi.html",
+                sessionData=json.dumps(sessionData),
+                session=session,
+                pfile=pfile,
+                id=id,
+                add_key=add_key,
+                nodes=json.dumps(nodes),
+            )
 
         else:
             try:
@@ -411,9 +436,13 @@ def nodepanel():
                 print("C_DEBUG: in except else with pfile")
                 id = 0
 
-            data = names["names"][id]
+            # data = names["names"][id]
+            data = [id]
             print("C_DEBUG: general nodepanel")
-            return render_template("nodepanel.html", data=data)
+            return render_template(
+                "nodepanel.html",
+                data=data,
+            )
     else:
         try:
             id = int(request.args.get("id"))
@@ -421,7 +450,10 @@ def nodepanel():
             id = 0
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
-        return render_template("nodepanel.html", data=data)
+        return render_template(
+            "nodepanel.html",
+            data=data,
+        )
 
 
 ###SocketIO ROUTES###
