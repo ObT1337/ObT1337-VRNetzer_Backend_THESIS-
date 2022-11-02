@@ -4,22 +4,22 @@ This is a flask server that provides the network data to the UnrealEngine VRNetz
 
 1) run software
     - install python 3.9 plus
-    - windows: run Buildandrun.ps1 in console
+    - windows: run ```Buildandrun.ps``` in console
     - mac:
 
-    The server is now running at 127.0.0.1:5000
+    `The server is now running at 127.0.0.1:5000`
 
 2) upload data and create new project
-    - open a browser (Chrome or Firefox) and go to 127.0.0.1:5000/upload
-    - make sure "create new project is checked" and a name is assigned
-    - choose a layout file from "static/csv" (or more)
-    - pick a link file from "static/csv" (same name as above)
+    - open a browser (Chrome or Firefox) and go to [127.0.0.1:5000/upload](http://127.0.0.1:5000/upload)
+    - make sure "create new project" is checked and assign a name 
+    - choose a layout file from "static/csv" (or more) or use your own
+    - pick a link file from "static/csv" (same name as above) or use your own
     - click upload
 
     After a success message was shown, the uploader has now created a new folder in "static/projects/yourprojectname" containing all the data in the VRNetzer format.
 
 3) use the WebGL preview to have a look at your project without having to use VR hardware
-    - go to 127.0.0.1:5000/preview
+    - go to [127.0.0.1:5000/preview](http://127.0.0.1:5000/preview)
     - select your project from the dropdown
 
 4) run the VR
@@ -53,6 +53,16 @@ as well as 5 subfolders containing textures
     - layoutsRGB    NODE COLOR
     - links         LINKLIST
     - linksRGB  LINK COLORS
+    
+- static/projects/projectname
+    - nodes.json
+    - links.json
+    - pfile.json
+    - layouts  
+    - layoutsl 
+    - layoutsRGB 
+    - links 
+    - linksRGB   
 
 
 layouts + layoutsl -> Node Positions
@@ -65,6 +75,12 @@ NOTE: node positions need to be in a 0 - 1 range (!), the conversion works like 
 
 floor(x * 256) -> layouts
 floor(x * 65536 % 256) -> layoutsl
+
+| Column 1 Header | Column 2 Header | Column 3 Header |
+| --------------- | --------------- | --------------- |
+| Row 1 Column 1 | Row 1 Column 2 | Row 1 Column 3 |
+| Row 2 Column 1 | Row 2 Column 2 | Row 2 Column 3 |
+| Row 3 Column 1 | Row 3 Column 2 | Row 3 Column 3 |
 
 
 
