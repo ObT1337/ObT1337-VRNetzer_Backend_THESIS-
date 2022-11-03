@@ -539,4 +539,8 @@ def left(message):
 
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     socketio.run(app, port=3000, debug=True)
+=======
+    socketio.run(app)
+>>>>>>> 9396967420182790cf7a6d1c9d366d20d4e6f1f0
