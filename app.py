@@ -1,27 +1,25 @@
+import csv
+import json
+import logging
+import os
+import random
+import re
+import string
 from cgi import print_arguments
-from flask import Flask, render_template, request, redirect, url_for, session
-from flask_socketio import SocketIO, join_room, leave_room, emit
+from io import StringIO
 
 # from flask_session import Session
 import requests
-import json
-import os
-from flask import jsonify
 from engineio.payload import Payload
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
-import string
-import random
-import csv
-from io import StringIO
+
+import load_extensions
+from GlobalData import *
+from search import *
 from uploader import *
 from websocket_functions import *
-from GlobalData import *
-import logging
-import re
-from search import *
-import random
-import load_extensions
-
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -539,8 +537,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     socketio.run(app, port=3000, debug=True)
-=======
-    socketio.run(app)
->>>>>>> 9396967420182790cf7a6d1c9d366d20d4e6f1f0
