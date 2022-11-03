@@ -198,6 +198,28 @@ function initDropdown (id, data, active){
 
 }
 
+function selectEvidence(id, opt) {
+  $('#'+ id).on("click", function(){
+    var links = document.getElementById("linksRGB");
+    for (let i = 0; i < links.length; i++) {
+      if(links[i].text == opt)
+      {
+        console.log(links[i].text);
+        document.getElementById("linksRGB").selectedIndex = i;
+      }
+      }
+    console.log($('#linksRGB option:selected').index())
+    console.log($('#linksRGB option:selected').text())
+    socket.emit('ex', { id: "projects", opt: opt, fn: "sel" });
+    var url = window.location.href.split('&')[0] + '&project=' + pdata["name"] + '&layout=' + $('#layouts option:selected').index() + '&ncol=' + $('#layoutsRGB option:selected').index() + '&lcol=' + $('#linksRGB option:selected').index();
+    console.log($('#layouts option:selected').val());
+    //console.log(url);
+
+    window.location.href = url;
+  });
+}
+
+
 function initSlider (id){
 
   $('#'+ id).slider({
@@ -268,14 +290,3 @@ function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.getElementById("main").style.marginRight= "0";
 }
-
-$(function() {
-  var includes = $('[data-include]')
-  $.each(includes, function() {
-    var file = $(this).data('include')
-    $(this).load(file)
-  })
-});
-// $(function() {
-//   $("#includedContent").load("{{ url_for('StringEx.ev_tab') }}");
-// });

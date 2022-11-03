@@ -30,6 +30,7 @@
                     <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/main_UI.js') }}"></script>
                     
+
                     <script type="text/javascript" src="{{ url_for('static', filename='js/d3ForceGraph.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/d3barchart.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/d3barchart_works.js') }}"></script>
@@ -43,73 +44,70 @@
 
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 TEMPLATES
                                         
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
 <template id="mcRB-template">
-    <style>
-        button {
-            width: 15%;
-            font-family: 'Future', sans-serif;
+        <style>
+            button {
+                width: 15%;
+                font-family: 'Future', sans-serif;
+               
+                cursor: pointer;
+                box-sizing: border-box;
+                padding: 5px 2px;
+                border-radius: 20px;
+                border-top: 2px solid ;
+                border-bottom: 0px solid ;
+                border-left: 0px solid;
+                border-right: 2px solid ;
+                border-color:  rgb(255, 255, 255);
+                color: rgb(255, 255, 255);
+                font-size: 20px;
+            }
+        </style>
 
-            cursor: pointer;
-            box-sizing: border-box;
-            padding: 5px 2px;
-            border-radius: 20px;
-            border-top: 2px solid;
-            border-bottom: 0px solid;
-            border-left: 0px solid;
-            border-right: 2px solid;
-            border-color: rgb(255, 255, 255);
-            color: rgb(255, 255, 255);
-            font-size: 20px;
-        }
-    </style>
-
-    <div id="container" style="width: 120px; height: 30p0x; display: inline-block; padding: 4px 2px">
-        <button id="name"
-            style="width: 90px; height: 30p0x; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px"></button><button
-            id="x"
-            style="width: 30px; height: 30p0x;border-top-left-radius: 0px; border-bottom-left-radius: 0px; background-color: #3d3d3d;">X</button>
-    </div>
-</template>
+        <div id="container" style = "width: 120px; height: 30p0x; display: inline-block; padding: 4px 2px">
+            <button id="name" style = "width: 90px; height: 30p0x; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px"></button><button id="x" style = "width: 30px; height: 30p0x;border-top-left-radius: 0px; border-bottom-left-radius: 0px; background-color: #3d3d3d;">X</button>
+        </div>
+    </template>
 
 <template id="mcSresult-template">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-
-    <button id='name' name='name'
-        style='width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
-
-    </button>
-</template>
+        
+        <button id = 'name' name = 'name' style = 'width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
+        
+        </button>
+    </template>
 
 
 <template id="mcScrollBox-template">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-    <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
-    <div id='box' name='box' class='swagBox'>
-
-    </div>
-</template>
+        <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
+        <div id = 'box' name = 'box' class = 'swagBox'>
+        
+        </div>
+    </template>
 
 
 <template id="mcTextBox-template">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-    <div id="label" class="swagLabelSmall">TEXT</div>
-    <input type="Text" id="text" autocomplete="off">
-</template>
+        <div id = "label" class = "swagLabelSmall">TEXT</div>
+        <input type="Text" id = "text" autocomplete="off">
+    </template>
 
 
 
 <template id="mcColorBox-template">
 
-    <style>
-        input {
+        <style>
+        input{
             border-radius: 50%;
             height: 50px;
             width: 50px;
@@ -117,102 +115,98 @@
             outline: none;
             -webkit-appearance: none;
         }
-
         input::-webkit-color-swatch {
             border: none;
             border-radius: 50%;
         }
-
         input::-webkit-color-swatch-wrapper {
-            padding: 0;
+            padding: 0; 
         }
-    </style>
+        </style>
 
-    <input type="Color" id="color">
-</template>
+        <input type="Color" id = "color">
+    </template>
 
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                                        body
                                         
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-<body>
-
-    <script>
-        var sessiondata = JSON.parse({{ sessionData| tojson}});
-        var pdata = JSON.parse({{ pfile| tojson}});
-        var username = '{{session['username']}}';
-        console.log(username);
-
-    </script>
-
-
-    <div id="tabs" class="disable-select">
-        <script>   // MULTICAST TAB CHANGES 
-            $(function() {
-                $("#tabs").tabs();
-            });
-
-            var lastactive = 0;
-            $('#tabs').on('click', function(event, ui) {
-                var active = $('#tabs').tabs('option', 'active');
-                if (active != lastactive) {
-                    console.log("changed tab to " + active);
-                    lastactive = active;
-                    socket.emit('ex', { msg: active, id: "tabs", fn: "cht" });
-                }
-
-            });
+    <body>
+                    
+        <script>
+            var sessiondata = JSON.parse({{sessionData|tojson}});
+            var pdata = JSON.parse({{pfile|tojson}});
+            var username = '{{session['username']}}';
+            console.log(username);
+            
         </script>
-        <ul>
-            <li>
-                <a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_open.png') }}" /></a>
-            </li>
-            <li>
-                <a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_sel.png') }}" /></a>
-            </li>
-            <!--<li>
+
+
+        <div id="tabs" class="disable-select">
+            <script>   // MULTICAST TAB CHANGES 
+                $(function () {
+                    $("#tabs").tabs();
+                });
+
+                var lastactive = 0;
+                $('#tabs').on('click', function (event, ui) {
+                    var active = $('#tabs').tabs('option', 'active');
+                    if (active != lastactive){
+                        console.log("changed tab to " + active);
+                        lastactive = active;
+                        socket.emit('ex', {msg: active, id: "tabs", fn: "cht"});
+                    }
+                    
+                });
+            </script>
+            <ul>
+                <li>
+                    <a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_open.png') }}" /></a>
+                </li>
+                <li>
+                    <a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_sel.png') }}" /></a>
+                </li>
+                <!--<li>
                     <a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_tune.png') }}" /></a>
                 </li> -->
-            <!-- <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_search.png') }}" />
-                </a></li> -->
-            <li>
-                <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
-            </li>
-            <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                                src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
+                <li>
+                    <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
+                </li>
+                <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
                                                 src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>-->
-        </ul>
+            </ul>
 
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                                             tab 1 - uploading projectfiles
                                             
                             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-        <div id="tabs-1" class="container">
+            <div id="tabs-1" class="container">
 
-            <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
-                <h2 class="lineglowslow">Project</h2>
-            </div>
+                <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
+                    <h2 class="lineglowslow">Project</h2>
+                </div>
 
-            <div class="twelve columns">
-                <!--<div id="projects-section" class="five columns">
+                <div class="twelve columns">
+                    <!--<div id="projects-section" class="five columns">
                         <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
                     </div>
                     <div class="seven columns">-->
-                <div class="cornerBox">
-                    <select id='projects'></select>
-                    <script>
-                        initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
-                    </script>
+                        <div class="cornerBox">
+                            <select id='projects'></select>
+                            <script>
+                                initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
+                            </script>
+                        </div>
+                    <!--</div>-->
                 </div>
-                <!--</div>-->
-            </div>
 
-            <!--
+                <!--
                 <div class="twelve columns">
                     <h3 class="seven columns">Nr. of Layouts : : </h3>
                     <div class="four columns">
@@ -225,9 +219,10 @@
                         </h3>
                     </div>
                 </div>
+
                 <br></br>
                 -->
-            <!-- ADD NETWORK LAYOUT SELECTED TO SHOW UP IN UI ??
+                <!-- ADD NETWORK LAYOUT SELECTED TO SHOW UP IN UI ??
                                     <div class="twelve columns">
                                         <div class="frameBox">
                                             <div class="five columns">
@@ -240,103 +235,104 @@
                                     </div> 
                                     -->
 
-            <div class="twelve columns" hidden="true">
-                <div class="slideTwo">
-                    <input type="checkbox" value="true" id="chbXYZ" name="check" checked></checkbox>
-                    <label for="chbXYZ"></label>
-                    <script>
-                        initCheckbox("chbXYZ");
-                    </script>
+                    <div class="twelve columns" hidden="true"> 
+                            <div class="slideTwo">
+                                <input type="checkbox" value="true" id="chbXYZ" name="check" checked></checkbox> 
+                                <label for="chbXYZ"></label>
+                                <script>
+                                    initCheckbox("chbXYZ");
+                                </script>
+                            </div>
+                    </div>
+
+
+                    <div class="twelve columns" hidden="true">
+                            <div class="slideTwo">
+                                <input type="checkbox" value="true" id="chbNrgb" name="check" checked></checkbox> 
+                                <label for="chbNrgb"></label>
+                                <script>
+                                    initCheckbox("chbNrgb");
+                                </script>
+                            </div>
+                    </div>
+                
+
+                    <div class="twelve columns" hidden="true">
+                        <div class="slideTwo">
+                                <input type="checkbox" value="true" id="chbLrgb" name="check" checked></checkbox> 
+                                <label for="chbLrgb"></label>
+                                <script>
+                                    initCheckbox("chbLrgb");
+                                </script>
+                            </div>
+                    </div>
+                    
+
+
+                <!--<div class="twelve columns">-->
+                <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                
+                    <h5 style="text-align:end"> Visual Settings </h5>
+
+                    <div class="twelve columns"> 
+
+                        <h6 class="border">NODE SIZE</h6>
+                        <div id="slider-node_size"></div>
+                        <h6 class="border">LINK SIZE</h6>
+                        <div id="slider-link_size"></div>
+                        <h6 class="border">LINK OPACITY</h6>
+                        <div id="slider-link_transparency"></div>
+                        <h6 class="border">LABEL SIZE</h6>
+                        <div id="slider-label_scale"></div>
+                        <script>
+                            initSlider('slider_scale');
+                            initSlider('slider-node_size');
+                            initSlider('slider-link_size');
+                            initSlider('slider-link_transparency');
+                            initSlider('slider-label_scale');
+                        </script>  
+                    </div>  
                 </div>
+                <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                    
+                    <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
+                    
+                    <div class="four columns">
+                        <input type="button" id='backwardstep' class="swagBackwardButton"></button>
+                        <script>
+                            initButton('backwardstep');
+                        </script>
+                    </div>
+
+                    <div class="four columns">
+                        <input type="button" id='forwardstep' class="swagForwardButton"></button>
+                        <script>
+                            initButton('forwardstep');
+                        </script>
+                    </div>
+
+                    <div class="four columns">
+                        <input type="button" value="RESET" id='reset' class="swagTextButton"></button>
+                        <script>
+                            initButton('reset');
+                        </script>
+                    </div>
+
+                </div>
+        
             </div>
 
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-            <div class="twelve columns" hidden="true">
-                <div class="slideTwo">
-                    <input type="checkbox" value="true" id="chbNrgb" name="check" checked></checkbox>
-                    <label for="chbNrgb"></label>
-                    <script>
-                        initCheckbox("chbNrgb");
-                    </script>
-                </div>
-            </div>
-
-
-            <div class="twelve columns" hidden="true">
-                <div class="slideTwo">
-                    <input type="checkbox" value="true" id="chbLrgb" name="check" checked></checkbox>
-                    <label for="chbLrgb"></label>
-                    <script>
-                        initCheckbox("chbLrgb");
-                    </script>
-                </div>
-            </div>
-
-
-
-            <!--<div class="twelve columns">-->
-            <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-
-                <h5 style="text-align:end"> Visual Settings </h5>
-
-                <div class="twelve columns">
-
-                    <h6 class="border">NODE SIZE</h6>
-                    <div id="slider-node_size"></div>
-                    <h6 class="border">LINK SIZE</h6>
-                    <div id="slider-link_size"></div>
-                    <h6 class="border">LINK OPACITY</h6>
-                    <div id="slider-link_transparency"></div>
-                    <h6 class="border">LABEL SIZE</h6>
-                    <div id="slider-label_scale"></div>
-                    <script>
-                        initSlider('slider_scale');
-                        initSlider('slider-node_size');
-                        initSlider('slider-link_size');
-                        initSlider('slider-link_transparency');
-                        initSlider('slider-label_scale');
-                    </script>
-                </div>
-            </div>
-            <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-
-                <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
-
-                <div class="four columns">
-                    <input type="button" id='backwardstep' class="swagBackwardButton"></button>
-                    <script>
-                        initButton('backwardstep');
-                    </script>
-                </div>
-
-                <div class="four columns">
-                    <input type="button" id='forwardstep' class="swagForwardButton"></button>
-                    <script>
-                        initButton('forwardstep');
-                    </script>
-                </div>
-
-                <div class="four columns">
-                    <input type="button" value="RESET" id='reset' class="swagTextButton"></button>
-                    <script>
-                        initButton('reset');
-                    </script>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
                      tab 2 - general Network information 
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <div id="tabs-2" class="container">
-            <div class="twelve columns">
-                <h2 class="lineglowslow">SELECT</h2>
-            </div>
+            <div id="tabs-2" class="container">
+                <div class="twelve columns">
+                    <h2 class="lineglowslow">SELECT</h2>
+                </div>
 
-            <!--<div class="twelve columns">
+                <!--<div class="twelve columns">
                                     <h4 class="six columns">Nr. of Layouts: </h4>
                                     <h5 class="fivecolumns" > 
                                         <script>
@@ -350,60 +346,62 @@
                                     <h5 class="fivecolumns"> 
                                     <div>{{names}}</div> 
                                     </h5>
+
                                 </div> -->
 
 
-            <!-- DROPDOWNS FOR LAYOUT SWITCH WITHOUT MORPHING  -->
-            <div class="twelve columns">
-                <h4 class="four columns">NODE POS</h4>
-                <div class="eight columns">
-                    <div class="cornerBox">
-                        <select id='layouts'></select>
-                        <script>
-                            initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
-                        </script>
+                <!-- DROPDOWNS FOR LAYOUT SWITCH WITHOUT MORPHING  -->
+                <div class="twelve columns">
+                    <h4 class="four columns">NODE POS</h4>
+                    <div class="eight columns">
+                        <div class="cornerBox">
+                            <select id='layouts'></select>
+                            <script>
+                                initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
+                            </script>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="twelve columns">
-                <h4 class="four columns">NODE COL</h4>
-                <div class="eight columns">
-                    <div class="cornerBox">
-                        <select id='nodecolors'></select>
-                        <script>
-                            initDropdown('nodecolors', pdata["layoutsRGB"], pdata["layoutsRGB"][0]);
-                        </script>
+                <div class="twelve columns">
+                    <h4 class="four columns">NODE COL</h4>
+                    <div class="eight columns">
+                        <div class="cornerBox">
+                            <select id='nodecolors'></select>
+                            <script>
+                                initDropdown('nodecolors', pdata["layoutsRGB"], pdata["layoutsRGB"][0]);
+                            </script>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="twelve columns">
-                <h4 class="four columns">LINKS</h4>
-                <div class="eight columns">
-                    <div class="cornerBox">
-                        <select id='links'></select>
-                        <script>
-                            initDropdown('links', pdata["links"], pdata["links"][0]);
-                        </script>
+                <div class="twelve columns">
+                    <h4 class="four columns">LINKS</h4>
+                    <div class="eight columns">
+                        <div class="cornerBox">
+                            <select id='links'></select>
+                            <script>
+                                initDropdown('links', pdata["links"], pdata["links"][0]);
+                            </script>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="twelve columns">
-                <h4 class="four columns">LINK COL</h4>
-                <div class="eight columns">
-                    <div class="cornerBox">
-                        <select id='linkcolors'></select>
-                        <script>
-                            initDropdown('linkcolors', pdata["linksRGB"], pdata["linksRGB"][0]);
-                        </script>
+                <div class="twelve columns">
+                    <h4 class="four columns">LINK COL</h4>
+                    <div class="eight columns">
+                        <div class="cornerBox">
+                            <select id='linkcolors'></select>
+                            <script>
+                                initDropdown('linkcolors', pdata["linksRGB"], pdata["linksRGB"][0]);
+                            </script>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
-        </div>
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
                  tab 3 - sliders for visual network mods
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -411,7 +409,7 @@
                 <div class="twelve columns">
                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">VISUALS</h2>
                 </div> -->
-        <!-- SLIDERS 
+                <!-- SLIDERS 
                                     <h3 class="border">SCALE</h3>
                                     <div id="slider_scale"></div>
                 <h3 class="border">NODE SIZE</h3>
@@ -432,41 +430,45 @@
                 </div>
             </div> -->
 
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                             tab 4 - search 
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-        <!-- <div id="tabs-4">
+                            <div id="tabs-4">
                                 <div class="twelve columns">
                                     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px;">QUERY</h2>
                                 </div>
                                         <mc-textbox id = 'search' ></mc-textbox>
                                         <br><br>
                                         <mc-scrollbox id = 'sres'></mc-scrollbox>
-                            </div> -->
+                            </div>
 
 
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                           tab 5 - Arch Worlds 
+
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-        <div id="tabs-5">
+            <div id="tabs-5">
 
-            <div class="twelve columns">
-                <h2 class="lineglowslow">VR ROOMS</h2>
-            </div>
-
-            <div class="twelve columns">
-                <div class="cornerBox">
-                    <select id='archworlds'></select>
-                    <script>
-                        initDropdown('archworlds', ["empty", "lecturehall", "studyspace"], "studyspace");
-                    </script>
+                <div class="twelve columns">
+                    <h2 class="lineglowslow">VR ROOMS</h2>
                 </div>
+
+                <div class="twelve columns">
+                    <div class="cornerBox">
+                        <select id='archworlds'></select>
+                        <script>
+                            initDropdown('archworlds', ["empty", "lecturehall", "studyspace"], "studyspace");
+                        </script>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
                          tab 6 - SETTINGS
                                             
                             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -479,9 +481,10 @@
                                         <script>
                                             document.getElementById('url').innerHTML = window.location.href;
                                         </script>
+
                             </div>-->
 
-    </div>
+        </div>
 
 
 </body>

@@ -230,10 +230,37 @@
                 
                 indexsphere.position.set(object.position["x"],object.position["y"],object.position["z"]);
                 setLabelPos();
-
+                nodeRequest(pdata["name"],object.name)
 
             }
         }
+
+        function nodeRequest(project, id){
+    
+        // Ajax Request to get node info from server (without reloading the page)
+            path = 'node?&project=' + project + '&id=' + id;
+            console.log(path);
+            $.ajax({
+                type: "GET",
+                url: path,
+                contentType: "application/json",
+                headers: {
+                   // "Authorization": "Basic " + btoa(dbuser + ":" + dbpw)
+                },
+                dataType: "json",
+                success: function (response) {
+
+                    console.log(response);
+
+                },
+                error: function (err) {
+                    console.log('error requesting node info');
+
+                }
+            });
+        }
+
+
 
         function onWindowResize() {
 

@@ -7,7 +7,6 @@ py -3 -m venv venv
 venv\Scripts\activate
 #pip install flask_cors
 #pip install pymysql
-python -m pip install -r extensions\StringEx\requirements.txt
 python -m pip install -r requirements.txt
 $env:FLASK_ENV="development"
 $env:FLASK_APP="app.py"

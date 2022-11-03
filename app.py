@@ -1,21 +1,27 @@
+from cgi import print_arguments
+from flask import Flask, render_template, request, redirect, url_for, session
+from flask_socketio import SocketIO, join_room, leave_room, emit
+
+# from flask_session import Session
+import requests
 import json
-import logging
 import os
-import random
-
-# from flask_session import Session
-# from flask_session import Session
+from flask import jsonify
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
-from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
-
-import load_extensions
-from GlobalData import *
-from search import *
+import string
+import random
+import csv
+from io import StringIO
 from uploader import *
 from websocket_functions import *
+from GlobalData import *
+import logging
+import re
+from search import *
+import random
+import load_extensions
+
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -58,9 +64,38 @@ def upload():
     return render_template("upload.html", namespaces=prolist)
 
 
+@app.route("/Examples/CustomElements1")
+def CustomElements1R():
+    return render_template("geneElement.html")
+
+
+@app.route("/Examples/ServerSideVar")
+def ServerSideVarR():
+    return render_template("scroll.html", data=scb1Data)
+
+
+@app.route("/Examples/CustomElements2")
+def test3():
+    return render_template("test.html")
+
+
 @app.route("/Nav")
 def nav():
     return render_template("threeJSLabel.html")
+
+
+@app.route("/ForceLayout")
+def force():
+    nname = "static/csv/force/nodes/" + request.args.get("nname")
+    nodestxt = open(nname + ".json", "r")
+    nodes = json.load(nodestxt)
+
+    lname = "static/csv/force/links/" + request.args.get("lname")
+    linkstxt = open(lname + ".json", "r")
+    links = json.load(linkstxt)
+    return render_template(
+        "threeJSForceLayout.html", nodes=json.dumps(nodes), links=json.dumps(links)
+    )
 
 
 @app.route("/Graph")
@@ -110,7 +145,6 @@ def test44():
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
-    maxLinks = 30000
 
     if request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
@@ -132,11 +166,6 @@ def test44():
         linkRGBIndex = 0
     else:
         linkRGBIndex = int(request.args.get("lcol"))
-
-    if request.args.get("maxlinks") is None:
-        maxLinks = 30000
-    else:
-        maxLinks = int(request.args.get("maxlinks"))
 
     print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
@@ -236,14 +265,17 @@ def test44():
     )
 
 
-@app.route("/Examples/ServerSideVar")
-def ServerSideVarR():
-    return render_template("scroll.html", data=scb1Data)
-
-
-@app.route("/Examples/CustomElements2")
-def test3():
-    return render_template("test.html")
+@app.route("/node", methods=["GET", "POST"])
+def nodeinfo():
+    id = request.args.get("id")
+    key = request.args.get("key")
+    name = "static/projects/" + str(request.args.get("project")) + "/nodes"
+    nodestxt = open(name + ".json", "r")
+    nodes = json.load(nodestxt)
+    if key:
+        return str(nodes["nodes"][int(id)].get(key))
+    else:
+        return nodes["nodes"][int(id)]
 
 
 ### DATA ROUTES###
@@ -258,7 +290,6 @@ def ws_receiver():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def uploadR():
     return upload_files(request)
-
 
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
@@ -321,7 +352,6 @@ def main():
         return "error"
 
 
-
 @app.route("/login/<usr>", methods=["GET"])
 def loginR(usr):
     if request.method == "GET":
@@ -366,32 +396,41 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
-    nodes = {"nodes":[]}
+    nodes = {"nodes": []}
     project = request.args.get("project")
     if project is None:
-        project = "Uploader_test"
-        folder = os.path.join("static","projects",project)
+        project = "new_ppi"
+        folder = os.path.join("static", "projects", project)
         with open(os.path.join(folder, "pfile.json"), "r") as json_file:
             global pfile
             pfile = json.load(json_file)
 
     if project:
-        folder = os.path.join("static","projects",project)
+        folder = os.path.join("static", "projects", project)
         with open(os.path.join(folder, "nodes.json"), "r") as json_file:
             nodes = json.load(json_file)
-
-    nodes = json.dumps(nodes)
-        # nodes = {node["id"]: node for node in nodes}
+    add_key = "NA"  # Additional key to show under Structural Information
+    # nodes = {node["id"]: node for node in nodes}
+    global sessionData
     if pfile:
         if "ppi" in pfile["name"].lower():
             try:
                 id = int(request.args.get("id"))
             except:
                 id = 0
-
+            uniprots = nodes["nodes"][id].get("uniprot")
+            if uniprots:
+                sessionData["actStruc"] = uniprots[0]
             # data = names["names"][id]
-            data=[id]
-            return render_template("nodepanelppi.html", data=data,nodes=nodes)
+            return render_template(
+                "nodepanelppi.html",
+                sessionData=json.dumps(sessionData),
+                session=session,
+                pfile=pfile,
+                id=id,
+                add_key=add_key,
+                nodes=json.dumps(nodes),
+            )
 
         else:
             try:
@@ -401,9 +440,12 @@ def nodepanel():
                 id = 0
 
             # data = names["names"][id]
-            data=[id]
+            data = [id]
             print("C_DEBUG: general nodepanel")
-            return render_template("nodepanel.html", data=data, nodes=nodes)
+            return render_template(
+                "nodepanel.html",
+                data=data,
+            )
     else:
         try:
             id = int(request.args.get("id"))
@@ -411,19 +453,11 @@ def nodepanel():
             id = 0
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
-        return render_template("nodepanel.html", data=data, nodes=nodes)
+        return render_template(
+            "nodepanel.html",
+            data=data,
+        )
 
-@app.route("/project_tab")
-def project_tab():
-    return render_template("project_tab.html")
-
-@app.route("/layout_select_tab")
-def layout_select_tab():
-    return render_template("layout_select_tab.html")
-
-@app.route("/archworlds_tab")
-def archworlds_tab():
-    return render_template("archworlds_tab.html")
 
 ###SocketIO ROUTES###
 
@@ -445,7 +479,6 @@ def join(message):
 
 @socketio.on("ex", namespace="/chat")
 def ex(message):
-    print(message)
     room = session.get("room")
     print(
         bcolors.WARNING
@@ -493,11 +526,6 @@ def ex(message):
     # sendUE4('http://127.0.0.1:3000/in',  {'msg': session.get('username') + ' : ' + message['msg']})
 
 
-# @socketio.on("ex")
-# def ex(message):
-#     return message
-
-
 @socketio.on("left", namespace="/chat")
 def left(message):
     room = session.get("room")
@@ -511,4 +539,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app,debug=True, port=3000)  # , port=3000, debug=True,debug=True) #, port=3000, debug=True)
+    socketio.run(app, port=3000, debug=True)

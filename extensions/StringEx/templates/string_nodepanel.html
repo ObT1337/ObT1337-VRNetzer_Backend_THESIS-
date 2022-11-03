@@ -18,6 +18,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('StringEx.static', filename='js/upload_UI.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
 
 </head>
@@ -137,187 +138,188 @@
                 </div>
                 <!-- </script> -->
             </div>
-        </div>
-
-        <div class="frameBox">
-            <div class="twelve columns">
-                <h5 style="text-align:end"> Tag Search</h5>
-                <form>
-                    <input type="text" id="tag-search" name="tag-search" placeholder="Search for tag.." class="swagBox">
-                </form>
+            <div class="frameBox">
                 <div class="twelve columns">
-                    <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
-                    <!-- <script> -->
-                    <div class="todo">TODO: Add Search Button to find certain tag value and add
-                        them to the
-                        list of selected tags</div>
-                    <!-- </script> -->
-                </div>
-                <h4> List of searched Node Tags</h5>
-                    <ul>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                        <li>
-                            <p>Key:value</p>
-                        </li>
-                    </ul>
-
-            </div>
-        </div>
-    </div>
-    <div id="nodefragment-2">
-
-
-        <div class="twelve columns">
-            <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
-        </div>
-
-        <!-- <h3> Identifier</h3> -->
-        <div class="frameBox">
-            <div class="twelve columns">
-                <div class="five columns">
-                    <h4>Identifier :: </h4>
-                </div>
-                <div class="six columns">
-                    <h5>
-                        <script>
-                            document.write(node_data.n);
-                        </script>
-                    </h5>
-                </div>
-            </div>
-
-            <div class="twelve columns">
-                <div class="five columns">
-                    <h4>Organism :: </h4>
-                </div>
-                <div class="six columns">
-                    <h5>
-                        <script>
-                            document.write(node_data.stringdb_species); 
-                        </script>
-                    </h5>
-                </div>
-            </div>
-
-            <div class="twelve columns">
-                <div class="five columns">
-                    <h4>Canonical<br>Name :: </h4>
-                </div>
-                <div class="six columns">
-                    <h5>
-                        <script>
-                            document.write(node_data["stringdb_canonical name"]);
-                        </script>
-                    </h5>
+                    <h5 style="text-align:end"> Tag Search</h5>
+                    <form>
+                        <input type="text" id="tag-search" name="tag-search" placeholder="Search for tag.." class="swagBox">
+                    </form>
+                    <div class="twelve columns">
+                        <input type="button" value="Search" id='tag-search-button' class="swagTextButton">
+                        <!-- <script> -->
+                        <div class="todo">TODO: Add Search Button to find certain tag value and add
+                            them to the
+                            list of selected tags</div>
+                        <!-- </script> -->
+                    </div>
+                    <h4> List of searched Node Tags</h5>
+                        <ul>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                            <li>
+                                <p>Key:value</p>
+                            </li>
+                        </ul>
+    
                 </div>
             </div>
         </div>
 
-        <!-- <h3>Additional</h3> -->
-        <div class="frameBox">
+
+        <div id="nodefragment-2">
+
+
             <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+    
+            <!-- <h3> Identifier</h3> -->
+            <div class="frameBox">
                 <div class="twelve columns">
-                    <h5 style="text-align:end"> Description</h5>
-                    <script>
-                        var description = node_data.stringdb_description;
-                        document.write(
-                            "<p align='justify'>"
-                            + description
-                            + "<p>");
-                    </script>
+                    <div class="five columns">
+                        <h4>Identifier :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_data.n);
+                            </script>
+                        </h5>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="frameBox">
-            <div class="twelve columns">
-                <div class="five columns">
-                    <h4>Sequence :: </h4>
-                </div>
-                <div class="six columns" style="overflow-y: hidden;">
-                    <h5>
-                        <script>
-                            document.write(node_data.stringdb_sequence);
-                        </script>
-                    </h5>
-                </div>
-            </div>
-        </div>
-        <div class="frameBox">
-            <div class="twelve columns">
+    
                 <div class="twelve columns">
-                    <h5 style="text-align:end"> Crosslinks</h5>
+                    <div class="five columns">
+                        <h4>Organism :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_data.stringdb_species); 
+                            </script>
+                        </h5>
+                    </div>
                 </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="uniprot-cross" title="uniprot">UniProt</a>
-                    <script>
-                        var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
-                        setHref("uniprot-cross", uniprot_id, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="alphafold-cross" title="alphafold">
-                        AlphaFold
-                    </a>
-                    <script>
-                        var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
-                        setHref("alphafold-cross", uniprot_id, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="genecards-cross" title="genecards">
-                        GeneCards
-                    </a>
-                    <script>
-                        var link = "https://genecards.org/Search/Keyword?queryString=<toChange>"
-                        setHref("genecards-cross", uniprot_id, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="tissue-cross" title="tissue">
-                        TISSUES
-                    </a>
-                    <script>
-                        var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
-                        setHref("tissue-cross", node_data.n, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="disease-cross" title="disease">
-                        DISEASES
-                    </a>
-                    <script>
-                        var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
-                        setHref("disease-cross", node_data.n, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="compartments-cross" title="compartments">
-                        COMPARTMENTS
-                    </a>
-                    <script>
-                        var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
-                        setHref("compartments-cross", node_data.n, link);
-                    </script>
-                </div>
-                <div class="four columns">
-                    <a class="crosslinks" target="_blank" id="pharos-cross" title="pharos">
-                        Pharos
-                    </a>
-                    <script>
-                        var link = "https://pharos.nih.gov/targets/<toChange>"
-                        setHref("pharos-cross", uniprot_id, link);
-                    </script>
+    
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Canonical<br>Name :: </h4>
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(node_data["stringdb_canonical name"]);
+                            </script>
+                        </h5>
+                    </div>
                 </div>
             </div>
-
+    
+            <!-- <h3>Additional</h3> -->
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="twelve columns">
+                        <h5 style="text-align:end"> Description</h5>
+                        <script>
+                            var description = node_data.stringdb_description;
+                            document.write(
+                                "<p align='justify'>"
+                                + description
+                                + "<p>");
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4>Sequence :: </h4>
+                    </div>
+                    <div class="six columns" style="overflow-y: hidden;">
+                        <h5>
+                            <script>
+                                document.write(node_data.stringdb_sequence);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+            </div>
+            <div class="frameBox">
+                <div class="twelve columns">
+                    <div class="twelve columns">
+                        <h5 style="text-align:end"> Crosslinks</h5>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="uniprot-cross" title="uniprot">UniProt</a>
+                        <script>
+                            var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
+                            setHref("uniprot-cross", uniprot_id, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="alphafold-cross" title="alphafold">
+                            AlphaFold
+                        </a>
+                        <script>
+                            var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
+                            setHref("alphafold-cross", uniprot_id, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="genecards-cross" title="genecards">
+                            GeneCards
+                        </a>
+                        <script>
+                            var link = "https://genecards.org/Search/Keyword?queryString=<toChange>"
+                            setHref("genecards-cross", uniprot_id, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="tissue-cross" title="tissue">
+                            TISSUES
+                        </a>
+                        <script>
+                            var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
+                            setHref("tissue-cross", node_data.n, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="disease-cross" title="disease">
+                            DISEASES
+                        </a>
+                        <script>
+                            var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
+                            setHref("disease-cross", node_data.n, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="compartments-cross" title="compartments">
+                            COMPARTMENTS
+                        </a>
+                        <script>
+                            var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
+                            setHref("compartments-cross", node_data.n, link);
+                        </script>
+                    </div>
+                    <div class="four columns">
+                        <a class="crosslinks" target="_blank" id="pharos-cross" title="pharos">
+                            Pharos
+                        </a>
+                        <script>
+                            var link = "https://pharos.nih.gov/targets/<toChange>"
+                            setHref("pharos-cross", uniprot_id, link);
+                        </script>
+                    </div>
+                </div>
+    
+            </div>
         </div>
     </div>
 </body>
