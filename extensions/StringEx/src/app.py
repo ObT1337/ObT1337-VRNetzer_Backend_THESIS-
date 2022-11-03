@@ -230,22 +230,71 @@ def prepare_session_data():
     else:
         username = username + str(random.randint(1001, 9998))
     flask.session["username"] = username
+@blueprint.route("/nodepanel",methods=["GET","POST"])
+def nodepanel():
+    # try:
+    #    id = int(request.args.get("id"))
+    # except:
+    #    print('C_DEBUG: in except at start')
+    #    if id is None:
+    #        id=0
+    nodes = {"nodes": []}
+    project = flask.request.args.get("project")
+    if project is None:
+        project = "new_ppi"
+        folder = os.path.join("static", "projects", project)
+        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+            GD.pfile = json.load(json_file)
 
-# @blueprint.route("/nodepanel",  methods=["GET"])
-# def string_nodepanel():
-#     username = flask.request.args.get("usr")
-#     project = flask.request.args.get("project")
-#     if username is None:
-#             username = str(random.randint(1001, 9998))
-#     else:
-#         username = username + str(random.randint(1001, 9998))
-#         print(username)
-#     if flask.request.method == "GET":
-#         room = 1
-#         # Store the data in flask.session
-#         flask.session["username"] = username
-#         flask.session["room"] = room
-#         # prolist = listProjects()
-#         data = {"names": [0]}
-#         return flask.render_template("string_nodepanel.html",data=data)
+    if project:
+        folder = os.path.join("static", "projects", project)
+        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+            nodes = json.load(json_file)
+    add_key = "NA"  # Additional key to show under Structural Information
+    # nodes = {node["id"]: node for node in nodes}
+    if GD.pfile:
+        if "ppi" in GD.pfile["name"].lower():
+            try:
+                id = int(flask.request.args.get("id"))
+            except:
+                id = 0
+            uniprots = nodes["nodes"][id].get("uniprot")
+            if uniprots:
+                GD.sessionData["actStruc"] = uniprots[0]
+            # data = names["names"][id]
+            return flask.render_template(
+                "string_nodepanel.html",
+                sessionData=json.dumps(GD.sessionData),
+                session=flask.session,
+                pfile=json.dumps(GD.pfile),
+                id=id,
+                add_key=add_key,
+                nodes=json.dumps(nodes),
+            )
+
+        else:
+            try:
+                id = int(flask.request.args.get("id"))
+            except:
+                print("C_DEBUG: in except else with pfile")
+                id = 0
+
+            # data = names["names"][id]
+            data = [id]
+            print("C_DEBUG: general nodepanel")
+            return flask.render_template(
+                "nodepanel.html",
+                data=data,
+            )
+    else:
+        try:
+            id = int(flask.request.args.get("id"))
+        except:
+            id = 0
+        print("C_DEBUG: in except else (no pfile)")
+        data = {"names": [id]}
+        return flask.render_template(
+            "nodepanel.html",
+            data=data,
+        )
 
