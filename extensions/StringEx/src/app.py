@@ -249,7 +249,7 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
-        project = "Uploader_test"
+        project = "new_ppi"
         folder = os.path.join("static", "projects", project)
         with open(os.path.join(folder, "pfile.json"), "r") as json_file:
             GD.pfile = json.load(json_file)
@@ -268,12 +268,17 @@ def nodepanel():
     if uniprots:
         GD.sessionData["actStruc"] = uniprots[0]
     # data = names["names"][id]
-    return flask.render_template(
-        "string_nodepanel.html",
-        sessionData=json.dumps(GD.sessionData),
-        session=flask.session,
-        pfile=json.dumps(GD.pfile),
-        id=id,
-        add_key=add_key,
-        nodes=json.dumps(nodes),
-    )
+
+    network_type = GD.pfile.get("network")
+    if network_type == "string":
+        return flask.render_template(
+            "string_nodepanel.html",
+            sessionData=json.dumps(GD.sessionData),
+            session=flask.session,
+            pfile=json.dumps(GD.pfile),
+            id=id,
+            add_key=add_key,
+            nodes=json.dumps(nodes),
+        )
+    else:
+        return flask.redirect(flask.url_for("nodepanel"), code=302)

@@ -1,8 +1,9 @@
 import os
 import sys
 
-try: from pip._internal.operations import freeze
-except ImportError: # pip < 10.0
+try:
+    from pip._internal.operations import freeze
+except ImportError:  # pip < 10.0
     from pip.operations import freeze
 
 _WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -71,6 +72,7 @@ class NodeTags:
     id = "id"
     attr_lst = "attrlist"
     uniprot = "uniprot"
+
 
 class ProjectTag:
     layouts = "layouts"
@@ -154,6 +156,8 @@ class Evidences:
             Evidences.stringdb_similarity: (157, 157, 248, 255),  # #9d9df8
         }
         return ev
+
+
 class Organisms:
     human = "H.sapiens"
     mouse = "M.musculus"
@@ -164,27 +168,30 @@ class Organisms:
     zebrafish = "D.rerio"
     rat = "R.norvegicus"
     ecoli = "E.coli"
-    all_organisms = sorted([human, mouse, yeast, worm, fly, arabidopsis, zebrafish, rat, ecoli])
+    all_organisms = sorted(
+        [human, mouse, yeast, worm, fly, arabidopsis, zebrafish, rat, ecoli]
+    )
+
     @staticmethod
     def get_tax_ids(organism):
         """Return the tax id for the organism."""
         tax_ids = {
-        Organisms.human: 9606,
-        Organisms.mouse: 10090,
-        Organisms.rat: 10116,
-        Organisms.zebrafish: 7955,
-        Organisms.fly: 7227,
-        Organisms.worm: 6239,
-        Organisms.yeast: 4932,
-        Organisms.ecoli: 362663,
-        Organisms.arabidopsis: 3702,
+            Organisms.human: 9606,
+            Organisms.mouse: 10090,
+            Organisms.rat: 10116,
+            Organisms.zebrafish: 7955,
+            Organisms.fly: 7227,
+            Organisms.worm: 6239,
+            Organisms.yeast: 4932,
+            Organisms.ecoli: 362663,
+            Organisms.arabidopsis: 3702,
         }
         return tax_ids.get(organism)
 
     # TODO: REMOVE BIOGRID IF NOT USED
     @staticmethod
     def get_file_name(organism: str) -> str:
-        file_names={
+        file_names = {
             Organisms.human: "biogrid_homo_sapiens_4.4.124",
             Organisms.mouse: "biogrid_mus_musculus_4.4.124",
             Organisms.yeast: "biogrid_saccharomyces_cerevisiae_4.4.124",

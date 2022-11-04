@@ -1,16 +1,12 @@
-import csv
+# import csv
 import json
 import logging
 import os
 import random
-import re
-import string
-from cgi import print_arguments
-from io import StringIO
 
 # from flask_session import Session
-import requests
-from engineio.payload import Payload
+# import requests
+# from engineio.payload import Payload
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
@@ -20,6 +16,12 @@ from GlobalData import *
 from search import *
 from uploader import *
 from websocket_functions import *
+
+# import re
+# import string
+# from cgi import print_arguments
+# from io import StringIO
+
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)

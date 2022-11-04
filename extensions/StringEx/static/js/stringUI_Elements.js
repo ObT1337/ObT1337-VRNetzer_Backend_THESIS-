@@ -14,9 +14,12 @@ function selectEvidenceWebGL(id, opt) {
         }
     });
 }
-function selectEvidenceVRNetzer(id, opt) {
+function selectEvidenceVRNetzer(id, layout) {
     $('#' + id).on("click", function() {
-        socket.emit('ex', { id: "linkcolors", opt: opt, fn: "sel" });
+        var color = layout + "RGB";
+        var cord = layout + "XYZ";
+        socket.emit('ex', { id: "linkcolors", opt: color, fn: "sel" });
+        socket.emit('ex', { id: "link", opt: cord, fn: "sel" });
     });
 }
 function stringForwardButton(id,data) {
