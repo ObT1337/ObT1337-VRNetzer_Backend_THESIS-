@@ -216,26 +216,6 @@
                         initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
                     </script>
 
-                    <!-- <script>
-                        // Should be used to diasable forward backward button, if network is a string network
-                        $(function() {
-                            var proj = document.getElementById("projects");
-                            proj.addEventListener('change', (event) => {
-                                console.log(pdata["network"]);
-                                var back = document.getElementById('backwardstep');
-                                var forw = document.getElementById('projects');
-                                if (pdata["network"] == "string") {
-                                    back.disabled = true;
-                                    forw.disabled = true;
-                                } else {
-                                    if (back.disabled == true) {
-                                        back.disabled = false;
-                                        forw.disabled = false;
-                                    }
-                                }
-                            });
-                        });
-                    </script> -->
                 </div>
                 <!--</div>-->
             </div>
@@ -330,6 +310,12 @@
             <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
 
                 <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
+                <script>
+                    socket.emit('ex', {id: "chbXYZ", val: true, fn: "chk"});
+                    socket.emit('ex', {id: "chbNrgb", val: true, fn: "chk"});
+                    socket.emit('ex', {id: "chbLrgb", val: false, fn: "chk"});
+                    socket.emit('ex', {id: "chbLxzy", val: false, fn: "chk"});
+                </script>
 
                 <div class="four columns">
                     <input type="button" id='backwardstep' class="swagBackwardButton"></button>
@@ -353,34 +339,7 @@
                 </div>
 
             </div>
-            <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-                <div class = "twelve columns">
-                    <h5 style="text-align:end; margin-bottom:5px;"> Node Layout Morphing </h5>
 
-                    <div class="four columns">
-                        <input type="button" id='node_backwardstep' class="swagBackwardButton"></button>
-                        <script>
-                            stringForwardButton('node_backwardstep', sessiondata);
-                        </script>
-                    </div>
-
-                    <div class="four columns">
-                        <input type="button" id='node_forwardstep' class="swagForwardButton"></button>
-                        <script>
-                            stringForwardButton('node_forwardstep', sessiondata);
-                        </script>
-                    </div>
-
-                    <div class="four columns">
-                        <input type="button" value="RESET" id='reset' class="swagTextButton"></button>
-                        <script>
-                            initButton('reset');
-                        </script>
-                    </div>
-                </div>
-                <div class ="todo"> TODO: These Forward and backward buttons should only allow to change the Node layouts, but not the link layouts.</div>
-
-            </div>
 
         </div>
 
