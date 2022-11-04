@@ -374,20 +374,22 @@ class Uploader:
         ev_rgb = [f"{ev}RGB" for ev in ev]
         self.pfile[PT.links] = [ev_xyz[0], ev_xyz[0]] + ev_xyz
         self.pfile[PT.links_rgb] = [ev_rgb[0], ev_rgb[0]] + ev_rgb
-        if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
-            self.pfile[PT.layouts] = [
-                f"{LT.cy_layout}XYZ",
-                f"{LT.string_3d_no_z}XYZ",
-                f"{LT.string_3d}XYZ",
-            ]
-        else:
-            self.pfile[PT.layouts_rgb] = [
-                f"{LT.string_3d_no_z}RGB",
-                f"{LT.string_3d}RGB",
-            ]
-        for _ in ev:
-            self.pfile[PT.layouts].append(self.pfile[PT.layouts][-1])
-            self.pfile[PT.layouts_rgb].append(self.pfile[PT.layouts_rgb][-1])
+        if LT.cy_layout not in self.pfile[PT.layouts]:
+            self.pfile[PT.layouts] = [LT.string_3d_no_z, LT.string_3d]
+        # if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
+        #     self.pfile[PT.layouts] = [
+        #         f"{LT.cy_layout}XYZ",
+        #         f"{LT.string_3d_no_z}XYZ",
+        #         f"{LT.string_3d}XYZ",
+        #     ]
+        # else:
+        #     self.pfile[PT.layouts_rgb] = [
+        #         f"{LT.string_3d_no_z}RGB",
+        #         f"{LT.string_3d}RGB",
+        #     ]
+        # for _ in ev:
+        #     self.pfile[PT.layouts].append(self.pfile[PT.layouts][-1])
+        #     self.pfile[PT.layouts_rgb].append(self.pfile[PT.layouts_rgb][-1])
 
         with open(self.pfile_file, "w") as json_file:
             json.dump(self.pfile, json_file)

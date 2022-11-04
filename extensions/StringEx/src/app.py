@@ -249,33 +249,36 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
+        GD.sessionData.get("actPro")
+        print(GD.sessionData)
         project = "new_ppi"
-        folder = os.path.join("static", "projects", project)
-        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-            GD.pfile = json.load(json_file)
 
-    if project:
-        folder = os.path.join("static", "projects", project)
-        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-            nodes = json.load(json_file)
+    folder = os.path.join("static", "projects", project)
+
+    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+        pfile = json.load(json_file)
+
+    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+        nodes = json.load(json_file)
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
     try:
         id = int(flask.request.args.get("id"))
-    except:
+    except Exception as e:
         id = 0
+        print(e)
     uniprots = nodes["nodes"][id].get("uniprot")
     if uniprots:
-        GD.sessionData["actStruc"] = uniprots[0]
+        sessionData["actStruc"] = uniprots[0]
     # data = names["names"][id]
 
-    network_type = GD.pfile.get("network")
+    network_type = pfile.get("network")
     if network_type == "string":
         return flask.render_template(
             "string_nodepanel.html",
             sessionData=json.dumps(GD.sessionData),
             session=flask.session,
-            pfile=json.dumps(GD.pfile),
+            pfile=json.dumps(pfile),
             id=id,
             add_key=add_key,
             nodes=json.dumps(nodes),
