@@ -252,7 +252,6 @@
             <div class="twelve columns" hidden="true">
                 <div class="slideTwo">
                     <input type="checkbox" value="true" id="chbXYZ" name="check" checked></checkbox>
-                    <label for="chbXYZ"></label>
                     <script>
                         initCheckbox("chbXYZ");
                     </script>
@@ -263,7 +262,6 @@
             <div class="twelve columns" hidden="true">
                 <div class="slideTwo">
                     <input type="checkbox" value="true" id="chbNrgb" name="check" checked></checkbox>
-                    <label for="chbNrgb"></label>
                     <script>
                         initCheckbox("chbNrgb");
                     </script>
@@ -273,10 +271,18 @@
 
             <div class="twelve columns" hidden="true">
                 <div class="slideTwo">
-                    <input type="checkbox" value="true" id="chbLrgb" name="check" checked></checkbox>
-                    <label for="chbLrgb"></label>
+                    <input type="checkbox" value="false" id="chbLrgb" name="check" unchecked></checkbox>
                     <script>
                         initCheckbox("chbLrgb");
+                    </script>
+                </div>
+            </div>
+
+            <div class="twelve columns" hidden="true">
+                <div class="slideTwo">
+                    <input type="checkbox" value="false" id="chbLxyz" name="check" unchecked></checkbox>
+                    <script>
+                        initCheckbox("chbLxyz");
                     </script>
                 </div>
             </div>
@@ -310,12 +316,6 @@
             <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
 
                 <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
-                <script>
-                    socket.emit('ex', {id: "chbXYZ", val: true, fn: "chk"});
-                    socket.emit('ex', {id: "chbNrgb", val: true, fn: "chk"});
-                    socket.emit('ex', {id: "chbLrgb", val: false, fn: "chk"});
-                    socket.emit('ex', {id: "chbLxzy", val: false, fn: "chk"});
-                </script>
 
                 <div class="four columns">
                     <input type="button" id='backwardstep' class="swagBackwardButton"></button>
