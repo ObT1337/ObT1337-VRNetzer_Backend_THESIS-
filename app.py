@@ -1,12 +1,16 @@
-# import csv
+import csv
 import json
 import logging
 import os
 import random
+import re
+import string
+from cgi import print_arguments
+from io import StringIO
 
 # from flask_session import Session
-# import requests
-# from engineio.payload import Payload
+import requests
+from engineio.payload import Payload
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
@@ -16,12 +20,6 @@ from GlobalData import *
 from search import *
 from uploader import *
 from websocket_functions import *
-
-# import re
-# import string
-# from cgi import print_arguments
-# from io import StringIO
-
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -400,15 +398,15 @@ def nodepanel():
     project = request.args.get("project")
     if project is None:
         project = "new_ppi"
-        folder = os.path.join("static", "projects", project)
-        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-            global pfile
-            pfile = json.load(json_file)
 
-    if project:
-        folder = os.path.join("static", "projects", project)
-        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-            nodes = json.load(json_file)
+    folder = os.path.join("static", "projects", project)
+    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+        global pfile
+        pfile = json.load(json_file)
+
+    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+        nodes = json.load(json_file)
+
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
     global sessionData
@@ -416,7 +414,8 @@ def nodepanel():
         if "ppi" in pfile["name"].lower():
             try:
                 id = int(request.args.get("id"))
-            except:
+            except Exception as e:
+                print(e)
                 id = 0
             uniprots = nodes["nodes"][id].get("uniprot")
             if uniprots:
@@ -435,8 +434,9 @@ def nodepanel():
         else:
             try:
                 id = int(request.args.get("id"))
-            except:
+            except Exception as e:
                 print("C_DEBUG: in except else with pfile")
+                print(e)
                 id = 0
 
             # data = names["names"][id]
@@ -449,8 +449,9 @@ def nodepanel():
     else:
         try:
             id = int(request.args.get("id"))
-        except:
+        except Exception as e:
             id = 0
+            print(e)
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
         return render_template(
