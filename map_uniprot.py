@@ -8,6 +8,7 @@ https://www.uniprot.org/help/id_mapping
 """
 
 import json
+import os
 import re
 import sys
 import time
@@ -189,16 +190,19 @@ def get_id_mapping_results_stream(url):
     return decode_results(request, file_format, compressed)
 
 
-def construct_nodes(results, nodes, nodes_map, nodes_f,secondary=False):
+def construct_nodes(results, nodes, nodes_map, nodes_f, secondary=False):
     """Will write nodes to new nodes file."""
     # print(results)
     res: dict
     lengths = {}
+    with open(os.path.join("static", "csv", "scales_Cartoon.csv"), "r") as f:
+        lines = f.readlines()
+        ids = [line.split(",")[0] for line in lines]
     for res in results["results"]:
         f = res["from"]
         idx = nodes_map[f]
         uniprot = nodes["nodes"][idx].get("uniprot")
-        if uniprot and len(uniprot)>30:
+        if uniprot and len(uniprot) > 30:
             """Cap the number of possible structures to 30"""
             continue
         to = res.get("to")
@@ -213,10 +217,10 @@ def construct_nodes(results, nodes, nodes_map, nodes_f,secondary=False):
                     pa += sa
         else:
             pa = [to]
-
+        pa = [acc for acc in pa if acc in ids]
         if nodes["nodes"][idx].get("uniprot") is None:
             nodes["nodes"][idx]["uniprot"] = []
-        
+
         nodes["nodes"][idx]["uniprot"] += pa
 
     with open(f"{nodes_f[:-5]}_with_uniprot.json", "w") as f:
@@ -234,7 +238,7 @@ def main(taxId, nodes_f):
     job_id = submit_id_mapping(
         from_db="Gene_Name",
         to_db="UniProtKB",
-        ids=list(nodes_map.keys())[:100],
+        ids=list(nodes_map.keys()),
         taxId=taxId,
     )
     if check_id_mapping_results_ready(job_id):
@@ -244,7 +248,7 @@ def main(taxId, nodes_f):
         # on the API and so is less stable:
         # results = get_id_mapping_results_stream(link)
         print("Results are here!")
-        nodes = construct_nodes(results, nodes, nodes_map,nodes_f)
+        nodes = construct_nodes(results, nodes, nodes_map, nodes_f)
         return nodes
 
 
@@ -255,10 +259,11 @@ class Databases:
 
 
 if __name__ == "__main__":
-    help_string="can be used like this:\npython3 map_uniprot <path_to_nodes.json> <taxonomic ID>\nResult will saved in the same directory than the given nodes file with '_with_uniprot' at the end. For each node there is at most 30 structures. "
+    help_string = "can be used like this:\npython3 map_uniprot <path_to_nodes.json> <taxonomic ID>\nResult will saved in the same directory than the given nodes file with '_with_uniprot' at the end. For each node there is at most 30 structures. "
     try:
         nodes = sys.argv[1]
         taxId = sys.argv[2]
         main(taxId, nodes)
-    except Exception:
+    except Exception as e:
+        print(e)
         print(help_string)
