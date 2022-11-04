@@ -38,9 +38,7 @@ def string_main():
     project = flask.request.args.get("project")
 
     if project is None:
-        project = "none"
-    else:
-        print(project)
+        project = uploader.listProjects()[0]
 
     if flask.request.method == "GET":
 
@@ -49,24 +47,25 @@ def string_main():
         flask.session["username"] = username
         flask.session["room"] = room
         # prolist = listProjects()
-        if project != "none":
-            folder = "static/projects/" + project + "/"
-            with open(folder + "pfile.json", "r") as json_file:
-                GD.pfile = json.load(json_file)
-                # print(pfile)
-            json_file.close()
+        folder = "static/projects/" + project + "/"
 
-            with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
-                # print(names)
-            json_file.close()
-        return flask.render_template(
-            "string_main.html",
-            session=flask.session,
-            sessionData=json.dumps(GD.sessionData),
-            pfile=json.dumps(GD.pfile),
-        )
+        with open(folder + "pfile.json", "r") as json_file:
+            GD.pfile = json.load(json_file)
+
+        with open(folder + "names.json", "r") as json_file:
+            global names
+            names = json.load(json_file)
+        network_type = GD.pfile.get("network")
+        print(project, network_type)
+        if network_type == "string":
+            return flask.render_template(
+                "string_main.html",
+                session=flask.session,
+                sessionData=json.dumps(GD.sessionData),
+                pfile=json.dumps(GD.pfile),
+            )
+        else:
+            return flask.redirect("/main", code=302)
     else:
         return "error"
 
