@@ -37,9 +37,9 @@ def string_main():
         print(username)
     project = flask.request.args.get("project")
 
-    if project is None:
+    if project is None or project == "none":
         project = uploader.listProjects()[0]
-
+    print(project)
     if flask.request.method == "GET":
 
         room = 1
