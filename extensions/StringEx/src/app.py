@@ -269,7 +269,7 @@ def nodepanel():
         print(e)
     uniprots = nodes["nodes"][id].get("uniprot")
     if uniprots:
-        sessionData["actStruc"] = uniprots[0]
+        GD.sessionData["actStruc"] = uniprots[0]
     # data = names["names"][id]
 
     network_type = pfile.get("network")

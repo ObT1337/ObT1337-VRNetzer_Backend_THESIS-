@@ -375,7 +375,11 @@ class Uploader:
         self.pfile[PT.links] = [ev_xyz[0], ev_xyz[0]] + ev_xyz
         self.pfile[PT.links_rgb] = [ev_rgb[0], ev_rgb[0]] + ev_rgb
         if LT.cy_layout not in self.pfile[PT.layouts]:
-            self.pfile[PT.layouts] = [LT.string_3d_no_z, LT.string_3d]
+            self.pfile[PT.layouts] = [f"{LT.string_3d_no_z}XYZ", f"{LT.string_3d}XYZ"]
+            self.pfile[PT.layouts_rgb] = [
+                f"{LT.string_3d_no_z}RGB",
+                f"{LT.string_3d}RGB",
+            ]
         # if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
         #     self.pfile[PT.layouts] = [
         #         f"{LT.cy_layout}XYZ",
