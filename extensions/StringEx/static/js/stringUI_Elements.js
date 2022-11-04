@@ -19,7 +19,7 @@ function selectEvidenceVRNetzer(id, layout) {
         var color = layout + "RGB";
         var cord = layout + "XYZ";
         socket.emit('ex', { id: "linkcolors", opt: color, fn: "sel" });
-        socket.emit('ex', { id: "link", opt: cord, fn: "sel" });
+        socket.emit('ex', { id: "links", opt: cord, fn: "sel" });
     });
 }
 function stringForwardButton(id,data) {
