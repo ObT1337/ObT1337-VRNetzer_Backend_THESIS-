@@ -368,12 +368,12 @@ class Uploader:
         return nodes_data, edges_data
 
     def stringify_project(self):
-        """Changes the order of layouts in the pfile to start with a Cytoscape 2D network on the floor with all edges, than a new calculated 2D layout, and than the 3D layout with all edges after one another."""
+        """Only adds the evidences to pfile layouts."""
         ev = EV.get_default_scheme().keys()
         ev_xyz = [f"{ev}XYZ" for ev in ev]
         ev_rgb = [f"{ev}RGB" for ev in ev]
-        self.pfile[PT.links] = [ev_xyz[0], ev_xyz[0]] + ev_xyz
-        self.pfile[PT.links_rgb] = [ev_rgb[0], ev_rgb[0]] + ev_rgb
+        self.pfile[PT.links] = ev_xyz  # [ev_xyz[0], ev_xyz[0]] + ev_xyz
+        self.pfile[PT.links_rgb] = ev_rgb  # [ev_rgb[0], ev_rgb[0]] + ev_rgb
         if LT.cy_layout not in self.pfile[PT.layouts]:
             self.pfile[PT.layouts] = [f"{LT.string_3d_no_z}XYZ", f"{LT.string_3d}XYZ"]
             self.pfile[PT.layouts_rgb] = [
