@@ -124,7 +124,7 @@
                             for (var i = 0; i < sessiondata["proj"].length; i += 10) {
                                 var idx = (i / 10).toString()
                                 var code = `<li><a href="#ptabs` + idx + `"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                    src="{{ url_for('static', filename='img/active_open.png') }}" />`+ idx + `</a></li>`;
+                                    src="{{ url_for('static', filename='img/active_open.png') }}" />`+ ((i/10)+1).toString() + `</a></li>`;
                                 document.write(code);
                             };
                         </script>
@@ -146,7 +146,7 @@
                                     </div>
                                     `;
                                     document.write(code);
-                                    initDropdown('projects' + idx, sessiondata["proj"].slice(i, i + 10), sessiondata["actPro"]);
+                                    initProjectDropdown('projects' + idx, sessiondata["proj"].slice(i, i + 10), sessiondata["actPro"]);
                                 };
                             </script>
                         </div>
