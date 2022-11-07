@@ -126,6 +126,11 @@ $(document).ready(function(){
                 ue4("nlc", data);
                 break;
 
+            case 'prot':
+                ue4("prot", data);
+                console.log(data);
+                break;
+
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project
                 if (data.id == "projects"){
