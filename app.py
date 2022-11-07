@@ -415,13 +415,13 @@ def nodepanel():
                 id = 0
             uniprots = nodes["nodes"][id].get("uniprot")
             if uniprots:
-                #room = session.get("room")
+                room = session.get("room")
                 #sessionData["actStruc"] = uniprots[0]
                 x = '{"id": "prot", "val":[], "fn": "prot"}'
                 data = json.loads(x)
                 data["val"] = uniprots
                 print(data)
-                #socketio.emit("ex", data, room=room)
+                socketio.emit("ex", data, room=room)
             # data = names["names"][id]
             return render_template(
                 "nodepanelppi.html",
