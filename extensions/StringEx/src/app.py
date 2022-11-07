@@ -57,10 +57,10 @@ def string_main():
             names = json.load(json_file)
 
         return flask.render_template(
-            "string_main.html",
+            "/mainpanel/string_main.html",
             session=flask.session,
             sessionData=json.dumps(GD.sessionData),
-            pfile=json.dumps(GD.pfile),
+            pfile=GD.pfile,
         )
     else:
         return "error"
@@ -271,10 +271,10 @@ def nodepanel():
     print(network_type)
     if network_type == "string":
         return flask.render_template(
-            "string_nodepanel.html",
+            "/nodepanel/string_nodepanel.html",
             sessionData=json.dumps(GD.sessionData),
             session=flask.session,
-            pfile=json.dumps(pfile),
+            pfile=pfile,
             id=id,
             add_key=add_key,
             nodes=json.dumps(nodes),

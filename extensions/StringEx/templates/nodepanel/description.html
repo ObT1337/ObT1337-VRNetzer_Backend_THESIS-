@@ -1,0 +1,32 @@
+<div class="string_attribute">
+    <div class="frameBox">
+        <div class="twelve columns">
+            <div class="twelve columns">
+                <h5 style="text-align:end"> Description</h5>
+                <script>
+                    if(pdata.network=="string")
+                        var description = node_data.stringdb_description;
+                        document.write(
+                            "<p align='justify'>"
+                            + description
+                            + "<p>");
+                </script>
+            </div>
+        </div>
+    </div>
+    <div class="frameBox" id="sequence">
+        <div class="twelve columns">
+            <div class="five columns">
+                <h4>Sequence :: </h4>
+            </div>
+            <div class="six columns" style="overflow-y: hidden;" id="sequence">
+                <h5>
+                    <script>
+                        if(pdata.network=="string")
+                        document.write(node_data.stringdb_sequence);
+                    </script>
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>

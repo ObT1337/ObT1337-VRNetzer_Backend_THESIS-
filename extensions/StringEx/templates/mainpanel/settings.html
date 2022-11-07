@@ -1,0 +1,11 @@
+<div id="tabs-6" class="container">
+    <div class="twelve columns">
+        <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">USER LOG</h2>
+    </div>
+            <div  id= "url" class="texthidden"></div>
+            <h4>logged in as {{session['username']}}</h4>
+            <script>
+                document.getElementById('url').innerHTML = window.location.href;
+            </script>
+
+</div>

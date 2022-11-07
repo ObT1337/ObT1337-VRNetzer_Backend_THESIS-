@@ -1,0 +1,30 @@
+<div class="string_attribute">
+    <div class="twelve columns" id="organism_text">
+        <div class="five columns">
+            <h4>Organism :: </h4>
+        </div>
+        <div class="six columns">
+            <h5>
+                <script>
+                    if(pdata.network=="string")
+                    document.write(node_data.stringdb_species); 
+                </script>
+            </h5>
+        </div>
+    </div>
+</div>
+<div class="string_attribute">
+    <div class="twelve columns">
+        <div class="five columns">
+            <h4>UniProtID :: </h4>
+        </div>
+        <div class="six columns">
+            <h5>
+                <script>
+                    if(pdata.network=="string")
+                    document.write(node_data["stringdb_canonical name"]);
+                </script>
+            </h5>
+        </div>
+    </div>
+</div>
