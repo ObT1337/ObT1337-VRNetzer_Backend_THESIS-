@@ -97,287 +97,52 @@
 
         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                            tab 1 - uploading projectfiles
+            tab 1 - uploading projectfiles
                                             
         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-        <div id="tabs-1" class="container">
+        
+        {% include "/mainpanel/project_select.html" %}
 
-            <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
-                <h2 class="lineglowslow">Project</h2>
-                <div id="ptabs" class="disable-select">
-                    <script>   // MULTICAST TAB CHANGES 
-                        $(function() {
-                            $("#ptabs").tabs();
-                        });
-                        var last_ptab_active = 0;
-                        $('#ptabs').on('click', function(event, ui) {
-                            var ptab_active = $('#ptabs').tabs('option', 'active');
-                            if (ptab_active != last_ptab_active) {
-                                console.log("changed ptab to " + ptab_active);
-                                last_ptab_active = ptab_active;
-                                socket.emit('ex', { msg: ptab_active, id: "ptabs", fn: "cht" });
-                            }
-                        });
-                    </script>
-                    <ul>
-                        <script>
-                            for (var i = 0; i < sessiondata["proj"].length; i += 10) {
-                                var idx = (i / 10).toString()
-                                var code = `<li><a href="#ptabs` + idx + `"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                    src="{{ url_for('static', filename='img/active_open.png') }}" />`+ ((i/10)+1).toString() + `</a></li>`;
-                                document.write(code);
-                            };
-                        </script>
-                    </ul>
-
-                    <div class="twelve columns">
-                            <!--<div id="projects-section" class="five columns">
-                                    <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
-                                </div>
-                                <div class="seven columns">-->
-                            <script>
-                                for (var i = 0; i < sessiondata["proj"].length; i += 10) {
-                                    var idx = (i / 10).toString()
-                                    var code = `
-                                    <div id="ptabs`+ idx + `" class="container">
-                                        <div class="cornerBox">
-                                            <select id='projects`+ idx + `''></select>
-                                        </div>
-                                    </div>
-                                    `;
-                                    document.write(code);
-                                    initProjectDropdown('projects' + idx, sessiondata["proj"].slice(i, i + 10), sessiondata["actPro"]);
-                                };
-                            </script>
-                        </div>
-                    </div>
-                </div>
-        <!--
-                    <div class="twelve columns">
-                        <h3 class="seven columns">Nr. of Layouts : : </h3>
-                        <div class="four columns">
-                            <h3>
-                                <script>
-                                    counter_layouts = pdata["layouts"].length;
-                                    document.write(counter_layouts);
-                                    console.log(counter_layouts);
-                                </script>
-                            </h3>
-                        </div>
-                    </div>
-
-                    <br></br>
-                    -->
-        <!-- ADD NETWORK LAYOUT SELECTED TO SHOW UP IN UI ??
-                                        <div class="twelve columns">
-                                            <div class="frameBox">
-                                                <div class="five columns">
-                                                    <h3>NETWORK MAP</h3> 
-                                                </div>
-                                                <div class="seven columns">
-                                                    <h3>{{pdata}}</h3> 
-                                                </div>
-                                            </div>
-                                        </div> 
-                                        -->
-
-        <div class="twelve columns" hidden="true">
-            <div class="slideTwo">
-                <input type="checkbox" value="true" id="chbXYZ" name="check" checked></checkbox>
-                <script>
-                    initCheckbox("chbXYZ");
-                </script>
-            </div>
-        </div>
-
-
-        <div class="twelve columns" hidden="true">
-            <div class="slideTwo">
-                <input type="checkbox" value="true" id="chbNrgb" name="check" checked></checkbox>
-                <script>
-                    initCheckbox("chbNrgb");
-                </script>
-            </div>
-        </div>
-
-        <script>
-            if (pdata.network == "string") {
-                deactiveLinkLayouts()
-            } else {
-                activateLinkLayouts()
-            }
-        </script>
-
-
-
-        <!--<div class="twelve columns">-->
-        <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-
-            <h5 style="text-align:end"> Visual Settings </h5>
-
-            <div class="twelve columns">
-
-                <h6 class="border">NODE SIZE</h6>
-                <div id="slider-node_size"></div>
-                <h6 class="border">LINK SIZE</h6>
-                <div id="slider-link_size"></div>
-                <h6 class="border">LINK OPACITY</h6>
-                <div id="slider-link_transparency"></div>
-                <h6 class="border">LABEL SIZE</h6>
-                <div id="slider-label_scale"></div>
-                <script>
-                    initSlider('slider_scale');
-                    initSlider('slider-node_size');
-                    initSlider('slider-link_size');
-                    initSlider('slider-link_transparency');
-                    initSlider('slider-label_scale');
-                </script>
-            </div>
-        </div>
-        <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-
-            <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
-
-            <div class="four columns">
-                <input type="button" id='backwardstep' class="swagBackwardButton"></button>
-                <script>
-                    initButton('backwardstep');
-                </script>
-            </div>
-
-            <div class="four columns">
-                <input type="button" id='forwardstep' class="swagForwardButton"></button>
-                <script>
-                    initButton('forwardstep');
-                </script>
-            </div>
-
-            <div class="four columns">
-                <input type="button" value="RESET" id='reset' class="swagTextButton"></button>
-                <script>
-                    initButton('reset');
-                </script>
-            </div>
-
-        </div>
-
-
-    </div>
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                         tab 2 - general Network information 
                                                 
-                +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    <div id="tabs-2" class="container">
-        <div class="twelve columns">
-            <h2 class="lineglowslow">SELECT</h2>
-        </div>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        
+        {% include "/mainpanel/layout_select.html" %}
 
-        <!--<div class="twelve columns">
-                                        <h4 class="six columns">Nr. of Layouts: </h4>
-                                        <h5 class="fivecolumns" > 
-                                            <script>
-                                                count_layouts = pdata["layouts"].length;
-                                                document.write(count_layouts );
-                                            </script>
-                                        </h5>
-                                    </div>
-                                    <div class="twelve columns">
-                                        <h4 class="six columns">Nr. of Nodes: </h4>
-                                        <h5 class="fivecolumns"> 
-                                        <div>{{names}}</div> 
-                                        </h5>
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                    </div> -->
+                        tab 3 - sliders for visual network mods
+                                                    
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        {% if pfile.network == "string" %}
+        {% include '/mainpanel/string_evidences.html' %}
+        {% endif %}
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+                                    tab 4 - search 
+                                                    
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-        <!-- DROPDOWNS FOR LAYOUT SWITCH WITHOUT MORPHING  -->
-        <div class="twelve columns">
-            <h4 class="four columns">NODE POS</h4>
-            <div class="eight columns">
-                <div class="cornerBox">
-                    <select id='layouts'></select>
-                    <script>
-                        initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
-                    </script>
-                </div>
-            </div>
-        </div>
+        {% include '/mainpanel/search.html' %}
 
-        <div class="twelve columns">
-            <h4 class="four columns">NODE COL</h4>
-            <div class="eight columns">
-                <div class="cornerBox">
-                    <select id='nodecolors'></select>
-                    <script>
-                        initDropdown('nodecolors', pdata["layoutsRGB"], pdata["layoutsRGB"][0]);
-                    </script>
-                </div>
-            </div>
-        </div>
-        <div class="twelve columns">
-            <h4 class="four columns">LINKS</h4>
-            <div class="eight columns">
-                <div class="cornerBox">
-                    <select id='links'></select>
-                    <script>
-                        initDropdown('links', pdata["links"], pdata["links"][0]);
-                    </script>
-                </div>
-            </div>
-        </div>
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-        <div class="twelve columns">
-            <h4 class="four columns">LINK COL</h4>
-            <div class="eight columns">
-                <div class="cornerBox">
-                    <select id='linkcolors'></select>
-                    <script>
-                        initDropdown('linkcolors', pdata["linksRGB"], pdata["linksRGB"][0]);
-                    </script>
-                </div>
-            </div>
-        </div>
+                                tab 5 - Arch Worlds 
 
-    </div>
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        {% include '/mainpanel/archworlds.html' %}
 
-                    tab 3 - sliders for visual network mods
-                                                
-            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-            -->
-    {% if pfile.network == "string" %}
-    {% include '/mainpanel/string_evidences.html' %}
-    {% endif %}
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-                                tab 4 - search 
-                                                
-            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-
-    {% include '/mainpanel/search.html' %}
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                            tab 5 - Arch Worlds 
-
-                +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-    {% include '/mainpanel/archworlds.html' %}
-
-    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                tab 6 - SETTINGS
-                                
-            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-    {#
-    % include '/mainpanel/settings.html' %
-    #}
-
-
-
+                    tab 6 - SETTINGS
+                                    
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        {#
+        % include '/mainpanel/settings.html' %
+        #}
     </div>
 
 
