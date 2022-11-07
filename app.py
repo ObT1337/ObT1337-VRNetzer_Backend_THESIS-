@@ -77,11 +77,6 @@ def test3():
     return render_template("test.html")
 
 
-@app.route("/Nav")
-def nav():
-    return render_template("threeJSLabel.html")
-
-
 @app.route("/ForceLayout")
 def force():
     nname = "static/csv/force/nodes/" + request.args.get("nname")
@@ -420,7 +415,7 @@ def nodepanel():
                 id = 0
             uniprots = nodes["nodes"][id].get("uniprot")
             if uniprots:
-                room = session.get("room")
+                #room = session.get("room")
                 #sessionData["actStruc"] = uniprots[0]
                 x = '{"id": "prot", "val":[], "fn": "prot"}'
                 data = json.loads(x)
