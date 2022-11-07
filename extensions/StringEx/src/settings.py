@@ -68,6 +68,8 @@ class NodeTags:
     description = "description"
     stringdb_canoncial_name = "stringdb_canonical name"
     stringdb_sequence = "stringdb_sequence"
+    stringdb_species = "stringdb_species"
+    stringdb_description = "stringdb_description"
     ppi_id = "ppi_id"
     id = "id"
     attr_lst = "attrlist"
@@ -185,6 +187,22 @@ class Organisms:
             Organisms.yeast: 4932,
             Organisms.ecoli: 362663,
             Organisms.arabidopsis: 3702,
+        }
+        return tax_ids.get(organism)
+
+    @staticmethod
+    def get_scientific_name(organism):
+        """Return the tax id for the organism."""
+        tax_ids = {
+            Organisms.human: "Homo sapiens",
+            Organisms.mouse: "Mus musculus",
+            Organisms.rat: "Rattus norvegicus",
+            Organisms.zebrafish: "Danio rerio",
+            Organisms.fly: "Drosophila melanogaster",
+            Organisms.worm: "Caenorhabditis elegans",
+            Organisms.yeast: "Saccharomyces cerevisiae",
+            Organisms.ecoli: "Escherichia coli 536",
+            Organisms.arabidopsis: "Arabidopsis thaliana",
         }
         return tax_ids.get(organism)
 

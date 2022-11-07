@@ -55,17 +55,13 @@ def string_main():
         with open(folder + "names.json", "r") as json_file:
             global names
             names = json.load(json_file)
-        network_type = GD.pfile.get("network")
-        print(project, network_type)
-        if network_type == "string":
-            return flask.render_template(
-                "string_main.html",
-                session=flask.session,
-                sessionData=json.dumps(GD.sessionData),
-                pfile=json.dumps(GD.pfile),
-            )
-        else:
-            return flask.redirect("/main", code=302)
+
+        return flask.render_template(
+            "string_main.html",
+            session=flask.session,
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
+        )
     else:
         return "error"
 
@@ -250,7 +246,7 @@ def nodepanel():
     if project is None:
         GD.sessionData.get("actPro")
         print(GD.sessionData)
-        project = "new_ppi"
+        project = "Ecoli"
 
     folder = os.path.join("static", "projects", project)
 
@@ -272,6 +268,7 @@ def nodepanel():
     # data = names["names"][id]
 
     network_type = pfile.get("network")
+    print(network_type)
     if network_type == "string":
         return flask.render_template(
             "string_nodepanel.html",
@@ -283,4 +280,4 @@ def nodepanel():
             nodes=json.dumps(nodes),
         )
     else:
-        return flask.redirect(flask.url_for("nodepanel"), code=302)
+        return flask.redirect("/nodepanel")
