@@ -421,7 +421,7 @@ def nodepanel():
                 data = json.loads(x)
                 data["val"] = uniprots
                 print(data)
-                socketio.emit("ex", data, room=room)
+                socketio.emit('ex', data, namespace = '/chat' , room=room)
             # data = names["names"][id]
             return render_template(
                 "nodepanelppi.html",
