@@ -18,10 +18,7 @@ def search(term):
                     match = re.search(term, attr, re.IGNORECASE)
                     #match = re.match(term, attr, re.IGNORECASE)
                     if match:
-                        x = '{"id":69,"name":"partiboi"}'
-                        res = json.loads(x)
-                        res["id"] = i
-                        res["name"] = attr
+                        res = {"id": i, "name": attr}
                         results.append(res)
                         break
 
