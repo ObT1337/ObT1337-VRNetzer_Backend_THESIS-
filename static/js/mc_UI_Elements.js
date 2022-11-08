@@ -196,6 +196,24 @@ function initDropdown(id, data, active) {
   });
 
 }
+function initProjectDropdown (id, data, active){
+
+  $('#'+ id).selectmenu();
+
+  for (let i = 0; i < data.length; i++) {
+    $('#'+ id).append(new Option(data[i]));
+  }
+  $('#'+ id).val(active);
+  $('#'+ id).selectmenu("refresh");
+
+  $('#'+ id).on('selectmenuselect', function () {
+    var name =  $('#'+ id).find(':selected').text();
+    socket.emit('ex', {id: "projects", opt: name, fn: "sel"});
+    ///logger($('#selectMode').val());
+  });
+
+}
+
 
 function initProjectDropdown(id, data, active) {
 
@@ -284,6 +302,13 @@ function deactivateTabs(id) {
     var id = hyperlink.href.split('#')[1];
     if (!(document.getElementById(id))) {
       items[i].style.display = 'none';
+    } else {
+      items[i].style.display = 'inline';
     }
-  }
+  };
+};
+function setHref(id, uniprot,link) {
+  var href = link.replace("<toChange>", uniprot)
+  console.log(href)
+  $('#' + id).attr('href', href);
 }

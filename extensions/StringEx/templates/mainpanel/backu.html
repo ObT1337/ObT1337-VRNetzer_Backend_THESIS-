@@ -1,0 +1,391 @@
+<!-- PUT YOUR UI ELEMENTS IN HERE AND DEFINE MAPPINGS IN main_UI.js -->
+
+<!-- HTML STARTS HERE -->
+
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('StringEx.static', filename='css/StringStyle.css') }}">
+    </link>
+    
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    <script src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
+
+</head>
+
+
+
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                TEMPLATES
+                                        
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+{% include '/mainpanel/mc_stuff.html' %}
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       body
+                                        
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<body>
+    <script>
+        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var pdata = JSON.parse('{{ pfile | tojson }} ')
+        var username = '{{session['username']}}';
+        console.log(pdata);
+    </script>
+
+
+    <div id="tabs" class="disable-select">
+        <script>   // MULTICAST TAB CHANGES 
+            $(function() {
+                $("#tabs").tabs();
+            });
+
+            var lastactive = 0;
+            $('#tabs').on('click', function(event, ui) {
+                var active = $('#tabs').tabs('option', 'active');
+                if (active != lastactive) {
+                    console.log("changed tab to " + active);
+                    lastactive = active;
+                    socket.emit('ex', { msg: active, id: "tabs", fn: "cht" });
+                }
+
+            });
+        </script>
+        <ul>
+            <li>
+                <a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_open.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_sel.png') }}" /></a>
+            </li>
+            <script>
+                if(pdata.network=="string"){
+                var code = `
+                <li>
+                <a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('StringEx.static', filename='img/string_logo_2015_340_340.png') }}" /></a>
+                </li>`;
+                document.write(code)
+                }
+            </script>
+            <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
+            <li>
+                <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
+            </li>
+            <!--                 <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li> -->
+        </ul>
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                            tab 1 - uploading projectfiles
+                                            
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        <div id="tabs-1" class="container">
+
+            <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
+                <h2 class="lineglowslow">Project</h2>
+            </div>
+            <div id="ptabs" class="disable-select">
+                <script>   // MULTICAST TAB CHANGES 
+                    $(function() {
+                        $("#ptabs").tabs();
+                    });
+                    var lastactive = 0;
+                    $('#ptabs').on('click', function(event, ui) {
+                        var active = $('#ptabs').tabs('option', 'active');
+                        if (active != lastactive) {
+                            console.log("changed tab to " + active);
+                            lastactive = active;
+                            socket.emit('ex', { msg: active, id: "ptabs", fn: "cht" });
+                        }
+        
+                    });
+                </script>
+                <ul>
+                    <li>
+                        <a href="#ptabs1"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                src="{{ url_for('static', filename='img/active_open.png') }}" />1</a>
+                    </li>
+                    <li>
+                        <a href="#ptabs2"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                src="{{ url_for('static', filename='img/active_open.png') }}" />2</a>
+                    </li>
+                </ul>
+
+                <div class="twelve columns">
+                    <!--<div id="projects-section" class="five columns">
+                            <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
+                        </div>
+                        <div class="seven columns">-->
+                    <div id="ptabs1" class="container">
+                        <div class="cornerBox">
+                            <select id='projects'></select>
+                            <script>
+                                console.log("pdata is:" + pdata["network"]);
+                                initDropdown('projects', sessiondata["proj"].slice(0,10), sessiondata["actPro"]);
+                            </script>
+                        </div>
+                    </div>
+                    <div id="ptabs2" class="container">
+                        <div class="cornerBox">
+                            <select id='projects_2'></select>
+                            <script>
+                                console.log("pdata is:" + pdata["network"]);
+                                initDropdown('projects_2', sessiondata["proj"], sessiondata["actPro"]);
+                            </script>
+                        </div>
+                    </div>
+                </div>
+                    <!--</div>-->
+            </div>
+
+            <!--
+                <div class="twelve columns">
+                    <h3 class="seven columns">Nr. of Layouts : : </h3>
+                    <div class="four columns">
+                        <h3>
+                            <script>
+                                counter_layouts = pdata["layouts"].length;
+                                document.write(counter_layouts);
+                                console.log(counter_layouts);
+                            </script>
+                        </h3>
+                    </div>
+                </div>
+
+                <br></br>
+                -->
+            <!-- ADD NETWORK LAYOUT SELECTED TO SHOW UP IN UI ??
+                                    <div class="twelve columns">
+                                        <div class="frameBox">
+                                            <div class="five columns">
+                                                <h3>NETWORK MAP</h3> 
+                                            </div>
+                                            <div class="seven columns">
+                                                <h3>{{pdata}}</h3> 
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    -->
+
+            <div class="twelve columns" hidden="true">
+                <div class="slideTwo">
+                    <input type="checkbox" value="true" id="chbXYZ" name="check" checked></checkbox>
+                    <script>
+                        initCheckbox("chbXYZ");
+                    </script>
+                </div>
+            </div>
+
+
+            <div class="twelve columns" hidden="true">
+                <div class="slideTwo">
+                    <input type="checkbox" value="true" id="chbNrgb" name="check" checked></checkbox>
+                    <script>
+                        initCheckbox("chbNrgb");
+                    </script>
+                </div>
+            </div>
+            
+            <script>
+                if(pdata.network=="string"){
+                    deactiveLinkLayouts()
+                }else{
+                    activateLinkLayouts()
+                }
+            </script>
+
+
+
+            <!--<div class="twelve columns">-->
+            <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+
+                <h5 style="text-align:end"> Visual Settings </h5>
+
+                <div class="twelve columns">
+
+                    <h6 class="border">NODE SIZE</h6>
+                    <div id="slider-node_size"></div>
+                    <h6 class="border">LINK SIZE</h6>
+                    <div id="slider-link_size"></div>
+                    <h6 class="border">LINK OPACITY</h6>
+                    <div id="slider-link_transparency"></div>
+                    <h6 class="border">LABEL SIZE</h6>
+                    <div id="slider-label_scale"></div>
+                    <script>
+                        initSlider('slider_scale');
+                        initSlider('slider-node_size');
+                        initSlider('slider-link_size');
+                        initSlider('slider-link_transparency');
+                        initSlider('slider-label_scale');
+                    </script>
+                </div>
+            </div>
+            <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+
+                <h5 style="text-align:end; margin-bottom:5px;"> Layout Morphing </h5>
+
+                <div class="four columns">
+                    <input type="button" id='backwardstep' class="swagBackwardButton"></button>
+                    <script>
+                        initButton('backwardstep');
+                    </script>
+                </div>
+
+                <div class="four columns">
+                    <input type="button" id='forwardstep' class="swagForwardButton"></button>
+                    <script>
+                        initButton('forwardstep');
+                    </script>
+                </div>
+
+                <div class="four columns">
+                    <input type="button" value="RESET" id='reset' class="swagTextButton"></button>
+                    <script>
+                        initButton('reset');
+                    </script>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                     tab 2 - general Network information 
+                                            
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        <div id="tabs-2" class="container">
+            <div class="twelve columns">
+                <h2 class="lineglowslow">SELECT</h2>
+            </div>
+
+            <!--<div class="twelve columns">
+                                    <h4 class="six columns">Nr. of Layouts: </h4>
+                                    <h5 class="fivecolumns" > 
+                                        <script>
+                                            count_layouts = pdata["layouts"].length;
+                                            document.write(count_layouts );
+                                        </script>
+                                    </h5>
+                                </div>
+                                <div class="twelve columns">
+                                    <h4 class="six columns">Nr. of Nodes: </h4>
+                                    <h5 class="fivecolumns"> 
+                                    <div>{{names}}</div> 
+                                    </h5>
+
+                                </div> -->
+
+
+            <!-- DROPDOWNS FOR LAYOUT SWITCH WITHOUT MORPHING  -->
+            <div class="twelve columns">
+                <h4 class="four columns">NODE POS</h4>
+                <div class="eight columns">
+                    <div class="cornerBox">
+                        <select id='layouts'></select>
+                        <script>
+                            initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <h4 class="four columns">NODE COL</h4>
+                <div class="eight columns">
+                    <div class="cornerBox">
+                        <select id='nodecolors'></select>
+                        <script>
+                            initDropdown('nodecolors', pdata["layoutsRGB"], pdata["layoutsRGB"][0]);
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <div class="twelve columns">
+                <h4 class="four columns">LINKS</h4>
+                <div class="eight columns">
+                    <div class="cornerBox">
+                        <select id='links'></select>
+                        <script>
+                            initDropdown('links', pdata["links"], pdata["links"][0]);
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="twelve columns">
+                <h4 class="four columns">LINK COL</h4>
+                <div class="eight columns">
+                    <div class="cornerBox">
+                        <select id='linkcolors'></select>
+                        <script>
+                            initDropdown('linkcolors', pdata["linksRGB"], pdata["linksRGB"][0]);
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                 tab 3 - sliders for visual network mods
+                                            
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        -->
+        {% if pfile.network == "string" %}
+            {% include 'string_ev_panel.html' %}
+        {% endif %}
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                            tab 4 - search 
+                                            
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+        {% include '/mainpanel/search.html' %}
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                          tab 5 - Arch Worlds 
+
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+        
+        {% include '/mainpanel/archworlds.html' %}
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            tab 6 - SETTINGS
+                            
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        {#
+         % include '/mainpanel/settings.html' %
+        #}
+
+
+
+    </div>
+
+
+</body>

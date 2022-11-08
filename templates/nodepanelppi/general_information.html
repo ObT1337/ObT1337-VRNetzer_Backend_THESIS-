@@ -1,25 +1,27 @@
-<!-- <h3> Identifier</h3> -->
-<h4>General Information</h4>
-<div class="frameBox" id="identifier">
-    <div class="twelve columns">
-        <div class="five columns">
-            <h4>Identifier :: </h4>
+<!-- General Information -->
+<div>
+    <h4>General Information</h4>
+    <div class="frameBox" id="identifier">
+        <div class="twelve columns">
+            <div class="five columns">
+                <h4>Identifier :: </h4>
+            </div>
+            <div class="six columns">
+                <h5>
+                    <script>
+                        document.write(node_data.n);
+                    </script>
+                </h5>
+            </div>
         </div>
-        <div class="six columns">
-            <h5>
-                <script>
-                    document.write(node_data.n);
-                </script>
-            </h5>
-        </div>
-    </div>
-    
-    {% if "species" in nodes["nodes"][id] %}
-        {% include '/nodepanelppi/species.html' %}
-    {% endif %}
+        
+        {% if "species" in nodes["nodes"][id] %}
+            {% include '/nodepanelppi/species.html' %}
+        {% endif %}
 
-    {% if "uniprot" in nodes["nodes"][id] %}
-        {% include '/nodepanelppi/uniprot.html' %}
-    {% endif %}
-    
+        {% if "uniprot" in nodes["nodes"][id] %}
+            {% include '/nodepanelppi/uniprot.html' %}
+        {% endif %}
+        
+    </div>
 </div>

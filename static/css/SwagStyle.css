@@ -466,39 +466,6 @@ input[type="button"] {
     color: rgb(255, 255, 255);
    
 }
-.swagEvidenceButton[type="VRNetzer"] {
-    width:50%;
-    padding: 10px;
-    border-radius: 20px;
-    /*font-family: 'Venus', sans-serif;*/
-    font-family: 'Michr', sans-serif;
-    /*'Akshar-reg', sans-serif; */
-    font-size: 22px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    margin-left: 20px;
-    font-style: italic;
-    color: white;
-    font-weight: lighter;
-    text-align: left;
-}
-.swagEvidenceButton[type="WebGL"] {
-    width:100%;
-    padding: 10px;
-    border-radius: 20px;
-    /*font-family: 'Venus', sans-serif;*/
-    font-family: 'Michr', sans-serif;
-    /*'Akshar-reg', sans-serif; */
-    font-size: 12px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    margin-left: 5px;
-    margin-right: 5px;
-    font-style: italic;
-    color: white;
-    font-weight: lighter;
-    text-align: left;
-}
 
 
 .swagTextButton:hover {
@@ -974,49 +941,12 @@ input[type=checkbox] {
   stroke: white;
 }
 */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++
-               Scrollable Side Panel
-++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-.sidenav {
-    height: 100%;
-    width: 15%;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    right: 0;
-    background-color: #000000c4;
-    color:white;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 10px;
+a.crosslinks {
+    font-size: 20px;
+    color:rgb(42, 113, 148);
 }
 
-.sidenav a {
-    padding: 8px 8px 8px 500px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s
+a.crosslinks:visited {
+    font-size: 20px;
+    color:rgb(42, 113, 148);
 }
-
-.sidenav a:hover, .offcanvas a:focus{
-    color: #f1f1f1;
-}
-
-.sidenav .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
-}
-
-#main {
-    transition: margin-left .5s;
-    padding: 16px;
-}
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 18px;}
-  }
