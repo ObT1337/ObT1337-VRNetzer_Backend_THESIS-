@@ -3,10 +3,12 @@ import logging
 import os
 
 from .converter import VRNetzConverter
+
 # from .cytoscape_parser import CytoscapeParser
 from .layouter import Layouter
 from .map_small_on_large import map_source_to_target
 from .settings import _NETWORKS_PATH, _PROJECTS_PATH, UNIPROT_MAP, Organisms
+
 # from .settings import VRNetzElements as VRNE
 # from .string_commands import (StringCompoundQuery, StringDiseaseQuery,
 #                               StringProteinQuery, StringPubMedQuery)
@@ -21,10 +23,11 @@ from .uploader import Uploader
 logger = logging.getLogger("VRNetzer Cytoscape App")
 logger.setLevel(logging.DEBUG)
 
+
 def VRNetzer_upload_workflow(request):
     """Used from the StringEX/uploadfiles route"""
     print("Starting upload of VRNetz...")
-    stringify, write_VRNetz,gen_layout,algo = False, False, False, None
+    stringify, write_VRNetz, gen_layout, algo = False, False, False, None
     form = request.form.to_dict()
     network = request.files.getlist("vrnetz")[0].read().decode("utf-8")
     network = json.loads(network)
@@ -36,20 +39,26 @@ def VRNetzer_upload_workflow(request):
 
     else:
         project_name = form["existing_namespace"]
+
     if not project_name:
         return "namespace fail"
-    # print(form.keys())
+
     if algo in form:
         algo = form["algo"]
 
-    tags = {"stringify":stringify,
-     "write":write_VRNetz,"calc_lay":gen_layout}
-    for key,_ in tags.items():
+    tags = {"stringify": stringify, "write": write_VRNetz, "calc_lay": gen_layout}
+    for key, _ in tags.items():
         if key in form:
             tags[key] = True
-    stringify, write_VRNetz,gen_layout = tags["stringify"], tags["write"], tags["calc_lay"]        
+    stringify, write_VRNetz, gen_layout = (
+        tags["stringify"],
+        tags["write"],
+        tags["calc_lay"],
+    )
     # create layout
-    layouter = apply_layout_workflow(network, layout_algo=algo, stringify=stringify,gen_layout=gen_layout)
+    layouter = apply_layout_workflow(
+        network, layout_algo=algo, stringify=stringify, gen_layout=gen_layout
+    )
     network = layouter.network
 
     # upload network
@@ -67,6 +76,7 @@ def VRNetzer_upload_workflow(request):
         logging.info(f"Layouts stringified: {project_name}")
     return state
 
+
 def VRNetzer_map_workflow(request):
     """Used from the StringEX/mapfiles route"""
 
@@ -76,7 +86,7 @@ def VRNetzer_map_workflow(request):
     f_src_network = request.files.getlist("vrnetz")[0]
     src_network = f_src_network.read().decode("utf-8")
     src_network = json.loads(src_network)
-    
+
     organ = form.get("organism")
     f_organ = Organisms.get_file_name(organ)
     f_organ = os.path.join(_PROJECTS_PATH, f_organ)
@@ -85,24 +95,27 @@ def VRNetzer_map_workflow(request):
     project_name = form.get("project_name")
     if project_name is None or project_name == "":
         src_name = os.path.split(f_src_network.filename)[1].split(".")[0]
-        trg_name = organ.replace(".","_")
+        trg_name = organ.replace(".", "_")
         project_name = f"{src_name}_on_{trg_name}"
 
     destination = os.path.join(_PROJECTS_PATH, project_name)
     try:
         map_source_to_target(src_network, trg_network, destination)
-        html = (f'<a style="color:green;">SUCCESS: network {f_src_network.filename} mapped on {organ} saved as project {project_name} </a>'
-        f"<br>"+
-        f'<input type="submit" value="Preview" id="upload_preview" style="height: 50px; width: 150px;">'+
-        "<script>"+
-        "$('#reload').on('click', function() {"+
-        f"var url = window.location.href.split('&')[0] + '&project={project_name}'"+
-        f"window.location.href = url;"+
-        "});"
-        f"</script>'")
+        html = (
+            f'<a style="color:green;">SUCCESS: network {f_src_network.filename} mapped on {organ} saved as project {project_name} </a>'
+            f"<br>"
+            + f'<input type="submit" value="Preview" id="upload_preview" style="height: 50px; width: 150px;">'
+            + "<script>"
+            + "$('#reload').on('click', function() {"
+            + f"var url = window.location.href.split('&')[0] + '&project={project_name}'"
+            + f"window.location.href = url;"
+            + "});"
+            f"</script>'"
+        )
     except Exception as e:
         html = f'<a style="color:red;">ERROR: {e}</a>'
     return html
+
 
 def apply_layout_workflow(
     network: str,
@@ -134,7 +147,6 @@ def apply_layout_workflow(
     if stringify:
         layouter.gen_evidence_layouts()
     return layouter
-
 
 
 def create_project_workflow(
@@ -179,6 +191,7 @@ def convert_workflow(
     converter = VRNetzConverter(node_list, edge_list, uniprot_mapping, project)
     converter.convert()
     return output
+
 
 # def apply_style_workflow(graph: nx.Graph, style: str) -> nx.Graph:
 #     color_mapping = get_node_mapping(style)

@@ -20,7 +20,7 @@
                 <script>
                     for (var i = 0; i < sessiondata["proj"].length; i += 10) {
                         var idx = (i / 10).toString()
-                        var code = `<li><a href="#ptabs` + idx + `"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        var code = `<li><a class="crosslinks" href="#ptabs` + idx + `"><img draggable="false" onmousedown="return false" height='40' width='40'
                             src="{{ url_for('static', filename='img/active_open.png') }}" />`+ ((i/10)+1).toString() + `</a></li>`;
                         document.write(code);
                     };

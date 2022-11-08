@@ -52,13 +52,26 @@
             
             ue4("prot", {id:uniprot_id});
         };
-        $(function () {
-            $("#tabsUL").tabs();
-        });
+
     </script>
 
     <div id="tabsUL">
-        <a href="nodepanel.html" id="" title="Nodepanel"></a>
+        <script>
+        $(function () {
+            $("#tabsUL").tabs();
+        });
+        // MULTICAST TAB CHANGES 
+        var last_active_node_panel = 0;
+        $('#tabsUL').on('click', function(event, ui) {
+            var nodepanel_active = $('#tabsUL').tabs('option', 'active');
+            if (nodepanel_active != last_active_node_panel) {
+                console.log("changed tabsUL to " + nodepanel_active);
+                last_active_node_panel = nodepanel_active;
+                socket.emit('ex', { msg: last_active_node_panel, id: "tabsUL", fn: "cht" });
+            }
+        });
+        </script>
+        <!-- <a href="nodepanel.html" id="" title="Nodepanel"></a> -->
         <ul id="nodepanel_tabsList">
             <li>
                 <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
@@ -87,12 +100,18 @@
         </ul>
         
         {% include "/nodepanelppi/fragment_one.html" %}
-        <!-- to comment out this include use #-s on each end:
+        <!--
+            Node Information
+            to comment out this include use #-s on each end:
             {#% include "/nodepanelppi/fragment_one.html" %#}
         -->
 
-        <!-- <div id="nodefragment-2">
-        </div> -->
+        <!-- 
+            cross links
+            to comment out this include use #-s on each end:
+            {#% include "/nodepanelppi/fragment_two.html" %#}
+        -->
+        {% include "/nodepanelppi/fragment_two.html" %}
 
         <!-- <div id="nodefragment-3">
         </div> -->

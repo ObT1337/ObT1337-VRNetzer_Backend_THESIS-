@@ -20,7 +20,8 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <script src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
 
 </head>
 
@@ -66,7 +67,7 @@
 
             });
         </script>
-        <ul>
+        <ul id="mainTabs">
             <li>
                 <a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/active_open.png') }}" /></a>
@@ -91,8 +92,18 @@
                 <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
             </li>
-            <!--                 <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li> -->
+            <li>
+                <a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
+                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#tabs-8"><img draggable="false" onmousedown="return false" height='40' width='40'
+                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a>
+            </li>
         </ul>
 
         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -117,7 +128,7 @@
                                                     
         +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
         {% if pfile.network == "string" %}
-        {% include '/mainpanel/string_evidences.html' %}
+            {% include '/mainpanel/string_evidences.html' %}
         {% endif %}
         <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -144,6 +155,9 @@
         % include '/mainpanel/settings.html' %
         #}
     </div>
+    <script>
+        deactivateTabs("mainTabs");
+    </script>
 
 
 </body>

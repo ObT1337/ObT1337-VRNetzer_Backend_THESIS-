@@ -302,6 +302,13 @@ function deactivateTabs(id) {
     var id = hyperlink.href.split('#')[1];
     if (!(document.getElementById(id))) {
       items[i].style.display = 'none';
+    } else {
+      items[i].style.display = 'inline';
     }
-  }
+  };
+};
+function setHref(id, uniprot,link) {
+  var href = link.replace("<toChange>", uniprot)
+  console.log(href)
+  $('#' + id).attr('href', href);
 }

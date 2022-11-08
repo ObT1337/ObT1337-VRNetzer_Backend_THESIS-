@@ -1,72 +1,17 @@
-<div class="string_attribute">
-    <div class="frameBox">
+<div class="string_attribute"></div>
+    <div class="frameBox" id="sequence">
         <div class="twelve columns">
-            <div class="twelve columns">
-                <h5 style="text-align:end"> Crosslinks</h5>
+            <div class="five columns">
+                <h4>Sequence :: </h4>
             </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="uniprot-cross" title="uniprot">UniProt</a>
+            <div class="six columns" style="overflow-y: hidden;" id="sequence">
+                <h5>
+                    <script>
+                        if(pdata.network=="string")
+                        document.write(node_data.stringdb_sequence);
+                    </script>
+                </h5>
             </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="alphafold-cross" title="alphafold">
-                    AlphaFold
-                </a>
-            </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="genecards-cross" title="genecards">
-                    GeneCards
-                </a>
-            </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="tissue-cross" title="tissue">
-                    TISSUES
-                </a>
-            </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="disease-cross" title="disease">
-                    DISEASES
-                </a>
-            </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="compartments-cross" title="compartments">
-                    COMPARTMENTS
-                </a>
-            </div>
-            <div class="four columns">
-                <a class="crosslinks" target="_blank" id="pharos-cross" title="pharos">
-                    Pharos
-                </a>
-            </div>
-            <script>
-                if(pdata.network=="string"){
-                    var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
-                    setHref("uniprot-cross", uniprot_id, link);
-
-                    var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
-                    setHref("alphafold-cross", uniprot_id, link);
-
-                    var link = "https://genecards.org/Search/Keyword?queryString=<toChange>"
-                    setHref("genecards-cross", uniprot_id, link);
-
-                    var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
-                    setHref("tissue-cross", node_data.n, link);
-
-                    var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
-                    setHref("disease-cross", node_data.n, link);
-
-                    var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
-                    setHref("compartments-cross", node_data.n, link);
-
-                    var link = "https://pharos.nih.gov/targets/<toChange>"
-                    setHref("pharos-cross", uniprot_id, link);
-                }else{
-                    var elements =  document.getElementsByClassName(id="string_attribute")
-                    for (var i=0; i<elements.length;i++){
-                        elements[i].style.visibility="hidden"
-                    }
-                }
-            </script>
         </div>
-
     </div>
 </div>
