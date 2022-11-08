@@ -238,11 +238,10 @@ class Uploader:
 
         for _, elem in enumerate(nodes):
             # rename stringdb attributes to universal attributes to present them in nodepanel
-            if ST.stringdb_description in elem:
-                for u_att, s_attr in zip(universal_attributes, string_attributes):
-                    if u_att in elem:
-                        elem[u_att] = elem[s_attr]
-                        del elem[s_attr]
+            for u_att, s_attr in zip(universal_attributes, string_attributes):
+                if s_attr in elem:
+                    elem[u_att] = elem[s_attr]
+                    del elem[s_attr]
 
             self.nodes[VRNE.nodes].append(
                 {k: v for k, v in elem.items() if k not in skip_attr}
