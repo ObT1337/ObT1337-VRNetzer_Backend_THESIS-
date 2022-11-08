@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+    <!-- rel = "stylesheet"> -->
+    <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}"></script>
+    <!--
+    <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    
+    -->
+
+</head>
+
+
+
+<template id="mcTextBox-template">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+
+        <div id = "label" class = "swagLabelSmall">TEXT</div>
+        <input type="Text" id = "text" autocomplete="off">
+    </template>
+
+
+
+<body>
+
+    <script>
+        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var nodes = JSON.parse('{{ nodes | tojson}}')["nodes"];
+        var node_id = '{{id}}';
+        var node_data = nodes[node_id];
+        var node_sym =  node_data["n"];
+        var node_annot = node_data["description"];
+        var additional = node_data['{{add_key}}'];
+        if (node_data.uniprot){
+            var uniprot_id = node_data.uniprot[0];
+            
+            ue4("prot", {id:uniprot_id});
+        };
+        $(function () {
+            $("#tabsUL").tabs();
+        });
+    </script>
+
+    <div id="tabsUL">
+        <a href="nodepanel.html" id="" title="Nodepanel"></a>
+        <ul id="tabsList">
+            <li>
+                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-2"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-3"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-4"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-5"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-6"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-7"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+            <li>
+                <a href="#nodefragment-8"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+            </li>
+        </ul>
+        
+        {% include "/nodepanelppi/fragment_one.html" %}
+        <!-- to comment out this include use #-s on each end:
+            {#% include "/nodepanelppi/fragment_one.html" %#}
+        -->
+
+        <!-- <div id="nodefragment-2">
+        </div> -->
+
+        <!-- <div id="nodefragment-3">
+        </div> -->
+
+        <!-- <div id="nodefragment-4">
+        </div> -->
+
+        <!-- <div id="nodefragment-5">
+        </div> -->
+
+        <!-- <div id="nodefragment-6">
+        </div> -->
+
+        <!-- <div id="nodefragment-7">
+        </div> -->
+
+        <!-- <div id="nodefragment-8">
+        </div> -->
+        
+        <script>
+            // Will deactivate all tabs for which the if referenced in href cannot be found in the document.
+            deactivateTabs("tabsList")
+        </script>
+
+        {#
+            %include '/nodepanelppi/old_code.html' %
+        #}
+        
+    </div>
+</body>
+
+
+
+
+</html>

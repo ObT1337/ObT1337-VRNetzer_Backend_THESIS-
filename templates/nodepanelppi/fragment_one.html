@@ -1,0 +1,24 @@
+<div id="nodefragment-1">
+
+    <div class="twelve columns">
+        <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+    </div>
+
+    <!-- Contains Identifier, Species and first UniProtID if these information are available for the Node -->
+
+    {% include "/nodepanelppi/general_information.html" %}
+
+    <!-- Contains Description of the Node if provided. -->
+    {% if "description" in nodes["nodes"][id] %}
+        {% include "/nodepanelppi/description.html" %}
+    {% endif %} 
+
+    <!-- Contains Description of the Node if provided. -->
+    {% if "sequence" in nodes["nodes"][id] %}
+        {% include "/nodepanelppi/sequence.html" %}
+    {% endif %} 
+
+    <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
+    {% include "/nodepanelppi/protein_structure.html" %}
+    
+</div>

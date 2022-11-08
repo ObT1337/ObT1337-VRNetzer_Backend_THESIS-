@@ -16,10 +16,11 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}"></script>
     <!--
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
+    
     -->
 
 </head>
@@ -40,7 +41,7 @@
 
     <script>
         var sessiondata = JSON.parse({{ sessionData| tojson}});
-        var nodes = JSON.parse({{ nodes | tojson}})["nodes"];
+        var nodes = JSON.parse('{{ nodes | tojson}}')["nodes"];
         var node_id = '{{id}}';
         var node_data = nodes[node_id];
         var node_sym =  node_data["n"];
@@ -157,12 +158,13 @@
 
                     $('#'+ id).on('selectmenuselect', function () {
                     var name =  $('#'+ id).find(':selected').text();
-                    socket.emit('ex', {id: id, opt: name, fn: "sel"});
-                    ///logger($('#selectMode').val());
+          
+                    ue4("prot", {id:name});
+                    //console.log($('#structure').val());
                     });
 
                     }
-                    initDropdown('structure', node_data.uniprot,sessiondata["actStruc"] );
+                    initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
                 </script>
             </div>
            
