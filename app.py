@@ -470,7 +470,7 @@ def nodepanel():
                 pfile=pfile,
                 id=id,
                 add_key=add_key,
-                nodes=json.dumps(nodes),
+                nodes=nodes,
             )
 
         else:
