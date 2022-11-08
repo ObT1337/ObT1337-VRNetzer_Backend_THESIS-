@@ -39,21 +39,140 @@ socketio = SocketIO(app, manage_session=False)
 ### HTML ROUTES ###
 
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    return render_template("index.html")
-
-
 # note to self:
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
 
 
-@app.route("/search", methods=["GET"])
-def searchR():
-    term = request.args.get("term")
-    return jsonify(search(term))
+
+@app.route("/main", methods=["GET"])
+def main():
+    username = request.args.get("usr")
+    project = request.args.get("project")
+    if username is None:
+        username = str(random.randint(1001, 9998))
+    else:
+        username = username + str(random.randint(1001, 9998))
+        print(username)
+
+    if project is None:
+        project = "none"
+    else:
+        print(project)
+
+    if request.method == "GET":
+
+        room = 1
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        # prolist = listProjects()
+        if project != "none":
+            folder = "static/projects/" + project + "/"
+            with open(folder + "pfile.json", "r") as json_file:
+                global pfile
+                pfile = json.load(json_file)
+                print(pfile)
+            json_file.close()
+
+            with open(folder + "names.json", "r") as json_file:
+                global names
+                names = json.load(json_file)
+                # print(names)
+            json_file.close()
+        return render_template(
+            "main.html",
+            session=session,
+            sessionData=json.dumps(sessionData),
+            pfile=json.dumps(pfile),
+        )
+    else:
+        return "error"
+
+
+
+@app.route("/nodepanel", methods=["GET"])
+def nodepanel():
+    # try:
+    #    id = int(request.args.get("id"))
+    # except:
+    #    print('C_DEBUG: in except at start')
+    #    if id is None:
+    #        id=0
+    nodes = {"nodes": []}
+    project = request.args.get("project")
+    if project is None:
+        project = "new_ppi"
+
+    folder = os.path.join("static", "projects", project)
+    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+        global pfile
+        pfile = json.load(json_file)
+
+    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+        nodes = json.load(json_file)
+
+    add_key = "NA"  # Additional key to show under Structural Information
+    # nodes = {node["id"]: node for node in nodes}
+    global sessionData
+
+    if pfile:
+        if "ppi" in pfile["name"].lower():
+            try:
+                id = int(request.args.get("id"))
+            except Exception as e:
+                print(e)
+                id = 0
+            uniprots = nodes["nodes"][id].get("uniprot")
+            if uniprots:
+                room = session.get("room")
+                # sessionData["actStruc"] = uniprots[0]
+                x = '{"id": "prot", "val":[], "fn": "prot"}'
+                data = json.loads(x)
+                data["val"] = uniprots
+                print(data)
+                socketio.emit("ex", data, namespace="/chat", room=room)
+            # data = names["names"][id]
+            return render_template(
+                "nodepanelppi.html",
+                sessionData=json.dumps(sessionData),
+                session=session,
+                pfile=pfile,
+                id=id,
+                add_key=add_key,
+                nodes=nodes,
+            )
+
+        else:
+            try:
+                id = int(request.args.get("id"))
+            except Exception as e:
+                print("C_DEBUG: in except else with pfile")
+                print(e)
+                id = 0
+
+            # data = names["names"][id]
+            data = [id]
+            print("C_DEBUG: general nodepanel")
+            return render_template(
+                "nodepanel.html",
+                data=data,
+            )
+    else:
+        try:
+            id = int(request.args.get("id"))
+        except Exception as e:
+            id = 0
+            print(e)
+        print("C_DEBUG: in except else (no pfile)")
+        data = {"names": [id]}
+        return render_template(
+            "nodepanel.html",
+            data=data,
+        )
+
+
 
 
 @app.route("/upload", methods=["GET"])
@@ -61,20 +180,6 @@ def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
 
-
-@app.route("/Examples/CustomElements1")
-def CustomElements1R():
-    return render_template("geneElement.html")
-
-
-@app.route("/Examples/ServerSideVar")
-def ServerSideVarR():
-    return render_template("scroll.html", data=scb1Data)
-
-
-@app.route("/Examples/CustomElements2")
-def test3():
-    return render_template("test.html")
 
 
 @app.route("/ForceLayout")
@@ -89,47 +194,6 @@ def force():
     return render_template(
         "threeJSForceLayout.html", nodes=json.dumps(nodes), links=json.dumps(links)
     )
-
-
-@app.route("/Graph")
-def test4():
-    # y = '{"nodes": [{"p":[10,0.5,0]},{"p":[0,-10,1]},{"p":[0.5,0.5,0.5]}], "links":[{"s":0,"e":1},{"s":1,"e":2},{"s":2,"e":0}]}'
-    y = '{"nodes": [], "links":[]}'
-    testNetwork = json.loads(y)
-    scale = 10.0
-
-    name = "static/csv/teapot_nodes"
-    f = open(name + ".csv", "r")
-    lines = f.readlines()
-
-    for i in lines:
-        verts = list(i.split(","))
-        newnode = {}
-        newnode["p"] = [
-            float(verts[0]) * scale,
-            float(verts[1]) * scale,
-            float(verts[2]) * scale,
-        ]
-        testNetwork["nodes"].append(newnode)
-
-    f.close()
-
-    name = "static/csv/teapot_links"
-    f = open(name + ".csv", "r")
-    lines = f.readlines()
-
-    for i in lines:
-        verts = list(i.split(","))
-        newlink = {}
-        newlink["s"] = int(verts[0])
-        newlink["e"] = int(verts[1])
-        testNetwork["links"].append(newlink)
-
-    f.close()
-
-    # print(testNetwork)
-    # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
-    return render_template("threeJS_VIEWER.html", data=json.dumps(testNetwork))
 
 
 @app.route("/preview", methods=["GET"])
@@ -258,6 +322,11 @@ def test44():
     )
 
 
+
+
+
+
+# gets information about a specific node
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
     id = request.args.get("id")
@@ -313,16 +382,6 @@ def get_structure_scale() -> float or str:
 
 ### DATA ROUTES###
 
-###RECEIVE INCOMING WEBSOCKET MSG FROM NODE.JS
-@app.route("/flask", methods=["GET", "POST"])
-def ws_receiver():
-    wsreceiver(socketio)
-    return
-
-
-@app.route("/uploadfiles", methods=["GET", "POST"])
-def uploadR():
-    return upload_files(request)
 
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
@@ -338,169 +397,6 @@ def loadProjectInfoR(name):
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
     return loadAnnotations(name)
-
-
-@app.route("/main", methods=["GET"])
-def main():
-    username = request.args.get("usr")
-    project = request.args.get("project")
-    if username is None:
-        username = str(random.randint(1001, 9998))
-    else:
-        username = username + str(random.randint(1001, 9998))
-        print(username)
-
-    if project is None:
-        project = "none"
-    else:
-        print(project)
-
-    if request.method == "GET":
-
-        room = 1
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
-        # prolist = listProjects()
-        if project != "none":
-            folder = "static/projects/" + project + "/"
-            with open(folder + "pfile.json", "r") as json_file:
-                global pfile
-                pfile = json.load(json_file)
-                print(pfile)
-            json_file.close()
-
-            with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
-                # print(names)
-            json_file.close()
-        return render_template(
-            "main.html",
-            session=session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
-        )
-    else:
-        return "error"
-
-
-@app.route("/login/<usr>", methods=["GET"])
-def loginR(usr):
-    if request.method == "GET":
-        username = usr
-        room = 1
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
-        return render_template("geneElement.html", session=session)
-    else:
-        return "error"
-
-
-@app.route("/chat", methods=["GET", "POST"])
-def chat():
-    if request.method == "POST":
-        username = request.form["username"]
-        room = request.form["room"]
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
-        return render_template("chat.html", session=session)
-    else:
-        if session.get("username") is not None:
-            session["username"] = "reee"
-            session["room"] = "2"
-            return render_template("chat.html", session=session)
-        else:
-            return redirect(url_for("index"))
-
-
-@app.route("/Test")
-def test():
-    return render_template("test.html")
-
-
-@app.route("/nodepanel", methods=["GET"])
-def nodepanel():
-    # try:
-    #    id = int(request.args.get("id"))
-    # except:
-    #    print('C_DEBUG: in except at start')
-    #    if id is None:
-    #        id=0
-    nodes = {"nodes": []}
-    project = request.args.get("project")
-    if project is None:
-        project = "new_ppi"
-
-    folder = os.path.join("static", "projects", project)
-    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-        global pfile
-        pfile = json.load(json_file)
-
-    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-        nodes = json.load(json_file)
-
-    add_key = "NA"  # Additional key to show under Structural Information
-    # nodes = {node["id"]: node for node in nodes}
-    global sessionData
-
-    if pfile:
-        if "ppi" in pfile["name"].lower():
-            try:
-                id = int(request.args.get("id"))
-            except Exception as e:
-                print(e)
-                id = 0
-            uniprots = nodes["nodes"][id].get("uniprot")
-            if uniprots:
-                room = session.get("room")
-                # sessionData["actStruc"] = uniprots[0]
-                x = '{"id": "prot", "val":[], "fn": "prot"}'
-                data = json.loads(x)
-                data["val"] = uniprots
-                print(data)
-                socketio.emit("ex", data, namespace="/chat", room=room)
-            # data = names["names"][id]
-            return render_template(
-                "nodepanelppi.html",
-                sessionData=json.dumps(sessionData),
-                session=session,
-                pfile=pfile,
-                id=id,
-                add_key=add_key,
-                nodes=nodes,
-            )
-
-        else:
-            try:
-                id = int(request.args.get("id"))
-            except Exception as e:
-                print("C_DEBUG: in except else with pfile")
-                print(e)
-                id = 0
-
-            # data = names["names"][id]
-            data = [id]
-            print("C_DEBUG: general nodepanel")
-            return render_template(
-                "nodepanel.html",
-                data=data,
-            )
-    else:
-        try:
-            id = int(request.args.get("id"))
-        except Exception as e:
-            id = 0
-            print(e)
-        print("C_DEBUG: in except else (no pfile)")
-        data = {"names": [id]}
-        return render_template(
-            "nodepanel.html",
-            data=data,
-        )
-
 
 ###SocketIO ROUTES###
 
