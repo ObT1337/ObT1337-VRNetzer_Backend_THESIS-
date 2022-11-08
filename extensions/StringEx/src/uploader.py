@@ -18,6 +18,7 @@ from .settings import LayoutTags as LT
 from .settings import LinkTags as LiT
 from .settings import NodeTags as NT
 from .settings import ProjectTag as PT
+from .settings import StringTags as ST
 from .settings import VRNetzElements as VRNE
 from .util import clean_filename
 
@@ -228,7 +229,21 @@ class Uploader:
                 ]
             )
 
+        universal_attributes = [NT.description, NT.sequence, NT.species]
+        string_attributes = [
+            ST.stringdb_description,
+            ST.stringdb_sequence,
+            ST.stringdb_species,
+        ]
+
         for _, elem in enumerate(nodes):
+            # rename stringdb attributes to universal attributes to present them in nodepanel
+            if ST.stringdb_description in elem:
+                for u_att, s_attr in zip(universal_attributes, string_attributes):
+                    if u_att in elem:
+                        elem[u_att] = elem[s_attr]
+                        del elem[s_attr]
+
             self.nodes[VRNE.nodes].append(
                 {k: v for k, v in elem.items() if k not in skip_attr}
             )
@@ -449,28 +464,28 @@ def extract_attributes(attr_list, elem, skip_attr):
     #     attr_list["names"] = []
     # name = ["NA"]
 
-    # if NT.stringdb_canoncial_name in elem.keys():
-    #     uniprod = elem[NT.stringdb_canoncial_name]
+    # if ST.stringdb_canoncial_name in elem.keys():
+    #     uniprot = elem[ST.stringdb_canoncial_name]
     #     name = [
-    #         uniprod,  # identifier
+    #         uniprot,  # identifier
     #         "None",  # Attribute
-    #         uniprod,  # Annotation
+    #         uniprot,  # Annotation
     #         50,  # Additional
     #     ]
-    #     if NT.stringdb_sequence in elem.keys():
-    #         name[-1] = elem[NT.stringdb_sequence]
+    #     if ST.stringdb_sequence in elem.keys():
+    #         name[-1] = elem[ST.stringdb_sequence]
     # elif NT.name in elem.keys():
     #     gene_name = elem[NT.name]
     #     name = [f"GENENAME={gene_name}"]
-    uniprod = elem.get(NT.stringdb_canoncial_name)
-    if uniprod is None:
-        uniprod = elem.get(NT.uniprot)
-        if uniprod:
-            uniprod = uniprod[0]
+    uniprot = elem.get(ST.stringdb_canoncial_name)
+    if uniprot is None:
+        uniprot = elem.get(NT.uniprot)
+        if uniprot:
+            uniprot = uniprot[0]
         else:
             elem.get(NT.name)
-    if uniprod:
-        name = [uniprod]
+    if uniprot:
+        name = [uniprot]
         if "names" not in attr_list:
             attr_list["names"] = []
         attr_list["names"].append(name)

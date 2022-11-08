@@ -66,14 +66,19 @@ class NodeTags:
     name = "n"
     suid = "SUID"
     description = "description"
-    stringdb_canoncial_name = "stringdb_canonical name"
-    stringdb_sequence = "stringdb_sequence"
-    stringdb_species = "stringdb_species"
-    stringdb_description = "stringdb_description"
+    sequence = "sequence"
+    species = "species"
     ppi_id = "ppi_id"
     id = "id"
     attr_lst = "attrlist"
     uniprot = "uniprot"
+
+
+class StringTags:
+    stringdb_canoncial_name = "stringdb_canonical name"
+    stringdb_sequence = "stringdb_sequence"
+    stringdb_description = "stringdb_description"
+    stringdb_species = "stringdb_species"
 
 
 class ProjectTag:
