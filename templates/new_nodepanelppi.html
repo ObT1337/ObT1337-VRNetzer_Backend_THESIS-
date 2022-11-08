@@ -16,9 +16,10 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <!--
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+
     
     -->
 
@@ -58,7 +59,7 @@
 
     <div id="tabsUL">
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
-        <ul id="tabsList">
+        <ul id="nodepanel_tabsList">
             <li>
                 <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
             </li>
@@ -113,7 +114,7 @@
         
         <script>
             // Will deactivate all tabs for which the if referenced in href cannot be found in the document.
-            deactivateTabs("tabsList")
+            deactivateTabs("nodepanel_tabsList")
         </script>
 
         {#
