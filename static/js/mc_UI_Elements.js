@@ -6,41 +6,40 @@
 class mcRButton extends HTMLElement {
 
 
-    constructor() {
+  constructor() {
     super();
-    }
+  }
 
-    connectedCallback() {
-      let template = document.querySelector('#mcRB-template').content;
-      this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
-    
-      let name_button = this.shadowRoot.querySelector("#name");
-      let x_button = this.shadowRoot.querySelector("#x");
-    
-      name_button.textContent = this.getAttribute('name');
-      name_button.style.background=this.getAttribute('color');//("background",);
-      //console.log('create: '+ this.getAttribute('id'));
+  connectedCallback() {
+    let template = document.querySelector('#mcRB-template').content;
+    this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-      name_button.addEventListener('click', () => {
-        //console.log('select '+ this.shadowRoot.getAttribute('id'));
-        socket.emit('ex', {msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "rem_butt_clicked"});
-      });
-    
-      x_button.addEventListener('click', () => {
+    let name_button = this.shadowRoot.querySelector("#name");
+    let x_button = this.shadowRoot.querySelector("#x");
 
-          console.log(name_button.parentElement);
-          var parent = this.getRootNode().host;
-          if (parent != null){ //is in shadowDom
-            
-            socket.emit('ex', {id: this.getAttribute('id'), parent: parent.getAttribute('id'), fn: "rem_butt_del_sbox"});
-          }else
-          {
-            socket.emit('ex', {id: this.getAttribute('id'), parent: this.parentElement.getAttribute('id'), fn: "rem_butt_del"});
-          }
+    name_button.textContent = this.getAttribute('name');
+    name_button.style.background = this.getAttribute('color');//("background",);
+    //console.log('create: '+ this.getAttribute('id'));
 
-      });
+    name_button.addEventListener('click', () => {
+      //console.log('select '+ this.shadowRoot.getAttribute('id'));
+      socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "rem_butt_clicked" });
+    });
 
-    }
+    x_button.addEventListener('click', () => {
+
+      console.log(name_button.parentElement);
+      var parent = this.getRootNode().host;
+      if (parent != null) { //is in shadowDom
+
+        socket.emit('ex', { id: this.getAttribute('id'), parent: parent.getAttribute('id'), fn: "rem_butt_del_sbox" });
+      } else {
+        socket.emit('ex', { id: this.getAttribute('id'), parent: this.parentElement.getAttribute('id'), fn: "rem_butt_del" });
+      }
+
+    });
+
+  }
 
 }
 
@@ -50,15 +49,15 @@ customElements.define('mc-rbutton', mcRButton);
 class mcScrollBox extends HTMLElement {
 
   constructor() {
-  super();
+    super();
   }
 
   connectedCallback() {
     let template = document.querySelector('#mcScrollBox-template').content;
     this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-    
-    
+
+
     let scrollbox = this.shadowRoot.querySelector("#box");
     let label = this.shadowRoot.querySelector("#label");
     label.innerHTML = this.getAttribute('id').toUpperCase();
@@ -76,16 +75,16 @@ class mcScrollBox extends HTMLElement {
     });
 
     scrollbox.addEventListener('scroll', () => {
-      var out = [$(scrollbox).scrollTop(), $(scrollbox).scrollLeft() ];
+      var out = [$(scrollbox).scrollTop(), $(scrollbox).scrollLeft()];
       var thisscroll = out[0] + out[1];
-      if (isScroll && Math.abs(thisscroll- lastscroll) > 10){
-          socket.emit('ex', {msg: out, id: this.getAttribute('id'), fn: "scb"});
-          lastscroll = out[0] + out[1];
-          console.log(out[0])
+      if (isScroll && Math.abs(thisscroll - lastscroll) > 10) {
+        socket.emit('ex', { msg: out, id: this.getAttribute('id'), fn: "scb" });
+        lastscroll = out[0] + out[1];
+        console.log(out[0])
 
       }
     });
-   
+
   }
 }
 
@@ -98,7 +97,7 @@ customElements.define('mc-scrollbox', mcScrollBox);
 class mcTextBox extends HTMLElement {
 
   constructor() {
-  super();
+    super();
   }
 
   connectedCallback() {
@@ -111,7 +110,7 @@ class mcTextBox extends HTMLElement {
 
     textbox.addEventListener('keyup', () => {
       console.log(textbox.value);
-      socket.emit('ex', {id: this.getAttribute('id'), val: textbox.value, fn: "tex"});
+      socket.emit('ex', { id: this.getAttribute('id'), val: textbox.value, fn: "tex" });
     });
 
     textbox.addEventListener('change', () => {
@@ -119,7 +118,7 @@ class mcTextBox extends HTMLElement {
       //socket.emit('ex', {id: this.getAttribute('id'), val: slider.value, fn: "sli"});
     });
 
-   
+
   }
 }
 
@@ -130,7 +129,7 @@ customElements.define('mc-textbox', mcTextBox);
 class mcColorBox extends HTMLElement {
 
   constructor() {
-  super();
+    super();
   }
 
   connectedCallback() {
@@ -139,7 +138,7 @@ class mcColorBox extends HTMLElement {
 
     let colorbox = this.shadowRoot.querySelector("#color");
 
-   
+
   }
 }
 
@@ -150,7 +149,7 @@ customElements.define('mc-colorbox', mcColorBox);
 class mcSresult extends HTMLElement {
 
   constructor() {
-  super();
+    super();
   }
 
   connectedCallback() {
@@ -161,18 +160,18 @@ class mcSresult extends HTMLElement {
 
     let name_button = this.shadowRoot.querySelector("#name");
     let x_button = this.shadowRoot.querySelector("#x");
-  
+
     name_button.textContent = this.getAttribute('name');
-    name_button.style.background=this.getAttribute('color');//("background",);
+    name_button.style.background = this.getAttribute('color');//("background",);
     //console.log('create: '+ this.getAttribute('id'));
 
     name_button.addEventListener('click', () => {
       //console.log('select '+ this.shadowRoot.getAttribute('id'));
-      socket.emit('ex', {msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "sres_butt_clicked"});
+      socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "sres_butt_clicked" });
     });
-  
 
-   
+
+
   }
 }
 
@@ -180,84 +179,84 @@ customElements.define('mc-sresult', mcSresult);
 
 
 
-function initDropdown (id, data, active){
+function initDropdown(id, data, active) {
 
-  $('#'+ id).selectmenu();
+  $('#' + id).selectmenu();
 
   for (let i = 0; i < data.length; i++) {
-    $('#'+ id).append(new Option(data[i]));
+    $('#' + id).append(new Option(data[i]));
   }
-  $('#'+ id).val(active);
-  $('#'+ id).selectmenu("refresh");
+  $('#' + id).val(active);
+  $('#' + id).selectmenu("refresh");
 
-  $('#'+ id).on('selectmenuselect', function () {
-    var name =  $('#'+ id).find(':selected').text();
-    socket.emit('ex', {id: id, opt: name, fn: "sel"});
+  $('#' + id).on('selectmenuselect', function() {
+    var name = $('#' + id).find(':selected').text();
+    socket.emit('ex', { id: id, opt: name, fn: "sel" });
     ///logger($('#selectMode').val());
   });
 
 }
 
-function initProjectDropdown (id, data, active){
+function initProjectDropdown(id, data, active) {
 
-  $('#'+ id).selectmenu();
+  $('#' + id).selectmenu();
 
   for (let i = 0; i < data.length; i++) {
-    $('#'+ id).append(new Option(data[i]));
+    $('#' + id).append(new Option(data[i]));
   }
-  $('#'+ id).val(active);
-  $('#'+ id).selectmenu("refresh");
+  $('#' + id).val(active);
+  $('#' + id).selectmenu("refresh");
 
-  $('#'+ id).on('selectmenuselect', function () {
-    var name =  $('#'+ id).find(':selected').text();
-    socket.emit('ex', {id: "projects", opt: name, fn: "sel"});
+  $('#' + id).on('selectmenuselect', function() {
+    var name = $('#' + id).find(':selected').text();
+    socket.emit('ex', { id: "projects", opt: name, fn: "sel" });
     ///logger($('#selectMode').val());
   });
 
 }
 
 
-function initSlider (id){
+function initSlider(id) {
 
-  $('#'+ id).slider({
-      animate: true,
-      range: "max",
-      min: 0,
-      max: 255,
-      value: 128,
-      slide: function (event, ui) {
-        socket.emit('ex', {id: id, val: ui.value, fn: "sli"});
-      }
+  $('#' + id).slider({
+    animate: true,
+    range: "max",
+    min: 0,
+    max: 255,
+    value: 128,
+    slide: function(event, ui) {
+      socket.emit('ex', { id: id, val: ui.value, fn: "sli" });
+    }
   });
 
 }
 
 
-function initCheckbox (id){
-  $('#'+ id, function(){ 
-    socket.emit('ex', {id: id, val: $('#'+ id).is(":checked"), fn: "chk"});
+function initCheckbox(id) {
+  $('#' + id, function() {
+    socket.emit('ex', { id: id, val: $('#' + id).is(":checked"), fn: "chk" });
   });
 
 }
 
 
-function initButton (id){
-  $('#'+ id).on("click", function(){
+function initButton(id) {
+  $('#' + id).on("click", function() {
     var $this = $(this);
     socket.emit('ex', { id: id, val: $this.val(), fn: "but" });
   });
 }
 
 
-function initToggle (id, texts){
-  $('#'+ id).on("click", function(){
+function initToggle(id, texts) {
+  $('#' + id).on("click", function() {
     var $this = $(this);
-    if($this.val() == texts[1] ){
-        $this.val(texts[0]);         
+    if ($this.val() == texts[1]) {
+      $this.val(texts[0]);
     } else {
-        $this.val(texts[1]);
+      $this.val(texts[1]);
     }
-    socket.emit('ex', {id: id, val: $this.val(), fn: "tgl"}); 
+    socket.emit('ex', { id: id, val: $this.val(), fn: "tgl" });
   });
 
 }
@@ -267,12 +266,24 @@ function initToggle (id, texts){
 
 
 function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * 
-            charactersLength));
-        }
-    return result;
+  var result = '';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var charactersLength = characters.length;
+  for (var i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() *
+      charactersLength));
+  }
+  return result;
+}
+function deactivateTabs(id) {
+  // Deactivate all tabs which are not contained in the html
+  var tabs = document.getElementById(id);
+  var items = tabs.getElementsByTagName('li');
+  for (var i = 0; i < items.length; i++) {
+    hyperlink = items[i].getElementsByTagName('a')[0];
+    var id = hyperlink.href.split('#')[1];
+    if (!(document.getElementById(id))) {
+      items[i].style.display = 'none';
+    }
+  }
 }
