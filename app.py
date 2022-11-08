@@ -367,7 +367,7 @@ def main():
             with open(folder + "pfile.json", "r") as json_file:
                 global pfile
                 pfile = json.load(json_file)
-                # print(pfile)
+                print(pfile)
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:

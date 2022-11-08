@@ -23,7 +23,7 @@
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     
     
@@ -141,7 +141,8 @@
             var sessiondata = JSON.parse({{sessionData|tojson}});
             var pdata = JSON.parse({{pfile|tojson}});
             var username = '{{session['username']}}';
-            console.log(username);
+            console.log(sessiondata);
+            console.log(pdata);
             
         </script>
 
@@ -405,6 +406,7 @@
                         <div class="cornerBox">
                             <select id='layouts'></select>
                             <script>
+                                
                                 initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
                             </script>
                         </div>
