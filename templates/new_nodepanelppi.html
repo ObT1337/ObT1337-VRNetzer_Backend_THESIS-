@@ -170,11 +170,7 @@
 
                 </div>
             </div>
-            <div class="twelve columns">
-                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
-            </div>
             <!-- Contains protein sequence of the Node if provided. -->
-
             <div class="frameBox" id="node_sequence">
                 <div class="twelve columns">
                     <div class="five columns">
@@ -199,7 +195,7 @@
                 <div class="twelve columns">
                     <div class="twelve columns">
                         <h5 style="text-align:end;"> Description</h5>
-                        <div style="overflow-y:scroll;height:70px">
+                        <div style="overflow-y:scroll;max-height:200px">
                             <script>
                                 if (node_data.description) {
                                     var description = node_data.description;
@@ -217,8 +213,10 @@
             </div>
 
         </div>
-        <!-- Crosslinks to external databases -->
-        <!-- <div id="nodefragment-2">           
+        <!-- <div id="nodefragment-2">
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
         </div> -->
 
         <div id="nodefragment-3">
@@ -270,6 +268,7 @@
                 </div>
             </div>
         </div>
+        <!-- Crosslinks to external databases -->
         <div id="nodefragment-4">
             <div class="twelve columns">
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Crosslinks</h2>
