@@ -5,15 +5,15 @@ import random
 import flask
 from PIL import Image
 
-import GlobalData as GD
 import uploader
+from GlobalData import *
 
 from . import settings as st
 from . import workflows as wf
 
-GD.sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
-GD.sessionData["actAlgo"] = st.LayoutAlgroithms.spring
-GD.sessionData["organisms"] = st.Organisms.all_organisms
+sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
+sessionData["actAlgo"] = st.LayoutAlgroithms.spring
+sessionData["organisms"] = st.Organisms.all_organisms
 
 url_prefix = "/StringEx"
 
@@ -50,7 +50,8 @@ def string_main():
         folder = "static/projects/" + project + "/"
 
         with open(folder + "pfile.json", "r") as json_file:
-            GD.pfile = json.load(json_file)
+            global pfile
+            pfile = json.load(json_file)
 
         with open(folder + "names.json", "r") as json_file:
             global names
@@ -59,8 +60,8 @@ def string_main():
         return flask.render_template(
             "/mainpanel/string_main.html",
             session=flask.session,
-            sessionData=json.dumps(GD.sessionData),
-            pfile=GD.pfile,
+            sessionData=json.dumps(sessionData),
+            pfile=pfile,
         )
     else:
         return "error"
@@ -98,7 +99,7 @@ def string_preview():
         linkRGBIndex = int(flask.request.args.get("lcol"))
 
     project = flask.request.args.get("project")
-    GD.sessionData["actPro"] = project
+    sessionData["actPro"] = project
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
 
@@ -194,7 +195,7 @@ def string_preview():
         html_preview,
         data=json.dumps(testNetwork),
         pfile=json.dumps(thispfile),
-        sessionData=json.dumps(GD.sessionData),
+        sessionData=json.dumps(sessionData),
     )
 
 
@@ -206,8 +207,8 @@ def upload_string():
     return flask.render_template(
         html_page,
         namespaces=prolist,
-        algorithms=GD.sessionData["layoutAlgos"],
-        organisms=GD.sessionData["organisms"],
+        algorithms=sessionData["layoutAlgos"],
+        organisms=sessionData["organisms"],
     )
 
 
@@ -244,8 +245,8 @@ def prepare_session_data():
 #     nodes = {"nodes": []}
 #     project = flask.request.args.get("project")
 #     if project is None:
-#         GD.sessionData.get("actPro")
-#         print(GD.sessionData)
+#         sessionData.get("actPro")
+#         print(sessionData)
 #         project = "Ecoli"
 
 #     folder = os.path.join("static", "projects", project)
@@ -264,7 +265,7 @@ def prepare_session_data():
 #         print(e)
 #     uniprots = nodes["nodes"][id].get("uniprot")
 #     if uniprots:
-#         GD.sessionData["actStruc"] = uniprots[0]
+#         sessionData["actStruc"] = uniprots[0]
 #     # data = names["names"][id]
 
 #     network_type = pfile.get("network")
@@ -272,7 +273,7 @@ def prepare_session_data():
 #     if network_type == "string":
 #         return flask.render_template(
 #             "/nodepanel/string_nodepanel.html",
-#             sessionData=json.dumps(GD.sessionData),
+#             sessionData=json.dumps(sessionData),
 #             session=flask.session,
 #             pfile=pfile,
 #             id=id,
