@@ -172,27 +172,6 @@
             </div>
 
 
-            <!-- Contains Description of the Node if provided. -->
-
-            <div class="frameBox" id="node_description">
-                <div class="twelve columns">
-                    <div class="twelve columns">
-                        <h5 style="text-align:end"> Description</h5>
-                        <script>
-                            if (node_data.description) {
-                                var description = node_data.description;
-                                document.write(
-                                    "<p align='justify'>"
-                                    + description
-                                    + "<p>");
-                            } else {
-                                document.getElementById("node_description").remove();
-                            };
-                        </script>
-                    </div>
-                </div>
-            </div>
-
             <!-- Contains protein sequence of the Node if provided. -->
 
             <div class="frameBox" id="node_sequence">
@@ -265,6 +244,26 @@
         </div>
         <!-- Crosslinks to external databases -->
         <div id="nodefragment-2">
+            <!-- Contains Description of the Node if provided. -->
+
+            <div class="frameBox" id="node_description">
+                <div class="twelve columns">
+                    <div class="twelve columns">
+                        <h5 style="text-align:end"> Description</h5>
+                        <script>
+                            if (node_data.description) {
+                                var description = node_data.description;
+                                document.write(
+                                    "<p align='justify'>"
+                                    + description
+                                    + "<p>");
+                            } else {
+                                document.getElementById("node_description").remove();
+                            };
+                        </script>
+                    </div>
+                </div>
+            </div>
             <div class="twelve columns">
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Crosslinks</h2>
             </div>
