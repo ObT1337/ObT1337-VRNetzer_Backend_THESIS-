@@ -81,7 +81,8 @@ class Uploader:
 
         with open(self.names_file, "w") as outfile:
             json.dump(self.attr_list, outfile)
-        rel_path = path.split("/../../../")[1]
+        rel_path = path.find("static")
+        rel_path = path[rel_path:]
         logger.debug(f"Successfully created directories in {rel_path}")
 
     def loadProjectInfo(self) -> dict or str:
