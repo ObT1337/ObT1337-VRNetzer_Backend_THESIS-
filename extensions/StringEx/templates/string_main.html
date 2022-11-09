@@ -5,7 +5,8 @@
 <script src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
 
 
-<div id="tabs-3" class="container">
+<!-- Tab containing STRING evidence buttons -->
+<div id="string-ev" class="container" style="hidden;">
     <div class="twelve columns">
         <h2 class="lineglowslow" style="margin-bottom:30px;margin-top:30px">String<br><br>&ensp;App</h2>
     </div>
@@ -111,12 +112,25 @@
 
     </div>
 </div>
+
+<!-- Change Image of Tab on which STRING Evidence tab is located-->
 <script>
-    if (!(pdata["network"]=="string")){
-        document.getElementById("tabs-3").remove();
+    if (pdata["network"]=="string"){
+        var list_objects = document.getElementsByTagName("li");
+        for(var i = 0; i < list_objects.length; i++){
+            var link = list_objects[i].getElementsByTagName("a")[0];
+            console.log(link.href);
+            var tab_id=link.toString().split("#")[1];
+            if(!(document.getElementById(tab_id))){
+                var child = document.getElementById("string-ev");
+                child.id=tab_id;
+                document.getElementById("tabs").appendChild((child))
+                var img = list_objects[i].getElementsByTagName("img")[0];
+                img.src = "{{ url_for('StringEx.static', filename='img/string_logo_2015_340_340.png') }}";
+            }
+        }
     }
 </script>
 <script>
-    var child = document.getElementById("tabs-3");
-    document.getElementById("tabs").appendChild((child))
+    deactivateTabs("mainTabs");
 </script>
