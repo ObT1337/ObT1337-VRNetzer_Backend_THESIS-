@@ -39,7 +39,7 @@
 
 
 <body>
-
+    
     <script>
         var sessiondata = JSON.parse({{ sessionData| tojson}});
         var nodes = JSON.parse('{{ nodes | tojson}}')["nodes"];
@@ -176,7 +176,7 @@
                     <div class="five columns">
                         <h4>Sequence :: </h4>
                     </div>
-                    <div class="six columns" style="overflow-y: hidden;" id="sequence">
+                    <div class="six columns" style="overflow-y: hidden;padding-bottom:10px;" id="sequence">
                         <h5>
                             <script>
                                 if(node_data.sequence){
@@ -195,7 +195,7 @@
                 <div class="twelve columns">
                     <div class="twelve columns">
                         <h5 style="text-align:end;"> Description</h5>
-                        <div style="overflow-y:scroll;max-height:200px">
+                        <div style="overflow-y:scroll;max-height:300px;padding:20px">
                             <script>
                                 if (node_data.description) {
                                     var description = node_data.description;
