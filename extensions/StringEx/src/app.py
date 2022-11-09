@@ -233,51 +233,51 @@ def prepare_session_data():
     flask.session["username"] = username
 
 
-@blueprint.route("/nodepanel", methods=["GET", "POST"])
-def nodepanel():
-    # try:
-    #    id = int(request.args.get("id"))
-    # except:
-    #    print('C_DEBUG: in except at start')
-    #    if id is None:
-    #        id=0
-    nodes = {"nodes": []}
-    project = flask.request.args.get("project")
-    if project is None:
-        GD.sessionData.get("actPro")
-        print(GD.sessionData)
-        project = "Ecoli"
+# @blueprint.route("/nodepanel", methods=["GET", "POST"])
+# def nodepanel():
+#     # try:
+#     #    id = int(request.args.get("id"))
+#     # except:
+#     #    print('C_DEBUG: in except at start')
+#     #    if id is None:
+#     #        id=0
+#     nodes = {"nodes": []}
+#     project = flask.request.args.get("project")
+#     if project is None:
+#         GD.sessionData.get("actPro")
+#         print(GD.sessionData)
+#         project = "Ecoli"
 
-    folder = os.path.join("static", "projects", project)
+#     folder = os.path.join("static", "projects", project)
 
-    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-        pfile = json.load(json_file)
+#     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+#         pfile = json.load(json_file)
 
-    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-        nodes = json.load(json_file)
-    add_key = "NA"  # Additional key to show under Structural Information
-    # nodes = {node["id"]: node for node in nodes}
-    try:
-        id = int(flask.request.args.get("id"))
-    except Exception as e:
-        id = 0
-        print(e)
-    uniprots = nodes["nodes"][id].get("uniprot")
-    if uniprots:
-        GD.sessionData["actStruc"] = uniprots[0]
-    # data = names["names"][id]
+#     with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+#         nodes = json.load(json_file)
+#     add_key = "NA"  # Additional key to show under Structural Information
+#     # nodes = {node["id"]: node for node in nodes}
+#     try:
+#         id = int(flask.request.args.get("id"))
+#     except Exception as e:
+#         id = 0
+#         print(e)
+#     uniprots = nodes["nodes"][id].get("uniprot")
+#     if uniprots:
+#         GD.sessionData["actStruc"] = uniprots[0]
+#     # data = names["names"][id]
 
-    network_type = pfile.get("network")
-    print(network_type)
-    if network_type == "string":
-        return flask.render_template(
-            "/nodepanel/string_nodepanel.html",
-            sessionData=json.dumps(GD.sessionData),
-            session=flask.session,
-            pfile=pfile,
-            id=id,
-            add_key=add_key,
-            nodes=json.dumps(nodes),
-        )
-    else:
-        return flask.redirect("/nodepanel")
+#     network_type = pfile.get("network")
+#     print(network_type)
+#     if network_type == "string":
+#         return flask.render_template(
+#             "/nodepanel/string_nodepanel.html",
+#             sessionData=json.dumps(GD.sessionData),
+#             session=flask.session,
+#             pfile=pfile,
+#             id=id,
+#             add_key=add_key,
+#             nodes=json.dumps(nodes),
+#         )
+#     else:
+#         return flask.redirect("/nodepanel")
