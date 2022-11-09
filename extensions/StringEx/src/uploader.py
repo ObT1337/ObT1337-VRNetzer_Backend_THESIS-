@@ -20,6 +20,7 @@ from .settings import NodeTags as NT
 from .settings import ProjectTag as PT
 from .settings import StringTags as ST
 from .settings import VRNetzElements as VRNE
+from .settings import logger
 from .util import clean_filename
 
 
@@ -80,8 +81,8 @@ class Uploader:
 
         with open(self.names_file, "w") as outfile:
             json.dump(self.attr_list, outfile)
-
-        print(f"Successfully created directories in {path} ")
+        rel_path = path.split("/../../../")[1]
+        logger.debug(f"Successfully created directories in {rel_path}")
 
     def loadProjectInfo(self) -> dict or str:
         self.folder = os_join(self.p_path)
@@ -427,7 +428,7 @@ class Uploader:
             self.makeProjectFolders()
         else:
             if project in prolist:
-                print("project exists")
+                logger.debug(f"Project: {project} already exists.")
             else:
                 # Make Folders
                 self.makeProjectFolders()

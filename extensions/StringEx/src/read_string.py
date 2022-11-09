@@ -6,6 +6,7 @@ import pandas
 import settings as st
 from settings import LinkTags as LiT
 from settings import NodeTags as NT
+from settings import StringTags as ST
 from settings import VRNetzElements as VRNE
 
 
@@ -76,10 +77,10 @@ def write_VRNetz(organism, networks_directory, last=None):
             e_node["uniprot"] = list(
                 alias.loc[alias["source"] == "Ensembl_UniProt_AC"].get("alias").values
             )
-            e_node[NT.stringdb_species] = st.Organisms.get_scientific_name(organism)
+            e_node[NT.species] = st.Organisms.get_scientific_name(organism)
             annotation = description_table.loc[end].get("annotation")
             if annotation != "annotation not available":
-                e_node[NT.stringdb_description] = annotation
+                e_node[NT.description] = annotation
 
             nodes_in[end] = e_node[NT.id]
             network[VRNE.nodes].append(e_node)
@@ -114,9 +115,11 @@ def write_VRNetz(organism, networks_directory, last=None):
     print("#Links:", len(network[VRNE.links]))
     print("#Nodes:", len(network[VRNE.nodes]))
 
-    with open(os.path.join(st._PROJECTS_PATH, organism) + ".VRNetz", "w") as f:
+    with open(
+        os.path.join(st._FLASK_STATIC_PATH, "networks", organism) + ".VRNetz", "w"
+    ) as f:
         json.dump(network, f)
 
 
 if __name__ == "__main__":
-    write_VRNetz("human", last=5000)
+    write_VRNetz("ecoli", "/Users/till/Documents/Playground/PPIs/STRING")
