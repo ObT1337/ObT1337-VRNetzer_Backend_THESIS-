@@ -3,10 +3,10 @@ import os
 import random
 
 import flask
+from GlobalData import *
 from PIL import Image
 
 import uploader
-from GlobalData import *
 
 from . import settings as st
 from . import workflows as wf
@@ -58,7 +58,8 @@ def string_main():
             names = json.load(json_file)
 
         return flask.render_template(
-            "/mainpanel/string_main.html",
+            # "/mainpanel/string_main.html",
+            "/mainpanel/main.html",
             session=flask.session,
             sessionData=json.dumps(sessionData),
             pfile=pfile,

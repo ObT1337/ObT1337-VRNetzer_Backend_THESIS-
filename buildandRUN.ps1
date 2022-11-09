@@ -10,6 +10,7 @@ venv\Scripts\activate
 python -m pip install -r extensions/StringEx/requirements.txt
 python -m pip install -r extensions/StringEx/cartographs_requirements.txt
 python -m pip install -r requirements.txt
+python -m pip install cartoGRAPHs
 $env:FLASK_ENV="development"
 $env:FLASK_APP="app.py"
 #flask run --port 5000
