@@ -33,6 +33,7 @@ $(document).ready(function(){
         console.log("server returned: " + JSON.stringify(data));
         switch(data.fn)
         {
+           /*
             case 'mkB':
                 makeButton(data.id, data.msg, data.msg);
                 break;
@@ -89,19 +90,16 @@ $(document).ready(function(){
                 ue4("prot", data);
                 console.log(data);
                 break;
-
+*/
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project
-                if (data.id == "projects"){
-                    var url = window.location.href.split('?')[0] + "?usr="  + username + "&project=" + data.opt;
-                    console.log(url);
-                    window.location.href = url;
-
+                if (data.id == "structure"){
+                    ue4("prot", {id:data.opt});
                 }
 
                 $('#'+ data.id).val(data.opt);
                 $('#'+ data.id).selectmenu("refresh");
-                ue4("sel", data);
+                //ue4("sel", data);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("value", 1);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("change");
            
@@ -111,7 +109,7 @@ $(document).ready(function(){
                 //select.value = data.opt;
                 // cold also add options.... select.append(new Option("reeeee"));
                 break; 
-
+/*
             case 'sli':
                 if (data.usr != username){
                     //var slider = document.getElementById(data.id).shadowRoot.getElementById("slider");
@@ -139,9 +137,9 @@ $(document).ready(function(){
                 }
                 break; 
 
-
+ */
         }
-        
+       
         
     });
 
