@@ -20,8 +20,9 @@ def load(main_app: flask.Flask):
                 print(f"\u001b[33mFailed to load extension: {ext}")
                 print(f"\u001b[33mMake sure you installed a necessary python modules.")
                 print(
-                    f"\u001b[33mYou can use:\n\npython3 -m pip install -r {ext}/requirements.txt\n\nTo install all requirements."
+                    f"\u001b[33mYou can use:\n\npython3 -m pip install -r extensions/{ext}/requirements.txt\n\nTo install all requirements."
                 )
                 print(f"Excepted an ImportError:{e}\n")
-    print("\n\n\033[1;32mFinished loading extensions, server is running...")
+    print("\n\n\033[1;32mFinished loading extensions, server is running... ")
+    print("\u001b[37m")
     return main_app

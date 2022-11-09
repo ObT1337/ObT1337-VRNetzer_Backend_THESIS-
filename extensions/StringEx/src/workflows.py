@@ -1,14 +1,13 @@
 import json
 import logging
 import os
-
+import time
 from .converter import VRNetzConverter
-
 # from .cytoscape_parser import CytoscapeParser
 from .layouter import Layouter
 from .map_small_on_large import map_source_to_target
 from .settings import _NETWORKS_PATH, _PROJECTS_PATH, UNIPROT_MAP, Organisms
-
+from .settings import logger
 # from .settings import VRNetzElements as VRNE
 # from .string_commands import (StringCompoundQuery, StringDiseaseQuery,
 #                               StringProteinQuery, StringPubMedQuery)
@@ -20,17 +19,15 @@ from .uploader import Uploader
 # from extract_colors_from_style import get_node_mapping
 
 
-logger = logging.getLogger("VRNetzer Cytoscape App")
-logger.setLevel(logging.DEBUG)
-
-
 def VRNetzer_upload_workflow(request):
     """Used from the StringEX/uploadfiles route"""
-    print("Starting upload of VRNetz...")
+    logger.info("Starting upload of VRNetz...")
     stringify, write_VRNetz, gen_layout, algo = False, False, False, None
     form = request.form.to_dict()
     network = request.files.getlist("vrnetz")[0].read().decode("utf-8")
     network = json.loads(network)
+    start= time.time()
+    logger.debug(f"Network loaded in {time.time()-start} seconds.")
 
     project_name = ""
 
@@ -56,24 +53,28 @@ def VRNetzer_upload_workflow(request):
         tags["calc_lay"],
     )
     # create layout
+    s1=time.time()
     layouter = apply_layout_workflow(
         network, layout_algo=algo, stringify=stringify, gen_layout=gen_layout
     )
+    logger.debug(f"Applying layout algorithm in {time.time()-s1} seconds.")
     network = layouter.network
 
     # upload network
     uploader = Uploader(network, p_name=project_name, stringify=stringify)
+    s1=time.time()
     state = uploader.upload_files(network)
+    logger.debug(f"Uploading process took {time.time()-s1} seconds.")
     if write_VRNetz:
         outfile = f"{_NETWORKS_PATH}/{project_name}_processed.VRNetz"
-        print(f"processed network saved at:{outfile}")
         with open(outfile, "w") as f:
             json.dump(network, f)
-        logging.info(f"Saved network as {outfile}")
+        logger.info(f"Saved network as {outfile}")
     if stringify:
         uploader.stringify_project()
         print("stringified")
-        logging.info(f"Layouts stringified: {project_name}")
+        logger.info(f"Layouts stringified: {project_name}")
+    logger.debug(f"Total process took {time.time()-s1} seconds.")
     return state
 
 
@@ -146,6 +147,7 @@ def apply_layout_workflow(
         logger.info(f"2D layout created!")
     if stringify:
         layouter.gen_evidence_layouts()
+        logger.info(f"Layouts stringified!")
     return layouter
 
 
@@ -166,11 +168,11 @@ def create_project_workflow(
         print(f"OUTFILE:{outfile}")
         with open(outfile, "w") as f:
             json.dump(network, f)
-        logging.info(f"Saved network as {outfile}")
+        logger.info(f"Saved network as {outfile}")
     if stringifiy and cy_layout:
         uploader.stringify_project()
-        logging.info(f"Layouts stringified: {project_name}")
-    logging.info(f"Project created: {project_name}")
+        logger.info(f"Layouts stringified: {project_name}")
+    logger.info(f"Project created: {project_name}")
     return state
 
 

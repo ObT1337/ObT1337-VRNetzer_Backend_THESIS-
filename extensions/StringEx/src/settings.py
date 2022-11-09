@@ -1,6 +1,6 @@
 import os
 import sys
-
+import logging
 try:
     from pip._internal.operations import freeze
 except ImportError:  # pip < 10.0
@@ -46,6 +46,8 @@ HELP_TEXT = (
     + "possible algorithms:\n"
     + "spring, kamada_kawai, cg_local_tsne, cg_local_umap, cg_global_tsne, cg_global_umap, cg_importance_tsne, cg_importance_umap"
 )
+logger = logging.Logger("VRNetzer Cytoscape App")
+logger.setLevel(logging.DEBUG)
 # Tags
 class LayoutTags:
     position = "p"
