@@ -11,8 +11,7 @@ from io import StringIO
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -454,6 +453,7 @@ def nodepanel():
             except Exception as e:
                 print(e)
                 id = 0
+            node = nodes["nodes"][id]
             uniprots = nodes["nodes"][id].get("uniprot")
             if uniprots:
                 room = session.get("room")
@@ -461,7 +461,6 @@ def nodepanel():
                 x = '{"id": "prot", "val":[], "fn": "prot"}'
                 data = json.loads(x)
                 data["val"] = uniprots
-                print(data)
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
@@ -471,7 +470,7 @@ def nodepanel():
                 pfile=pfile,
                 id=id,
                 add_key=add_key,
-                nodes=nodes,
+                node=json.dumps(node),
             )
 
         else:
