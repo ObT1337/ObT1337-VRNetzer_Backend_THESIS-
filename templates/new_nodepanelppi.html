@@ -39,7 +39,7 @@
 
 
 <body>
-
+    
     <script>
         var sessiondata = JSON.parse({{ sessionData| tojson}});
         var nodes = JSON.parse('{{ nodes | tojson}}')["nodes"];
@@ -75,20 +75,20 @@
         <!-- <a href="nodepanel.html" id="" title="Nodepanel"></a> -->
         <ul id="nodepanel_tabsList">
             <li>
-                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" /></a>
+                <a href="#nodefragment-1" class="crosslinks"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" />1</a>
             </li>
             <li>
-                <a href="#nodefragment-2"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/networkstructure_white.png') }}" /></a>
+                <a href="#nodefragment-2" class="crosslinks"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" />2</a>
             </li>
             <li>
                 <a href="#nodefragment-3"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+                        src="{{ url_for('static', filename='img/active_protein.png') }}" /></a>
             </li>
             <li>
                 <a href="#nodefragment-4"><img draggable="false" onmousedown="return false" height='40' width='40'
-                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+                        src="{{ url_for('static', filename='img/networkstructure_white.png') }}" /></a>
             </li>
             <li>
                 <a href="#nodefragment-5"><img draggable="false" onmousedown="return false" height='40' width='40'
@@ -170,16 +170,13 @@
 
                 </div>
             </div>
-
-
             <!-- Contains protein sequence of the Node if provided. -->
-
             <div class="frameBox" id="node_sequence">
                 <div class="twelve columns">
                     <div class="five columns">
                         <h4>Sequence :: </h4>
                     </div>
-                    <div class="six columns" style="overflow-y: hidden;" id="sequence">
+                    <div class="six columns" style="overflow-y: hidden;padding-bottom:10px;" id="sequence">
                         <h5>
                             <script>
                                 if(node_data.sequence){
@@ -193,6 +190,36 @@
                 </div>
             </div>
 
+            <!-- Contains Description of the Node if provided. -->
+            <div class="frameBox" id="node_description">
+                <div class="twelve columns">
+                    <div class="twelve columns">
+                        <h5 style="text-align:end;"> Description</h5>
+                        <div style="overflow-y:scroll;max-height:300px;padding:20px">
+                            <script>
+                                if (node_data.description) {
+                                    var description = node_data.description;
+                                    document.write(
+                                        "<p align='justify'>"
+                                        + description
+                                        + "<p>");
+                                } else {
+                                    document.getElementById("node_description").remove();
+                                };
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- <div id="nodefragment-2">
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+        </div> -->
+
+        <div id="nodefragment-3">
             <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
 
             <!-- Structural Information -->
@@ -240,30 +267,9 @@
                     </script>
                 </div>
             </div>
-
         </div>
         <!-- Crosslinks to external databases -->
-        <div id="nodefragment-2">
-            <!-- Contains Description of the Node if provided. -->
-
-            <div class="frameBox" id="node_description">
-                <div class="twelve columns">
-                    <div class="twelve columns">
-                        <h5 style="text-align:end"> Description</h5>
-                        <script>
-                            if (node_data.description) {
-                                var description = node_data.description;
-                                document.write(
-                                    "<p align='justify'>"
-                                    + description
-                                    + "<p>");
-                            } else {
-                                document.getElementById("node_description").remove();
-                            };
-                        </script>
-                    </div>
-                </div>
-            </div>
+        <div id="nodefragment-4">
             <div class="twelve columns">
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Crosslinks</h2>
             </div>
@@ -338,14 +344,7 @@
                 </div>
         
             </div>
-            
         </div>
-
-        <!-- <div id="nodefragment-3">
-        </div> -->
-
-        <!-- <div id="nodefragment-4">
-        </div> -->
 
         <!-- <div id="nodefragment-5">
         </div> -->
