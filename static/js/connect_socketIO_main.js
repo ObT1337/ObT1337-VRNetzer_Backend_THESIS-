@@ -108,7 +108,7 @@ $(document).ready(function(){
 
             case 'prot':
                 ue4("prot", data);
-                console.log(data);
+                //console.log(data);
                 break;
 
             case 'sel':
@@ -153,12 +153,18 @@ $(document).ready(function(){
                 for (let i = 0; i < data.val.length; i++) {
                     var p = document.createElement("mc-sresult");
                     p.setAttribute("id", data.val[i].id);
+                    //console.log(data.val[i].id);
                     p.setAttribute("name", data.val[i].name);
                     p.setAttribute("style", "width=150px");
                     p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
                     document.getElementById("sres").shadowRoot.getElementById("box").appendChild(p);
                 }
-                break; 
+                break;
+
+            case 'sres_butt_clicked':
+                    console.log(data.id);
+                    ue4("selectnode", data)
+                    break;
 
 
         }
