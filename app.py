@@ -50,10 +50,127 @@ def index():
 # - make a webscraper for git and display contributors for a spec software in vr
 
 
-@app.route("/search", methods=["GET"])
-def searchR():
-    term = request.args.get("term")
-    return jsonify(search(term))
+@app.route("/main", methods=["GET"])
+def main():
+    username = request.args.get("usr")
+    project = request.args.get("project")
+    if username is None:
+        username = str(random.randint(1001, 9998))
+    else:
+        username = username + str(random.randint(1001, 9998))
+        print(username)
+
+    if project is None:
+        project = "none"
+    else:
+        print(project)
+
+    if request.method == "GET":
+
+        room = 1
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        # prolist = listProjects()
+        if project != "none":
+            folder = "static/projects/" + project + "/"
+            with open(folder + "pfile.json", "r") as json_file:
+                GD.pfile = json.load(json_file)
+                print(GD.pfile)
+            json_file.close()
+
+            with open(folder + "names.json", "r") as json_file:
+                global names
+                names = json.load(json_file)
+                # print(names)
+            json_file.close()
+        return render_template(
+            "main.html",
+            session=session,
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
+        )
+    else:
+        return "error"
+
+
+@app.route("/nodepanel", methods=["GET"])
+def nodepanel():
+    # try:
+    #    id = int(request.args.get("id"))
+    # except:
+    #    print('C_DEBUG: in except at start')
+    #    if id is None:
+    #        id=0
+    nodes = {"nodes": []}
+    project = request.args.get("project")
+    if project is None:
+        project = "new_ppi"
+
+    folder = os.path.join("static", "projects", project)
+    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+        GD.pfile = json.load(json_file)
+
+    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+        nodes = json.load(json_file)
+
+    add_key = "NA"  # Additional key to show under Structural Information
+    # nodes = {node["id"]: node for node in nodes}
+
+    if GD.pfile:
+        if "ppi" in GD.pfile["name"].lower():
+            try:
+                id = int(request.args.get("id"))
+            except Exception as e:
+                print(e)
+                id = 0
+            uniprots = nodes["nodes"][id].get("uniprot")
+            if uniprots:
+                room = session.get("room")
+                # GD.sessionData["actStruc"] = uniprots[0]
+                x = '{"id": "prot", "val":[], "fn": "prot"}'
+                data = json.loads(x)
+                data["val"] = uniprots
+                print(data)
+                socketio.emit("ex", data, namespace="/chat", room=room)
+            # data = names["names"][id]
+            return render_template(
+                "nodepanelppi.html",
+                sessionData=json.dumps(GD.sessionData),
+                session=session,
+                pfile=GD.pfile,
+                id=id,
+                add_key=add_key,
+                nodes=nodes,
+            )
+
+        else:
+            try:
+                id = int(request.args.get("id"))
+            except Exception as e:
+                print("C_DEBUG: in except else with pfile")
+                print(e)
+                id = 0
+
+            # data = names["names"][id]
+            data = [id]
+            print("C_DEBUG: general nodepanel")
+            return render_template(
+                "nodepanel.html",
+                data=data,
+            )
+    else:
+        try:
+            id = int(request.args.get("id"))
+        except Exception as e:
+            id = 0
+            print(e)
+        print("C_DEBUG: in except else (no pfile)")
+        data = {"names": [id]}
+        return render_template(
+            "nodepanel.html",
+            data=data,
+        )
 
 
 @app.route("/upload", methods=["GET"])
