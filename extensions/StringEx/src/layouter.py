@@ -58,7 +58,7 @@ class Layouter:
         try:
             return self.pick_cg_layout_algorithm(layout_algo)
         except ImportError:
-            print("cartoGRAPHs is not installed.")
+            logger.warning("cartoGRAPHs is not installed.")
             use_spring = input("Use spring layout instead? [y/n]: ")
             if use_spring == "y":
                 return self.create_spring_layout()
@@ -103,6 +103,8 @@ class Layouter:
             self.network[VRNE.node_layouts].append(LT.string_3d_no_z)
 
         idx = 0
+        cytoscape_nodes = []
+        cy_points = []
         for node, pos in layout.items():
             node = self.network[VRNE.nodes][idx]
             color = [
@@ -112,13 +114,6 @@ class Layouter:
                 255,
             ]
             size = 1
-
-            # find the correct layout
-            cy_layout, _ = util.find_cy_layout(node)
-            if cy_layout:
-                # extract color and (size) information
-                size = cy_layout[LT.size]
-                color = cy_layout[LT.color]
 
             if VRNE.node_layouts not in self.network:
                 self.network[VRNE.node_layouts] = []
@@ -145,23 +140,34 @@ class Layouter:
             )  # Add 3D coordinates
 
             self.network[VRNE.nodes][idx] = node
+            # find the correct layout
+            cy_layout, layout_id = util.find_cy_layout(node)
+            if cy_layout:
+                cytoscape_nodes.append(node)
+                pos = node[NT.layouts][layout_id][LT.position]
+                cy_points.append(pos)
+                # extract color and (size) information
+                size = cy_layout[LT.size]
+                color = cy_layout[LT.color]
             idx += 1
+
+        self.correct_cytoscape_pos(cytoscape_nodes, cy_points, layout_id)
 
         return layout
 
-    def correct_cytoscape_pos(self) -> np.array:
+    def correct_cytoscape_pos(self, cytoscape_nodes, points, layout_id) -> np.array:
         """Corrects the Cytoscape positions to be positive and between 0 and 1."""
         # Only handle nodes which are contained in the cytoscape layout
-        cytoscape_nodes = []
-        points = []
-        for node in self.graph.nodes:
-            data = self.get_node_data(node)
-            cy_layout, idx = util.find_cy_layout(data)
-            if cy_layout is not None:
-                cytoscape_nodes.append(node)
+        # cytoscape_nodes = []
+        # points = []
+        # for node in self.graph.nodes:
+        #     data = self.get_node_data(node)
+        #     cy_layout, idx = util.find_cy_layout(data)
+        #     if cy_layout is not None:
+        #         cytoscape_nodes.append(node)
 
-                # Get positions of only these
-                points.append(cy_layout[LT.position])
+        #         # Get positions of only these
+        #         points.append(cy_layout[LT.position])
 
         if len(points) == 0:
             return None
@@ -172,9 +178,10 @@ class Layouter:
 
         # Write new formatted node positions on the xz axis
         for node, position in zip(cytoscape_nodes, points):
-            data = self.get_node_data(node)
-            data[NT.layouts][idx][LT.position] = tuple((position[0], position[1], 0.0))
-            self.set_node_data(node, data)  # Update node data
+            node[NT.layouts][layout_id][LT.position] = tuple(
+                (position[0], position[1], 0.0)
+            )
+            self.network[VRNE.nodes][node[NT.id]] = node  # Update node data
 
         return points
 

@@ -3,6 +3,7 @@ from PIL import ImageColor
 
 from .settings import LayoutTags as LT
 from .settings import NodeTags as NT
+from .settings import logger
 
 
 def prepare_networkx_network(G: nx.Graph, positions: dict = None) -> tuple[dict, dict]:

@@ -145,9 +145,9 @@ def apply_layout_workflow(
             layout_algo = "spring"
         logger.info(f"Layout algorithm {layout_algo} applied!")
     # Correct Cytoscape positions to be positive.
-    if cy_layout:
-        layouter.correct_cytoscape_pos()
-        logger.info(f"2D layout created!")
+    # if cy_layout:
+    #     layouter.correct_cytoscape_pos()
+    #     logger.info(f"2D layout created!")
     if stringify:
         logger.info("Will Stringify.")
         layouter.gen_evidence_layouts()

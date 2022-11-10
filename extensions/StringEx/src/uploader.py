@@ -173,7 +173,6 @@ class Uploader:
     def extract_node_label(self, elem, idx):
         """Extracts the node labels and add them to the names dictionary."""
         uniprot = elem.get(ST.stringdb_canoncial_name)
-        logger.debug(self.names)
         if uniprot is None:
             uniprot = elem.get(NT.uniprot)
             if uniprot:
@@ -240,7 +239,6 @@ class Uploader:
         l_tex = []
         l_img = []
         for l in layouts:
-            logger.debug(f"Creating texture for layout {l}")
             l_tex.append(
                 [[(0, 0, 0)] * size, [(0, 0, 0)] * size, [(0, 0, 0, 0)] * size]
             )
@@ -259,40 +257,27 @@ class Uploader:
             ST.stringdb_species,
         ]
 
-        curr_node_data = self.nodes[VRNE.nodes]  # get current nodes state
-
         for idx, elem in enumerate(nodes):
             # rename stringdb attributes to universal attributes to present them in nodepanel
             for u_att, s_attr in zip(universal_attributes, string_attributes):
                 if s_attr in elem:
                     elem[u_att] = elem[s_attr]
                     del elem[s_attr]
-            new = True
-            # update/add node in self.nodes which will be written to nodes.json
-            if len(curr_node_data) > idx:
-                nodes_elem = curr_node_data[idx]
-                if nodes_elem[NT.id] == elem[NT.id]:
-                    for k, v in elem.items():
-                        if k not in nodes_elem and k not in skip_attr:
-                            nodes_elem[k] = v
-                    curr_node_data[idx] = nodes_elem
-                    new = False
-            if new:
-                nodes_elem = {k: v for k, v in elem.items() if k not in skip_attr}
-                curr_node_data.append(nodes_elem)
 
+            self.nodes[VRNE.nodes].append(
+                {k: v for k, v in elem.items() if k not in skip_attr}
+            )
             tex = self.extract_node_data(elem, layouts, idx)
             for l, _ in enumerate(layouts):
                 for d in range(3):
                     l_tex[l][d][elem[NT.id]] = tex[l][d]
-
-        # Update self.nodes which will be written to nodes.json
-        self.nodes[VRNE.nodes] = curr_node_data
-
         output = ""
+
         for l, layout in enumerate(layouts):
             for d in range(3):
                 l_img[l][d].putdata(l_tex[l][d])
+                # new_imgl.putdata(texl)
+                # new_imgc.putdata(texc)
 
             pathXYZ = os_join(path, "layouts", f"{layout}XYZ.bmp")
             pathXYZl = os_join(path, "layoutsl", f"{layout}XYZl.bmp")
@@ -347,31 +332,14 @@ class Uploader:
         # new_imgc = Image.new("RGBA", (512, hight))
 
         l_idx = [0 for _ in layouts]
-        curr_links_data = self.links[VRNE.links]  # get current links state
-
-        for idx, elem in enumerate(links):
+        for elem in links:
             elem: dict
             link = {
                 LiT.id: elem.get(LiT.id),
                 LiT.start: elem.get(LiT.start),
                 LiT.end: elem.get(LiT.end),
             }
-            new = True
-            # update/add link in self.links which will be written to links.json
-            if len(curr_links_data) > idx:
-                link_elem = curr_links_data[idx]
-                if link_elem[LiT.id] == link[LiT.id]:
-                    for k, v in link.items():
-                        if k not in link_elem:
-                            link_elem[k] = v
-                    curr_links_data[idx] = link_elem
-                    new = False
-            if new:
-                curr_links_data.append(link)
-
-            # Update self.links which will be written to links.json
-            self.links[VRNE.links] = curr_links_data
-
+            self.links[VRNE.links].append(link)
             tex = self.extract_link_data(elem, layouts)
             if tex is None:
                 continue
