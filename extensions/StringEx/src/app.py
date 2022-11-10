@@ -68,7 +68,6 @@ def string_preview():
     """Route to STRING WEBGL Preview. If No project is selected, redirect to the project selection page of the StringEx WEBGL preview. this function is based on the preview function of base VRNetzer app.py."""
     data = {}
 
-    linkRGBIndex = 0
     if flask.request.args.get("project") is None:
 
         print("project Argument not provided - redirecting to menu page")
@@ -93,7 +92,7 @@ def string_preview():
     if linkRGBIndex is None:
         linkRGBIndex = 0
     else:
-        linkRGBIndex = linkRGBIndex
+        linkRGBIndex = int(linkRGBIndex)
 
     project = flask.request.args.get("project")
     GD.sessionData["actPro"] = project
