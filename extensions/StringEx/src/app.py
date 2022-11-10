@@ -11,10 +11,6 @@ from GlobalData import *
 from . import settings as st
 from . import workflows as wf
 
-sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
-sessionData["actAlgo"] = st.LayoutAlgroithms.spring
-sessionData["organisms"] = st.Organisms.all_organisms
-
 url_prefix = "/StringEx"
 
 blueprint = flask.Blueprint(
@@ -70,6 +66,7 @@ def string_main():
 @blueprint.route("/preview", methods=["GET"])
 def string_preview():
     """Route to STRING WEBGL Preview."""
+    global sesssionData
     data = {}
     layoutindex = 0
     layoutRGBIndex = 0
@@ -201,6 +198,10 @@ def string_preview():
 
 @blueprint.route("/upload", methods=["GET"])
 def upload_string():
+    global sessionData
+    sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
+    sessionData["actAlgo"] = st.LayoutAlgroithms.spring
+    sessionData["organisms"] = st.Organisms.all_organisms
     """Route to STRING upload."""
     prolist = uploader.listProjects()
     html_page = "string_upload.html"
