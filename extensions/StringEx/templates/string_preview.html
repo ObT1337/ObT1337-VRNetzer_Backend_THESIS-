@@ -1,4 +1,7 @@
 {% include "threeJS_VIEWER.html" %}
+<script>
+
+</script>
 
 <!-- StringEx style -->
 <link rel="stylesheet" href="{{ url_for('StringEx.static', filename='css/StringStyle.css') }}">
@@ -95,6 +98,14 @@
     }
 </script>
 <script>
+    // Make left panel also scrollable
+    document.write('<div id="leftSideav" class="sidenav" style="left:0"><\div>');
+    var child = document.getElementById("prname");
+    var parent = child.parentNode
+    var left = document.getElementById("leftSideav");
+    left.appendChild(parent)
+    
+    // Change href of the link to the projects page
     var forms = document.getElementsByTagName("form")
     for(var i=0;i<forms.length; i++){
         if(forms[i].action =="http://127.0.0.1:5000/preview"){
