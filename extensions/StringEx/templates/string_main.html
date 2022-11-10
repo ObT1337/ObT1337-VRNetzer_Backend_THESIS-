@@ -6,14 +6,12 @@
 
 <script>
     var session = JSON.parse({{session|tojson}});
-    console.log(session);
     var url = window.location.href;
-    console.log(url);
-    if(!(url.includes("username"))){
+    if(!(url.includes("usr"))){
         if(url.includes("?")){
-            window.location.href = url + "&username=" + session["username"];
+            window.location.href = url + "&usr=" + session["username"];
         }else{
-            window.location.href = url + "?username=" + session["username"];
+            window.location.href = url + "?usr=" + session["username"];
         };
     };
     console.log(window.location.href );
@@ -130,6 +128,9 @@
 <!-- Change Image of Tab on which STRING Evidence tab is located-->
 <script>
     if (pdata["network"]=="string"){
+        document.getElementById("chbLrgb").checked = false; // turn off link layout change
+
+        // Add evidence tab to the tab bar
         var list_objects = document.getElementsByTagName("li");
         for(var i = 0; i < list_objects.length; i++){
             var link = list_objects[i].getElementsByTagName("a")[0];
