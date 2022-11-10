@@ -45,6 +45,7 @@ def string_main():
         # prolist = listProjects()
         folder = "static/projects/" + project + "/"
 
+        # Update global pfile and global names variables
         with open(folder + "pfile.json", "r") as json_file:
             GD.pfile = json.load(json_file)
 
@@ -64,38 +65,39 @@ def string_main():
 
 @blueprint.route("/preview", methods=["GET"])
 def string_preview():
-    """Route to STRING WEBGL Preview."""
-    global sesssionData
+    """Route to STRING WEBGL Preview. If No project is selected, redirect to the project selection page of the StringEx WEBGL preview. this function is based on the preview function of base VRNetzer app.py."""
     data = {}
-    layoutindex = 0
-    layoutRGBIndex = 0
+
     linkRGBIndex = 0
-    html_preview = "WebGl_Viewer.html"
-    html_menu = "threeJS_VIEWER_Menu.html"
     if flask.request.args.get("project") is None:
+
         print("project Argument not provided - redirecting to menu page")
 
         data["projects"] = uploader.listProjects()
         print(data["projects"])
-        return flask.render_template(html_menu, data=json.dumps(data))
+        return flask.render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data))
 
-    if flask.request.args.get("layout") is None:
+    layoutindex = flask.request.args.get("layout")
+    if layoutindex is None:
         layoutindex = 0
     else:
-        layoutindex = int(flask.request.args.get("layout"))
+        layoutindex = int(layoutindex)
 
-    if flask.request.args.get("ncol") is None:
+    layoutRGBIndex = flask.request.args.get("ncol")
+    if layoutRGBIndex is None:
         layoutRGBIndex = 0
     else:
-        layoutRGBIndex = int(flask.request.args.get("ncol"))
+        layoutRGBIndex = int(layoutRGBIndex)
 
-    if flask.request.args.get("lcol") is None:
+    linkRGBIndex = flask.request.args.get("lcol")
+    if linkRGBIndex is None:
         linkRGBIndex = 0
     else:
-        linkRGBIndex = int(flask.request.args.get("lcol"))
+        linkRGBIndex = linkRGBIndex
 
     project = flask.request.args.get("project")
     GD.sessionData["actPro"] = project
+
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
 
@@ -103,13 +105,11 @@ def string_preview():
     p = open(pname + ".json", "r")
     thispfile = json.load(p)
     thispfile["selected"] = [layoutindex, layoutRGBIndex, linkRGBIndex]
-    # print(thispfile["layouts"])
 
     name = os.path.join(st._PROJECTS_PATH, project, "nodes")
     n = open(name + ".json", "r")
     nodes = json.load(n)
     nlength = len(nodes["nodes"])
-    # print(nlength)
 
     lname = os.path.join(st._PROJECTS_PATH, project, "links")
     f = open(lname + ".json", "r")
@@ -148,15 +148,12 @@ def string_preview():
     )
     imlc = Image.open(links_col, "r")
 
-    width, height = im.size
     pixel_values = list(im.getdata())
     pixel_valuesl = list(iml.getdata())
     pixel_valuesc = list(imc.getdata())
     pixel_valueslc = list(imlc.getdata())
 
-    # print(pixel_values[len(pixel_values)-1])
-    i = 0
-    for x in pixel_values:
+    for i, x in enumerate(pixel_values):
         if i < nlength:
             newnode = {}
             pos = [
@@ -169,26 +166,19 @@ def string_preview():
             newnode["c"] = pixel_valuesc[i]
             newnode["n"] = nodes["nodes"][i]["n"]
             testNetwork["nodes"].append(newnode)
-            i = i + 1
 
-    # print(testNetwork)
-
+    if length > 30000:
+        length = 30000
     for x in range(length - 1):
-        if (
-            x < 30000
-        ):  # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
-            newLink = {}
-            newLink["id"] = x
-            newLink["s"] = links["links"][x]["s"]
-            newLink["e"] = links["links"][x]["e"]
-            newLink["c"] = pixel_valueslc[x]
-            testNetwork["links"].append(newLink)
-        # print(links["links"][x])
+        newLink = {}
+        newLink["id"] = x
+        newLink["s"] = links["links"][x]["s"]
+        newLink["e"] = links["links"][x]["e"]
+        newLink["c"] = pixel_valueslc[x]
+        testNetwork["links"].append(newLink)
 
-    # print(testNetwork)
-    # return flask.render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return flask.render_template(
-        html_preview,
+        "string_preview.html",
         data=json.dumps(testNetwork),
         pfile=json.dumps(thispfile),
         sessionData=json.dumps(GD.sessionData),
@@ -196,7 +186,8 @@ def string_preview():
 
 
 @blueprint.route("/upload", methods=["GET"])
-def upload_string():
+def string_upload():
+    """Rout to upload a new .VRNetz file to create a new project. This function is based on the upload function of base VRNetzer app.py."""
     GD.sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
     GD.sessionData["actAlgo"] = st.LayoutAlgroithms.spring
     GD.sessionData["organisms"] = st.Organisms.all_organisms
@@ -212,13 +203,13 @@ def upload_string():
 
 
 @blueprint.route("/uploadfiles", methods=["GET", "POST"])
-def execute_upload():
+def string_ex_upload():
     """Route to execute the upload of a VRNetz using the STRING Uploader."""
     return wf.VRNetzer_upload_workflow(flask.request)
 
 
 @blueprint.route("/mapfiles", methods=["GET", "POST"])
-def execute_map():
+def string_ex_map():
     """Route to Map a small String network to a genome scale network."""
     return wf.VRNetzer_map_workflow(flask.request)
 
@@ -231,53 +222,3 @@ def prepare_session_data():
     else:
         username = username + str(random.randint(1001, 9998))
     flask.session["username"] = username
-
-
-# @blueprint.route("/nodepanel", methods=["GET", "POST"])
-# def nodepanel():
-#     # try:
-#     #    id = int(request.args.get("id"))
-#     # except:
-#     #    print('C_DEBUG: in except at start')
-#     #    if id is None:
-#     #        id=0
-#     nodes = {"nodes": []}
-#     project = flask.request.args.get("project")
-#     if project is None:
-#         GD.sessionData.get("actPro")
-#         print(GD.sessionData)
-#         project = "Ecoli"
-
-#     folder = os.path.join("static", "projects", project)
-
-#     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-#         pfile = json.load(json_file)
-
-#     with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-#         nodes = json.load(json_file)
-#     add_key = "NA"  # Additional key to show under Structural Information
-#     # nodes = {node["id"]: node for node in nodes}
-#     try:
-#         id = int(flask.request.args.get("id"))
-#     except Exception as e:
-#         id = 0
-#         print(e)
-#     uniprots = nodes["nodes"][id].get("uniprot")
-#     if uniprots:
-#         GD.sessionData["actStruc"] = uniprots[0]
-#     # data = GD.names["names"][id]
-
-#     network_type = GD.pfile.get("network")
-#     print(network_type)
-#     if network_type == "string":
-#         return flask.render_template(
-#             "/nodepanel/string_nodepanel.html",
-#             sessionData=json.dumps(GD.sessionData),
-#             session=flask.session,
-#             pfile=GD.pfile,
-#             id=id,
-#             add_key=add_key,
-#             nodes=json.dumps(nodes),
-#         )
-#     else:
-#         return flask.redirect("/nodepanel")
