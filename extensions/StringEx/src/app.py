@@ -5,8 +5,8 @@ import random
 import flask
 from PIL import Image
 
+import GlobalData as GD
 import uploader
-from GlobalData import *
 
 from . import settings as st
 from . import workflows as wf
@@ -46,19 +46,17 @@ def string_main():
         folder = "static/projects/" + project + "/"
 
         with open(folder + "pfile.json", "r") as json_file:
-            global pfile
-            pfile = json.load(json_file)
+            GD.pfile = json.load(json_file)
 
         with open(folder + "names.json", "r") as json_file:
-            global names
-            names = json.load(json_file)
+            GD.names = json.load(json_file)
 
         return flask.render_template(
             # "/mainpanel/string_main.html",
             "/string_main.html",
             session=flask.session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
         )
     else:
         return "error"
@@ -97,7 +95,7 @@ def string_preview():
         linkRGBIndex = int(flask.request.args.get("lcol"))
 
     project = flask.request.args.get("project")
-    sessionData["actPro"] = project
+    GD.sessionData["actPro"] = project
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
 
@@ -193,24 +191,23 @@ def string_preview():
         html_preview,
         data=json.dumps(testNetwork),
         pfile=json.dumps(thispfile),
-        sessionData=json.dumps(sessionData),
+        sessionData=json.dumps(GD.sessionData),
     )
 
 
 @blueprint.route("/upload", methods=["GET"])
 def upload_string():
-    global sessionData
-    sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
-    sessionData["actAlgo"] = st.LayoutAlgroithms.spring
-    sessionData["organisms"] = st.Organisms.all_organisms
+    GD.sessionData["layoutAlgos"] = st.LayoutAlgroithms.all_algos
+    GD.sessionData["actAlgo"] = st.LayoutAlgroithms.spring
+    GD.sessionData["organisms"] = st.Organisms.all_organisms
     """Route to STRING upload."""
     prolist = uploader.listProjects()
     html_page = "string_upload.html"
     return flask.render_template(
         html_page,
         namespaces=prolist,
-        algorithms=sessionData["layoutAlgos"],
-        organisms=sessionData["organisms"],
+        algorithms=GD.sessionData["layoutAlgos"],
+        organisms=GD.sessionData["organisms"],
     )
 
 
@@ -247,8 +244,8 @@ def prepare_session_data():
 #     nodes = {"nodes": []}
 #     project = flask.request.args.get("project")
 #     if project is None:
-#         sessionData.get("actPro")
-#         print(sessionData)
+#         GD.sessionData.get("actPro")
+#         print(GD.sessionData)
 #         project = "Ecoli"
 
 #     folder = os.path.join("static", "projects", project)
@@ -267,17 +264,17 @@ def prepare_session_data():
 #         print(e)
 #     uniprots = nodes["nodes"][id].get("uniprot")
 #     if uniprots:
-#         sessionData["actStruc"] = uniprots[0]
-#     # data = names["names"][id]
+#         GD.sessionData["actStruc"] = uniprots[0]
+#     # data = GD.names["names"][id]
 
-#     network_type = pfile.get("network")
+#     network_type = GD.pfile.get("network")
 #     print(network_type)
 #     if network_type == "string":
 #         return flask.render_template(
 #             "/nodepanel/string_nodepanel.html",
-#             sessionData=json.dumps(sessionData),
+#             sessionData=json.dumps(GD.sessionData),
 #             session=flask.session,
-#             pfile=pfile,
+#             pfile=GD.pfile,
 #             id=id,
 #             add_key=add_key,
 #             nodes=json.dumps(nodes),
