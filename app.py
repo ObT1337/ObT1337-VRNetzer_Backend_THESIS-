@@ -15,8 +15,8 @@ from flask import Flask, jsonify, redirect, render_template, request, session, u
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
+import GlobalData as GD
 import load_extensions
-from GlobalData import *
 from search import *
 from uploader import *
 from websocket_functions import *
@@ -365,21 +365,18 @@ def main():
         if project != "none":
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
-                global pfile
-                pfile = json.load(json_file)
-                print(pfile)
+                GD.pfile = json.load(json_file)
+                print(GD.pfile)
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
-                # print(names)
+                GD.names = json.load(json_file)
             json_file.close()
         return render_template(
             "main.html",
             session=session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
         )
     else:
         return "error"
@@ -436,18 +433,16 @@ def nodepanel():
 
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-        global pfile
-        pfile = json.load(json_file)
+        GD.pfile = json.load(json_file)
 
     with open(os.path.join(folder, "nodes.json"), "r") as json_file:
         nodes = json.load(json_file)
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
-    global sessionData
 
-    if pfile:
-        if "ppi" in pfile["name"].lower():
+    if GD.pfile:
+        if "ppi" in GD.pfile["name"].lower():
             try:
                 id = int(request.args.get("id"))
             except Exception as e:
@@ -462,12 +457,12 @@ def nodepanel():
                 data = json.loads(x)
                 data["val"] = uniprots
                 socketio.emit("ex", data, namespace="/chat", room=room)
-            # data = names["names"][id]
+            # data = GD.names["names"][id]
             return render_template(
                 "new_nodepanelppi.html",
-                sessionData=json.dumps(sessionData),
+                sessionData=json.dumps(GD.sessionData),
                 session=session,
-                pfile=pfile,
+                pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
                 node=json.dumps(node),
@@ -481,7 +476,7 @@ def nodepanel():
                 print(e)
                 id = 0
 
-            # data = names["names"][id]
+            # data = GD.names["names"][id]
             data = [id]
             print("C_DEBUG: general nodepanel")
             return render_template(
@@ -533,8 +528,7 @@ def ex(message):
     message["usr"] = session.get("username")
 
     if message["id"] == "projects":
-        global sessionData
-        sessionData["actPro"] = message["opt"]
+        GD.sessionData["actPro"] = message["opt"]
 
         print("changed activ project " + message["opt"])
 
@@ -552,11 +546,11 @@ def ex(message):
         message["prot"] = []
         message["protsize"] = []
         for id in message["data"]:
-            message["names"].append(names["names"][id][0])
+            message["names"].append(GD.names["names"][id][0])
 
-            if len(names["names"][id]) == 5:
-                message["prot"].append(names["names"][id][3])
-                message["protsize"].append(names["names"][id][4])
+            if len(GD.names["names"][id]) == 5:
+                message["prot"].append(GD.names["names"][id][3])
+                message["protsize"].append(GD.names["names"][id][4])
             else:
                 message["prot"].append("x")
                 message["protsize"].append(-1)
