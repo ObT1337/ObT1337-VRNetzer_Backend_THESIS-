@@ -122,7 +122,8 @@ def nodepanel():
             except Exception as e:
                 print(e)
                 id = 0
-            uniprots = nodes["nodes"][id].get("uniprot")
+            node = nodes["nodes"][id]
+            uniprots = node.get("uniprot")
             if uniprots:
                 room = session.get("room")
                 # GD.sessionData["actStruc"] = uniprots[0]
@@ -139,7 +140,7 @@ def nodepanel():
                 pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
-                nodes=nodes,
+                node=json.dumps({"node":node}),
             )
 
         else:
