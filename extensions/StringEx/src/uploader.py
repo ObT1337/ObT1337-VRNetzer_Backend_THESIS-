@@ -80,7 +80,7 @@ class Uploader:
             json.dump(self.pfile, outfile)
 
         with open(self.names_file, "w") as outfile:
-            json.dump(self.attr_list, outfile)
+            json.dump(self.names, outfile)
 
         rel_path = path.find("static")
         rel_path = path[rel_path:]
@@ -110,7 +110,7 @@ class Uploader:
         """Will update the project files: pfile, names, nodes, links"""
         files = [self.pfile_file, self.names_file, self.nodes_file, self.links_file]
 
-        contents = [self.pfile, self.attr_list, self.nodes, self.links]
+        contents = [self.pfile, self.names, self.nodes, self.links]
 
         for file, content in zip(
             files,
@@ -140,15 +140,14 @@ class Uploader:
         # print(sub_folders)
         return sub_folders
 
-    @staticmethod
-    def extract_node_data(elem, layouts, attr_list, skip_attr):
+    def extract_node_data(self, elem, layouts, elem_idx):
         tex = []
         elem_lays = {lay[LT.name]: idx for idx, lay in enumerate(elem[NT.layouts])}
+        self.extract_node_label(elem, elem_idx)
         for idx, layout in enumerate(layouts):
             tex.append([])
             coords = [0, 0, 0]  # x,y,z
             color = [0, 255, 255, 255]  # r,g,b,a
-            attr_list = extract_attributes(attr_list, elem, skip_attr)
 
             if layout in elem_lays:
                 l_idx = elem_lays[layout]
@@ -170,6 +169,26 @@ class Uploader:
             tex[idx].append(tuple(color))
 
         return tex
+
+    def extract_node_label(self, elem, idx):
+        """Extracts the node labels and add them to the names dictionary."""
+        uniprot = elem.get(ST.stringdb_canoncial_name)
+        logger.debug(self.names)
+        if uniprot is None:
+            uniprot = elem.get(NT.uniprot)
+            if uniprot:
+                uniprot = uniprot[0]
+            else:
+                elem.get(NT.name)
+        if uniprot:
+            name = [uniprot]
+            if "names" not in self.names:
+                self.names["names"] = []
+            labels = self.names["names"]
+            if idx < len(labels):
+                if name == labels[idx]:
+                    return
+            self.names["names"].append(name)
 
     @staticmethod
     def extract_link_data(elem: dict, layouts):
@@ -221,6 +240,7 @@ class Uploader:
         l_tex = []
         l_img = []
         for l in layouts:
+            logger.debug(f"Creating texture for layout {l}")
             l_tex.append(
                 [[(0, 0, 0)] * size, [(0, 0, 0)] * size, [(0, 0, 0, 0)] * size]
             )
@@ -261,7 +281,7 @@ class Uploader:
                 nodes_elem = {k: v for k, v in elem.items() if k not in skip_attr}
                 curr_node_data.append(nodes_elem)
 
-            tex = self.extract_node_data(elem, layouts, self.attr_list, skip_attr)
+            tex = self.extract_node_data(elem, layouts, idx)
             for l, _ in enumerate(layouts):
                 for d in range(3):
                     l_tex[l][d][elem[NT.id]] = tex[l][d]
@@ -421,12 +441,14 @@ class Uploader:
         ev_rgb = [f"{ev}RGB" for ev in ev]
         self.pfile[PT.links] = ev_xyz  # [ev_xyz[0], ev_xyz[0]] + ev_xyz
         self.pfile[PT.links_rgb] = ev_rgb  # [ev_rgb[0], ev_rgb[0]] + ev_rgb
-        if LT.cy_layout not in self.pfile[PT.layouts]:
+        logger.debug(f"pfile before if statement:\n{self.pfile}")
+        if f"{LT.cy_layout}XYZ" not in self.pfile[PT.layouts]:
             self.pfile[PT.layouts] = [f"{LT.string_3d_no_z}XYZ", f"{LT.string_3d}XYZ"]
             self.pfile[PT.layouts_rgb] = [
                 f"{LT.string_3d_no_z}RGB",
                 f"{LT.string_3d}RGB",
             ]
+        logger.debug(f"pfile after if statement:\n{self.pfile}")
         # if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
         #     self.pfile[PT.layouts] = [
         #         f"{LT.cy_layout}XYZ",
@@ -487,37 +509,3 @@ class Uploader:
         GD.sessionData["proj"] = self.listProjects(self.pf_path)
 
         return state
-
-
-def extract_attributes(attr_list, elem, skip_attr):
-    # if AT.names not in attr_list:
-    #     attr_list["names"] = []
-    # name = ["NA"]
-
-    # if ST.stringdb_canoncial_name in elem.keys():
-    #     uniprot = elem[ST.stringdb_canoncial_name]
-    #     name = [
-    #         uniprot,  # identifier
-    #         "None",  # Attribute
-    #         uniprot,  # Annotation
-    #         50,  # Additional
-    #     ]
-    #     if ST.stringdb_sequence in elem.keys():
-    #         name[-1] = elem[ST.stringdb_sequence]
-    # elif NT.name in elem.keys():
-    #     gene_name = elem[NT.name]
-    #     name = [f"GENENAME={gene_name}"]
-    uniprot = elem.get(ST.stringdb_canoncial_name)
-    if uniprot is None:
-        uniprot = elem.get(NT.uniprot)
-        if uniprot:
-            uniprot = uniprot[0]
-        else:
-            elem.get(NT.name)
-    if uniprot:
-        name = [uniprot]
-        if "names" not in attr_list:
-            attr_list["names"] = []
-        attr_list["names"].append(name)
-
-    return attr_list
