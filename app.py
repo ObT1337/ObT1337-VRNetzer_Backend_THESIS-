@@ -11,8 +11,7 @@ from io import StringIO
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -44,7 +43,6 @@ socketio = SocketIO(app, manage_session=False)
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
-
 
 
 @app.route("/main", methods=["GET"])
@@ -91,7 +89,6 @@ def main():
         return "error"
 
 
-
 @app.route("/nodepanel", methods=["GET"])
 def nodepanel():
     # try:
@@ -122,7 +119,8 @@ def nodepanel():
             except Exception as e:
                 print(e)
                 id = 0
-            uniprots = nodes["nodes"][id].get("uniprot")
+            node = nodes["nodes"][id]
+            uniprots = node.get("uniprot")
             if uniprots:
                 room = session.get("room")
                 # GD.sessionData["actStruc"] = uniprots[0]
@@ -133,13 +131,14 @@ def nodepanel():
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
-                "nodepanelppi.html",
+                # "nodepanelppi.html",
+                "new_nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
                 session=session,
                 pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
-                nodes=nodes,
+                node=json.dumps({"node": node}),
             )
 
         else:
@@ -171,13 +170,10 @@ def nodepanel():
         )
 
 
-
-
 @app.route("/upload", methods=["GET"])
 def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
-
 
 
 @app.route("/ForceLayout")
@@ -320,10 +316,6 @@ def test44():
     )
 
 
-
-
-
-
 # gets information about a specific node
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
@@ -381,7 +373,6 @@ def get_structure_scale() -> float or str:
 ### DATA ROUTES###
 
 
-
 @app.route("/load_all_projects", methods=["GET", "POST"])
 def loadAllProjectsR():
     return jsonify(projects=listProjects())
@@ -395,6 +386,7 @@ def loadProjectInfoR(name):
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
     return loadAnnotations(name)
+
 
 ###SocketIO ROUTES###
 
@@ -475,4 +467,4 @@ def left(message):
 
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, port=3000, debug=True)

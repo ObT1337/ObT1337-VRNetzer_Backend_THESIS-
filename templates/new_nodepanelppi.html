@@ -42,7 +42,7 @@
     
     <script>
         var sessiondata = JSON.parse({{ sessionData| tojson}});
-        var node_data = JSON.parse({{node | tojson}});
+        var node_data = JSON.parse({{node | tojson}})["node"];
         var node_sym = node_data["n"];
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
