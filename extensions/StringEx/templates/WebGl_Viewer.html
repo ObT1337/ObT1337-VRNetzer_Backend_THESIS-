@@ -90,6 +90,11 @@
 
 </div>
 <script>
+    if (!(pdata["network"]=="string")){
+        document.getElementById("mySidenav").remove();
+    }
+</script>
+<script>
     var forms = document.getElementsByTagName("form")
     for(var i=0;i<forms.length; i++){
         if(forms[i].action =="http://127.0.0.1:5000/preview"){
