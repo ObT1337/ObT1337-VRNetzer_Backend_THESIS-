@@ -54,10 +54,11 @@ def string_main():
             names = json.load(json_file)
 
         return flask.render_template(
-            "/mainpanel/string_main.html",
+            # "/mainpanel/string_main.html",
+            "/string_main.html",
             session=flask.session,
             sessionData=json.dumps(sessionData),
-            pfile=pfile,
+            pfile=json.dumps(pfile),
         )
     else:
         return "error"
@@ -71,7 +72,7 @@ def string_preview():
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
-    html_preview = "threeJS_VIEWER_string.html"
+    html_preview = "WebGl_Viewer.html"
     html_menu = "threeJS_VIEWER_Menu.html"
     if flask.request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
