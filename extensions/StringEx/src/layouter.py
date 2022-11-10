@@ -97,10 +97,11 @@ class Layouter:
         for i, key in enumerate(layout):
             layout[key] = points[i]
 
-        if LT.string_3d not in self.network[VRNE.node_layouts]:
-            self.network[VRNE.node_layouts].append(LT.string_3d)
         if LT.string_3d_no_z not in self.network[VRNE.node_layouts]:
             self.network[VRNE.node_layouts].append(LT.string_3d_no_z)
+
+        if LT.string_3d not in self.network[VRNE.node_layouts]:
+            self.network[VRNE.node_layouts].append(LT.string_3d)
 
         idx = 0
         cytoscape_nodes = []
@@ -140,6 +141,7 @@ class Layouter:
             )  # Add 3D coordinates
 
             self.network[VRNE.nodes][idx] = node
+
             # find the correct layout
             cy_layout, layout_id = util.find_cy_layout(node)
             if cy_layout:

@@ -54,7 +54,7 @@ ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
 
 # create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 # add formatter to ch
 ch.setFormatter(formatter)
@@ -71,8 +71,8 @@ class LayoutTags:
     cy_layout = "cy"
     name = "n"
     _3d = "3d"
-    string_3d = "st3d"
-    string_3d_no_z = "st2d"
+    string_3d = "3d"
+    string_3d_no_z = "2d"
 
 
 class NodeTags:
