@@ -1,5 +1,5 @@
 uniprot_id,pdb_file,multi_structure,parts,cartoons_ss_coloring
-P11137,/Users/till/Documents/Playground/VRNetzer_Backend/extensions/ProteinStructureFetch/src/../processing_files/pdbs/AF-P11137-F1-model_v4.pdb,,,48.0355069203729
+P11137,C:\Users\tilld\Documents\Playground\VRNetzer_Backend\extensions\ProteinStructureFetch\src\..\processing_files\pdbs\AF-P11137-F1-model_v4.pdb,,,48.0355069203729
 P03886,/Users/till/Documents/Playground/VRNetzer_Backend/extensions/ProteinStructureFetch/src/../processing_files/pdbs/AF-P03886-F1-model_v4.pdb,,,169.5933541214527
 Q9NZ42,/Users/till/Documents/Playground/VRNetzer_Backend/extensions/ProteinStructureFetch/src/../processing_files/pdbs/AF-Q9NZ42-F1-model_v4.pdb,,,175.2070039238459
 P01138,/Users/till/Documents/Playground/VRNetzer_Backend/extensions/ProteinStructureFetch/src/../processing_files/pdbs/AF-P01138-F1-model_v4.pdb,,,121.60045718921891

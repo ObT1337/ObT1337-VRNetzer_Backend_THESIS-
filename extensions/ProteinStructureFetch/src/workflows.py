@@ -18,6 +18,7 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
     pdb_id = request.args.get("id")
     mode = request.args.get("mode")
     alphafold_ver = request.args.get("ver")
+    parser.update_existence(pdb_id)
     if pdb_id is None:
         return flask.jsonify({"error": "No PDB ID provided."})
     if mode is None:
@@ -30,6 +31,7 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
     proteins = [pdb_id]
     batch([parser.fetch_pdb, parser.pdb_pipeline], proteins, parser.batch_size)
     result = get_scales(proteins, mode)
+    parser.update_existence(pdb_id)
     return {"not_fetched": parser.not_fetched, "results": result}
 
 
@@ -50,6 +52,8 @@ def for_project(parser, request):
     with open(nodes_files, "r") as f:
         nodes = json.load(f)["nodes"]
     proteins = [",".join(node[NT.uniprot]) for node in nodes if node.get(NT.uniprot)]
+    for protein in proteins:
+        parser.update_existence(protein)
     print(proteins)
     batch([parser.fetch_pdb, parser.pdb_pipeline], proteins, parser.batch_size)
     result = get_scales(proteins, mode)

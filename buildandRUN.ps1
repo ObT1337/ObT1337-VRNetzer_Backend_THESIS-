@@ -9,7 +9,9 @@ venv\Scripts\activate
 #pip install pymysql
 python -m pip install -r extensions/StringEx/requirements.txt
 python -m pip install -r extensions/StringEx/cartographs_requirements.txt
+python -m pip install -r extensions/ProteinStructureFetch/requirements.txt
 python -m pip install -r requirements.txt
+python -m pip install -i https://test.pypi.org/simple/ vrprot==0.0.2
 python -m pip install cartoGRAPHs
 $env:FLASK_ENV="development"
 $env:FLASK_APP="app.py"
