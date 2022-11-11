@@ -11,12 +11,13 @@ from io import StringIO
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
+import GlobalData as GD
 import load_extensions
-from GlobalData import *
 from search import *
 from uploader import *
 from websocket_functions import *
@@ -71,9 +72,8 @@ def main():
         if project != "none":
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
-                global pfile
-                pfile = json.load(json_file)
-                print(pfile)
+                GD.pfile = json.load(json_file)
+                print(GD.pfile)
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
@@ -84,8 +84,8 @@ def main():
         return render_template(
             "main.html",
             session=session,
-            sessionData=json.dumps(sessionData),
-            pfile=json.dumps(pfile),
+            sessionData=json.dumps(GD.sessionData),
+            pfile=json.dumps(GD.pfile),
         )
     else:
         return "error"
@@ -107,27 +107,26 @@ def nodepanel():
 
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-        global pfile
-        pfile = json.load(json_file)
+        GD.pfile = json.load(json_file)
 
     with open(os.path.join(folder, "nodes.json"), "r") as json_file:
         nodes = json.load(json_file)
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
-    global sessionData
 
-    if pfile:
-        if "ppi" in pfile["name"].lower():
+    if GD.pfile:
+        if "ppi" in GD.pfile["name"].lower():
             try:
                 id = int(request.args.get("id"))
             except Exception as e:
                 print(e)
                 id = 0
-            uniprots = nodes["nodes"][id].get("uniprot")
+            node = nodes["nodes"][id]
+            uniprots = node.get("uniprot")
             if uniprots:
                 room = session.get("room")
-                # sessionData["actStruc"] = uniprots[0]
+                # GD.sessionData["actStruc"] = uniprots[0]
                 x = '{"id": "prot", "val":[], "fn": "prot"}'
                 data = json.loads(x)
                 data["val"] = uniprots
@@ -136,12 +135,12 @@ def nodepanel():
             # data = names["names"][id]
             return render_template(
                 "nodepanelppi.html",
-                sessionData=json.dumps(sessionData),
+                sessionData=json.dumps(GD.sessionData),
                 session=session,
-                pfile=pfile,
+                pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
-                nodes=nodes,
+                node=json.dumps({"node":node}),
             )
 
         else:
@@ -340,6 +339,45 @@ def nodeinfo():
         return nodes["nodes"][int(id)]
 
 
+@app.route("/scale", methods=["GET"])
+def get_structure_scale() -> float or str:
+    """Return the scale of the structure as a float. If the structure is not found (or not provided), the size file is not available or the mode is not given, the function will return an error message as string. To provide the UniProtID add the 'uniprot=<UniProtID>', for the mode add 'mode=<mode>' to the URL. Currently available modes are 'cartoon' and 'electrostatic'. The default mode is 'cartoon'."""
+
+    uniprot = request.args.get("uniprot")
+    mode = request.args.get("mode")
+
+    if mode is None:
+        print("Error: No mode provided. Will use default mode 'cartoon'.")
+        mode = "cartoon"
+
+    if uniprot is None:
+        return "Error: No UniProtID provided."
+
+    possible_files = {
+        "cartoon": os.path.join(".", "static", "csv", "scales_Cartoon.csv"),
+        "electrostatic": os.path.join(
+            ".", "static", "csv", "scales_electrostatic_surface.csv"
+        ),
+    }
+    scale_file = possible_files.get(mode)
+
+    # Prevent FileNotFound errors.
+    if scale_file is None:
+        return "Error: Mode not available."
+    if not os.path.exists(scale_file):
+        return "Error: File not found."
+
+    # Search for size of structure.
+    with open(scale_file, "r") as f:
+        csv_file = csv.reader(f)
+        for row in csv_file:
+            if row[0] == uniprot:
+                scale = row[1]
+                return scale
+
+    # Structure not found in the scale file -> no available.
+    return "Error: No structure available for this UniProtID."
+
 
 ### DATA ROUTES###
 
@@ -390,8 +428,7 @@ def ex(message):
     message["usr"] = session.get("username")
 
     if message["id"] == "projects":
-        global sessionData
-        sessionData["actPro"] = message["opt"]
+        GD.sessionData["actPro"] = message["opt"]
 
         print("changed activ project " + message["opt"])
 
@@ -406,19 +443,20 @@ def ex(message):
     if message["id"] == "nl":
         message["names"] = []
         message["fn"] = "cnl"
-
+        message["prot"] = []
+        message["protsize"] = []
         for id in message["data"]:
-            message["names"].append(names["names"][id][0])
+            message["names"].append(GD.names["names"][id][0])
+
+            if len(GD.names["names"][id]) == 5:
+                message["prot"].append(GD.names["names"][id][3])
+                message["protsize"].append(GD.names["names"][id][4])
+            else:
+                message["prot"].append("x")
+                message["protsize"].append(-1)
 
         print(message)
         emit("ex", message, room=room)
-
-    if message["id"] == "structure":
-        
-        message["size"] = get_structure_scale(message["opt"],"electrostatic")
-        emit("ex", message, room=room)
-
-
 
     else:
         emit("ex", message, room=room)
