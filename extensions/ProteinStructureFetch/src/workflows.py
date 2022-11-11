@@ -18,9 +18,16 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
     pdb_id = request.args.get("id")
     mode = request.args.get("mode")
     alphafold_ver = request.args.get("ver")
-    parser.update_existence(pdb_id)
     if pdb_id is None:
         return flask.jsonify({"error": "No PDB ID provided."})
+    proteins = [pdb_id]
+
+    output_dir = os.path.join(st._MAPS_PATH, mode)
+    parser.OUTPUT_DIR = output_dir
+    os.makedirs(output_dir, exist_ok=True)
+
+    parser.init_structures_dict(proteins)
+    parser.update_existence(pdb_id)
     if mode is None:
         mode = st.DEFAULT_MODE
     if alphafold_ver is not None:
@@ -28,7 +35,6 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
             parser.alphafold_ver = alphafold_ver
         else:
             parser.alphafold_ver = AlphaFoldVersion.v4.value
-    proteins = [pdb_id]
     batch([parser.fetch_pdb, parser.pdb_pipeline], proteins, parser.batch_size)
     result = get_scales(proteins, mode)
     parser.update_existence(pdb_id)
@@ -52,6 +58,7 @@ def for_project(parser, request):
     with open(nodes_files, "r") as f:
         nodes = json.load(f)["nodes"]
     proteins = [",".join(node[NT.uniprot]) for node in nodes if node.get(NT.uniprot)]
+    parser.init_structures_dict(proteins)
     for protein in proteins:
         parser.update_existence(protein)
     print(proteins)
