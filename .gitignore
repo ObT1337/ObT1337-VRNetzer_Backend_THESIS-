@@ -9,3 +9,4 @@ Electrostatic_Surface_MAPS/
 .venv
 *.code-workspace
 extensions/ProteinStructureFetch/processing_files/*
+static/csv/overview.csv
