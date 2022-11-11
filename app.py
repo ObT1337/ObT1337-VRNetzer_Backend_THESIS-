@@ -437,11 +437,11 @@ def ex(message):
         message["prot"] = []
         message["protsize"] = []
         for id in message["data"]:
-            message["names"].append(names["names"][id][0])
+            message["names"].append(GD.names["names"][id][0])
 
-            if len(names["names"][id]) == 5:
-                message["prot"].append(names["names"][id][3])
-                message["protsize"].append(names["names"][id][4])
+            if len(GD.names["names"][id]) == 5:
+                message["prot"].append(GD.names["names"][id][3])
+                message["protsize"].append(GD.names["names"][id][4])
             else:
                 message["prot"].append("x")
                 message["protsize"].append(-1)
