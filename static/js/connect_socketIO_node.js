@@ -2,16 +2,6 @@
 var socket;
 var lastval = 0;
 
-/// UE4 connection
-
-
-/// ue4 to webui routes
-
-function settextscroll(id, val) {
-    var box = document.getElementById(id).shadowRoot.getElementById("box");
-    $(box).scrollTop(val[0]);
-    $(box).scrollLeft(val[1]);
-}
 
 
 $(document).ready(function(){
@@ -94,7 +84,7 @@ $(document).ready(function(){
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project
                 if (data.id == "structure"){
-                    ue4("prot", {id:data.opt});
+                    ue4("prot", data);
                 }
 
                 $('#'+ data.id).val(data.opt);
