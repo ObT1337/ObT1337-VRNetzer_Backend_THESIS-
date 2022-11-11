@@ -20,14 +20,6 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
     alphafold_ver = request.args.get("ver")
     if pdb_id is None:
         return flask.jsonify({"error": "No PDB ID provided."})
-    proteins = [pdb_id]
-
-    output_dir = os.path.join(st._MAPS_PATH, mode)
-    parser.OUTPUT_DIR = output_dir
-    os.makedirs(output_dir, exist_ok=True)
-
-    parser.init_structures_dict(proteins)
-    parser.update_existence(pdb_id)
     if mode is None:
         mode = st.DEFAULT_MODE
     if alphafold_ver is not None:
@@ -35,16 +27,27 @@ def fetch(parser: AlphafoldDBParser, request: flask.Request):
             parser.alphafold_ver = alphafold_ver
         else:
             parser.alphafold_ver = AlphaFoldVersion.v4.value
+
+    proteins = [pdb_id]
+
+    output_dir = os.path.join(st._MAPS_PATH, mode)
+    parser.update_output_dir(output_dir)
+
+    parser.init_structures_dict(proteins)
+    parser.update_existence(pdb_id)
+
     batch([parser.fetch_pdb, parser.pdb_pipeline], proteins, parser.batch_size)
     result = get_scales(proteins, mode)
+
     parser.update_existence(pdb_id)
     return {"not_fetched": parser.not_fetched, "results": result}
 
 
-def for_project(parser, request):
+def for_project(parser: AlphafoldDBParser, request: flask.request):
     project = request.args.get("project")
     mode = request.args.get("mode")
     alphafold_ver = request.args.get("ver")
+
     if project is None:
         return flask.jsonify({"error": "No project provided."})
     if mode is None:
@@ -54,14 +57,16 @@ def for_project(parser, request):
             parser.alphafold_ver = alphafold_ver
         else:
             parser.alphafold_ver = AlphaFoldVersion.v4.value
+
     nodes_files = os.path.join(st._PROJECTS_PATH, project, "nodes.json")
     with open(nodes_files, "r") as f:
         nodes = json.load(f)["nodes"]
     proteins = [",".join(node[NT.uniprot]) for node in nodes if node.get(NT.uniprot)]
+
     parser.init_structures_dict(proteins)
     for protein in proteins:
         parser.update_existence(protein)
-    print(proteins)
     batch([parser.fetch_pdb, parser.pdb_pipeline], proteins, parser.batch_size)
     result = get_scales(proteins, mode)
+
     return {"not_fetched": parser.not_fetched, "results": result}
