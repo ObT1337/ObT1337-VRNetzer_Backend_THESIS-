@@ -143,11 +143,19 @@
             <h7>PROTEIN STRUCTURES</h7>
             <div class="cornerBox">
                 <select id='structure'></select>
+                <input type="button" id='showStructure' class="swagBackwardButton"></button>
+                
+                   
+
+                
+                <h7>PROTEIN SIZE</h7>
+                <div id="slider-prot_size"></div>
                 <script>
                     
 
                     initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
-
+                    initSlider('slider-prot_size');
+                    initButton('showStructure');
                     //ue4("prot", {id:name});
                 </script>
             </div>

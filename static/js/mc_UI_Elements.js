@@ -179,13 +179,14 @@ customElements.define('mc-sresult', mcSresult);
 
 
 
-function initDropdown(id, data, active) {
+function initDropdownX(id, data, active) {
 
   $('#' + id).selectmenu();
 
   for (let i = 0; i < data.length; i++) {
-    $('#' + id).append(new Option(data[i]));
+  $('#' + id).append(new Option(data[i]));
   }
+
   $('#' + id).val(active);
   $('#' + id).selectmenu("refresh");
 
@@ -196,7 +197,32 @@ function initDropdown(id, data, active) {
   });
 
 }
-function initProjectDropdown (id, data, active){
+
+
+function initDropdown(id, data, active) {
+
+  $('#' + id).selectmenu();
+
+  for (let i = 0; i < data.length; i++) {
+
+    var addata ={id:i, size: 99, city: makeid(5)};
+    
+    $('<option>').val("object.val").text(data[i]).attr('data-x', JSON.stringify(addata)).appendTo('#' + id);
+  }
+
+  $('#' + id).val(active);
+  $('#' + id).selectmenu("refresh");
+
+  $('#' + id).on('selectmenuselect', function() {
+    var name = $('#' + id).find(':selected').text();
+    var x = $('#' + id).find(':selected').attr("data-x");
+    socket.emit('ex', { id: id, opt: name, fn: "sel", data: x });
+    console.log(JSON.parse(x));
+  });
+
+}
+
+function initDropdownX (id, data, active){
 
   $('#'+ id).selectmenu();
 

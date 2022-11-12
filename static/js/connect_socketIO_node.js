@@ -2,16 +2,6 @@
 var socket;
 var lastval = 0;
 
-/// UE4 connection
-
-
-/// ue4 to webui routes
-
-function settextscroll(id, val) {
-    var box = document.getElementById(id).shadowRoot.getElementById("box");
-    $(box).scrollTop(val[0]);
-    $(box).scrollLeft(val[1]);
-}
 
 
 $(document).ready(function(){
@@ -94,7 +84,7 @@ $(document).ready(function(){
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project
                 if (data.id == "structure"){
-                    ue4("prot", {id:data.opt});
+                    ue4("prot", data);
                 }
 
                 $('#'+ data.id).val(data.opt);
@@ -109,7 +99,7 @@ $(document).ready(function(){
                 //select.value = data.opt;
                 // cold also add options.... select.append(new Option("reeeee"));
                 break; 
-/*
+
             case 'sli':
                 if (data.usr != username){
                     //var slider = document.getElementById(data.id).shadowRoot.getElementById("slider");
@@ -118,26 +108,7 @@ $(document).ready(function(){
                 }
                 ue4("slider", data);
                 break; 
-            case 'tex':
-                    var text = document.getElementById(data.id).shadowRoot.getElementById("text");
-                    text.value= data.val;
-                break;
-            
-            case 'sres':
-                console.log(data.val.length);
 
-                document.getElementById("sres").shadowRoot.getElementById("box").innerHTML = ''
-                for (let i = 0; i < data.val.length; i++) {
-                    var p = document.createElement("mc-sresult");
-                    p.setAttribute("id", data.val[i].id);
-                    p.setAttribute("name", data.val[i].name);
-                    p.setAttribute("style", "width=150px");
-                    p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
-                    document.getElementById("sres").shadowRoot.getElementById("box").appendChild(p);
-                }
-                break; 
-
- */
         }
        
         
