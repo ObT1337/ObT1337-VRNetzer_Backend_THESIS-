@@ -98,6 +98,8 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
+    
+    session["username"] = request.args.get("usr")
     nodes = {"nodes": []}
     project = request.args.get("project")
     if project is None:
@@ -112,14 +114,13 @@ def nodepanel():
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
-
+    id = request.args.get("id")
+    if id is not None and id.isnumeric():
+        id = int(id)
+    else:
+        id = 0
     if GD.pfile:
         if "ppi" in GD.pfile["name"].lower():
-            try:
-                id = int(request.args.get("id"))
-            except Exception as e:
-                print(e)
-                id = 0
             node = nodes["nodes"][id]
             uniprots = node.get("uniprot")
             if uniprots:
@@ -142,13 +143,6 @@ def nodepanel():
             )
 
         else:
-            try:
-                id = int(request.args.get("id"))
-            except Exception as e:
-                print("C_DEBUG: in except else with pfile")
-                print(e)
-                id = 0
-
             # data = names["names"][id]
             data = [id]
             print("C_DEBUG: general nodepanel")
@@ -157,11 +151,6 @@ def nodepanel():
                 data=data,
             )
     else:
-        try:
-            id = int(request.args.get("id"))
-        except Exception as e:
-            id = 0
-            print(e)
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
         return render_template(
