@@ -1,4 +1,5 @@
 import os
+import shutil
 
 import vrprot
 from vrprot.util import FileTypes as FT
@@ -24,7 +25,6 @@ parser.keep_temp = {
     FT.ascii_file: False,
 }
 os.makedirs(_MAPS_PATH, exist_ok=True)
-parser.init_dirs()
 
 
 class NodeTags:

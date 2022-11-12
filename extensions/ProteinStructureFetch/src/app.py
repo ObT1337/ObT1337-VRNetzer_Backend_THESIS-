@@ -8,7 +8,8 @@ from vrprot.util import AlphaFoldVersion
 import GlobalData as GD
 
 from . import settings as st
-from . import workflows
+from . import util, workflows
+from .util import time_ex
 
 url_prefix = "/vrprot"
 
@@ -24,11 +25,15 @@ blueprint = flask.Blueprint(
 @blueprint.route("/fetch", methods=["GET"])
 def fetch():
     """Fetches the image from the server and returns it as a response."""
-    res = workflows.fetch(st.parser, flask.request)
+    job = time_ex(workflows.fetch, st.parser, flask.request)
+    res, runtime = job
+    res["runtime"] = f"{runtime} s"
     return flask.jsonify(res)
 
 
 @blueprint.route("/project", methods=["GET"])
 def fetch_structures_for_project():
-    res = workflows.for_project(st.parser, flask.request)
+    job = time_ex(workflows.for_project, st.parser, flask.request)
+    res, runtime = job
+    res["runtime"] = f"{runtime} s"
     return flask.jsonify(res)
