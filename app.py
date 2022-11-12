@@ -46,7 +46,6 @@ socketio = SocketIO(app, manage_session=False)
 # - make a webscraper for git and display contributors for a spec software in vr
 
 
-
 @app.route("/main", methods=["GET"])
 def main():
     username = request.args.get("usr")
@@ -89,7 +88,6 @@ def main():
         )
     else:
         return "error"
-
 
 
 @app.route("/nodepanel", methods=["GET"])
@@ -140,7 +138,7 @@ def nodepanel():
                 pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
-                node=json.dumps({"node":node}),
+                node=json.dumps({"node": node}),
             )
 
         else:
@@ -172,13 +170,10 @@ def nodepanel():
         )
 
 
-
-
 @app.route("/upload", methods=["GET"])
 def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
-
 
 
 @app.route("/ForceLayout")
@@ -321,10 +316,6 @@ def test44():
     )
 
 
-
-
-
-
 # gets information about a specific node
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
@@ -382,7 +373,6 @@ def get_structure_scale() -> float or str:
 ### DATA ROUTES###
 
 
-
 @app.route("/load_all_projects", methods=["GET", "POST"])
 def loadAllProjectsR():
     return jsonify(projects=listProjects())
@@ -396,6 +386,7 @@ def loadProjectInfoR(name):
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
     return loadAnnotations(name)
+
 
 ###SocketIO ROUTES###
 
