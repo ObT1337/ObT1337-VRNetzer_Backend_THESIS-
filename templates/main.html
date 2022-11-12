@@ -25,7 +25,7 @@
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
     <script src="{{ url_for('static', filename='js/tab_UI_Elements.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/annotation_processing.js') }}"></script>
     <!--
                     <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/main_UI.js') }}"></script>
@@ -137,30 +137,15 @@
     <body>
                     
         <script>
+        // inital script
             var sessiondata = JSON.parse({{sessionData|tojson}});
             var pdata = JSON.parse({{pfile|tojson}});
             var username = '{{session['username']}}';
             console.log(username);
             
             var nodeID = '{{node_id}}';
-            var nodeCount = '{{node_count}}'
-
-            // create annotation map
-            annotation2Nodes = new map();
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
+            const nodesJSON = JSON.parse({{nodes|tojson}});
+            var nodeCount = nodesJSON["nodes"].length;
         </script>
 
 
@@ -634,6 +619,57 @@
 
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-8">
+                <script>
+                    var annotations = [];
+                    var selected1;
+                    var selected2;
+                    var selectedNode;
+                    var selectedOperator;
+
+                    $(document).ready(function(){
+                        if (Object.hasOwn(nodesJSON["nodes"][0], "annotation")){
+                            // create annotation objects -> skip when no annotation available
+                            var annotation2Nodes = new buildAnnotationMap(nodesJSON);
+                            for (let key of annotation2Nodes.keys()){
+                                annotations.push(key);
+                            }
+
+                            // init UI components
+                            initDropdownFunction('dropdown-annotation-1', annotations, "placeholder", function(){
+                                // set annotation type 1
+                                selected1 = $('#dropdown-annotation-1 option:selected').text();
+                                console.log("Annotation: selected annotation type 1:", selected1);
+                                
+                                // update nodes to annotation, set node dropdown function
+                                initDropdownFunction('dropdown-annotation-nodes', annotation2Nodes.get(selected1), "placeholder", function(){
+                                    selectedNode = $('#dropdown-annotation-nodes option:selected').text();
+                                    console.log("Annotation: seleceted node: ", selectedNode);
+                                });
+
+                                // update annotation typ 2 drop down
+                                let annotations2 = [];
+                                annotations.forEach(function(item){
+                                    if (item === selected1){
+                                        return;
+                                    }
+                                    annotations2.push(item);
+                                })
+                                initDropdownFunction('dropdown-annotation-2', annotations2, "placeholder", function(){
+                                    selected2 = $('#dropdown-annotation-2 option:selected').text();
+                                    console.log("Annotation: selected annotation type 2: ", selected2);
+                                });
+                            });
+                            
+                            $("#dropdown-annotation-operations").selectmenu();
+                            $("#dropdown-annotation-operations").on('selectmenuselect', function () {
+                                selectedOperator = $('#dropdown-annotation-2 option:selected').val();
+                                console.log("Annotation: selected set operator: ", selectedOperator)
+                            });
+
+                            
+                        }
+                    })
+                </script>
                 <div class="twelve columns">
                     <h2 class="lineglowslow">a[NODE]tation</h2>
                 </div>
@@ -641,25 +677,16 @@
                 <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
                     <div class="cornerBox">
                         <select id='dropdown-annotation-1'>
-                            <option selected disabled hidden>Select Annotation</option>
-                            <script>
-                                initDropdownFunction('dropdown-annotation-1', ["anno 1", "anno 2", "anno 3", "anno 4", "anno 5"], function(){
-                                    // set annotation type 1, show and update dropdown-annotation-nodes
-                                    console.log("annotation switched.");
-                                });
-                            </script>
+                            <option value="placeholder" selected disabled>Select Annotation</option>
                         </select>
                     </div>
                 </div>
                 <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
                     <div class="cornerBox">
                         <select id="dropdown-annotation-nodes">
-                            <option selected disabled hidden>Select Node</option>
+                            <option value="placeholder" selected disabled>Select Node</option>
                             <script>
-                                initDropdownFunction('dropdown-annotation-nodes', ["node 1", "node 2", "node 3", "node 4", "node 5"], function(){
-                                    // color/show selected node
-                                    console.log("highlight node");
-                                });
+                                initDropdownFunction('dropdown-annotation-nodes', [], "placeholder", function(){});
                             </script>
                         </select>
                     </div>
@@ -701,25 +728,19 @@
                         <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
                             <div class="cornerBox">
                                 <select id="dropdown-annotation-operations">
-                                    <option selected disabled hidden id="placeholder-annotation-operations">Select Operation Type</option>
-                                    <script>
-                                        initDropdownFunction('dropdown-annotation-operations', ["A1 UNION A2", "A1 INTERSECT A2", "A1 WITHOUT A2"], function(){
-                                            // set set operation type
-                                            console.log("select set operator");
-                                        });
-                                    </script>
+                                    <option selected disabled value="placeholder" id="placeholder-annotation-operations">Select Operation Type</option>
+                                    <option value="0">A1 UNION A2</option>
+                                    <option value="1">A1 INTERSECT A2</option>
+                                    <option value="2">A1 WITHOUT A2</option>
                                 </select>
                             </div>
                         </div>
                         <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
                             <div class="cornerBox">
                                 <select id="dropdown-annotation-2">
-                                    <option selected disabled hidden>Select second Annotation for Operation</option>
+                                    <option selected disabled value="placeholder">Select second Annotation for Operation</option>
                                     <script>
-                                        initDropdownFunction('dropdown-annotation-2', ["anno 1", "anno 2", "anno 3", "anno 4", "anno 5"], function(){
-                                            // set annotation 2 for set operation
-                                            console.log("second annotation selected");
-                                        });
+                                        initDropdownFunction('dropdown-annotation-2', [], "placeholder", function(){});
                                     </script>
                                 </select>
                             </div>

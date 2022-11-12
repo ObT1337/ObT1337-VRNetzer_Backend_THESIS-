@@ -137,7 +137,13 @@ def test44():
     else:
         linkRGBIndex = int(request.args.get("lcol"))
 
-     
+    # debug annotation only
+    if request.args.get("render-annotation") is not None:   
+        network = json.loads('{"nodes": [], "links":[]}')
+        project_file = json.loads()
+
+        return render_template('threeJS_VIEWER.html', data =  json.dumps(network), pfile = json.dumps(project_file))
+
 
     print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
@@ -278,22 +284,24 @@ def main():
             global pfile
             pfile = json.load(json_file)
             #print(pfile)
-        json_file.close()
 
         with open(folder + 'names.json', 'r') as json_file:
             global names
             names = json.load(json_file)
             # print(names)
-        json_file.close()
+
+        with open(folder + 'nodes.json', 'r') as json_file:
+            global node_file
+            node_file = json.load(json_file)
+            #print(pfile)
 
         try:
             id = int(request.args.get("id"))
             node_id = names['names'][id][0]
         except:
             pass
-        node_count = len(names['names'])
 
-    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, node_count=node_count)
+    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps(node_file))
   
 
 @app.route('/login/<usr>', methods=['GET'])
