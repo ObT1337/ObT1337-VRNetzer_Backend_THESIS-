@@ -73,7 +73,7 @@ def listProjects():
     return sub_folders
 
 
-def makeNodeTex(project, name, file):
+def makeNodeTex(project, name, file, annotion_file=None):
 
     f = StringIO(file)
     csvreader = csv.reader(f, delimiter=',')
@@ -111,6 +111,7 @@ def makeNodeTex(project, name, file):
             thisnode["id"] = i
             thisnode["n"] = my_list[0]
             thisnode["attrlist"] = my_list
+            thisnode["annotation"] = []
             nodelist["nodes"].append(thisnode)
 
             x = int(float(row[0])*65280)
@@ -138,6 +139,24 @@ def makeNodeTex(project, name, file):
     except (IndexError, ValueError):
         return '<a style="color:red;">ERROR </a>' + name + " nodefile malformated?" 
     
+    if annotion_file is not None:
+        file_readable = StringIO(annotion_file)
+        annotion_reader = csv.reader(file_readable, delimiter=',')
+        try:
+            for row in annotion_reader:
+                id = row[0]
+                annotations = row[1:]  # first element is identifier which is no annotation
+                for entry in nodelist['nodes']:
+                    if entry["n"] != id:
+                        continue
+                    entry["annotation"] = annotations
+                    break
+
+        except (IndexError, ValueError):
+            return '<a style="color:red;">ERROR </a>' + name + " annotation file malformated?" 
+
+
+
     with open(path + '/names.json', 'w') as outfile:
         json.dump(attrlist, outfile)
 
@@ -246,7 +265,6 @@ def upload_files(request):
     #print("namespace", request.args.get("namespace"))
     form = request.form.to_dict()
     #print(request.files)
-    #print(form)
     prolist = listProjects()
     namespace = ''
     if form["namespace"] == "New":
@@ -277,6 +295,13 @@ def upload_files(request):
     state = ''
     layout_files = request.files.getlist("layouts")
 
+    # check if annotation file exists
+    annotation_check = request.files.getlist("annotations")
+    annotation_file = None
+    if len(annotation_check) > 0 and len(annotation_check[0].filename) > 0:
+        annotation_file = annotation_check[0].read().decode("utf-8")
+
+    # build nodes.json
     if len(layout_files) > 0 and len(layout_files[0].filename) > 0:
         print("loading layouts", len(layout_files))
         print(layout_files[0])
@@ -284,7 +309,7 @@ def upload_files(request):
             # TODO: fix the below line to account for dots in filenames
             name = file.filename.split(".")[0]
             contents = file.read().decode('utf-8')
-            state = state + ' <br>'+  makeNodeTex(namespace, name, contents)
+            state = state + ' <br>'+  makeNodeTex(namespace, name, contents, annotation_file)
             pfile["layouts"].append(name + "XYZ")
             pfile["layoutsRGB"].append(name + "RGB")
 

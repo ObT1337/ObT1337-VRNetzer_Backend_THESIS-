@@ -24,7 +24,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='js/tab_UI_Elements.js') }}"></script>
 
     <!--
                     <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
@@ -144,6 +144,23 @@
             
             var nodeID = '{{node_id}}';
             var nodeCount = '{{node_count}}'
+
+            // create annotation map
+            annotation2Nodes = new map();
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
         </script>
 
 
@@ -187,6 +204,9 @@
                 <li>
                     <a href="#tabs-7"><img draggable="false" onmousedown="return false" height='40' width='40'
                             src="{{ url_for('static', filename='img/active_net.png') }}" /></a>
+                </li>
+                <li>
+                    <a href="#tabs-8"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" /></a>
                 </li>
             </ul>
 
@@ -498,7 +518,6 @@
 
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-6">
-                <script src="{{ url_for('static', filename='js/tab_UI_Elements.js') }}"></script>
                 <div class="twelve columns">
                     <h2 class="lineglowslow">Node Analytics</h2>
                 </div>
@@ -609,7 +628,116 @@
 
                 </div>
             </div>
+            <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                          tab 8 - Annotation Analyzer
+
+            +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+            <div id="tabs-8">
+                <div class="twelve columns">
+                    <h2 class="lineglowslow">a[NODE]tation</h2>
+                </div>
+
+                <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                    <div class="cornerBox">
+                        <select id='dropdown-annotation-1'>
+                            <option selected disabled hidden>Select Annotation</option>
+                            <script>
+                                initDropdownFunction('dropdown-annotation-1', ["anno 1", "anno 2", "anno 3", "anno 4", "anno 5"], function(){
+                                    // set annotation type 1, show and update dropdown-annotation-nodes
+                                    console.log("annotation switched.");
+                                });
+                            </script>
+                        </select>
+                    </div>
+                </div>
+                <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                    <div class="cornerBox">
+                        <select id="dropdown-annotation-nodes">
+                            <option selected disabled hidden>Select Node</option>
+                            <script>
+                                initDropdownFunction('dropdown-annotation-nodes', ["node 1", "node 2", "node 3", "node 4", "node 5"], function(){
+                                    // color/show selected node
+                                    console.log("highlight node");
+                                });
+                            </script>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="twelve columns" style="display:flex; margin-bottom:6px; gap:6px;">
+                    <input type="button" id='button-annotation-highlight' class="swagTextButton" value="Highlight Nodes"></button>
+                    <input type="button" id='button-annotation-operator' class="swagTextButton" value="Operation"></button>
+                    <input type="button" id='button-annotation-reset' class="swagTextButton" value="Reset"></button>
+                    <script>
+                        initButtonFunction('button-annotation-highlight', 
+                            function(){
+                                // create new texture + display
+                                console.log("Highlight nodes of annotation selected");
+                            }
+                        );
+                        initButtonFunction('button-annotation-operator', 
+                            function(){
+                                // show set operations box
+                                console.log("Enable set operation menu");
+
+                                $("#box-set-operation").removeClass("wrapper-disabled");
+                            }
+                        );
+                        initButtonFunction('button-annotation-reset', 
+                            function(){
+                                // reset selections and texture
+                                console.log("Reset all");
+
+                                $("#box-set-operation").addClass("wrapper-disabled");
+                            }
+                        );
+                    </script>
+                </div>
+                
+                <div style="margin-top:6px; margin-bottom:6px;" class="twelve columns wrapper-disabled" id="box-set-operation">
+                    <div class="frameBox"> 
+                        <h5 style="text-align:end; margin-bottom:5px;">Set Operation</h5>
+                        <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                            <div class="cornerBox">
+                                <select id="dropdown-annotation-operations">
+                                    <option selected disabled hidden id="placeholder-annotation-operations">Select Operation Type</option>
+                                    <script>
+                                        initDropdownFunction('dropdown-annotation-operations', ["A1 UNION A2", "A1 INTERSECT A2", "A1 WITHOUT A2"], function(){
+                                            // set set operation type
+                                            console.log("select set operator");
+                                        });
+                                    </script>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="twelve columns" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
+                            <div class="cornerBox">
+                                <select id="dropdown-annotation-2">
+                                    <option selected disabled hidden>Select second Annotation for Operation</option>
+                                    <script>
+                                        initDropdownFunction('dropdown-annotation-2', ["anno 1", "anno 2", "anno 3", "anno 4", "anno 5"], function(){
+                                            // set annotation 2 for set operation
+                                            console.log("second annotation selected");
+                                        });
+                                    </script>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="twelve columns" style="display:flex; margin-bottom:6px; gap:6px;">
+                            <input type="button" id='button-annotation-run' class="swagTextButton" value="Highlight Results"></button>
+                            <script>
+                                initButtonFunction('button-annotation-run', 
+                                    function(){
+                                        // perform set operation, create texture, update texture
+                                        console.log("Run set operation");
+                                    }
+                                );
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-
-
 </body>

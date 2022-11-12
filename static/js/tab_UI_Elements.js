@@ -10,4 +10,16 @@ function initButtonFunction (id, fun){
     });
 }
 
+function initDropdownFunction (id, data, fun){
 
+  $('#'+ id).selectmenu();
+
+  for (let i = 0; i < data.length; i++) {
+    $('#'+ id).append(new Option(data[i]));
+  }
+  $('#'+ id).selectmenu("refresh");
+
+  $('#'+ id).on('selectmenuselect', function () {
+    fun();
+  });
+}

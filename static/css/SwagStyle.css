@@ -864,6 +864,9 @@ input[type=checkbox] {
 .image-wrapper-disabled{
     display: none;
 }
+.wrapper-disabled{
+    display: none;
+}
 
 
 /*disable dragging on images */
