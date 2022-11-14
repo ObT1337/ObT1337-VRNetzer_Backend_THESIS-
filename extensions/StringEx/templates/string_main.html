@@ -5,13 +5,13 @@
 <script src="{{ url_for('StringEx.static', filename='js/stringUI_Elements.js') }}"></script>
 
 <script>
-    var session = JSON.parse({{session|tojson}});
+    var username = "{{session['username']}}";
     var url = window.location.href;
     if(!(url.includes("usr"))){
         if(url.includes("?")){
-            window.location.href = url + "&usr=" + session["username"];
+            window.location.href = url + "&usr=" + username;
         }else{
-            window.location.href = url + "?usr=" + session["username"];
+            window.location.href = url + "?usr=" + username;
         };
     };
     console.log(window.location.href );
