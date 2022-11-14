@@ -33,7 +33,7 @@ app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
 
-app = load_extensions.load(app)
+#app = load_extensions.load(app)
 
 socketio = SocketIO(app, manage_session=False)
 
