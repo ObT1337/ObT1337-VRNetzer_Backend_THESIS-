@@ -29,8 +29,6 @@ li.navbar a{
     text-decoration: none;
   }
 li.navbar a:visited{
-    display: inline;
-    color: white;
     text-decoration: none;
   }
 li.navbar:last-child {
@@ -38,7 +36,6 @@ li.navbar:last-child {
   }
 li.navbar:hover {
     background-color: rgb(42, 113, 148,0.45);
-    color: white;
   }
 li.navbar-active a {
     background-color:rgb(42, 113, 148);
