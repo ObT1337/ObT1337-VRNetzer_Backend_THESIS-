@@ -55,7 +55,7 @@ def string_main():
         return flask.render_template(
             # "/mainpanel/string_main.html",
             "/string_main.html",
-            session=json.dumps(dict(flask.session)),
+            session=flask.session,
             sessionData=json.dumps(GD.sessionData),
             pfile=json.dumps(GD.pfile),
         )
