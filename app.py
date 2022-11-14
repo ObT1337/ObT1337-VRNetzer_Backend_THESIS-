@@ -82,7 +82,7 @@ def main():
             json_file.close()
         return render_template(
             "main.html",
-            session=session,
+            session=json.dumps(dict(session)),
             sessionData=json.dumps(GD.sessionData),
             pfile=json.dumps(GD.pfile),
         )
