@@ -11,7 +11,8 @@ from io import StringIO
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -97,7 +98,7 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
-
+    
     session["username"] = request.args.get("usr")
     nodes = {"nodes": []}
     project = request.args.get("project")
@@ -132,8 +133,7 @@ def nodepanel():
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
-                # "nodepanelppi.html",
-                "new_nodepanelppi.html",
+                "nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
                 session=session,
                 pfile=GD.pfile,
@@ -460,7 +460,6 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
-
 @app.route("/home")
 def home():
     links = []
@@ -472,7 +471,5 @@ def home():
             links.append((url, rule.endpoint))
     # links is now a list of url, endpoint tuples
     return render_template("home.html", links=json.dumps(links))
-
-
 if __name__ == "__main__":
     socketio.run(app, debug=True)

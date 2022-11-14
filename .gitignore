@@ -7,6 +7,3 @@ Electrostatic_Surface_MAPS/
 
 **.DS_Store
 .venv
-*.code-workspace
-extensions/ProteinStructureFetch/processing_files/*
-*/static/csv/overview.csv
