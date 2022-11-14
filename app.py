@@ -183,7 +183,7 @@ def force():
 
 
 @app.route("/preview", methods=["GET"])
-def test44():
+def preview():
     data = {}
     layoutindex = 0
     layoutRGBIndex = 0
