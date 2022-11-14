@@ -2,22 +2,20 @@ import csv
 import json
 import logging
 import os
-import random
-import re
-import string
 from cgi import print_arguments
 from io import StringIO
 
+import flask
+
 # from flask_session import Session
-import requests
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
 import GlobalData as GD
 import load_extensions
+import util
 from search import *
 from uploader import *
 from websocket_functions import *
@@ -48,25 +46,20 @@ socketio = SocketIO(app, manage_session=False)
 
 @app.route("/main", methods=["GET"])
 def main():
-    username = request.args.get("usr")
-    project = request.args.get("project")
-    if username is None:
-        username = str(random.randint(1001, 9998))
-    else:
-        username = username + str(random.randint(1001, 9998))
-        print(username)
+    username = util.generate_username()
+    project = flask.request.args.get("project")
 
     if project is None:
         project = "none"
     else:
         print(project)
 
-    if request.method == "GET":
+    if flask.request.method == "GET":
 
         room = 1
         # Store the data in session
-        session["username"] = username
-        session["room"] = room
+        flask.session["username"] = username
+        flask.session["room"] = room
         # prolist = listProjects()
         if project != "none":
             folder = "static/projects/" + project + "/"
@@ -76,13 +69,12 @@ def main():
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
+                GD.names = json.load(json_file)
                 # print(names)
             json_file.close()
         return render_template(
             "main.html",
-            session=session,
+            session=flask.session,
             sessionData=json.dumps(GD.sessionData),
             pfile=json.dumps(GD.pfile),
         )
@@ -98,10 +90,8 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
-    
-    session["username"] = request.args.get("usr")
     nodes = {"nodes": []}
-    project = request.args.get("project")
+    project = flask.request.args.get("project")
     if project is None:
         project = "new_ppi"
 
@@ -114,17 +104,18 @@ def nodepanel():
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
-    id = request.args.get("id")
-    if id is not None and id.isnumeric():
-        id = int(id)
-    else:
-        id = 0
+
     if GD.pfile:
         if "ppi" in GD.pfile["name"].lower():
+            try:
+                id = int(flask.request.args.get("id"))
+            except Exception as e:
+                print(e)
+                id = 0
             node = nodes["nodes"][id]
             uniprots = node.get("uniprot")
             if uniprots:
-                room = session.get("room")
+                room = flask.session.get("room")
                 # GD.sessionData["actStruc"] = uniprots[0]
                 x = '{"id": "prot", "val":[], "fn": "prot"}'
                 data = json.loads(x)
@@ -135,7 +126,7 @@ def nodepanel():
             return render_template(
                 "nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
-                session=session,
+                session=flask.session,
                 pfile=GD.pfile,
                 id=id,
                 add_key=add_key,
@@ -143,6 +134,13 @@ def nodepanel():
             )
 
         else:
+            try:
+                id = int(flask.request.args.get("id"))
+            except Exception as e:
+                print("C_DEBUG: in except else with pfile")
+                print(e)
+                id = 0
+
             # data = names["names"][id]
             data = [id]
             print("C_DEBUG: general nodepanel")
@@ -151,6 +149,11 @@ def nodepanel():
                 data=data,
             )
     else:
+        try:
+            id = int(flask.request.args.get("id"))
+        except Exception as e:
+            id = 0
+            print(e)
         print("C_DEBUG: in except else (no pfile)")
         data = {"names": [id]}
         return render_template(
@@ -164,17 +167,19 @@ def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
 
-@app.route('/uploadfiles', methods=['GET', 'POST'])
+
+@app.route("/uploadfiles", methods=["GET", "POST"])
 def uploadR():
-    return upload_files(request)
+    return upload_files(flask.request)
+
 
 @app.route("/ForceLayout")
 def force():
-    nname = "static/csv/force/nodes/" + request.args.get("nname")
+    nname = "static/csv/force/nodes/" + flask.request.args.get("nname")
     nodestxt = open(nname + ".json", "r")
     nodes = json.load(nodestxt)
 
-    lname = "static/csv/force/links/" + request.args.get("lname")
+    lname = "static/csv/force/links/" + flask.request.args.get("lname")
     linkstxt = open(lname + ".json", "r")
     links = json.load(linkstxt)
     return render_template(
@@ -183,58 +188,58 @@ def force():
 
 
 @app.route("/preview", methods=["GET"])
-def test44():
+def preview():
     data = {}
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
 
-    if request.args.get("project") is None:
+    if flask.request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
 
         data["projects"] = listProjects()
         return render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data))
 
-    if request.args.get("layout") is None:
+    if flask.request.args.get("layout") is None:
         layoutindex = 0
     else:
-        layoutindex = int(request.args.get("layout"))
+        layoutindex = int(flask.request.args.get("layout"))
 
-    if request.args.get("ncol") is None:
+    if flask.request.args.get("ncol") is None:
         layoutRGBIndex = 0
     else:
-        layoutRGBIndex = int(request.args.get("ncol"))
+        layoutRGBIndex = int(flask.request.args.get("ncol"))
 
-    if request.args.get("lcol") is None:
+    if flask.request.args.get("lcol") is None:
         linkRGBIndex = 0
     else:
-        linkRGBIndex = int(request.args.get("lcol"))
+        linkRGBIndex = int(flask.request.args.get("lcol"))
 
-    print(request.args.get("layout"))
+    print(flask.request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
 
-    pname = "static/projects/" + request.args.get("project") + "/pfile"
+    pname = "static/projects/" + flask.request.args.get("project") + "/pfile"
     p = open(pname + ".json", "r")
     thispfile = json.load(p)
     thispfile["selected"] = [layoutindex, layoutRGBIndex, linkRGBIndex]
     # print(thispfile["layouts"])
 
-    name = "static/projects/" + request.args.get("project") + "/nodes"
+    name = "static/projects/" + flask.request.args.get("project") + "/nodes"
     n = open(name + ".json", "r")
     nodes = json.load(n)
     nlength = len(nodes["nodes"])
     # print(nlength)
 
-    lname = "static/projects/" + request.args.get("project") + "/links"
+    lname = "static/projects/" + flask.request.args.get("project") + "/links"
     f = open(lname + ".json", "r")
     links = json.load(f)
     length = len(links["links"])
 
     im = Image.open(
         "static/projects/"
-        + request.args.get("project")
+        + flask.request.args.get("project")
         + "/layouts/"
         + thispfile["layouts"][layoutindex]
         + ".bmp",
@@ -242,7 +247,7 @@ def test44():
     )
     iml = Image.open(
         "static/projects/"
-        + request.args.get("project")
+        + flask.request.args.get("project")
         + "/layoutsl/"
         + thispfile["layouts"][layoutindex]
         + "l.bmp",
@@ -250,7 +255,7 @@ def test44():
     )
     imc = Image.open(
         "static/projects/"
-        + request.args.get("project")
+        + flask.request.args.get("project")
         + "/layoutsRGB/"
         + thispfile["layoutsRGB"][layoutRGBIndex]
         + ".png",
@@ -258,7 +263,7 @@ def test44():
     )
     imlc = Image.open(
         "static/projects/"
-        + request.args.get("project")
+        + flask.request.args.get("project")
         + "/linksRGB/"
         + thispfile["linksRGB"][linkRGBIndex]
         + ".png",
@@ -311,9 +316,9 @@ def test44():
 # gets information about a specific node (project must be provided as argument)
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
-    id = request.args.get("id")
-    key = request.args.get("key")
-    name = "static/projects/" + str(request.args.get("project")) + "/nodes"
+    id = flask.request.args.get("id")
+    key = flask.request.args.get("key")
+    name = "static/projects/" + str(flask.request.args.get("project")) + "/nodes"
     nodestxt = open(name + ".json", "r")
     nodes = json.load(nodestxt)
     if key:
@@ -326,8 +331,8 @@ def nodeinfo():
 def get_structure_scale() -> float or str:
     """Return the scale of the structure as a float. If the structure is not found (or not provided), the size file is not available or the mode is not given, the function will return an error message as string. To provide the UniProtID add the 'uniprot=<UniProtID>', for the mode add 'mode=<mode>' to the URL. Currently available modes are 'cartoon' and 'electrostatic'. The default mode is 'cartoon'."""
 
-    uniprot = request.args.get("uniprot")
-    mode = request.args.get("mode")
+    uniprot = flask.request.args.get("uniprot")
+    mode = flask.request.args.get("mode")
 
     if mode is None:
         print("Error: No mode provided. Will use default mode 'cartoon'.")
@@ -362,10 +367,6 @@ def get_structure_scale() -> float or str:
     return "Error: No structure available for this UniProtID."
 
 
-
-
-
-
 ### DATA ROUTES###
 
 
@@ -389,30 +390,32 @@ def loadProjectAnnotations(name):
 
 @socketio.on("join", namespace="/chat")
 def join(message):
-    room = session.get("room")
+    room = flask.session.get("room")
     join_room(room)
     print(
         bcolors.WARNING
-        + session.get("username")
+        + flask.session.get("username")
         + " has entered the room."
         + bcolors.ENDC
     )
     emit(
-        "status", {"msg": session.get("username") + " has entered the room."}, room=room
+        "status",
+        {"msg": flask.session.get("username") + " has entered the room."},
+        room=room,
     )
 
 
 @socketio.on("ex", namespace="/chat")
 def ex(message):
-    room = session.get("room")
+    room = flask.session.get("room")
     print(
         bcolors.WARNING
-        + session.get("username")
+        + flask.session.get("username")
         + "ex: "
         + json.dumps(message)
         + bcolors.ENDC
     )
-    message["usr"] = session.get("username")
+    message["usr"] = flask.session.get("username")
 
     if message["id"] == "projects":
         GD.sessionData["actPro"] = message["opt"]
@@ -447,18 +450,21 @@ def ex(message):
 
     else:
         emit("ex", message, room=room)
-    # sendUE4('http://127.0.0.1:3000/in',  {'msg': session.get('username') + ' : ' + message['msg']})
+    # sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
 
 
 @socketio.on("left", namespace="/chat")
 def left(message):
-    room = session.get("room")
-    username = session.get("username")
+    room = flask.session.get("room")
+    username = flask.session.get("username")
     leave_room(room)
-    session.clear()
+    flask.session.clear()
     emit("status", {"msg": username + " has left the room."}, room=room)
     print(
-        bcolors.WARNING + session.get("username") + " has left the room." + bcolors.ENDC
+        bcolors.WARNING
+        + flask.session.get("username")
+        + " has left the room."
+        + bcolors.ENDC
     )
 
 
@@ -466,6 +472,7 @@ def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
+
 
 @app.route("/home")
 def home():
@@ -478,6 +485,7 @@ def home():
             links.append((url, rule.endpoint))
     # links is now a list of url, endpoint tuples
     return render_template("home.html", links=json.dumps(links))
+
+
 if __name__ == "__main__":
     socketio.run(app, debug=True)
- 

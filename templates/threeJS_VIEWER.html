@@ -2,6 +2,8 @@
 <html>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
+
 	<head>
 		<meta charset="utf-8">
 		<title>WEBGL Preview</title>
@@ -30,8 +32,13 @@
     <script src="{{ url_for('static', filename='js/three.js') }}"></script>
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
-        
-        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white; padding-left: 20px; padding-right: 20px;  background-color: #0000009d; overflow: hidden; width: 190px; " >&nbsp;
+        {% if "UnrealEngine" not in request.user_agent|string%}
+            {% include "NavBar.html" %}
+        {% endif %}
+        <script>
+            document.querySelector("#navbar > li:nth-child(4)").classList.add("navbar-active");
+        </script>
+        <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white; padding-left: 20px; padding-right: 20px;  background-color: #0000009d; overflow: hidden; width: 190px; " >&nbsp;
             
                 <form action="/preview">
                     <input type="submit" value="PROJECTS"   style = "height: 50px; width: 150px;"/>
