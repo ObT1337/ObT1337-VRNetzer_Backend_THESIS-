@@ -108,8 +108,11 @@
     // Change href of the link to the projects page
     var forms = document.getElementsByTagName("form")
     for(var i=0;i<forms.length; i++){
-        if(forms[i].action =="http://127.0.0.1:5000/preview"){
-            forms[i].action = "http://127.0.0.1:5000/StringEx/preview";
+        console.log(window.location.href)
+        console.log(forms[i].action)
+        if(forms[i].action.includes("/preview")){
+            forms[i].action = "/StringEx/preview";
         };
+        console.log(forms[i].action)
     };
 </script>
