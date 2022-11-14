@@ -37,3 +37,11 @@ def fetch_structures_for_project():
     res, runtime = job
     res["runtime"] = f"{runtime} s"
     return flask.jsonify(res)
+
+
+@blueprint.route("/list", methods=["GET"])
+def fetch_list():
+    job = time_ex(workflows.fetch_list, st.parser, flask.request)
+    res, runtime = job
+    res["runtime"] = f"{runtime} s"
+    return flask.jsonify(res)
