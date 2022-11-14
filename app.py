@@ -168,7 +168,6 @@ def upload():
 def uploadR():
     return upload_files(request)
 
-
 @app.route("/ForceLayout")
 def force():
     nname = "static/csv/force/nodes/" + request.args.get("nname")
