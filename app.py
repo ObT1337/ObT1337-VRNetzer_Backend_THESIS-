@@ -97,7 +97,7 @@ def nodepanel():
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
-    
+
     session["username"] = request.args.get("usr")
     nodes = {"nodes": []}
     project = request.args.get("project")
@@ -453,6 +453,25 @@ def left(message):
     print(
         bcolors.WARNING + session.get("username") + " has left the room." + bcolors.ENDC
     )
+
+
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
+
+@app.route("/home")
+def home():
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    # links is now a list of url, endpoint tuples
+    return render_template("home.html", links=json.dumps(links))
 
 
 if __name__ == "__main__":
