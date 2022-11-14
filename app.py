@@ -2,23 +2,20 @@ import csv
 import json
 import logging
 import os
-import random
-import re
-import string
 from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
-import requests
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
 import GlobalData as GD
 import load_extensions
+import util
 from search import *
 from uploader import *
 from websocket_functions import *
@@ -49,13 +46,8 @@ socketio = SocketIO(app, manage_session=False)
 
 @app.route("/main", methods=["GET"])
 def main():
-    username = flask.request.args.get("usr")
+    username = util.generate_username()
     project = flask.request.args.get("project")
-    if username is None:
-        username = str(random.randint(1001, 9998))
-    else:
-        username = username + str(random.randint(1001, 9998))
-        print(username)
 
     if project is None:
         project = "none"
@@ -92,7 +84,7 @@ def main():
 
 @app.route("/nodepanel", methods=["GET"])
 def nodepanel():
-     # try:
+    # try:
     #    id = int(request.args.get("id"))
     # except:
     #    print('C_DEBUG: in except at start')
@@ -116,7 +108,7 @@ def nodepanel():
     if GD.pfile:
         if "ppi" in GD.pfile["name"].lower():
             try:
-                id = int(request.args.get("id"))
+                id = int(flask.request.args.get("id"))
             except Exception as e:
                 print(e)
                 id = 0
@@ -158,7 +150,7 @@ def nodepanel():
             )
     else:
         try:
-            id = int(request.args.get("id"))
+            id = int(flask.request.args.get("id"))
         except Exception as e:
             id = 0
             print(e)
@@ -175,9 +167,11 @@ def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
 
-@app.route('/uploadfiles', methods=['GET', 'POST'])
+
+@app.route("/uploadfiles", methods=["GET", "POST"])
 def uploadR():
     return upload_files(flask.request)
+
 
 @app.route("/ForceLayout")
 def force():
@@ -373,10 +367,6 @@ def get_structure_scale() -> float or str:
     return "Error: No structure available for this UniProtID."
 
 
-
-
-
-
 ### DATA ROUTES###
 
 
@@ -409,7 +399,9 @@ def join(message):
         + bcolors.ENDC
     )
     emit(
-        "status", {"msg": flask.session.get("username") + " has entered the room."}, room=room
+        "status",
+        {"msg": flask.session.get("username") + " has entered the room."},
+        room=room,
     )
 
 
@@ -469,7 +461,10 @@ def left(message):
     flask.session.clear()
     emit("status", {"msg": username + " has left the room."}, room=room)
     print(
-        bcolors.WARNING + flask.session.get("username") + " has left the room." + bcolors.ENDC
+        bcolors.WARNING
+        + flask.session.get("username")
+        + " has left the room."
+        + bcolors.ENDC
     )
 
 
@@ -477,6 +472,7 @@ def has_no_empty_params(rule):
     defaults = rule.defaults if rule.defaults is not None else ()
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
+
 
 @app.route("/home")
 def home():
@@ -490,6 +486,6 @@ def home():
     # links is now a list of url, endpoint tuples
     return render_template("home.html", links=json.dumps(links))
 
+
 if __name__ == "__main__":
     socketio.run(app, debug=True)
- 
