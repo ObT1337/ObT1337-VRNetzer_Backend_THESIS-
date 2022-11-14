@@ -77,8 +77,7 @@ def main():
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
-                global names
-                names = json.load(json_file)
+                GD.names = json.load(json_file)
                 # print(names)
             json_file.close()
         return render_template(
