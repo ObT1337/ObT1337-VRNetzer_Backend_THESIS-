@@ -164,6 +164,10 @@ def upload():
     prolist = listProjects()
     return render_template("upload.html", namespaces=prolist)
 
+@app.route('/uploadfiles', methods=['GET', 'POST'])
+def uploadR():
+    return upload_files(request)
+
 
 @app.route("/ForceLayout")
 def force():
@@ -359,6 +363,10 @@ def get_structure_scale() -> float or str:
     return "Error: No structure available for this UniProtID."
 
 
+
+
+
+
 ### DATA ROUTES###
 
 
@@ -473,3 +481,4 @@ def home():
     return render_template("home.html", links=json.dumps(links))
 if __name__ == "__main__":
     socketio.run(app, debug=True)
+ 
