@@ -1,3 +1,4 @@
+import asyncio
 import time
 
 import flask
@@ -5,6 +6,14 @@ from vrprot.alphafold_db_parser import AlphafoldDBParser
 from vrprot.util import AlphaFoldVersion, ColoringModes
 
 from . import settings as st
+
+
+def asnyc_time_ex(func, *args, **kwargs):
+    """Time the execution of a function and return the result and the time taken."""
+    start = time.time()
+    res = asyncio.run(func(*args, **kwargs))
+    end = time.time()
+    return res, end - start
 
 
 def time_ex(func, *args, **kwargs):
@@ -21,6 +30,8 @@ def parse_request(
     """Extract processing mode and alphafold version from request."""
     mode = request.args.get("mode")
     alphafold_ver = request.args.get("ver")
+    if mode is None:
+        mode = st.DEFAULT_MODE
     if mode not in ColoringModes.list_of_modes():
         return {
             "error": "Invalid coloring mode.",
