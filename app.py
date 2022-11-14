@@ -305,7 +305,7 @@ def test44():
     )
 
 
-# gets information about a specific node
+# gets information about a specific node (project must be provided as argument)
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
     id = request.args.get("id")

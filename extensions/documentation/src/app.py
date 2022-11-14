@@ -3,6 +3,9 @@ import os
 import random
 
 import flask
+from engineio.payload import Payload
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from PIL import Image
 
 import GlobalData as GD
@@ -16,11 +19,22 @@ blueprint = flask.Blueprint(
     "doku",
     __name__,
     url_prefix=url_prefix,
-    template_folder="/extensions/documentation/src/templates" ,
-    static_folder="/extensions/documentation/src/static",
+    template_folder="/templates" ,
+    static_folder="/static",
 )
 
 
 @blueprint.route("/main")
 def string_main(): 
     return "reeee"
+
+
+
+@blueprint.route("/ServerSideVar")
+def ServerSideVarR():
+    return render_template("scroll.html", data=scb1Data)
+
+
+@blueprint.route("/CustomElements2")
+def test3():
+    return render_template("test.html")
