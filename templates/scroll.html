@@ -73,7 +73,7 @@
     <style>
         div {
  
-            width: 600px;
+            width: 300px;
             height: 300px;
             overflow: auto;
         }
@@ -87,16 +87,16 @@
   
 <body>
 
-    <div style = "width: 600px; height: 800px">
+    <div style = "width: 300px; height: 400px">
 
-    <h3 >SERVER SIDE VARIABLE</h3>
+    <h2 >SERVER SIDE VARIABLE</h2>
     add buttons to the scrollbox <br>
     the new button is stored in a global variable on the server so
     clients joining late still get the full list (and populate it in js on startup)
     <br>
     <br>
 
-    <div class="demo" id = scrollbox1 style = "width: 250px; height: 250px; overflow:auto">
+    <div class="demo" id = scrollbox1 style = "width: 150px; height: 150px; overflow:auto">
     </div>
     <br>
 
@@ -155,7 +155,6 @@
                          type: "button",
                          id: id,
                          value: text
-                         
                          //onclick: "newButtonClickListener()"
                     });
 
@@ -165,7 +164,13 @@
 
 
 
-
+                function leave_room() {
+                    socket.emit('left', {}, function() {
+                        socket.disconnect();
+                        // go back to the login page
+                        window.location.href = "{{ url_for('index') }}";
+                    });
+                }
 
     </script>
 

@@ -136,14 +136,17 @@
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
     <body>
-           
+                    
         <script>
             var sessiondata = JSON.parse({{ sessionData| tojson}});
             var pdata = JSON.parse({{ pfile| tojson}});
             var username = '{{session['username']}}';
             console.log(sessiondata);
             console.log(pdata);
+            
         </script>
+
+
         <div id="tabs" class="disable-select">
             <script>   // MULTICAST TAB CHANGES 
                 $(function () {

@@ -45,14 +45,17 @@ blueprint = flask.Blueprint(
     static_folder="/extensions/documentation/src/static",
 )
 
+@blueprint.route("/index")
+def string_main(): 
+    return "reeee"
 
 @blueprint.route('/CustomElements1')
 def CustomElements1R():
     return render_template('geneElement.html')
 
-@blueprint.route('/ServerSideVar')
-def ServerSideVarR():
-    return render_template('scroll.html', data = GD.scb1Data)
+#@blueprint.route('/ServerSideVar')
+#def ServerSideVarR():
+#    return render_template('scroll.html', data = GD.scb1Data)
 
 @blueprint.route('/CustomElements2')
 def test3():
