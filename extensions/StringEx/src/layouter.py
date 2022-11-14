@@ -20,9 +20,9 @@ class Layouter:
     graph: nx.Graph = nx.Graph()
 
     def gen_graph(self, nodes, links):
-        # for node_data in nodes:
-        #     self.graph.add_node(node_data[NT.id], data=node_data)
-        #     # self.node_map[node_data["id"]] = node_data
+        for node_data in nodes:
+            self.graph.add_node(node_data[NT.id], data=node_data)
+            # self.node_map[node_data["id"]] = node_data
         for link in links:
             self.graph.add_edge(link[LiT.start], link[LiT.end], data=link)
             # self.edge_map[(str(edge["s"]), str(edge["e"]))] = edge
@@ -106,6 +106,7 @@ class Layouter:
         idx = 0
         cytoscape_nodes = []
         cy_points = []
+        logger.debug(f"Length of Layout {len(layout)}")
         for node, pos in layout.items():
             node = self.network[VRNE.nodes][idx]
             color = [

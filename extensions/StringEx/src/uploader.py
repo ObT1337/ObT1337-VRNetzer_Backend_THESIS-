@@ -409,14 +409,12 @@ class Uploader:
         ev_rgb = [f"{ev}RGB" for ev in ev]
         self.pfile[PT.links] = ev_xyz  # [ev_xyz[0], ev_xyz[0]] + ev_xyz
         self.pfile[PT.links_rgb] = ev_rgb  # [ev_rgb[0], ev_rgb[0]] + ev_rgb
-        logger.debug(f"pfile before if statement:\n{self.pfile}")
         if f"{LT.cy_layout}XYZ" not in self.pfile[PT.layouts]:
             self.pfile[PT.layouts] = [f"{LT.string_3d_no_z}XYZ", f"{LT.string_3d}XYZ"]
             self.pfile[PT.layouts_rgb] = [
                 f"{LT.string_3d_no_z}RGB",
                 f"{LT.string_3d}RGB",
             ]
-        logger.debug(f"pfile after if statement:\n{self.pfile}")
         # if f"{LT.cy_layout}XYZ" in self.pfile[PT.layouts]:
         #     self.pfile[PT.layouts] = [
         #         f"{LT.cy_layout}XYZ",
