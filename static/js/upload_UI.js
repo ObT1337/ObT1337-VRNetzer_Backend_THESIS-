@@ -102,7 +102,7 @@ $(document).ready(function () {
           console.log(formData.get(result.value))
        result = it.next();
       }
-      
+        dbprefix = "http://"+ window.location.href.split("/")[2]; // Not sure why no todo it like this. Maybe if the server runs on a different ip than the uploader?
         var url = dbprefix + "/uploadfiles";
         console.log(url);
         console.log(formData);
