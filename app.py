@@ -472,4 +472,4 @@ def home():
     # links is now a list of url, endpoint tuples
     return render_template("home.html", links=json.dumps(links))
 if __name__ == "__main__":
-    socketio.run(app,port=3000, debug=True)
+    socketio.run(app, debug=True)
