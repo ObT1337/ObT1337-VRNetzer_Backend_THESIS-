@@ -1,5 +1,13 @@
+
+# TODO: REMOVE AFTER 
+import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__),".."))
+
 import os
 import shutil
+import sys
 
 import vrprot
 from vrprot.util import FileTypes as FT

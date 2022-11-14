@@ -1,4 +1,10 @@
-import asyncio
+
+# TODO: REMOVE AFTER 
+import os
+import sys
+
+sys.path.append(os.path.join(os.path.dirname(__file__),".."))
+
 import time
 
 import flask
@@ -9,6 +15,7 @@ from . import settings as st
 
 
 def asnyc_time_ex(func, *args, **kwargs):
+    import asyncio
     """Time the execution of a function and return the result and the time taken."""
     start = time.time()
     res = asyncio.run(func(*args, **kwargs))
