@@ -539,20 +539,22 @@
                             <h6 class="border">param 3</h6>
                             <div id="slider_barplot_param_3"></div>
                             <script>
-                                initSlider('slider_barplot_param_1');
-                                $("#slider_barplot_param_1").slider("option", "max", 1);
-                                $("#slider_barplot_param_1").slider("option", "step", 0.01);
-                                $("#slider_barplot_param_1").slider("option", "value", 0.5);
+                                (function(){
+                                    initSlider('slider_barplot_param_1');
+                                    $("#slider_barplot_param_1").slider("option", "max", 1);
+                                    $("#slider_barplot_param_1").slider("option", "step", 0.01);
+                                    $("#slider_barplot_param_1").slider("option", "value", 0.5);
 
-                                initSlider('slider_barplot_param_2');
-                                $("#slider_barplot_param_2").slider("option", "max", 1);
-                                $("#slider_barplot_param_2").slider("option", "step", 0.01);
-                                $("#slider_barplot_param_2").slider("option", "value", 0.5);
-                                initSlider('slider_barplot_param_3');
-                                
-                                $("#slider_barplot_param_3").slider("option", "min", 1);
-                                $("#slider_barplot_param_3").slider("option", "max", nodeCount);
-                                $("#slider_barplot_param_3").slider("option", "value", Math.round(nodeCount / 2));
+                                    initSlider('slider_barplot_param_2');
+                                    $("#slider_barplot_param_2").slider("option", "max", 1);
+                                    $("#slider_barplot_param_2").slider("option", "step", 0.01);
+                                    $("#slider_barplot_param_2").slider("option", "value", 0.5);
+                                    initSlider('slider_barplot_param_3');
+                                    
+                                    $("#slider_barplot_param_3").slider("option", "min", 1);
+                                    $("#slider_barplot_param_3").slider("option", "max", nodeCount);
+                                    $("#slider_barplot_param_3").slider("option", "value", Math.round(nodeCount / 2));
+                                });
                             </script>  
                         </div>
                         <div class="five columns">
@@ -620,55 +622,63 @@
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-8">
                 <script>
-                    var annotations = [];
-                    var selected1;
-                    var selected2;
-                    var selectedNode;
-                    var selectedOperator;
+                    // recall VRNetzer namespace
+                    var vRNetzer = vRNetzer || {};
+                    vRNetzer.annotation = vRNetzer.annotation || {};
+                    vRNetzer.annotation.vars = vRNetzer.annotation.vars || {};
+                    vRNetzer.annotation.func = vRNetzer.annotation.func || {};
 
+                    // initialization
+                    (function(){
+                        vRNetzer.annotation.vars.annotations = [];
+                        vRNetzer.annotation.vars.annotations2 = [];
+                        vRNetzer.annotation.vars.selected1;
+                        vRNetzer.annotation.vars.selected2;
+                        vRNetzer.annotation.vars.selectedNode;
+                        vRNetzer.annotation.vars.selectedOperator;
+                    })();
+
+                    // main functionality
                     $(document).ready(function(){
                         if (Object.hasOwn(nodesJSON["nodes"][0], "annotation")){
                             // create annotation objects -> skip when no annotation available
-                            var annotation2Nodes = new buildAnnotationMap(nodesJSON);
+                            var annotation2Nodes = new vRNetzer.annotation.func.buildAnnotationMap(nodesJSON);
                             for (let key of annotation2Nodes.keys()){
-                                annotations.push(key);
+                                vRNetzer.annotation.vars.annotations.push(key);
                             }
 
                             // init UI components
-                            initDropdownFunction('dropdown-annotation-1', annotations, "placeholder", function(){
+                            initDropdownFunction('dropdown-annotation-1', vRNetzer.annotation.vars.annotations, "placeholder", function(){
                                 // set annotation type 1
-                                selected1 = $('#dropdown-annotation-1 option:selected').text();
-                                console.log("Annotation: selected annotation type 1:", selected1);
+                                vRNetzer.annotation.vars.selected1 = $('#dropdown-annotation-1 option:selected').text();
+                                console.log("Annotation: selected annotation type 1:", vRNetzer.annotation.vars.selected1);
                                 
                                 // update nodes to annotation, set node dropdown function
-                                initDropdownFunction('dropdown-annotation-nodes', annotation2Nodes.get(selected1), "placeholder", function(){
-                                    selectedNode = $('#dropdown-annotation-nodes option:selected').text();
-                                    console.log("Annotation: seleceted node: ", selectedNode);
+                                initDropdownFunction('dropdown-annotation-nodes', annotation2Nodes.get(vRNetzer.annotation.vars.selected1), "placeholder", function(){
+                                    vRNetzer.annotation.vars.selectedNode = $('#dropdown-annotation-nodes option:selected').text();
+                                    console.log("Annotation: seleceted node: ", vRNetzer.annotation.vars.selectedNode);
                                 });
 
                                 // update annotation typ 2 drop down
-                                let annotations2 = [];
-                                annotations.forEach(function(item){
-                                    if (item === selected1){
+                                vRNetzer.annotation.vars.annotations.forEach(function(item){
+                                    if (item === vRNetzer.annotation.vars.selected1){
                                         return;
                                     }
-                                    annotations2.push(item);
+                                    vRNetzer.annotation.vars.annotations2.push(item);
                                 })
-                                initDropdownFunction('dropdown-annotation-2', annotations2, "placeholder", function(){
-                                    selected2 = $('#dropdown-annotation-2 option:selected').text();
-                                    console.log("Annotation: selected annotation type 2: ", selected2);
+                                initDropdownFunction('dropdown-annotation-2', vRNetzer.annotation.vars.annotations2, "placeholder", function(){
+                                    vRNetzer.annotation.vars.selected2 = $('#dropdown-annotation-2 option:selected').text();
+                                    console.log("Annotation: selected annotation type 2: ", vRNetzer.annotation.vars.selected2);
                                 });
                             });
                             
-                            $("#dropdown-annotation-operations").selectmenu();
+                            $("#dropdown-annotation-operations").selectmenu("refresh");
                             $("#dropdown-annotation-operations").on('selectmenuselect', function () {
-                                selectedOperator = $('#dropdown-annotation-2 option:selected').val();
-                                console.log("Annotation: selected set operator: ", selectedOperator)
-                            });
-
-                            
-                        }
-                    })
+                                vRNetzer.annotation.vars.selectedOperator = $('#dropdown-annotation-2 option:selected').val();
+                                console.log("Annotation: selected set operator: ", vRNetzer.annotation.vars.selectedOperator)
+                            });                          
+                        };
+                    });
                 </script>
                 <div class="twelve columns">
                     <h2 class="lineglowslow">a[NODE]tation</h2>
@@ -678,6 +688,9 @@
                     <div class="cornerBox">
                         <select id='dropdown-annotation-1'>
                             <option value="placeholder" selected disabled>Select Annotation</option>
+                            <script>
+                                initDropdownFunction('dropdown-annotation-1', [], "placeholder", function(){});
+                            </script>
                         </select>
                     </div>
                 </div>
@@ -729,9 +742,13 @@
                             <div class="cornerBox">
                                 <select id="dropdown-annotation-operations">
                                     <option selected disabled value="placeholder" id="placeholder-annotation-operations">Select Operation Type</option>
+                                    <script>
+                                        (function(){$('#dropdown-annotation-operations').selectmenu();})();
+                                    </script>
                                     <option value="0">A1 UNION A2</option>
                                     <option value="1">A1 INTERSECT A2</option>
                                     <option value="2">A1 WITHOUT A2</option>
+                                    
                                 </select>
                             </div>
                         </div>

@@ -276,7 +276,6 @@ def main():
     session['room'] = room
     data = None
     node_id = "undefined"
-    node_count = 0
     #prolist = listProjects()
     if project != "none":
         folder = 'static/projects/' + project + '/'
@@ -300,8 +299,8 @@ def main():
             node_id = names['names'][id][0]
         except:
             pass
-
-    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps(node_file))
+        return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps(node_file))
+    return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps({}))
   
 
 @app.route('/login/<usr>', methods=['GET'])
