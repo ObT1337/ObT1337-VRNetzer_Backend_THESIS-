@@ -29,9 +29,3 @@ if __name__ == "__main__":
     src = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\MAPS"
     dest = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\NewMaps"
     main(src,dest)
-
-if __name__ == "__main__":
-    # main(sys.argv[1], sys.argv[2])
-    src = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\MAPS"
-    dest = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\NewMaps"
-    main(src,dest)

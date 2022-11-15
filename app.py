@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
-
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -169,7 +169,7 @@ def upload():
 
 
 @app.route("/uploadfiles", methods=["GET", "POST"])
-def uploadR():
+def upload_files():
     return upload_files(flask.request)
 
 @app.route('/chat', methods=['GET', 'POST'])
@@ -331,7 +331,7 @@ def preview():
     )
 
 
-# gets information about a specific node
+# gets information about a specific node (project must be provided as argument)
 @app.route("/node", methods=["GET", "POST"])
 def nodeinfo():
     id = flask.request.args.get("id")
