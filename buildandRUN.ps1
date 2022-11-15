@@ -10,6 +10,7 @@ venv\Scripts\activate
 python -m pip install -r requirements.txt
 $env:FLASK_ENV="development"
 $env:FLASK_APP="app.py"
-#flask run --port 5000
+$env:FLASK_DEBUG="1"
+$env:FLASK_RELOAD="1"
 flask run --with-threads --host=0.0.0.0 --port 5000
 #python app.py
