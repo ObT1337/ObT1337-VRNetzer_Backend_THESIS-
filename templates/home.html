@@ -8,7 +8,6 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}" />
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -30,9 +29,8 @@
     {% if "UnrealEngine" not in request.user_agent|string%} {% include
     "NavBar.html" %} {% endif %}
     <script>
-        document
-            .querySelector("#navbar > li:nth-child(1)")
-            .classList.add("navbar-active");
+        // $("home_dropdown").selectmenu( "option", "classes..navbar-dropdown-menu", "navbar-dropdown-menu-active" );
+        // TODO: Highlight current page in navbar
     </script>
 
     <!-- Main Header -->
@@ -65,41 +63,7 @@
     </div>
 
     <script>
-
-        function setLinks(panel, link) {
-            var frameBox = document.getElementById(panel);
-            var name = link[1];
-            var hyperlink = link[0];
-            frameBox.innerHTML += (
-                '<a id='
-                + name
-                + ' class=crosslinks href="'
-                + hyperlink
-                + '">'
-                + name
-                + '</a>'
-                + '<br>'
-            )
-        };
-
-        var links = JSON.parse({{ links| tojson}});
-        for (var i = 0; i < links.length; i++) {
-            if (!(["home", "nodeinfo", "get_structure_scale", "test44", "force", "loadAllProjectsR"].includes(links[i][1]))) {
-                var link = links[i];
-                if (link[1].includes("main")) {
-                    setLinks("mainpanels", link);
-                } else if ((link[1].includes("nodepanel"))) {
-                    setLinks("nodepanels", link);
-                } else if ((link[1].includes("upload")) & !(link[1].includes("files"))) {
-                    setLinks("uploader", link);
-                } else if ((link[1].includes("preview"))) {
-                    setLinks("previews", link);
-                }else{
-                    document.write(link[1]);
-                }
-            };
-            console.log(links[i][1]);
-        };
+            setHomeLinks(links)
     </script>
 </body>
 
