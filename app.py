@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -367,7 +367,22 @@ def get_structure_scale() -> float or str:
     return "Error: No structure available for this UniProtID."
 
 
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+
 ### DATA ROUTES###
+@app.route("/get_all_links", methods=["GET", "POST"])
+def get_all_links():
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+        if "GET" in rule.methods and util.has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    return flask.jsonify(links)
 
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
@@ -466,25 +481,6 @@ def left(message):
         + " has left the room."
         + bcolors.ENDC
     )
-
-
-def has_no_empty_params(rule):
-    defaults = rule.defaults if rule.defaults is not None else ()
-    arguments = rule.arguments if rule.arguments is not None else ()
-    return len(defaults) >= len(arguments)
-
-
-@app.route("/home")
-def home():
-    links = []
-    for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append((url, rule.endpoint))
-    # links is now a list of url, endpoint tuples
-    return render_template("home.html", links=json.dumps(links))
 
 
 if __name__ == "__main__":
