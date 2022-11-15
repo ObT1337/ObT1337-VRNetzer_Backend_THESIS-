@@ -160,6 +160,7 @@ $(document).ready(function(){
                     document.getElementById("sres").shadowRoot.getElementById("box").appendChild(p);
                 }
                 break;
+                
 
             case 'sres_butt_clicked':
                     console.log(data.id);

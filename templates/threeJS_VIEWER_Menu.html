@@ -8,13 +8,21 @@
 		</style>
 	</head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="{{ url_for('static', filename='js/three.js') }}"></script>
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body style="background-color:rgb(30, 30, 30);">
-        <div style="z-index: 2; position: absolute; top: 0; left: 0; color:white" >&nbsp;
+        {% if "UnrealEngine" not in request.user_agent|string%}
+            {% include "NavBar.html" %}
+        {% endif %}
+        <script>
+            document.querySelector("#navbar > li:nth-child(5)").classList.add("navbar-active");
+        </script>
+        <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white" >&nbsp;
                 
             <h1 style = 'font-size: 24px; margin-bottom: 0px;'>VRNetzer</h1>
             <div style = 'font-size: 20px; colorrgb(92, 92, 92)e'>WebGL PREVIEW</div>

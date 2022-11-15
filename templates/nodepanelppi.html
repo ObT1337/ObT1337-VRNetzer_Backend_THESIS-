@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
 
     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
     <!-- rel = "stylesheet"> -->
@@ -52,6 +53,12 @@
             ue4("prot", {id:uniprot_id});
         };
 
+    </script>
+    {% if "UnrealEngine" not in request.user_agent|string%}
+        {% include "NavBar.html" %}
+    {% endif %}
+    <script>
+        document.querySelector("#navbar > li:nth-child(3)").classList.add("navbar-active");
     </script>
 
     <div id="tabsUL">
