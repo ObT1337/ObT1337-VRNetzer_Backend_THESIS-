@@ -1,7 +1,40 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='js/navbar.js') }}"></script>
+
 <ul id="navbar" class="navbar">
-    <li class="navbar"><a href="/home">Home</a></li>
-    <li class="navbar"><a href="/main">Main Panel</a></li>
-    <li class="navbar"><a href="/nodepanel">Node Info</a></li>
-    <li class="navbar"><a href="/upload">Uploader</a></li>
-    <li class="navbar"><a href="/preview">Preview</a></li>
+    <li class="navbar">
+        <select id="home_dropdown" class="navbar">
+        </select>
+    </li>
+
+    <li class="navbar">
+    </li>
+        <select id="mainpanel_dropdown" class="navbar">
+        </select>
+    </li>
+    <li class="navbar">
+        <select id="nodepanel_dropdown" class="navbar">
+        </select>
+    </li>
+    <li class="navbar">
+        <select id="uploader_dropdown" class="navbar">
+        </select>
+    </li>
+    <li class="navbar">
+        <select id="preview_dropdown" class="navbar">
+        </select>
+    </li>
+
 </ul>
+<script>
+    var links = getAllLinks();
+    // TODO: Synchronize the Post request!
+    console.log("This is what we got: " + links)
+    setNavBarLinks(links);
+    $(document).ready(function () {
+        const dropdowns = ["home_dropdown","mainpanel_dropdown","nodepanel_dropdown","uploader_dropdown","preview_dropdown"]
+        dropdowns.forEach(function(item,index){
+            initNavDropdown(item);
+        });
+    });
+</script>
