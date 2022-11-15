@@ -124,7 +124,7 @@ def nodepanel():
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
-                "nodepanelppi.html",
+                "new_nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
                 session=flask.session,
                 pfile=GD.pfile,
@@ -171,6 +171,24 @@ def upload():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
     return upload_files(flask.request)
+
+@app.route('/chat', methods=['GET', 'POST'])
+def chat():
+    if(request.method=='POST'):
+        username = request.form['username'] 
+        room = request.form['room']
+        #Store the data in session
+        session['username'] = username
+        session['room'] = room
+        return render_template('chat.html', session = session)
+    else:
+        if(session.get('username') is not None):
+            session['username'] = 'reee'
+            session['room'] = '2'
+            return render_template('chat.html', session = session)
+        else:
+            return redirect(url_for('index'))
+
 
 
 @app.route("/ForceLayout")
