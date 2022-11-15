@@ -1,3 +1,6 @@
 [submodule "extensions/StringEx"]
 	path = extensions/StringEx
 	url = https://github.com/menchelab/StringEx.git
+[submodule "extensions/ProteinStructureFetch"]
+	path = extensions/ProteinStructureFetch
+	url = https://github.com/menchelab/ProteinStructureFetch.git
