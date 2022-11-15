@@ -4,3 +4,6 @@
 [submodule "extensions/ProteinStructureFetch"]
 	path = extensions/ProteinStructureFetch
 	url = https://github.com/menchelab/ProteinStructureFetch.git
+[submodule "extensions/ExampleExtension"]
+	path = extensions/ExampleExtension
+	url = https://github.com/menchelab/ExampleExtension.git
