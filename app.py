@@ -132,7 +132,7 @@ def nodepanel():
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
-                "nodepanelppi.html",
+                "new_nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
                 session=flask.session,
                 pfile=GD.pfile,
