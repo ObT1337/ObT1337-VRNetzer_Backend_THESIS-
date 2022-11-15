@@ -6,5 +6,5 @@ MAPS/
 NewMaps/
 Electrostatic_Surface_MAPS/
 
-**.DS_Store
+**/*.DS_Store
 .venv
