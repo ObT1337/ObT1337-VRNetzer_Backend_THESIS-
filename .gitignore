@@ -12,3 +12,5 @@ c_vrnetzer_env/
 MAPS/
 NewMaps/
 Electrostatic_Surface_MAPS/
+**/*.DS_Store
+.venv

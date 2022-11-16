@@ -33,6 +33,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 app = load_extensions.load(app)
 
+
 socketio = SocketIO(app, manage_session=False)
 
 ### HTML ROUTES ###
@@ -124,7 +125,7 @@ def nodepanel():
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
             return render_template(
-                "nodepanelppi.html",
+                "new_nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
                 session=flask.session,
                 pfile=GD.pfile,
@@ -171,6 +172,24 @@ def upload():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
     return upload_files(flask.request)
+
+
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    if request.method == "POST":
+        username = request.form["username"]
+        room = request.form["room"]
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        return render_template("chat.html", session=session)
+    else:
+        if session.get("username") is not None:
+            session["username"] = "reee"
+            session["room"] = "2"
+            return render_template("chat.html", session=session)
+        else:
+            return redirect(url_for("index"))
 
 
 @app.route("/ForceLayout")
@@ -367,6 +386,11 @@ def get_structure_scale() -> float or str:
     return "Error: No structure available for this UniProtID."
 
 
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
+
 ### DATA ROUTES###
 
 
@@ -383,6 +407,12 @@ def loadProjectInfoR(name):
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
     return loadAnnotations(name)
+
+
+### Execute code before first request ###
+@app.before_first_request
+def execute_before_first_request():
+    util.create_dynamic_links(app)
 
 
 ###SocketIO ROUTES###
@@ -466,25 +496,7 @@ def left(message):
         + " has left the room."
         + bcolors.ENDC
     )
-
-
-def has_no_empty_params(rule):
-    defaults = rule.defaults if rule.defaults is not None else ()
-    arguments = rule.arguments if rule.arguments is not None else ()
-    return len(defaults) >= len(arguments)
-
-
-@app.route("/home")
-def home():
-    links = []
-    for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append((url, rule.endpoint))
-    # links is now a list of url, endpoint tuples
-    return render_template("home.html", links=json.dumps(links))
+    util.construct_nav_bar(app)
 
 
 if __name__ == "__main__":

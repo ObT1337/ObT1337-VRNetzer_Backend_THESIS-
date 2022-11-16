@@ -179,7 +179,7 @@ customElements.define('mc-sresult', mcSresult);
 
 
 
-function initDropdownX(id, data, active) {
+function initDropdown(id, data, active) {
 
   $('#' + id).selectmenu();
 
@@ -222,23 +222,7 @@ function initDropdownX(id, data, active) {
 
 }
 
-function initDropdown (id, data, active){
 
-  $('#'+ id).selectmenu();
-
-  for (let i = 0; i < data.length; i++) {
-    $('#'+ id).append(new Option(data[i]));
-  }
-  $('#'+ id).val(active);
-  $('#'+ id).selectmenu("refresh");
-
-  $('#'+ id).on('selectmenuselect', function () {
-    var name =  $('#'+ id).find(':selected').text();
-    socket.emit('ex', {id: "projects", opt: name, fn: "sel"});
-    ///logger($('#selectMode').val());
-  });
-
-}
 
 
 function initProjectDropdown(id, data, active) {
@@ -337,4 +321,8 @@ function setHref(id, uniprot,link) {
   var href = link.replace("<toChange>", uniprot)
   console.log(href)
   $('#' + id).attr('href', href);
+}
+function followLink(link) {
+  var url = "http://" + window.location.href.split("/")[2];
+  window.location.href= url + link;
 }

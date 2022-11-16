@@ -1,45 +1,26 @@
 ul.navbar {
-    list-style-type: none;
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%; /* Full height */
     overflow: auto; /* Enable scrolling if the sidenav has too much content */
   }
-a.navbar{
-    font-size: 20px;
-    color:white;
-    text-decoration: none;
-}
-a.navbar:visited {
-    font-size: 20px;
-    color:white;
-    text-decoration: none;
-}
 li.navbar{
     display: inline;
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
 }
-li.navbar a{
-    display: inline;
-    color: white;
-    padding: 8px 16px;
-    text-decoration: none;
-  }
-li.navbar a:visited{
-    text-decoration: none;
-  }
-li.navbar:last-child {
-    border-bottom: none;
-  }
-li.navbar:hover {
-    background-color: rgb(42, 113, 148,0.45);
-  }
-li.navbar-active a {
-    background-color:rgb(42, 113, 148);
-  }
-li.navbar-active a:hover {
-    background-color:rgb(42, 113, 148);
+.navbar-triangle {
+    visibility: hidden;
+}
+.navbar-dropdown-menu-active.ui-button{
+  background:rgb(42, 113, 148);
+}
+.navbar-dropdown-menu-button-closed{
+  max-width: fit-content;
+}
+.navbar-dropdown-menu-button-open{
+  max-width: fit-content;
+}
+.navbar-dropdown-text{
+  font-size: 25px;
+  text-decoration: none;
 }
