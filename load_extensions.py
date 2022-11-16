@@ -29,6 +29,9 @@ def load(main_app: flask.Flask):
                     f"\u001b[33mMake sure you have an app.py file in the '/src/' folder of your extension."
                 )
                 print(
+                    f"\u001b[33mMake sure that you have defined a 'url_prefix' for your in the app.py file."
+                )
+                print(
                     f"\u001b[33mMake sure your flask blueprint is called 'blueprint'."
                 )
 
