@@ -17,12 +17,20 @@ def load(main_app: flask.Flask):
                     module.blueprint, url_prefix=module.url_prefix
                 )
                 print(f"\033[1;32mLoaded extension: {ext}")
-            except (ImportError, AttributeError) as e:
+            except ImportError:
                 print(f"\u001b[33m", traceback.format_exc())
                 print(f"\u001b[33mMake sure you installed a necessary python modules.")
                 print(
                     f"\u001b[33mYou can use:\n\npython3 -m pip install -r {ext}/requirements.txt\n\nTo install all requirements."
                 )
-                print(f"Excepted an ImportError:{e}\n")
+            except AttributeError:
+                print(f"\u001b[33m", traceback.format_exc())
+                print(
+                    f"\u001b[33mMake sure you have an app.py file in the '/src/' folder of your extension."
+                )
+                print(
+                    f"\u001b[33mMake sure your flask blueprint is called 'blueprint'."
+                )
+
     print("\n\n\033[1;32mFinished loading extensions, server is running...\u001B[37m")
     return main_app
