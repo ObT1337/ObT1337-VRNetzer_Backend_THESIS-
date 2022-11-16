@@ -28,10 +28,6 @@
 <body>
     {% if "UnrealEngine" not in request.user_agent|string%} {% include
     "NavBar.html" %} {% endif %}
-    <script>
-        // $("home_dropdown").selectmenu( "option", "classes..navbar-dropdown-menu", "navbar-dropdown-menu-active" );
-        // TODO: Highlight current page in navbar
-    </script>
 
     <!-- Main Header -->
     <div class="twelve columns">
@@ -39,21 +35,21 @@
     </div>
     <div class="twelve columns">
         <div id="home_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-            <h3>Home</h3>
+            <h4>Home</h4>
             <input onclick="followLink('/home')" style="margin: 10px;min-width: 48%; max-width: fit-content;" type="submit" value="home" />
         </div>
     </div>
     <div class="twelve columns">
         <div class="six columns">
             <div id="mainpanel_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-                <h3>Main Panels</h3>
+                <h4>Main Panels</h4>
                 <input onclick="followLink('/main')" style="margin: 10px;min-width: 40%; max-width: fit-content;"
                 type="submit" value="main" />
             </div>
         </div>
         <div class="six columns">
             <div id="nodepanel_frambox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-                <h3>Node Info</h3>
+                <h4>Node Info</h4>
                 <input onclick="followLink('/nodepanel')" style="margin: 10px;min-width: 40%; max-width: fit-content;" type="submit"
                 value="nodepanel" />
             </div>
@@ -62,14 +58,14 @@
     <div class="twelve columns">
         <div class="six columns">
             <div id="uploader_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-                <h3>Uploader</h3>
+                <h4>Uploader</h4>
                 <input onclick="followLink('/upload')" style="margin: 10px;min-width: 40%; max-width: fit-content;" type="submit"
                 value="upload" />
             </div>
         </div>
         <div class="six columns">
             <div id="preview_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-                <h3>Previews</h3>
+                <h4>Previews</h4>
                 <input onclick="followLink('/preview')" style="margin: 10px;min-width: 40%; max-width: fit-content;" type="submit"
                 value="preview" />
             </div>

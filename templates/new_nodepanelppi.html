@@ -57,9 +57,6 @@
     {% if "UnrealEngine" not in request.user_agent|string%}
         {% include "NavBar.html" %}
     {% endif %}
-    <script>
-        document.querySelector("#navbar > li:nth-child(3)").classList.add("navbar-active");
-    </script>
 
     <div id="tabsUL">
         <script>
@@ -231,45 +228,28 @@
 
             <div id="node_protein_structures">
                 <h4>Structural Information</h4>
-                <div class="frameBox" style="display:inline-block; margin-top:6px; margin-bottom:6px;">
-                    <div class="twelve columns">
-                        <input type="button" value="3D Model" id='proteinButton' class="swagTextButton">
-                    </div>
-                    <!-- <script> -->
-                    <p>TODO: ADD Script to show/hide model.</p>
+                <div class="frameBox">
+                    <h7>PROTEIN STRUCTURES</h7>
+                        <select id='structure'></select>
+                        <input type="button" id='showStructure' value="Hide Structure"> </button>
+                    <h7>PROTEIN SIZE</h7>
+                        <div id="slider-prot_size"></div>
+                        <script>
+                            initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
+                            initSlider('slider-prot_size');
+                            initButton('showStructure');
+                            //ue4("prot", {id:name});
 
-                    <!-- </script> -->
-                </div> 
-
-            <!-- Protein Structure Dropdown -->
-
-                <h4 style="margin-top:50px; margin-bottom:25px">PROTEIN STRUCTURES</h4>
-                <div class="cornerBox">
-                    <select id='structure'></select>
-                    <script>
-                        if (node_data.uniprot){
-                            function initDropdown (id, data, active){
-                                $('#'+ id).selectmenu();
-
-                                for (let i = 0; i < data.length; i++) {
-                                $('#'+ id).append(new Option(data[i]));
+                            // Will Change wether the button says "Show Structure" or "Hide Structure"
+                            $("#showStructure").on("click", function() {
+                                console.log("lelele")
+                                if (this.value == "Show Structure"){
+                                    this.value = "Hide Structure";
+                                }else{
+                                    this.value = "Show Structure";
                                 }
-                                $('#'+ id).val(active);
-                                $('#'+ id).selectmenu("refresh");
-
-                                $('#'+ id).on('selectmenuselect', function () {
-                                var name =  $('#'+ id).find(':selected').text();
-
-                                ue4("prot", {id:name});
-                                //console.log($('#structure').val());
-                                });
-
-                                };
-                                initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
-                        }else{
-                            document.getElementById("node_protein_structures").remove();
-                        };
-                    </script>
+                            });
+                        </script>
                 </div>
             </div>
         </div>

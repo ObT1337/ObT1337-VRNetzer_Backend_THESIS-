@@ -22,5 +22,6 @@ li.navbar{
 }
 .navbar-dropdown-text{
   font-size: 25px;
+  font-family: Arial;
   text-decoration: none;
 }
