@@ -485,6 +485,13 @@ input[type="button"] {
     background-image: url("images/arrow_playpause-new.png");
 }
 
+.swagShowStructureButton {
+    color: rgba(0, 0, 0, 0);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url("/static/img/active_protein.png");
+}
 
 .swagForwardButton {
     background-position: center;
