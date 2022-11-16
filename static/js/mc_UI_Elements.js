@@ -322,3 +322,7 @@ function setHref(id, uniprot,link) {
   console.log(href)
   $('#' + id).attr('href', href);
 }
+function followLink(link) {
+  var url = "http://" + window.location.href.split("/")[2];
+  window.location.href= url + link;
+}

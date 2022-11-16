@@ -1,4 +1,5 @@
 import random
+import re
 
 import bs4
 import flask
@@ -99,6 +100,7 @@ def create_dynamic_links(app: flask.app.Flask):
             continue
         for category in categories:
             if category in link[1]:
+                link = (link[0], link[1].replace(".", " / ").replace("_", " "))
                 dropdown_map[category] = add_nav_element(
                     nav_soup, dropdown_map[category], link
                 )
@@ -124,7 +126,7 @@ def add_nav_element(
             return dropdown
 
     new_element = soup.new_tag("option")
-    new_element.string = link[1].replace("_", " ")
+    new_element.string = link[1]
     new_element["value"] = link[0]
     dropdown.append(new_element)
     return dropdown
@@ -136,12 +138,14 @@ def add_home_element(
     """
     Adds a new link to the corresponding framebox.
     """
-    for element in framebox.find_all("a"):
-        if element["href"] == link[0]:
+    on_click_event = f"followLink('{link[0]}')"
+    for element in framebox.find_all("input"):
+        if element["onclick"] == on_click_event:
             return framebox
-    new_element = soup.new_tag("a")
-    new_element["class"] = "crosslinks"
-    new_element.string = link[1]
-    new_element["href"] = link[0]
+    new_element = soup.new_tag("input")
+    new_element["type"] = "submit"
+    new_element["onclick"] = on_click_event
+    new_element["value"] = link[1]
+    new_element["style"] = "margin: 10px;min-width: 48%; max-width: fit-content;"
     framebox.append(new_element)
     return framebox
