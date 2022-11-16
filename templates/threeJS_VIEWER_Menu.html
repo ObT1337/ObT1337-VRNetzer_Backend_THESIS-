@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>WEBGL Preview</title>
-		<style>
-			body { margin: 0; }
-		</style>
-	</head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<head>
+    <meta charset="utf-8">
+    <title>WEBGL Preview</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" />
 
-    <script src="{{ url_for('static', filename='js/three.js') }}"></script>
-    <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
-	<body style="background-color:rgb(30, 30, 30);">
-        {% if "UnrealEngine" not in request.user_agent|string%}
-            {% include "NavBar.html" %}
-        {% endif %}
-        <script>
-            document.querySelector("#navbar > li:nth-child(5)").classList.add("navbar-active");
-        </script>
-        <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white" >&nbsp;
-                
-            <h1 style = 'font-size: 24px; margin-bottom: 0px;'>VRNetzer</h1>
-            <div style = 'font-size: 20px; colorrgb(92, 92, 92)e'>WebGL PREVIEW</div>
-                    <p></p>
-                    <div>PROJECTS</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-                    <select id='projects'></select>
-                    
-                
-                
-        </div>
+<script src="{{ url_for('static', filename='js/three.js') }}"></script>
+<script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 
-		<script>
-        
-        var pdata = JSON.parse({{data|tojson}});
-        
+<body style="background-color:rgb(30, 30, 30);">
+    {% if "UnrealEngine" not in request.user_agent|string%}
+    {% include "NavBar.html" %}
+    {% endif %}
+    <script>
+        document.querySelector("#navbar > li:nth-child(5)").classList.add("navbar-active");
+    </script>
+    <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white">&nbsp;
+
+        <h1 style='font-size: 24px; margin-bottom: 0px;'>VRNetzer</h1>
+        <div style='font-size: 20px; colorrgb(92, 92, 92)e'>WebGL PREVIEW</div>
+        <p></p>
+        <div>PROJECTS</div>
+
+        <select id='projects'></select>
+
+
+
+    </div>
+
+    <script>
+        var pdata = JSON.parse({{ data| tojson}});
+
         //console.log(pdata);
 
         id = "projects"
         for (let i = 0; i < pdata["projects"].length; i++) {
-            $('#'+ id).append(new Option(pdata["projects"][i]));
+            $('#' + id).append(new Option(pdata["projects"][i]));
         }
+        $("#projects").selectmenu();
 
-        $('#projects').on('change', function() {
-        //alert( this.value );
-        console.log(this.value);
-        window.location.search += '&project=' + this.value ;
+        $('#projects').on('selectmenuselect', function() {
+            //alert( this.value );
+            console.log(this.value);
+            window.location.search += '&project=' + this.value;
         });
 
-        
-		</script>
-        
-	</body>
+    </script>
+
+</body>
+
 </html>

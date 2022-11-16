@@ -25,7 +25,7 @@
 		</style>
 	</head>
     
-
+    <link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -299,8 +299,8 @@
             $('#'+ id).append(new Option(data[i]));
             }
             document.getElementById(id).selectedIndex = opt;
-
-            $('#'+ id).on('change', function () {
+            $('#'+ id).selectmenu();
+            $('#'+ id).on('selectmenuselect', function () {
             var name =  $('#'+ id).find(':selected').text();
             console.log(name);
             });

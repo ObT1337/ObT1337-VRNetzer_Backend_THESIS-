@@ -33,6 +33,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 
 app = load_extensions.load(app)
 
+
 socketio = SocketIO(app, manage_session=False)
 
 ### HTML ROUTES ###
@@ -172,23 +173,23 @@ def upload():
 def upload_files():
     return upload_files(flask.request)
 
-@app.route('/chat', methods=['GET', 'POST'])
-def chat():
-    if(request.method=='POST'):
-        username = request.form['username'] 
-        room = request.form['room']
-        #Store the data in session
-        session['username'] = username
-        session['room'] = room
-        return render_template('chat.html', session = session)
-    else:
-        if(session.get('username') is not None):
-            session['username'] = 'reee'
-            session['room'] = '2'
-            return render_template('chat.html', session = session)
-        else:
-            return redirect(url_for('index'))
 
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    if request.method == "POST":
+        username = request.form["username"]
+        room = request.form["room"]
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        return render_template("chat.html", session=session)
+    else:
+        if session.get("username") is not None:
+            session["username"] = "reee"
+            session["room"] = "2"
+            return render_template("chat.html", session=session)
+        else:
+            return redirect(url_for("index"))
 
 
 @app.route("/ForceLayout")
@@ -391,16 +392,6 @@ def home():
 
 
 ### DATA ROUTES###
-@app.route("/get_all_links", methods=["GET", "POST"])
-def get_all_links():
-    links = []
-    for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and util.has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            links.append((url, rule.endpoint))
-    return flask.jsonify(links)
 
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
@@ -416,6 +407,12 @@ def loadProjectInfoR(name):
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
     return loadAnnotations(name)
+
+
+### Execute code before first request ###
+@app.before_first_request
+def execute_before_first_request():
+    util.create_dynamic_links(app)
 
 
 ###SocketIO ROUTES###
@@ -499,6 +496,7 @@ def left(message):
         + " has left the room."
         + bcolors.ENDC
     )
+    util.construct_nav_bar(app)
 
 
 if __name__ == "__main__":
