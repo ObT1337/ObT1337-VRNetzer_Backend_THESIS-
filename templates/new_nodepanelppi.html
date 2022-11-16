@@ -57,9 +57,6 @@
     {% if "UnrealEngine" not in request.user_agent|string%}
         {% include "NavBar.html" %}
     {% endif %}
-    <script>
-        document.querySelector("#navbar > li:nth-child(3)").classList.add("navbar-active");
-    </script>
 
     <div id="tabsUL">
         <script>

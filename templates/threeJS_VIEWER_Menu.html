@@ -23,9 +23,6 @@
     {% if "UnrealEngine" not in request.user_agent|string%}
     {% include "NavBar.html" %}
     {% endif %}
-    <script>
-        document.querySelector("#navbar > li:nth-child(5)").classList.add("navbar-active");
-    </script>
     <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white">&nbsp;
 
         <h1 style='font-size: 24px; margin-bottom: 0px;'>VRNetzer</h1>
