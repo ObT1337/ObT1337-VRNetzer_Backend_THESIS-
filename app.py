@@ -388,6 +388,9 @@ def get_structure_scale() -> float or str:
 
 @app.route("/home")
 def home():
+    if not flask.session.get("username"):
+        flask.session["username"] = util.generate_username()
+        flask.session["room"] = 1
     return render_template("home.html")
 
 

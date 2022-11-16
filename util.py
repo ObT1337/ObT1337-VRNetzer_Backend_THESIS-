@@ -75,7 +75,7 @@ def create_dynamic_links(app: flask.app.Flask):
     # initialize the framebox map
     home_framebox = home_soup.find("div", {"id": "home_framebox"})
     main_framebox = home_soup.find("div", {"id": "mainpanel_framebox"})
-    nodepanel_framebox = home_soup.find("div", {"id": "nodepanel_frambox"})
+    nodepanel_framebox = home_soup.find("div", {"id": "nodepanel_framebox"})
     upload_framebox = home_soup.find("div", {"id": "uploader_framebox"})
     preview_framebox = home_soup.find("div", {"id": "preview_framebox"})
     framebox_map = {
