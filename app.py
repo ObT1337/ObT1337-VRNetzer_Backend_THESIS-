@@ -449,7 +449,11 @@ def ex(message):
 
     if message["id"] == "projects":
         GD.sessionData["actPro"] = message["opt"]
-
+        folder = os.path.join("static", "projects", GD.sessionData["actPro"])
+        with open(os.path.join(folder, "names.json"), "r") as json_file:
+            GD.names = json.load(json_file)
+        print("changed project to " + GD.sessionData["actPro"])
+        print("names_files to " + str(GD.names))
         print("changed activ project " + message["opt"])
 
     if message["id"] == "search":
@@ -475,7 +479,7 @@ def ex(message):
                 message["prot"].append("x")
                 message["protsize"].append(-1)
 
-        print(message)
+        print("Message:", message)
         emit("ex", message, room=room)
 
     else:
