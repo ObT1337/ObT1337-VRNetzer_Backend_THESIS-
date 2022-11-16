@@ -17,7 +17,7 @@ def load(main_app: flask.Flask):
                     module.blueprint, url_prefix=module.url_prefix
                 )
                 print(f"\033[1;32mLoaded extension: {ext}")
-            except ImportError as e:
+            except (ImportError, AttributeError) as e:
                 print(f"\u001b[33m", traceback.format_exc())
                 print(f"\u001b[33mMake sure you installed a necessary python modules.")
                 print(
