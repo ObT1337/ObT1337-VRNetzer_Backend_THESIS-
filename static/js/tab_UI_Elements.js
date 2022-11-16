@@ -10,7 +10,7 @@ function initButtonFunction(id, fun){
     });
 }
 
-function initDropdownFunction(id, data, placeholderVal=undefined, fun){
+function initDropdownFunction(id, data=[], placeholderVal=undefined, fun){
 
   $('#'+ id).selectmenu();
   // remove old options without placeholder

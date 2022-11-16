@@ -631,7 +631,6 @@
                     // initialization
                     (function(){
                         vRNetzer.annotation.vars.annotations = [];
-                        vRNetzer.annotation.vars.annotations2 = [];
                         vRNetzer.annotation.vars.selected1;
                         vRNetzer.annotation.vars.selected2;
                         vRNetzer.annotation.vars.selectedNode;
@@ -640,44 +639,77 @@
 
                     // main functionality
                     $(document).ready(function(){
-                        if (Object.hasOwn(nodesJSON["nodes"][0], "annotation")){
-                            // create annotation objects -> skip when no annotation available
-                            var annotation2Nodes = new vRNetzer.annotation.func.buildAnnotationMap(nodesJSON);
-                            for (let key of annotation2Nodes.keys()){
-                                vRNetzer.annotation.vars.annotations.push(key);
-                            }
+                        if (!Object.hasOwn(nodesJSON["nodes"][0], "annotation")){
+                            return;
+                        }
 
-                            // init UI components
-                            initDropdownFunction('dropdown-annotation-1', vRNetzer.annotation.vars.annotations, "placeholder", function(){
-                                // set annotation type 1
-                                vRNetzer.annotation.vars.selected1 = $('#dropdown-annotation-1 option:selected').text();
-                                console.log("Annotation: selected annotation type 1:", vRNetzer.annotation.vars.selected1);
-                                
-                                // update nodes to annotation, set node dropdown function
-                                initDropdownFunction('dropdown-annotation-nodes', annotation2Nodes.get(vRNetzer.annotation.vars.selected1), "placeholder", function(){
-                                    vRNetzer.annotation.vars.selectedNode = $('#dropdown-annotation-nodes option:selected').text();
-                                    console.log("Annotation: seleceted node: ", vRNetzer.annotation.vars.selectedNode);
-                                });
-
-                                // update annotation typ 2 drop down
-                                vRNetzer.annotation.vars.annotations.forEach(function(item){
-                                    if (item === vRNetzer.annotation.vars.selected1){
-                                        return;
-                                    }
-                                    vRNetzer.annotation.vars.annotations2.push(item);
-                                })
-                                initDropdownFunction('dropdown-annotation-2', vRNetzer.annotation.vars.annotations2, "placeholder", function(){
-                                    vRNetzer.annotation.vars.selected2 = $('#dropdown-annotation-2 option:selected').text();
-                                    console.log("Annotation: selected annotation type 2: ", vRNetzer.annotation.vars.selected2);
-                                });
-                            });
+                        // create annotation objects -> skip when no annotation available
+                        var annotation2Nodes = new vRNetzer.annotation.func.buildAnnotationMap(nodesJSON);
+                        for (let key of annotation2Nodes.keys()){
+                            vRNetzer.annotation.vars.annotations.push(key);
+                        }
+        
+                        /* init UI components */
+                        // dropdown for annotation 1
+                        initDropdownFunction('dropdown-annotation-1', vRNetzer.annotation.vars.annotations, "placeholder", function(){
+                            // set annotation type 1
+                            vRNetzer.annotation.vars.selected1 = $('#dropdown-annotation-1 option:selected').text();
+                            console.log("Annotation: selected annotation type 1:", vRNetzer.annotation.vars.selected1);
                             
-                            $("#dropdown-annotation-operations").selectmenu("refresh");
-                            $("#dropdown-annotation-operations").on('selectmenuselect', function () {
-                                vRNetzer.annotation.vars.selectedOperator = $('#dropdown-annotation-2 option:selected').val();
-                                console.log("Annotation: selected set operator: ", vRNetzer.annotation.vars.selectedOperator)
-                            });                          
-                        };
+                            // update nodes to annotation, set node dropdown function
+                            initDropdownFunction('dropdown-annotation-nodes', annotation2Nodes.get(vRNetzer.annotation.vars.selected1), "placeholder", function(){
+                                vRNetzer.annotation.vars.selectedNode = $('#dropdown-annotation-nodes option:selected').text();
+                                console.log("Annotation: seleceted node: ", vRNetzer.annotation.vars.selectedNode);
+                            });
+                        });
+                        
+                        // dropdown for nodes of annotation 2 
+                        // no update after selection of type 1 bc of extrem long runtime of DOM manipulation
+                        // could consider to just remove the selected typ 1 option and add it after reselecting it
+                        initDropdownFunction('dropdown-annotation-2', vRNetzer.annotation.vars.annotations, "placeholder", function(){
+                            vRNetzer.annotation.vars.selected2 = $('#dropdown-annotation-2 option:selected').text();
+                            console.log("Annotation: selected annotation type 2: ", vRNetzer.annotation.vars.selected2);
+                        });
+
+                        // buttin highlightung node and annotation 1
+                        initButtonFunction('button-annotation-highlight', 
+                            function(){
+                                // create new texture + display
+                                console.log("Highlight nodes of annotation selected");
+                            }
+                        );
+
+                        // button to enable set operation
+                        initButtonFunction('button-annotation-operator', 
+                            function(){
+                                // show set operations box
+                                console.log("Enable set operation menu");
+
+                                $("#box-set-operation").removeClass("wrapper-disabled");
+                            }
+                        );
+
+                        // button to reset everything 
+                        initButtonFunction('button-annotation-reset', 
+                            function(){
+                                // reset selections and texture
+                                console.log("Reset all");
+
+                                $("#box-set-operation").addClass("wrapper-disabled");
+                            }
+                        );
+
+                        // dropdown for set operation type
+                        $("#dropdown-annotation-operations").selectmenu("refresh");
+                        $("#dropdown-annotation-operations").on('selectmenuselect', function () {
+                            vRNetzer.annotation.vars.selectedOperator = $('#dropdown-annotation-2 option:selected').val();
+                            console.log("Annotation: selected set operator: ", vRNetzer.annotation.vars.selectedOperator)
+                        });
+
+                        // dropdown for annotation type 2
+
+                        // button to highlight highlight node, and result of set operation
+
                     });
                 </script>
                 <div class="twelve columns">
@@ -710,28 +742,6 @@
                     <input type="button" id='button-annotation-operator' class="swagTextButton" value="Operation"></button>
                     <input type="button" id='button-annotation-reset' class="swagTextButton" value="Reset"></button>
                     <script>
-                        initButtonFunction('button-annotation-highlight', 
-                            function(){
-                                // create new texture + display
-                                console.log("Highlight nodes of annotation selected");
-                            }
-                        );
-                        initButtonFunction('button-annotation-operator', 
-                            function(){
-                                // show set operations box
-                                console.log("Enable set operation menu");
-
-                                $("#box-set-operation").removeClass("wrapper-disabled");
-                            }
-                        );
-                        initButtonFunction('button-annotation-reset', 
-                            function(){
-                                // reset selections and texture
-                                console.log("Reset all");
-
-                                $("#box-set-operation").addClass("wrapper-disabled");
-                            }
-                        );
                     </script>
                 </div>
                 
