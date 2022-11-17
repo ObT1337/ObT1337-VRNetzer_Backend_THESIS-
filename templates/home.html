@@ -23,17 +23,18 @@
 <body>
     {% if "UnrealEngine" not in request.user_agent|string%} {% include
     "NavBar.html" %} {% endif %}
-<!-- Main Header -->
+
+    <!-- Main Header -->
 <div class="twelve columns">
 <h2 class="lineglowslow">Home</h2>
 </div>
-<div class="twelve columns">
+<div class="twelve columns" id="home_block">
 <div class="frameBox" id="home_framebox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
 <h4>Home</h4>
 <input onclick="followLink('/home')" style="margin: 10px;min-width: 48%; max-width: fit-content;" type="submit" value="home"/>
 </div>
 </div>
-<div class="twelve columns">
+<div class="twelve columns" id="main_node_bock">
 <div class="six columns">
 <div class="frameBox" id="mainpanel_framebox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
 <h4>Main Panels</h4>
@@ -41,13 +42,13 @@
 <input onclick="followLink('/doku/index')" style="margin: 10px;min-width: 48%; max-width: fit-content;" type="submit" value="doku / string main"/></div>
 </div>
 <div class="six columns">
-<div class="frameBox" id="nodepanel_frambox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+<div class="frameBox" id="nodepanel_framebox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
 <h4>Node Info</h4>
 <input onclick="followLink('/nodepanel')" style="margin: 10px;min-width: 40%; max-width: fit-content;" type="submit" value="nodepanel"/>
 </div>
 </div>
 </div>
-<div class="twelve columns">
+<div class="twelve columns" id="upload_preview_block">
 <div class="six columns">
 <div class="frameBox" id="uploader_framebox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
 <h4>Uploader</h4>
@@ -61,5 +62,12 @@
 </div>
 </div>
 </div>
+    {% if "UnrealEngine" in request.user_agent|string%}
+        <script>
+            document.getElementById("home_block").style.display = "none";
+            document.getElementById("nodepanel_framebox").style.display = "none";
+            document.getElementById("upload_preview_block").style.display = "none";
+        </script>
+    {% endif %}
 </body>
 </html>
