@@ -45,7 +45,11 @@
         for (let i = 0; i < pdata["projects"].length; i++) {
             $('#' + id).append(new Option(pdata["projects"][i]));
         }
-        $("#projects").selectmenu();
+        $("#projects").selectmenu({
+            classes: {
+                "ui-selectmenu-open": "sixten-open",
+            },
+        });
 
         $('#projects').on('selectmenuselect', function() {
             //alert( this.value );

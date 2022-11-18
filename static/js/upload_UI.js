@@ -7,9 +7,14 @@ $(document).ready(function () {
    
     //GetDbFileNames1();
     //console.log("this");
-
+    $("#new_namespace_name").hide();
     $(function () {
-        $("#namespaces").selectmenu();
+      $("#namespaces").selectmenu(
+        {
+          classes:{
+              "ui-selectmenu-open": "twozerozero-open",
+          },
+      });
 
     });
 
@@ -37,7 +42,7 @@ $(document).ready(function () {
         }
     });
     
-    $('form :input').on('change input', function() {
+    $('#upload_form').on('change input', function() {
         console.log("changed!");
         var formData = new FormData(document.getElementById('upload_form'));
 
