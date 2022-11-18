@@ -31,7 +31,7 @@ app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
 
-app = load_extensions.load(app)
+app, extensions = load_extensions.load(app)
 
 
 socketio = SocketIO(app, manage_session=False)
@@ -49,7 +49,6 @@ socketio = SocketIO(app, manage_session=False)
 def main():
     username = util.generate_username()
     project = flask.request.args.get("project")
-
     if project is None:
         project = "none"
     else:
@@ -413,7 +412,7 @@ def loadProjectAnnotations(name):
 @app.before_first_request
 def execute_before_first_request():
     util.create_dynamic_links(app)
-
+    util.add_tabs(extensions)
 
 ###SocketIO ROUTES###
 

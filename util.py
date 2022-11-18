@@ -156,6 +156,7 @@ def add_home_element(
 def add_tabs(extensions:dict):
     to_main = extensions.get("main_tabs", [])
     to_upload = extensions.get("upload_tabs", [])
+    
     with open("templates/main_template.html", "r") as main_file:
         main_soup = bs(main_file, "html.parser")
     with open("templates/upload_template.html", "r") as upload_file:
