@@ -22,10 +22,11 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/connect_socketIO.js') }}"></script>
-
-
+    
+    
     <!--
                     <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/main_UI.js') }}"></script>
@@ -140,7 +141,8 @@
             var sessiondata = JSON.parse({{sessionData|tojson}});
             var pdata = JSON.parse({{pfile|tojson}});
             var username = '{{session['username']}}';
-            console.log(username);
+            console.log(sessiondata);
+            console.log(pdata);
             
         </script>
 
@@ -162,23 +164,23 @@
                     
                 });
             </script>
-            <ul>
+            <ul id="mainTabs">
                 <li>
                     <a href="#tabs-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_open.png') }}" /></a>
                 </li>
                 <li>
                     <a href="#tabs-2"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_sel.png') }}" /></a>
                 </li>
-                <!--<li>
+                <li>
                     <a href="#tabs-3"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_tune.png') }}" /></a>
-                </li> -->
+                </li>
                 <li><a href="#tabs-4"><img draggable="false" onmousedown="return false" height='40' width='40'
                                                 src="{{ url_for('static', filename='img/active_search.png') }}" /></a></li>
                 <li>
                     <a href="#tabs-5"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/active_pin.png') }}" /></a>
                 </li>
-                <!--<li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
-                                                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>-->
+                <li><a href="#tabs-6"><img draggable="false" onmousedown="return false" height='40' width='40'
+                                                src="{{ url_for('static', filename='img/active_gears.png') }}" /></a></li>
             </ul>
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -187,23 +189,18 @@
                                             
                             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
             <div id="tabs-1" class="container">
-
+                
                 <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
                     <h2 class="lineglowslow">Project</h2>
                 </div>
 
                 <div class="twelve columns">
-                    <!--<div id="projects-section" class="five columns">
-                        <h3 class="lineglowslow" style="background-size: contain;"><span>PROJECT</span></h3>
-                    </div>
-                    <div class="seven columns">-->
                         <div class="cornerBox">
-                            <select id='projects'></select>
+                            <select id='projects'style="min-height:20px;overflow:scroll;"></select>
                             <script>
                                 initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
                             </script>
                         </div>
-                    <!--</div>-->
                 </div>
 
                 <!--
@@ -357,6 +354,7 @@
                         <div class="cornerBox">
                             <select id='layouts'></select>
                             <script>
+                                
                                 initDropdown('layouts', pdata["layouts"], pdata["layouts"][0]);
                             </script>
                         </div>
@@ -435,14 +433,14 @@
                             tab 4 - search 
                                             
             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                            <div id="tabs-4">
-                                <div class="twelve columns">
-                                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px;">QUERY</h2>
-                                </div>
-                                        <mc-textbox id = 'search' ></mc-textbox>
-                                        <br><br>
-                                        <mc-scrollbox id = 'sres'></mc-scrollbox>
-                            </div>
+            <div id="tabs-4">
+                <div class="twelve columns">
+                    <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px;">QUERY</h2>
+                </div>
+                        <mc-textbox id = 'search' ></mc-textbox>
+                        <br><br>
+                        <mc-scrollbox id = 'sres'></mc-scrollbox>
+            </div>
 
 
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -485,6 +483,9 @@
                             </div>-->
 
         </div>
+        <script>
+            deactivateTabs("mainTabs");
+        </script>
 
 
 </body>

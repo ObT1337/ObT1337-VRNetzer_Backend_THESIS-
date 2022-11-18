@@ -12,9 +12,17 @@
     <script src="https://d3js.org/d3.v4.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 
     <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    <!--
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+    
+    
+    -->
 
 </head>
 
@@ -33,14 +41,17 @@
 <body>
 
     <script>
-        var node_data = '{{data}}';
+        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var node_data = JSON.parse({{node | tojson}})["node"];
+        var node_sym =  node_data["n"];
+        var node_annot = node_data["description"];
+        var additional = node_data['{{add_key}}'];
+        if (node_data.uniprot){
+            var uniprot_id = node_data.uniprot[0];
+            
+            ue4("prot", {id:uniprot_id});
+        };
 
-        var node_sym = '{{data[0]}}';
-        var node_id = '{{data[1]}}';
-        var node_annot = '{{data[2]}}';
-        var alphafold_id = '{{data[3]}}';
-        var alphafold_size = '{{data[4]}}';
-        var additional = '{{data[5]}}';
     </script>
 
     <div id="tabsUL">
@@ -129,6 +140,25 @@
                     </div>
                 </div>
             </div>
+            <h7>PROTEIN STRUCTURES</h7>
+            <div class="cornerBox">
+                <select id='structure'></select>
+                <input type="button" id='showStructure' class="swagBackwardButton"></button>
+                
+                   
+
+                
+                <h7>PROTEIN SIZE</h7>
+                <div id="slider-prot_size"></div>
+                <script>
+                    
+
+                    initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
+                    initSlider('slider-prot_size');
+                    initButton('showStructure');
+                    //ue4("prot", {id:name});
+                </script>
+            </div>
            
         </div>
 
@@ -141,7 +171,7 @@
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(alphafold_id);
+                                document.write(uniprot_id);
                             </script>
                         </h5>
                     </div>

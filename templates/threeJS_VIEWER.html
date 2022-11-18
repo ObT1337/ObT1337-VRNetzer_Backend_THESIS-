@@ -27,7 +27,7 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <script src="static/js/three.js"></script>
+    <script src="{{ url_for('static', filename='js/three.js') }}"></script>
     <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
 	<body>
         
@@ -237,8 +237,7 @@
 
         function nodeRequest(project, id){
     
-            //path = dbprefix + "/api/" + thisNamespace.namespace + "/node/gene_card?node_id=" + data;
-            //path = window.location.href.split('/')[0] + '&project=' + pdata["name"]
+        // Ajax Request to get node info from server (without reloading the page)
             path = 'node?&project=' + project + '&id=' + id;
             console.log(path);
             $.ajax({
