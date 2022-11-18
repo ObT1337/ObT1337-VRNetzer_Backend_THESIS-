@@ -166,10 +166,10 @@ button.ui-button::-moz-focus-inner {
     cursor: pointer;
 }
 .ui-selectmenu-text {
-	display: block;
+	display:  block;
 	margin-left: 5px;
 	margin-right: 25px; /*to avoid overflow to arrow*/
-	overflow: hidden;
+	/*overflow: hidden;*/
 	font-size: 24px;
 	line-height:2.4rem;
 	text-align: left;

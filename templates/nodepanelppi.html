@@ -46,6 +46,13 @@
         var node_sym =  node_data["n"];
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
+
+        var table_node_annot = node_data["attrlist"][2];
+        var table_node_sym = node_sym;
+        var table_node_id = node_data["attrlist"][1]
+        var table_node_add = node_data["attrlist"][3];
+
+
         if (node_data.uniprot){
             var uniprot_id = node_data.uniprot[0];
             
@@ -69,38 +76,16 @@
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
             </div>
 
-            <br>
-            </br>
-
-            <h7>BIOLOGICAL INFORMATION</h7>
-            <br>
-            </br>
-
             <div class="frameBox">
 
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4 style="text-align:end; margin-right:10px">Gene Symbol ::</h4>
+                        <h4 style="margin-left:10px">Symbol ::</h4>  <!--style="text-align:end; margin-right:10px"-->
                     </div>
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_sym);
-                            </script>
-                        </h5>
-                    </div>
-                </div>
-            </div>
-
-            <div class="frameBox">
-                <div class="twelve columns">
-                    <div class="five columns">
-                        <h4 style="text-align:end; margin-right:10px" >Gene Info ::</h4>
-                    </div>
-                    <div class="six columns">
-                        <h5>
-                            <script>
-                                document.write(additional);
+                                document.write(table_node_sym);
                             </script>
                         </h5>
                     </div>
@@ -108,56 +93,61 @@
             
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4 style="text-align:end; margin-right:10px">Gene ID ::</h4>
+                        <h4 style="margin-left:10px">Identification ::</h4>  <!--style="text-align:end; margin-right:10px"-->
                     </div>
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_id);
+                                document.write(table_node_id);
                             </script>
                         </h5>
                     </div>
                 </div>
-            </div>
             
-            <br>
-            </br>
-            <h7>STRUCTURAL INFORMATION</h7>
-            <br>
-            </br>
-
-            <div class="frameBox">
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4 style="text-align:end; margin-right:10px">Node Info :: </h4>
+                        <h4 style="margin-left:10px">Annotation ::</h4>  <!--style="text-align:end; margin-right:10px"-->
                     </div>
                     <div class="six columns">
                         <h5>
                             <script>
-                                document.write(node_annot);
+                                document.write(table_node_annot);
+                            </script>
+                        </h5>
+                    </div>
+                </div>
+            
+                <div class="twelve columns">
+                    <div class="five columns">
+                        <h4 style="margin-left:10px">Additional :: </h4> <!--style="text-align:end; margin-right:10px"-->
+                    </div>
+                    <div class="six columns">
+                        <h5>
+                            <script>
+                                document.write(table_node_add);
                             </script>
                         </h5>
                     </div>
                 </div>
             </div>
-            <h7>PROTEIN STRUCTURES</h7>
+
+            <br>
+            </br>
+            <div class="frameBox">
+            <h4 style="margin-left:10px">PROTEIN STRUCTURES</h4>
             <div class="cornerBox">
                 <select id='structure'></select>
                 <input type="button" id='showStructure' class="swagBackwardButton"></button>
                 
-                   
-
-                
-                <h7>PROTEIN SIZE</h7>
+                <h4 style="margin-left:10px">PROTEIN SIZE</h4>
                 <div id="slider-prot_size"></div>
                 <script>
-                    
-
                     initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
                     initSlider('slider-prot_size');
                     initButton('showStructure');
                     //ue4("prot", {id:name});
                 </script>
+                </div>
             </div>
            
         </div>

@@ -59,8 +59,9 @@ def main():
 
     if project is None:
         project = "none"
-    else:
-        print(project)
+        print("C_DEBUG: project is none")
+    #else:
+    #    print("C_DEBUG - current project: ",project)
 
     if flask.request.method == "GET":
 
@@ -73,7 +74,7 @@ def main():
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
                 GD.pfile = json.load(json_file)
-                print(GD.pfile)
+                #print(GD.pfile)
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
@@ -87,21 +88,26 @@ def main():
             pfile=json.dumps(GD.pfile),
         )
     else:
-        return "error"
+        return "error in main route"
 
 
 @app.route("/nodepanel", methods=["GET"])
 def nodepanel():
-     # try:
+    # try:
     #    id = int(request.args.get("id"))
     # except:
     #    print('C_DEBUG: in except at start')
     #    if id is None:
     #        id=0
-    nodes = {"nodes": []}
-    project = flask.request.args.get("project")
-    if project is None:
-        project = "new_ppi"
+    
+    nodes = {"nodes": []} 
+
+    # to load node panel at beginning set a project
+    try:
+        project = GD.pfile["name"] #flask.request.args.get("project")
+    except:
+        project = "tea"
+    print("C_DEBUG: start of nodepanel: ",project)
 
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
@@ -114,7 +120,10 @@ def nodepanel():
     # nodes = {node["id"]: node for node in nodes}
 
     if GD.pfile:
+        print("C_DEBUG: Name of pfile: ",GD.pfile["name"])
+
         if "ppi" in GD.pfile["name"].lower():
+
             try:
                 id = int(request.args.get("id"))
             except Exception as e:
@@ -131,6 +140,7 @@ def nodepanel():
                 print(data)
                 socketio.emit("ex", data, namespace="/chat", room=room)
             # data = names["names"][id]
+            print("C_DEBUG: PPI nodepanel")
             return render_template(
                 "nodepanelppi.html",
                 sessionData=json.dumps(GD.sessionData),
