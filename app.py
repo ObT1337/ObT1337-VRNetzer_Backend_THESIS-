@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
-
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -31,7 +31,7 @@ app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
 
-app = load_extensions.load(app)
+app, extensions = load_extensions.load(app)
 
 
 socketio = SocketIO(app, manage_session=False)
@@ -49,7 +49,6 @@ socketio = SocketIO(app, manage_session=False)
 def main():
     username = util.generate_username()
     project = flask.request.args.get("project")
-
     if project is None:
         project = "none"
     else:
@@ -94,8 +93,11 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
-        project = "new_ppi"
+        project = GD.sessionData.get("actPro","new_ppi")
 
+    if project not in GD.sessionData["proj"]:
+        project = GD.sessionData["proj"][0]
+        
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
         GD.pfile = json.load(json_file)
@@ -485,6 +487,13 @@ def ex(message):
         print("Message:", message)
         emit("ex", message, room=room)
 
+    if message["id"] == "structure":
+        """Fetch the structure if it is not already available."""
+        if "ProteinStructureFetch" in extensions["loaded"]:
+            import extensions.ProteinStructureFetch.src.workflows as psf_workflows
+            uniprot = message.get("opt")
+            if uniprot:
+                psf_workflows.fetch([uniprot])
     else:
         emit("ex", message, room=room)
     # sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
