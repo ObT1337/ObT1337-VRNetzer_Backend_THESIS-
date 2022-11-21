@@ -482,7 +482,7 @@ def ex(message):
 
     if message["id"] == "structure":
         """Fetch the structure if it is not already available."""
-        if "ProteinStructureFetch" in extensions:
+        if "ProteinStructureFetch" in extensions["loaded"]:
             import extensions.ProteinStructureFetch.src.workflows as psf_workflows
             uniprot = message.get("opt")
             if uniprot:
