@@ -93,7 +93,7 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
-        project = "new_ppi"
+        project = GD.sessionData.get("actPro","new_ppi")
 
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
