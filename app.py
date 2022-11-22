@@ -464,7 +464,7 @@ def request_connection(msg):
 
             annotation_textures = util.Texture(nodes_json_content, links_json_content, msg["data"])
             annotation_textures.generate_nodes()
-            annotation_textures.generate_links(lazy=True)
+            annotation_textures.generate_links(lazy=False)
 
             emit("request", {"id": "requestAnnotationHighlightResponse", "nodesPath": annotation_textures.name_nodes, "linksPath": annotation_textures.name_links, "project": msg["project"]})
 

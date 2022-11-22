@@ -54,12 +54,33 @@ class Texture:
         if name is not None:
             self.name_nodes = name
 
+        print(self.nodes_coloring_dict)
+
         for link_object in self.project_links_dict["links"]:
             if lazy is True:
                 self.img_data_links.append(self.__gray)
                 continue
-
-            # put here not lazy mode to color links according to connected nodes
+            
+            # not lazy mode
+            link_s = self.project_nodes_dict["nodes"][int(link_object["s"])]["n"]
+            link_e = self.project_nodes_dict["nodes"][int(link_object["e"])]["n"]
+            # all links with 1 or 2 gray nodes
+            if link_s not in self.nodes_coloring_dict or link_e not in self.nodes_coloring_dict:
+                self.img_data_links.append(self.__gray)
+                continue
+            
+            # all links where both node colors are equal
+            if self.nodes_coloring_dict[link_s] == self.nodes_coloring_dict[link_e]:
+                self.img_data_links.append(self.__colors[self.nodes_coloring_dict[link_s]])
+                continue
+            
+            # both nodes diferent and not gray -> get node annotation color
+            if self.nodes_coloring_dict[link_s] in ["annotation1", "annotation2"]:
+                self.img_data_links.append(self.__colors[self.nodes_coloring_dict[link_s]])
+                continue
+            if self.nodes_coloring_dict[link_e] in ["annotation1", "annotation2"]:
+                self.img_data_links.append(self.__colors[self.nodes_coloring_dict[link_e]])
+                continue
 
         self.img_links.putdata(self.img_data_links)
         self.img_links.save(self.name_links, "PNG")
