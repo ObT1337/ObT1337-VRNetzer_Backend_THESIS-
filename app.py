@@ -20,6 +20,7 @@ import re
 from search import *
 import random
 import time
+import util
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -137,14 +138,6 @@ def test44():
     else:
         linkRGBIndex = int(request.args.get("lcol"))
 
-    # debug annotation only
-    if request.args.get("render-annotation") is not None:   
-        network = json.loads('{"nodes": [], "links":[]}')
-        project_file = json.loads()
-
-        return render_template('threeJS_VIEWER.html', data =  json.dumps(network), pfile = json.dumps(project_file))
-
-
     print(request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
@@ -172,6 +165,15 @@ def test44():
     iml = Image.open('static/projects/'+ request.args.get("project") + '/layoutsl/' + thispfile["layouts"][layoutindex] + 'l.bmp', 'r')
     imc = Image.open('static/projects/'+ request.args.get("project") + '/layoutsRGB/' + thispfile["layoutsRGB"][layoutRGBIndex] + '.png', 'r')
     imlc = Image.open('static/projects/'+ request.args.get("project") + '/linksRGB/' + thispfile["linksRGB"][linkRGBIndex] + '.png', 'r')
+
+
+    # debug  for annotation viewer
+    if request.args.get("annotation-nodes") is not None:   
+        imc.close()
+        imc = Image.open(request.args.get("annotation-nodes"), 'r')
+    if request.args.get("annotation-links") is not None:   
+        imlc.close()
+        imlc = Image.open(request.args.get("annotation-links"), 'r')
 
     width, height = im.size
     pixel_values = list(im.getdata())
@@ -450,6 +452,21 @@ def request_connection(msg):
             time.sleep(5)  # simulate background process
 
             emit("request", {"id": "request_dummy_response", "type": "SocketIO", "node": msg["nodeID"]})
+
+        case "requestAnnotationHighlight":
+            print(f"received SocketIO request: {msg['id']}")
+            nodes_json_path = 'static/projects/' + msg["project"] + '/nodes.json'
+            links_json_path = 'static/projects/' + msg["project"] + '/links.json'
+            with open(nodes_json_path, "r") as nodes_json_file:
+                nodes_json_content = json.load(nodes_json_file)
+            with open(links_json_path, "r") as links_json_file:
+                links_json_content = json.load(links_json_file)
+
+            annotation_textures = util.Texture(nodes_json_content, links_json_content, msg["data"])
+            annotation_textures.generate_nodes()
+            annotation_textures.generate_links(lazy=True)
+
+            emit("request", {"id": "requestAnnotationHighlightResponse", "nodesPath": annotation_textures.name_nodes, "linksPath": annotation_textures.name_links, "project": msg["project"]})
 
         case _:
             print(bcolors.WARNING + "unknown request received" + bcolors.ENDC)

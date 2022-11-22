@@ -641,13 +641,13 @@
                     $(document).ready(function(){
                         if (!Object.hasOwn(nodesJSON["nodes"][0], "annotation")){
                             return;
-                        }
+                        };
 
                         // create annotation objects -> skip when no annotation available
                         var annotation2Nodes = new vRNetzer.annotation.func.buildAnnotationMap(nodesJSON);
                         for (let key of annotation2Nodes.keys()){
                             vRNetzer.annotation.vars.annotations.push(key);
-                        }
+                        };
         
                         /* init UI components */
                         // dropdown for annotation 1
@@ -671,33 +671,34 @@
                             console.log("Annotation: selected annotation type 2: ", vRNetzer.annotation.vars.selected2);
                         });
 
-                        // buttin highlightung node and annotation 1
-                        initButtonFunction('button-annotation-highlight', 
-                            function(){
-                                // create new texture + display
-                                console.log("Highlight nodes of annotation selected");
-                            }
-                        );
+                        // button highlightung node and annotation 1
+                        initButtonFunction('button-annotation-highlight', function(){
+                            /// <-------------- make more robust
+
+                            // create new texture + display
+                            let highlight = {};
+                            annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
+                                highlight[element] = "annotation1"
+                            });
+                            highlight[vRNetzer.annotation.vars.selectedNode] = "single";
+                            vRNetzer.annotation.func.generateAnnotationTexture(highlight, pdata["name"]);
+                        });
 
                         // button to enable set operation
-                        initButtonFunction('button-annotation-operator', 
-                            function(){
-                                // show set operations box
-                                console.log("Enable set operation menu");
+                        initButtonFunction('button-annotation-operator', function(){
+                            // show set operations box
+                            console.log("Enable set operation menu");
 
-                                $("#box-set-operation").removeClass("wrapper-disabled");
-                            }
-                        );
+                            $("#box-set-operation").removeClass("wrapper-disabled");
+                        });
 
                         // button to reset everything 
-                        initButtonFunction('button-annotation-reset', 
-                            function(){
-                                // reset selections and texture
-                                console.log("Reset all");
+                        initButtonFunction('button-annotation-reset', function(){
+                            // reset selections and texture
+                            console.log("Reset all");
 
-                                $("#box-set-operation").addClass("wrapper-disabled");
-                            }
-                        );
+                            $("#box-set-operation").addClass("wrapper-disabled");
+                        });
 
                         // dropdown for set operation type
                         $("#dropdown-annotation-operations").selectmenu("refresh");
@@ -710,6 +711,14 @@
 
                         // button to highlight highlight node, and result of set operation
 
+                        // socket connections
+                        socket.on("request", function(msg){
+                            switch (msg.id){
+                                case "requestAnnotationHighlightResponse": 
+                                    vRNetzer.annotation.func.renderAnnotationTexture(msg.nodesPath, msg.linksPath, msg.project)
+                                    break;
+                            }
+                        });
                     });
                 </script>
                 <div class="twelve columns">

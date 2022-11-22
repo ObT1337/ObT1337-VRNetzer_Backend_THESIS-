@@ -26,9 +26,6 @@ vRNetzer.annotation.func.buildAnnotationMap = function(nodes){
     return outMap;
 };
 
-vRNetzer.annotation.func.clearAnnotationName = function(name){
-    // function to remove id from name to get clear name, assuming name = "id;clearName"
-};
 
 vRNetzer.annotation.func.setUnion = function(arr1, arr2){
     return Array.from(new Set([...arr1, ...arr2]));
@@ -48,13 +45,24 @@ vRNetzer.annotation.func.setSubtract = function(arr1, arr2){
     return result;
 };
 
-vRNetzer.annotation.func.debugShowPreview = function(project){
-    let url = "/preview?project=" + project + "&render-annotation=true";
-    window.open(url, '_blank').focus();
+
+vRNetzer.annotation.func.generateAnnotationTexture = function(highlight, project){
+    socket.emit("request", {id: "requestAnnotationHighlight", project: project, data: highlight})
 };
 
-vRNetzer.annotation.func.generateAnnotationTexture = function(){};
+vRNetzer.annotation.func.renderAnnotationTexture = function(nodesTexturePath, linksTexturePath, project){
+    // after receiving response from texture generator: send texture to preview & ue
+    console.log("Annotation: render new node texture: " + nodesTexturePath + " ; new links texture: " + linksTexturePath + " ; in project: " + project);
+    /* 
+    
+    SOCKET CONNECTION TO UE4 here to switch textures
+    
+    */
 
-vRNetzer.annotation.func.renderAnnotationTexture = function(nodesObject, arr1, arr2, node, operator){
-    console.log("Annotation: render new Texture: ", node, operator);
+    // display in preview webGL window
+    let suffixURL = window.location.href.split('/')[0]
+    let previewURL = "/preview?project=" + project + "&layout=0&ncol=0&lcol=0&annotation-nodes=" + nodesTexturePath + "&annotation-links=" + linksTexturePath;
+    
+    window.open(suffixURL + previewURL, '_blank').focus();
+
 };
