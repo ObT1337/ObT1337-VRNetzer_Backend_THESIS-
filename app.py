@@ -109,7 +109,13 @@ def nodepanel():
     # nodes = {node["id"]: node for node in nodes}
 
     if GD.pfile:
+        ppi = False
         if "ppi" in GD.pfile["name"].lower():
+            ppi = True
+        if GD.pfile.get("network_type"):
+            if GD.pfile["network_type"] == "ppi":
+                ppi = True
+        if ppi:
             try:
                 id = int(flask.request.args.get("id"))
             except Exception as e:
