@@ -60,7 +60,7 @@ vRNetzer.annotation.func.renderAnnotationTexture = function(nodesTexturePath, li
     */
 
     // display in preview webGL window
-    let suffixURL = window.location.href.split('/')[0]
+    let suffixURL = window.location.href.split('/')[0];
     let previewURL = "/preview?project=" + project + "&layout=0&ncol=0&lcol=0&annotation-nodes=" + nodesTexturePath + "&annotation-links=" + linksTexturePath;
     
     window.open(suffixURL + previewURL, '_blank').focus();
@@ -75,7 +75,7 @@ vRNetzer.annotation.func.renderBaseTexture = function(project){
     */
 
     // display in preview webGL window
-    let suffixURL = window.location.href.split('/')[0]
+    let suffixURL = window.location.href.split('/')[0];
     let previewURL = "/preview?project=" + project + "&layout=0&ncol=0&lcol=0";
     window.open(suffixURL + previewURL, '_blank').focus();
 };

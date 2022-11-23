@@ -9,8 +9,8 @@ class Texture:
         # definition
         self.__gray = (22, 22, 22, 255)
         self.__single = (255, 255, 255, 255)
-        self.__annotation_1 = (55, 0, 179, 255)
-        self.__annotation_2 = (3, 218, 198, 255)
+        self.__annotation_2 = (55, 0, 179, 255)
+        self.__annotation_1 = (3, 218, 198, 255)
         self.__result = (187, 134, 252, 255)
         self.__colors = {
             "gray": self.__gray,

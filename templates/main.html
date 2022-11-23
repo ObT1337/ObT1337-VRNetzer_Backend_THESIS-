@@ -701,6 +701,8 @@
                             $("#box-set-operation").addClass("wrapper-disabled");
 
                             // change selections to placeholders
+                            $("select").val("placeholder").attr('selected', 'selected');
+                            $("select").selectmenu("refresh");
 
                         });
 
@@ -713,44 +715,44 @@
 
                         // button to highlight highlight node, and result of set operation
                         initButtonFunction('button-annotation-run', function(){
-                            if (!vRNetzer.annotation.vars.selected1 === undefined){return;}
-                            if (!vRNetzer.annotation.vars.selected2 === undefined){return;}
-                            if (!vRNetzer.annotation.vars.selected2 === vRNetzer.annotation.vars.selected1){return;}
-                            if (!vRNetzer.annotation.vars.selectedOperator === undefined){return;}
+                            if (!vRNetzer.annotation.vars.selected1 === undefined){return;};
+                            if (!vRNetzer.annotation.vars.selected2 === undefined){return;};
+                            if (!vRNetzer.annotation.vars.selected2 === vRNetzer.annotation.vars.selected1){return;};
+                            if (!vRNetzer.annotation.vars.selectedOperator === undefined){return;};
                             
                             var result;
-                            var highlight = {}
+                            var highlight = {};
                             switch (vRNetzer.annotation.vars.selectedOperator){
                                 case "union":
                                     result = vRNetzer.annotation.func.setUnion(
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
-                                    )
-                                    break
+                                    );
+                                    break;
 
                                 case "intersect":
                                     result = vRNetzer.annotation.func.setIntersect(
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
-                                    )
-                                    break
+                                    );
+                                    break;
 
                                 case "subtract":
                                     result = vRNetzer.annotation.func.setSubtract(
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
-                                    )
-                                    break
+                                    );
+                                    break;
                             }
 
                             annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
-                                highlight[element] = "annotation1"
+                                highlight[element] = "annotation1";
                             });
                             annotation2Nodes.get(vRNetzer.annotation.vars.selected2).forEach(function(element){
-                                highlight[element] = "annotation2"
+                                highlight[element] = "annotation2";
                             });
                             result.forEach(function(element){
-                                highlight[element] = "result"
+                                highlight[element] = "result";
                             });
                             highlight[vRNetzer.annotation.vars.selectedNode] = "single";
                             vRNetzer.annotation.func.generateAnnotationTexture(highlight, pdata["name"]);
@@ -761,7 +763,7 @@
                         socket.on("request", function(msg){
                             switch (msg.id){
                                 case "requestAnnotationHighlightResponse": 
-                                    vRNetzer.annotation.func.renderAnnotationTexture(msg.nodesPath, msg.linksPath, msg.project)
+                                    vRNetzer.annotation.func.renderAnnotationTexture(msg.nodesPath, msg.linksPath, msg.project);
                                     break;
                             }
                         });
