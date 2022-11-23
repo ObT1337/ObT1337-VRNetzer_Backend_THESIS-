@@ -195,7 +195,6 @@ def test44():
 
     #print(testNetwork)
 
-
     
     
     for x in range (length-1):
@@ -229,8 +228,8 @@ def process_request(id, val):  # id: request identifier; val: stringified json-o
 
 
 
-
 ### DATA ROUTES###
+
 
 ###RECEIVE INCOMING WEBSOCKET MSG FROM NODE.JS 
 @app.route('/flask', methods=['GET', 'POST'])
@@ -263,7 +262,7 @@ def main():
     else:
         username = username + str(random.randint(1001,9998))
         print(username)
-    
+
     if project is None:
         project = "none"
     else:
@@ -303,7 +302,7 @@ def main():
             pass
         return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps(node_file))
     return render_template('main.html', session = session, sessionData = json.dumps(sessionData), pfile = json.dumps(pfile), node_id=node_id, nodes=json.dumps({}))
-  
+
 
 @app.route('/login/<usr>', methods=['GET'])
 def loginR(usr):
@@ -316,7 +315,7 @@ def loginR(usr):
         return render_template('geneElement.html', session = session)
     else:
         return "error"
-    
+
 
 @app.route('/chat', methods=['GET', 'POST'])
 def chat():
@@ -379,7 +378,7 @@ def nodepanel():
         data = {'names':[id]}
         return render_template('nodepanel.html',data=data)
 
-    
+
 ###SocketIO ROUTES###
 
 
@@ -433,6 +432,7 @@ def ex(message):
         emit('ex', message, room=room)
     #sendUE4('http://127.0.0.1:3000/in',  {'msg': session.get('username') + ' : ' + message['msg']})
 
+
 @socketio.on('left', namespace='/chat')
 def left(message):
     room = session.get('room')
@@ -448,9 +448,7 @@ def request_connection(msg):
     match msg["id"]:
         case "request_dummy":
             print(f"received SocketIO request: {msg}")
-            
             time.sleep(5)  # simulate background process
-
             emit("request", {"id": "request_dummy_response", "type": "SocketIO", "node": msg["nodeID"]})
 
         case "requestAnnotationHighlight":

@@ -631,10 +631,10 @@
                     // initialization
                     (function(){
                         vRNetzer.annotation.vars.annotations = [];
-                        vRNetzer.annotation.vars.selected1;
-                        vRNetzer.annotation.vars.selected2;
-                        vRNetzer.annotation.vars.selectedNode;
-                        vRNetzer.annotation.vars.selectedOperator;
+                        vRNetzer.annotation.vars.selected1 = undefined;
+                        vRNetzer.annotation.vars.selected2 = undefined;
+                        vRNetzer.annotation.vars.selectedNode = undefined;
+                        vRNetzer.annotation.vars.selectedOperator = undefined;
                     })();
 
                     // main functionality
@@ -675,7 +675,7 @@
                         initButtonFunction('button-annotation-highlight', function(){
                             /// <-------------- make more robust
 
-                            // create new texture + display
+                            // create new texture
                             let highlight = {};
                             annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
                                 highlight[element] = "annotation1"
@@ -686,30 +686,76 @@
 
                         // button to enable set operation
                         initButtonFunction('button-annotation-operator', function(){
-                            // show set operations box
-                            console.log("Enable set operation menu");
-
                             $("#box-set-operation").removeClass("wrapper-disabled");
                         });
 
                         // button to reset everything 
                         initButtonFunction('button-annotation-reset', function(){
                             // reset selections and texture
-                            console.log("Reset all");
-
+                            console.log("Reset");
+                            vRNetzer.annotation.vars.selected1 = undefined;
+                            vRNetzer.annotation.vars.selected2 = undefined;
+                            vRNetzer.annotation.vars.selectedNode = undefined;
+                            vRNetzer.annotation.vars.selectedOperator = undefined;
+                            vRNetzer.annotation.func.renderBaseTexture(pdata["name"])
                             $("#box-set-operation").addClass("wrapper-disabled");
+
+                            // change selections to placeholders
+
                         });
 
                         // dropdown for set operation type
                         $("#dropdown-annotation-operations").selectmenu("refresh");
                         $("#dropdown-annotation-operations").on('selectmenuselect', function () {
-                            vRNetzer.annotation.vars.selectedOperator = $('#dropdown-annotation-2 option:selected').val();
+                            vRNetzer.annotation.vars.selectedOperator = $('#dropdown-annotation-operations option:selected').val();
                             console.log("Annotation: selected set operator: ", vRNetzer.annotation.vars.selectedOperator)
                         });
 
-                        // dropdown for annotation type 2
-
                         // button to highlight highlight node, and result of set operation
+                        initButtonFunction('button-annotation-run', function(){
+                            if (!vRNetzer.annotation.vars.selected1 === undefined){return;}
+                            if (!vRNetzer.annotation.vars.selected2 === undefined){return;}
+                            if (!vRNetzer.annotation.vars.selected2 === vRNetzer.annotation.vars.selected1){return;}
+                            if (!vRNetzer.annotation.vars.selectedOperator === undefined){return;}
+                            
+                            var result;
+                            var highlight = {}
+                            switch (vRNetzer.annotation.vars.selectedOperator){
+                                case "union":
+                                    result = vRNetzer.annotation.func.setUnion(
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
+                                    )
+                                    break
+
+                                case "intersect":
+                                    result = vRNetzer.annotation.func.setIntersect(
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
+                                    )
+                                    break
+
+                                case "subtract":
+                                    result = vRNetzer.annotation.func.setSubtract(
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
+                                        annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
+                                    )
+                                    break
+                            }
+
+                            annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
+                                highlight[element] = "annotation1"
+                            });
+                            annotation2Nodes.get(vRNetzer.annotation.vars.selected2).forEach(function(element){
+                                highlight[element] = "annotation2"
+                            });
+                            result.forEach(function(element){
+                                highlight[element] = "result"
+                            });
+                            highlight[vRNetzer.annotation.vars.selectedNode] = "single";
+                            vRNetzer.annotation.func.generateAnnotationTexture(highlight, pdata["name"]);
+                        });
+
 
                         // socket connections
                         socket.on("request", function(msg){
@@ -764,10 +810,9 @@
                                     <script>
                                         (function(){$('#dropdown-annotation-operations').selectmenu();})();
                                     </script>
-                                    <option value="0">A1 UNION A2</option>
-                                    <option value="1">A1 INTERSECT A2</option>
-                                    <option value="2">A1 WITHOUT A2</option>
-                                    
+                                    <option value="union">A1 UNION A2</option>
+                                    <option value="intersect">A1 INTERSECT A2</option>
+                                    <option value="subtract">A1 WITHOUT A2</option>
                                 </select>
                             </div>
                         </div>
@@ -783,14 +828,6 @@
                         </div>
                         <div class="twelve columns" style="display:flex; margin-bottom:6px; gap:6px;">
                             <input type="button" id='button-annotation-run' class="swagTextButton" value="Highlight Results"></button>
-                            <script>
-                                initButtonFunction('button-annotation-run', 
-                                    function(){
-                                        // perform set operation, create texture, update texture
-                                        console.log("Run set operation");
-                                    }
-                                );
-                            </script>
                         </div>
                     </div>
                 </div>

@@ -32,13 +32,13 @@ vRNetzer.annotation.func.setUnion = function(arr1, arr2){
 };
 
 vRNetzer.annotation.func.setIntersect = function(arr1, arr2){
-    return new Array([...arr1].filter(item => arr2.has(item)));
+    return new Array([...arr1].filter((item) => arr2.includes(item)));
 };
 
 vRNetzer.annotation.func.setSubtract = function(arr1, arr2){
     let result = [];
     arr1.forEach(function(item){
-        if (!arr2.has(item)){
+        if (!arr2.includes(item)){
             result.push(item);
         }
     });
@@ -64,5 +64,18 @@ vRNetzer.annotation.func.renderAnnotationTexture = function(nodesTexturePath, li
     let previewURL = "/preview?project=" + project + "&layout=0&ncol=0&lcol=0&annotation-nodes=" + nodesTexturePath + "&annotation-links=" + linksTexturePath;
     
     window.open(suffixURL + previewURL, '_blank').focus();
+};
 
+vRNetzer.annotation.func.renderBaseTexture = function(project){
+    // render basic texture in preview & send to ue
+    /* 
+    
+    SOCKET CONNECTION TO UE4 here to switch textures
+    
+    */
+
+    // display in preview webGL window
+    let suffixURL = window.location.href.split('/')[0]
+    let previewURL = "/preview?project=" + project + "&layout=0&ncol=0&lcol=0";
+    window.open(suffixURL + previewURL, '_blank').focus();
 };
