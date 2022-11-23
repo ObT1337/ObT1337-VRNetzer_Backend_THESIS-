@@ -673,7 +673,7 @@
 
                         // button highlightung node and annotation 1
                         initButtonFunction('button-annotation-highlight', function(){
-                            /// <-------------- make more robust
+                            if (vRNetzer.annotation.vars.selected1 === undefined){return;};
 
                             // create new texture
                             let highlight = {};
@@ -715,11 +715,10 @@
 
                         // button to highlight highlight node, and result of set operation
                         initButtonFunction('button-annotation-run', function(){
-                            if (!vRNetzer.annotation.vars.selected1 === undefined){return;};
-                            if (!vRNetzer.annotation.vars.selected2 === undefined){return;};
-                            if (!vRNetzer.annotation.vars.selected2 === vRNetzer.annotation.vars.selected1){return;};
-                            if (!vRNetzer.annotation.vars.selectedOperator === undefined){return;};
-                            
+                            if (vRNetzer.annotation.vars.selected1 === undefined){return;};
+                            if (vRNetzer.annotation.vars.selected2 === undefined){return;};
+                            if (vRNetzer.annotation.vars.selected2 === vRNetzer.annotation.vars.selected1){return;};
+                            if (vRNetzer.annotation.vars.selectedOperator === "placeholder"){return;};
                             var result;
                             var highlight = {};
                             switch (vRNetzer.annotation.vars.selectedOperator){
@@ -728,6 +727,9 @@
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
                                     );
+                                    result.forEach(function(element){
+                                        highlight[element] = "result";
+                                    });
                                     break;
 
                                 case "intersect":
@@ -735,6 +737,15 @@
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
                                     );
+                                    annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
+                                        highlight[element] = "annotation1";
+                                    });
+                                    annotation2Nodes.get(vRNetzer.annotation.vars.selected2).forEach(function(element){
+                                        highlight[element] = "annotation2";
+                                    });
+                                    result.forEach(function(element){
+                                        highlight[element] = "result";
+                                    });
                                     break;
 
                                 case "subtract":
@@ -742,18 +753,14 @@
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected1),
                                         annotation2Nodes.get(vRNetzer.annotation.vars.selected2)
                                     );
+                                    annotation2Nodes.get(vRNetzer.annotation.vars.selected2).forEach(function(element){
+                                        highlight[element] = "annotation2";
+                                    });
+                                    result.forEach(function(element){
+                                        highlight[element] = "result";
+                                    });
                                     break;
                             }
-
-                            annotation2Nodes.get(vRNetzer.annotation.vars.selected1).forEach(function(element){
-                                highlight[element] = "annotation1";
-                            });
-                            annotation2Nodes.get(vRNetzer.annotation.vars.selected2).forEach(function(element){
-                                highlight[element] = "annotation2";
-                            });
-                            result.forEach(function(element){
-                                highlight[element] = "result";
-                            });
                             highlight[vRNetzer.annotation.vars.selectedNode] = "single";
                             vRNetzer.annotation.func.generateAnnotationTexture(highlight, pdata["name"]);
                         });
