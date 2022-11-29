@@ -55,7 +55,7 @@ def CustomElements1R():
 
 @blueprint.route('/ServerSideVar')
 def ServerSideVarR():
-    return render_template('scroll.html')
+    return render_template('scroll.html',  data = GD.scb1Data)
 
 @blueprint.route('/CustomElements2')
 def test3():
