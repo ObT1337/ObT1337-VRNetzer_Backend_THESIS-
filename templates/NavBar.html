@@ -1,0 +1,35 @@
+<link href="{{ url_for('static', filename='css/NavBar.css') }}" rel="stylesheet"/>
+<script src="{{ url_for('static', filename='js/navbar.js') }}" type="text/javascript"></script>
+<ul class="navbar" id="navbar">
+<li class="navbar">
+<select class="navbar" id="home_dropdown">
+<option value="/home">Home</option>
+</select>
+</li>
+<li class="navbar">
+</li>
+<select class="navbar" id="mainpanel_dropdown">
+<option value="/main">Main</option>
+<option value="/doku/index">doku / string main</option></select>
+<li class="navbar">
+<select class="navbar" id="nodepanel_dropdown">
+<option text="nodepanel" value="/nodepanel">Node Info</option>
+</select>
+</li>
+<li class="navbar">
+<select class="navbar" id="uploader_dropdown">
+<option value="/upload">Upload</option>
+</select>
+</li>
+<li class="navbar">
+<select class="navbar" id="preview_dropdown">
+<option value="/preview">Preview</option>
+<option value="/StringEx/preview">StringEx / string preview</option></select>
+</li>
+</ul>
+<script>
+    const dropdowns = ["home_dropdown", "mainpanel_dropdown", "nodepanel_dropdown", "uploader_dropdown", "preview_dropdown"]
+    dropdowns.forEach(function(item, index) {
+        initNavDropdown(item);
+    });
+</script>
