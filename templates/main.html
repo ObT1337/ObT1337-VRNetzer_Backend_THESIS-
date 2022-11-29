@@ -27,7 +27,7 @@
     <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
 
-
+    {% include 'templates.html' %}
     <!--
                     <script type="text/javascript" src="{{ url_for('static', filename='js/VRNetzer_API.js') }}"></script>
                     <script type="text/javascript" src="{{ url_for('static', filename='js/main_UI.js') }}"></script>
@@ -42,98 +42,6 @@
 
 </head>
 
-
-
-
-<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-                TEMPLATES
-                                        
-    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-
-<template id="mcRB-template">
-    <style>
-        button {
-            width: 15%;
-            font-family: 'Future', sans-serif;
-
-            cursor: pointer;
-            box-sizing: border-box;
-            padding: 5px 2px;
-            border-radius: 20px;
-            border-top: 2px solid;
-            border-bottom: 0px solid;
-            border-left: 0px solid;
-            border-right: 2px solid;
-            border-color: rgb(255, 255, 255);
-            color: rgb(255, 255, 255);
-            font-size: 20px;
-        }
-    </style>
-
-    <div id="container" style="width: 120px; height: 30p0x; display: inline-block; padding: 4px 2px">
-        <button id="name"
-            style="width: 90px; height: 30p0x; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px"></button><button
-            id="x"
-            style="width: 30px; height: 30p0x;border-top-left-radius: 0px; border-bottom-left-radius: 0px; background-color: #3d3d3d;">X</button>
-    </div>
-</template>
-
-<template id="mcSresult-template">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-
-    <button id='name' name='name'
-        style='width: 100%; height: auto; overflow:hidden; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
-
-    </button>
-</template>
-
-
-<template id="mcScrollBox-template">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-    <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
-    <div id='box' name='box' class='swagBox'>
-
-    </div>
-</template>
-
-
-<template id="mcTextBox-template">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-    <div id="label" class="swagLabelSmall">TEXT</div>
-    <input type="Text" id="text" autocomplete="off">
-</template>
-
-
-
-<template id="mcColorBox-template">
-
-    <style>
-        input {
-            border-radius: 50%;
-            height: 50px;
-            width: 50px;
-            border: none;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input::-webkit-color-swatch {
-            border: none;
-            border-radius: 50%;
-        }
-
-        input::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-    </style>
-
-    <input type="Color" id="color">
-</template>
 
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
