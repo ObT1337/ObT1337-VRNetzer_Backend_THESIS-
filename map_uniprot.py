@@ -229,7 +229,7 @@ def construct_nodes(results, nodes, nodes_map, nodes_f, secondary=False):
     return nodes
 
 
-def main(taxId, nodes_f):
+def main(taxId, nodes_f,source_db="Gene_Name", target_db="UniProtKB"):
     with open(nodes_f, "r") as f:
         nodes = json.load(f)
     nodes_map = {}
@@ -263,6 +263,10 @@ if __name__ == "__main__":
     try:
         nodes = sys.argv[1]
         taxId = sys.argv[2]
+        if len(sys.argv) > 3:
+            source_db = sys.argv[3]
+        if len(sys.argv) > 4:
+            target_db = sys.argv[4]
         main(taxId, nodes)
     except Exception as e:
         print(e)

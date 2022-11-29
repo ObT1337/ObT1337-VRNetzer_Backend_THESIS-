@@ -14,3 +14,7 @@ NewMaps/
 Electrostatic_Surface_MAPS/
 **/*.DS_Store
 .venv
+templates/home.html
+templates/main.html
+templates/NavBar.html
+templates/upload.html

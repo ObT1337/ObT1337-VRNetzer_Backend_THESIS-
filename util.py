@@ -93,14 +93,6 @@ def create_dynamic_links(app: flask.app.Flask):
         # Skip upload files
         if ("upload" and "files") in link[1]:
             continue
-        if link[1] in [
-            "nodeinfo",
-            "get_structure_scale",
-            "test44",
-            "force",
-            "loadAllProjectsR",
-        ]:
-            continue
         for category in categories:
             if category in link[1]:
                 link = (link[0], link[1].replace(".", " / ").replace("_", " "))
