@@ -64,6 +64,6 @@ def load(main_app: flask.Flask):
                 main_app.before_first_request_funcs += module.before_first_request
                     
 
-    print("\n\n\033[1;32mFinished loading extensions, server is running...")
+    print("\n\n\033[1;32mFinished loading extensions, server is running... \u001b[37m")
     res ={"loaded":loaded_extensions,"main_tabs":add_tab_to_main,"upload_tabs":add_tab_to_upload}
     return main_app, res

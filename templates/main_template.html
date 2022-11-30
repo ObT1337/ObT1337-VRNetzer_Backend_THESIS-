@@ -63,7 +63,7 @@
     {% if "UnrealEngine" not in request.user_agent|string%}
     {% include "NavBar.html" %}
     {% endif %}
-    
+
 
     <div id="tabs" class="disable-select">
         <script>   // MULTICAST TAB CHANGES 
@@ -121,6 +121,11 @@
                     <select id='projects' style="min-height:20px;overflow:scroll;"></select>
                     <script>
                         initDropdown('projects', sessiondata["proj"], sessiondata["actPro"]);
+                        $("#projects").selectmenu({
+                            classes: {
+                                "ui-selectmenu-open": "sixten-open",
+                            },
+                        });
                     </script>
                 </div>
             </div>
@@ -408,6 +413,6 @@
     <script>
         deactivateTabs("mainTabs");
     </script>
-
+    <div id="extension_code"></div>
 
 </body>

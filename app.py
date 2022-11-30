@@ -97,6 +97,7 @@ def nodepanel():
 
     if project not in GD.sessionData["proj"]:
         project = GD.sessionData["proj"][0]
+        
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
         GD.pfile = json.load(json_file)
@@ -423,7 +424,7 @@ def loadProjectAnnotations(name):
 @app.before_first_request
 def execute_before_first_request():
     util.create_dynamic_links(app)
-
+    util.add_tabs(extensions)
 
 ###SocketIO ROUTES###
 
