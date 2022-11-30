@@ -1,175 +1,200 @@
 <!-- PUT YOUR UI ELEMENTS IN HERE AND DEFINE MAPPINGS IN MyUi.js -->
-
 <!-- HTML STARTS HERE -->
-
 <!DOCTYPE html>
 <html>
+ <style>
+  input[type='file'] {
+    outline: none;
 
-
-<style>
-    input[type='file']
-    {
-      outline: none;
-        
-    }
-</style>
-
-<head>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
-
+  }
+ </style>
+ <head>
+  <link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/SwagStyle.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='favicon.ico') }}" rel="shortcut icon"/>
+  <link href="{{ url_for('static', filename='css/NavBar.css') }}" rel="stylesheet"/>
   <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
   <!-- rel = "stylesheet"> -->
   <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
-  <script src="https://d3js.org/d3.v4.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-  <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-
-</head>
-
-<body>
+  <script src="https://d3js.org/d3.v4.js">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+  </script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+  </script>
+  <script src="{{ url_for('static', filename='js/UI_Module_Config.js') }}" type="text/javascript">
+  </script>
+  <script src="{{ url_for('static', filename='js/upload_UI.js') }}" type="text/javascript">
+  </script>
+  <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}" type="text/javascript">
+  </script>
+ </head>
+ <body>
   {% if "UnrealEngine" not in request.user_agent|string%}
-    {% include "NavBar.html" %}
+  {% include "NavBar.html" %}
   {% endif %}
-
-  <div id="tabsUL"><a href="upload.html" id="" title="upload"></a> <!--upload-->
-    <ul>
-      <li><a href="#fragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
-        src="{{ url_for('static', filename='img/upload.png') }}" /></a></li>
-    </ul>
-
-    <div id="fragment-1">
-      <div class="twelve columns">
-        <div class="eight columns">
-            <h2 class="lineglowslow" style="margin-top:30px">VRNetzer</h2>
-        </div>
-        <div class="four columns">
-          <div class="swagLogo"><br></br></div>
-        </div>
+  <div id="tabsUL">
+   <a href="upload.html" id="" title="upload">
+   </a>
+   <!--upload-->
+   <ul id="uploadTabs">
+    <li>
+     <a href="#fragment-1">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#fragment-2">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#fragment-3">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#fragment-4">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#fragment-5">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#fragment-6">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/upload.png') }}" width="40"/>
+     </a>
+    </li>
+   </ul>
+   <div id="fragment-1">
+    <form enctype="multipart/form-data" id="upload_form" method="post">
+     <div class="twelve columns">
+      <div class="eight columns">
+       <h2 class="lineglowslow" style="margin-top:30px">
+        VRNetzer
+       </h2>
       </div>
-      <div>Check out the new webGL preview!</div>
-      <form action="/preview">
-        <input type="submit" value="webGL PREVIEW"   style = "height: 50px; width: 250px;"/>
+      <div class="four columns">
+       <div class="swagLogo">
+        <br/>
+       </div>
+      </div>
+     </div>
+     <div>
+      Check out the new webGL preview!
+     </div>
+     <input onclick="followLink('/preview')" style="height: 50px; width: 250px;min-width: fit-content;" type="button" value="webGL PREVIEW"/>
+     <div class="twelve columns">
+      <h3>
+       <span>
+        UPLOAD NEW DATA
+       </span>
+      </h3>
+      <p>
+       For filestructure and csv-table composition refer to files in VRNetzer_Backend/static/csv.
+      </p>
+     </div>
+     <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                      Project + Namespace Dropdown
+        +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+     <div class="twelve columns">
+      <div class="six columns">
+       <div class="frameBox">
+        <div class="two columns">
+         <input id="radio_new_namespace" name="namespace" type="radio" value="New"/>
+        </div>
+        <h6>
+         CREATE NEW PROJECT
+        </h6>
+        <br/>
+        <input class="swagBox" id="new_namespace_name" name="new_name" type="text"/>
+        <p id="submit_warnings" style="display:inline">
+        </p>
+        <!-- The Popup window warning :
+              <script>
+                function popupWarning() {
+                  var popup = document.getElementById("myPopup");
+                  popup.classList.toggle("show");
+                }
+              </script>
+              <div class="popup" onclick="popupWarning()">
+                <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
+                <span class="popuptext" id="submit_warnings"></span>
+              </div>
+              -->
+       </div>
+      </div>
+      <div class="six columns">
+       <div class="frameBox">
+        <div class="two columns">
+         <input checked="" name="namespace" type="radio" value="existing"/>
+         <br/>
+        </div>
+        <h6>
+         ADD TO PROJECT
+        </h6>
+        <!--<h3 class="lineglowslow"><span>PROJECT</span></h3>-->
+        <br/>
+        <div class="cornerBox">
+         <select id="namespaces" name="namespaces">
+          {% for namespace in namespaces %}
+          <option value="{{namespace}}">
+           {{namespace}}
+          </option>
+          {% endfor %}
+         </select>
+         <br/>
+        </div>
+       </div>
+      </div>
+     </div>
+     <!-- original position before radio buttons <form id="upload_form" method=post enctype=multipart/form-data> -->
+     <div class="frameBox">
+      <div class="twelve columns">
+       <h4 class="nine columns">
+        LAYOUTS
+       </h4>
+       <input multiple="" name="layouts" type="file" value="placeholder"/>
+       <!--
+              <label>N O D E S</label><br>
+              <input type=file name=nodes multiple><br><br>
+              -->
+       <h4 class="nine columns">
+        LINKS
+       </h4>
+       <input multiple="" name="links" type="file"/>
+       <!--
+              <label>A T T R I B U T E S (optional) </label><br>
+              <input type=file name=attributes multiple><br><br>
+            
+              <label>L A B E L S (optional) </label><br>
+              <input type=file name=labels multiple><br><br>
+              -->
+      </div>
+     </div>
+     <div class="frameBox">
+      <div class="twelve columns">
+       <div class="two columns">
+        <input class="swagSubmit" id="upload_button" type="submit" value="Upload"/>
+       </div>
+       <div class="nine columns" id="upload_message">
+       </div>
+       <br/>
+      </div>
+     </div>
+     <!--<div class="twelve columns"> 
+            <div  class="lineglow" style="background-position: center;"><br></br></div>
+          </div>-->
     </form>
-      <div class="twelve columns">
-        <h3><span>UPLOAD NEW DATA</span></h3>
-        <p>For filestructure and csv-table composition refer to files in VRNetzer_Backend/static/csv.</p>
-      </div>
-
-      <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                    Project + Namespace Dropdown
-      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
-      
-      <form id="upload_form" method=post enctype=multipart/form-data>
-      
-      <div class="twelve columns">
-        
-        <div class="six columns">
-          <div class="frameBox">
-            <div class="two columns">
-              <input type="radio" name="namespace" id="radio_new_namespace" value="New">
-            </div>
-            <h6>CREATE NEW PROJECT</h6>
-            <br>
-            
-            <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-            <p id="submit_warnings" style="display:inline"></p>
-
-            <!-- The Popup window warning :
-            <script>
-              function popupWarning() {
-                var popup = document.getElementById("myPopup");
-                popup.classList.toggle("show");
-              }
-            </script>
-            <div class="popup" onclick="popupWarning()">
-              <input type="text" id="new_namespace_name" name="new_name" class="swagBox">
-              <span class="popuptext" id="submit_warnings"></span>
-            </div>
-            -->
-            
-          </div> 
-        </div>
-
-        <div class="six columns">
-          <div class="frameBox"> 
-            <div class="two columns">
-              <input type="radio" name="namespace" value="existing" checked><br>
-            </div>  
-            <h6> ADD TO PROJECT</h6>
-            
-            <!--<h3 class="lineglowslow"><span>PROJECT</span></h3>-->
-            <br>
-            
-            <div class="cornerBox">
-            <select name="namespaces" id="namespaces">
-                              {% for namespace in namespaces %}
-                                <option value="{{namespace}}">{{namespace}}</option>
-                              {% endfor %}
-            </select>
-            <br>
-
-            </div>
-
-          </div>  
-        </div>
-
-      </div>
-      
-
-
-      <!-- original position before radio buttons <form id="upload_form" method=post enctype=multipart/form-data> -->
-      
-      <div class="frameBox"> 
-            <div class="twelve columns">
-              <h4 class="nine columns">LAYOUTS</h4>
-              <input type=file name=layouts multiple value="placeholder">
-            
-            <!--
-            <label>N O D E S</label><br>
-            <input type=file name=nodes multiple><br><br>
-            -->
-            
-            <h4 class="nine columns">LINKS</h4>
-            <input type=file name=links multiple>
-
-            <!--
-            <label>A T T R I B U T E S (optional) </label><br>
-            <input type=file name=attributes multiple><br><br>
-          
-            <label>L A B E L S (optional) </label><br>
-            <input type=file name=labels multiple><br><br>
-            -->
-            </div>
-      </div> 
-
-        <div class="frameBox">
-          <div class="twelve columns">
-              <div class="two columns"><input type=submit value=Upload  id=upload_button class="swagSubmit"></button> </div>
-              <div class="nine columns" id="upload_message"></div>
-              <br>
-              
-
-          </div>
-        </div>
-         <!--<div class="twelve columns"> 
-          <div  class="lineglow" style="background-position: center;"><br></br></div>
-        </div>-->
-
-      </div>
-
-      </form>
-
-         
-    </div>
-
-
+   </div>
   </div>
-
-
-</body>
+  <script>
+   deactivateTabs("uploadTabs");
+  </script>
+  <div id="extension_code">
+  </div>
+ </body>
+</html>

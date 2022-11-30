@@ -6,103 +6,36 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
-	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-	<script>hljs.highlightAll();</script>
-
-	<script src="https://d3js.org/d3.v4.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-
-	<script src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
- 
-
-	{% include 'templates.html' %}
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	</head>
-
-	<body>
-
-<pre><code >$(function () {
-	$("#p1_shortestPath").button();
-	$("#p1_shortestPath").click(function (event) {
-		event.preventDefault();
-		ue4('shortestPathPoint', 'p1');
-	});
-});</code></pre>
-<pre><code >@blueprint.route("/index")
-def string_main(): 
-	return "reeee"
-</code></pre>
 
 
 	<div style = "width: 800px; height: 400px;" >
+       
+		<h3 >VRNetzer Web App HELP</h3>
+
         <img src="{{ url_for('static', filename='img/help/VRNetzerArch.jpg') }}" style="max-width: 100%;">
-
-		<h3 >logged in as {{session['username']}}</h3>
-		<h1 >CUSTOM-ELEMENTS</h1>
-		custom removable buttons made with HTML TEMPLATE
-		<br><br>
-
-
-		<div id = 'geneBox' style = 'width: 300px; height: 120px; overflow:auto; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
-			<mc-rbutton id = '666' name = 'name' color = '#000000'></mc-rbutton>
-			<mc-rbutton id = '123' name = 'ATP1' color = 'lightgreen'></mc-rbutton>
-			<mc-rbutton id = '523' name = 'ASC' color = '#00bbbb'></mc-rbutton>
-
-			<script>
-				for (let i = 0; i < 50; i++) {
-					$("#geneBox").append("<mc-rbutton id = '"+ i + "' name = '"+ makeid(Math.floor(Math.random() * 3) + 4) + "' color = '#" + Math.floor(Math.random()*16777215).toString(16) + "'></mc-rbutton>");
-					
-				}
-			</script>
-		</div>
-		
-
-
-		<br><br>
-		<mc-scrollbox id = "someoofdf" name = "someoofdf" style = 'width: 450px; height: 120px; overflow:auto; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'></mc-scrollbox>
-		
-			<script>
-				// fill scrollbox with buttons
-				//$('document').ready(function(){
-
-					for (let i = 0; i < 50; i++) {
-						var p = document.createElement("mc-rbutton");
-						p.setAttribute("id", i);
-						p.setAttribute("name", makeid(Math.floor(Math.random() * 3) + 4));
-						p.setAttribute("color" , '#' + Math.floor(Math.random()*16777215).toString(16));
-						document.getElementById("someoofdf").shadowRoot.getElementById("box").appendChild(p);
-					}
-
-				//});
-
-
-				
-			</script>
-		 
-		<br><br>
-		<div id = 'dropbox' style = 'width: 200px'>
-			<mc-dropdown id = 'dropdown69' name ='dropdown69' opt = '["trees","fruit","meat"]'></mc-dropdown>
-			<br><br>
-			<mc-dropdown id = 'dropdown99'  name ='dropdown99' opt = '["audi","bmw","toyota"]'></mc-dropdown>
-			<br><br>
-			<mc-slider id = 'nodeSize'></mc-slider>
-			<br><br>
-			<mc-slider id = 'linkSize'></mc-slider>
-			<br><br>
-			<mc-slider id = 'trans'></mc-slider>
-			<br><br>
-			<mc-slider id = 'cutoff'></mc-slider>
-			<br><br>
-			<mc-colorbox id ="ColorInput">></mc-colorbox>
-			<br><br>
-			<mc-textbox id ="TextInput">></mc-textbox>
-		</div>
-
-
-	</div>
-
+        The VrNetzer Web App is a flask webserver that acts both as a backend (the python part) and as a frontend (all the html and js files) in the form of user interfaces for the VR Module.
+        It also has functionality that is meant to be used from a webbrowser, infact a webbrowser can be used in connection with a vr session. 
+		<h5 >Backend</h5>
+        - one per session<br>
+        - serves the html pages for user interfaces (UI)<br>
+        - multicast changes to the UI to all connected clients<br>
+        - serves networkdata as textures<br>
+        - holds the state of the session<br><br>
+        <h5 >Frontend</h5>
+        - client side (can run on a different machine than server)<br>
+        - one for each player<br>
+        - notify server of useractions (socketIO)<br>
+        - communicates with VRModul via WebUI.js ("Middleman")<br><br>
+        <h5 >VRModule</h5>
+        - binary, can't be changed<br>
+        - has fixed api <br>
+        - in game webbrowser (Chromium)<br>
+        - WebUI plugin for bi directional communication with Frontend<br>
+        - downloads big textures directly from server<br>
+        - config file tells it which server to connect to and wich html pages to load<br><br>
+        HERE is a list of tutorials that should get you started to develop your own version of the VRNetzer Web App that is tailored to your usecase and data.<br>
+		<a href="/doku/helloflask">Hello Flask!</a> - creating a http page<br>
+        <a href="/doku/CustomElements1">CustomElements1</a><br>
+        <a href="/doku/CustomElements2">CustomElements2</a><br>
 	</body>
 </html>

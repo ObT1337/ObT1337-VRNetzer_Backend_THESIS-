@@ -46,8 +46,12 @@ blueprint = flask.Blueprint(
 )
 
 @blueprint.route("/help")
-def string_main(): 
+def help(): 
     return render_template('help.html')
+
+@blueprint.route("/helloflask")
+def helloflask(): 
+    return render_template('helloflask.html')
 
 @blueprint.route('/CustomElements1')
 def CustomElements1R():
