@@ -51,13 +51,13 @@ def string_main():
 
 @blueprint.route('/CustomElements1')
 def CustomElements1R():
-    return render_template('geneElement.html')
+    return render_template('CustomElements1.html')
 
-#@blueprint.route('/ServerSideVar')
-#def ServerSideVarR():
-#    return render_template('scroll.html', data = GD.scb1Data)
+@blueprint.route('/ServerSideVar')
+def ServerSideVarR():
+    return render_template('scroll.html',  data = GD.scb1Data)
 
 @blueprint.route('/CustomElements2')
 def test3():
-    return render_template('test.html')
+    return render_template('CustomElements2.html')
 

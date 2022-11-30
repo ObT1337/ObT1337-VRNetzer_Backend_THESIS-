@@ -78,30 +78,6 @@ class D3DrawWidget extends HTMLElement {
 
 
 
-class InputGene extends HTMLElement {
-
-
-constructor() {
-super();
-let template = document.querySelector('#mcRB-template').content;
-  this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
-
-  let name_button = this.shadowRoot.querySelector("#name");
-  let x_button = this.shadowRoot.querySelector("#x");
-
-  name_button.textContent = this.getAttribute('name');
-  name_button.style.background=this.getAttribute('color');//("background",);
-
-  name_button.addEventListener('click', () => {
-  console.log('select '+ this.getAttribute('id'));
-  });
-
-  x_button.addEventListener('click', () => {
-      console.log('remove '+ this.getAttribute('id'));
-      this.remove();
-  });
-}
-}
 
 
 
@@ -188,7 +164,7 @@ constructor() {
 
 
 
-customElements.define('mc-rbutton', InputGene);
+
 customElements.define('d3draw-widget', D3DrawWidget);
 customElements.define('d3bar-widget', D3HistoPlot);
 

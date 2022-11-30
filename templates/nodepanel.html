@@ -16,17 +16,9 @@
 
         <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
-
+        {% include 'templates.html' %}
     </head>
-
-    <template id="mcTextBox-template">
-
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
-
-        <div id = "label" class = "swagLabelSmall">TEXT</div>
-        <input type="Text" id = "text" autocomplete="off">
-    </template>
-
+    
 
 
     <body>
