@@ -32,7 +32,7 @@ vRNetzer.annotation.func.setUnion = function(arr1, arr2){
 };
 
 vRNetzer.annotation.func.setIntersect = function(arr1, arr2){
-    return new Array([...arr1].filter(item => arr2.includes(item)));
+    return Array([...arr1].filter(item => arr2.includes(item)))[0];
 };
 
 vRNetzer.annotation.func.setSubtract = function(arr1, arr2){

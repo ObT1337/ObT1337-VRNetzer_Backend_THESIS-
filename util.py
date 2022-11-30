@@ -38,7 +38,7 @@ class Texture:
     def generate_nodes(self, name=None):
         if name is not None:
             self.name_nodes = name
-
+        print(self.nodes_coloring_dict)
         for node_object in self.project_nodes_dict["nodes"]:
             if node_object["n"] not in self.nodes_coloring_dict:
                 self.img_data_nodes.append(self.__gray)
