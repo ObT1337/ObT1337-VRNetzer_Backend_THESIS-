@@ -45,9 +45,9 @@ blueprint = flask.Blueprint(
     static_folder="/extensions/documentation/src/static",
 )
 
-@blueprint.route("/index")
+@blueprint.route("/help")
 def string_main(): 
-    return "reeee"
+    return render_template('help.html')
 
 @blueprint.route('/CustomElements1')
 def CustomElements1R():

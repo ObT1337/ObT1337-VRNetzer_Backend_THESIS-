@@ -6,13 +6,17 @@
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
 
 	<script src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
  
-	
+
 	{% include 'templates.html' %}
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -20,9 +24,21 @@
 
 	<body>
 
+<pre><code >$(function () {
+	$("#p1_shortestPath").button();
+	$("#p1_shortestPath").click(function (event) {
+		event.preventDefault();
+		ue4('shortestPathPoint', 'p1');
+	});
+});</code></pre>
+<pre><code >@blueprint.route("/index")
+def string_main(): 
+	return "reeee"
+</code></pre>
 
 
 	<div style = "width: 800px; height: 400px;" >
+        <img src="{{ url_for('static', filename='img/help/VRNetzerArch.jpg') }}" style="max-width: 100%;">
 
 		<h3 >logged in as {{session['username']}}</h3>
 		<h1 >CUSTOM-ELEMENTS</h1>
