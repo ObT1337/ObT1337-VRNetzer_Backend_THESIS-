@@ -8,7 +8,7 @@
 	 
 	<script src="https://d3js.org/d3.v4.js"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+
 	<script src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
  
@@ -23,7 +23,7 @@
 
 
 
-	<div style = "width: 800px; height: 400px; " id = "reee">
+	<div style = "width: 800px; height: 400px;" >
 
 		<h3 >logged in as {{session['username']}}</h3>
 		<h1 >CUSTOM-ELEMENTS</h1>
@@ -32,7 +32,7 @@
 
 
 		<div id = 'geneBox' style = 'width: 300px; height: 120px; overflow:auto; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'>
-			<mc-rbutton id = '666' name = 'satan' color = '#000000'></mc-rbutton>
+			<mc-rbutton id = '666' name = 'name' color = '#000000'></mc-rbutton>
 			<mc-rbutton id = '123' name = 'ATP1' color = 'lightgreen'></mc-rbutton>
 			<mc-rbutton id = '523' name = 'ASC' color = '#00bbbb'></mc-rbutton>
 
@@ -47,7 +47,7 @@
 
 
 		<br><br>
-		<mc-scrollbox id = "someoofdf" name = "someoofdf"></mc-scrollbox>
+		<mc-scrollbox id = "someoofdf" name = "someoofdf" style = 'width: 450px; height: 120px; overflow:auto; border-radius: 12px;  background-color: #adadad; display: inline-block; border-color: rgb(10, 24, 221); border-right: 2px solid ; border-top: 2px solid; border-left: 2px solid ; border-bottom: 2px solid'></mc-scrollbox>
 		
 			<script>
 				// fill scrollbox with buttons
