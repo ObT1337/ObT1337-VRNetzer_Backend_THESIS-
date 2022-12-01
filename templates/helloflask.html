@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}"></link>
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+
+	<script src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+ 
+
+	{% include 'templates.html' %}
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</head>
+
+	<body>
+<div>
+<h5>Hello flask - super basic</h5>
+Open the folder VRNetzerWebApp in visual studio code<br>
+In VSCode open a terminal and run .\buildandRUN.ps1 (for windows, mac_buildandrun.sh for mac) in the VRNetzerWebApp directory. That should create a venv and install all requirements. If all went well the console will show something like "server is running"<br><br>
+<h5>Add a route</h5>
+add the following code to app.py under ### HTML ROUTES ### Line 40<br>
+app.py<br>
+<pre><code>@app.route("/mynewroute")
+def mynewroute(): 
+    return "hello"
+</code></pre>
+after saving this the console should print that it restarted. That indicates that hotreloading works, meaning the server reflects the changes you make as soon as you safe a file<br><br>
+click me 
+<a href="/mynewroute">http://127.0.0.1:5000/mynewroute</a><br>
+We created a http route that returns the string hello.<br><br>
+Now lets create a new html file in /templates <br>
+mynewroute.html<br>
+<pre><code class="html">&lt!DOCTYPE html&gt
+&lthtml&gt
+&lthead&gt
+&ltmeta http-equiv="Content-Type" content="text/html; charset=UTF-8" /&gt
+&lt/head&gt
+&ltbody&gt
+ &ltdiv&gt
+  &lth1&gtHelloflask&lt/h1&gt
+ &lt/div&gt
+&lt/body&gt
+&lt/html&gt
+</code></pre>
+and return that instead.<br>
+app.py<br>
+<pre><code>@app.route("/mynewroute")
+def mynewroute(): 
+    return render_template("mynewroute.html")
+</code></pre>
+<a href="/mynewroute">http://127.0.0.1:5000/mynewroute</a><br>
+We created a http route that returns the html template we just made.<br><br>
+<h5>Pass data from server to template</h5>
+app.py<br>
+<pre><code>@app.route("/mynewroute")
+	def mynewroute():
+		return render_template("mynewroute.html", name="BERND")</code></pre>
+		mynewroute.html<br>
+
+<img src="{{ url_for('static', filename='img/help/jinja.jpg') }}" style="max-width: 100%;"></img><br>
+this is JINJA<br>
+There is no way to type these double curly braces in html so here is a screenshot.<br>
+Don't ask, it will return MY NAME IS BERND<br>
+
+</div>
+</body>
+</html>

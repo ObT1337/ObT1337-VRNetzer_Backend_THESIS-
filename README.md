@@ -83,7 +83,7 @@ floor(x _ 65536 % 256) -> layoutsl
 
 <details>
 <summary><h3>HOW TO MAKE YOUR OWN USER INTERFACE</h3></summary>
-The User Interfaces for the VRNetzer are realized with Html, and js. Data is passed between the flask server and the html clients in JSON format. The Html pages also act as a middleman between the UnrealEngine VR Module and the flask server.
+The User Interfaces for the VRNetzer are realized with html and js and are rendered in the UnrealEngine in-game webbrowser, which is Chromium. Data is passed between the flask server and the html clients in JSON format. The html pages also act as a middleman between the UnrealEngine VR Module and the flask server.
 Here is a series of examples that explain in detail how to create your own user interfaces.
 (you have to run the flask server locally to see those pages)
 

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}"></link>
+
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+	<div style = "width: 800px; height: 400px;" >
+       
+		<h3 >VRNetzer Web App HELP</h3>
+
+        <img src="{{ url_for('static', filename='img/help/VRNetzerArch.jpg') }}" style="max-width: 100%;">
+        The VrNetzer Web App is a flask webserver that acts both as a backend (the python part) and as a frontend (all the html and js files) in the form of user interfaces for the VR Module.
+        It also has functionality that is meant to be used from a webbrowser, infact a webbrowser can be used in connection with a vr session. 
+		<h5 >Backend</h5>
+        - one per session<br>
+        - serves the html pages for user interfaces (UI)<br>
+        - multicast changes to the UI to all connected clients<br>
+        - serves networkdata as textures<br>
+        - holds the state of the session<br><br>
+        <h5 >Frontend</h5>
+        - client side (can run on a different machine than server)<br>
+        - one for each player<br>
+        - notify server of useractions (socketIO)<br>
+        - communicates with VRModul via WebUI.js ("Middleman")<br><br>
+        <h5 >VRModule</h5>
+        - binary, can't be changed<br>
+        - has fixed api <br>
+        - in game webbrowser (Chromium)<br>
+        - WebUI plugin for bi directional communication with Frontend<br>
+        - downloads big textures directly from server<br>
+        - config file tells it which server to connect to and wich html pages to load<br><br>
+        HERE is a list of tutorials that should get you started to develop your own version of the VRNetzer Web App that is tailored to your usecase and data.<br>
+		<a href="/doku/helloflask">Hello Flask!</a> - creating a http page<br>
+        <a href="/doku/CustomElements1">CustomElements1</a><br>
+        <a href="/doku/CustomElements2">CustomElements2</a><br>
+	</body>
+</html>

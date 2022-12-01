@@ -37,7 +37,10 @@ app, extensions = load_extensions.load(app)
 socketio = SocketIO(app, manage_session=False)
 
 ### HTML ROUTES ###
-
+@app.route("/mynewroute")
+def helloflask():
+    data  ="BERND"
+    return render_template("mynewroute.html" ,name=data )
 
 # note to self:
 # - only include 100% working code in releases
