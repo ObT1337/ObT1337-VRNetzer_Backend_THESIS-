@@ -5,8 +5,11 @@
 </head>
 <body>
 	<div>
-		<h1>MY NAME IS "{{name}}"</h1>
-        
+		<h1 id = "label"></h1>
+        <script>
+            var user_data = JSON.parse({{user|tojson}});
+            document.getElementById("label").innerHTML = "My Name is " + user_data["name"] + ", I am " + user_data["age"] + " Years old";
+        </script>
 	</div>
 </body>
 </html>
