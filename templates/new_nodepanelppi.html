@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
+    
 
     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
     <!-- rel = "stylesheet"> -->
@@ -24,6 +25,9 @@
 
     
     -->
+    <!-- DrugStone -->
+    <script src="https://cdn.drugst.one/latest/drugstone.js"></script>
+   <link rel="stylesheet" href="https://cdn.drugst.one/latest/styles.css">
 
 </head>
 
@@ -220,6 +224,30 @@
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
             </div>
         </div> -->
+        <div id="nodefragment-2">
+            <div class="twelve columns">
+                <h2>SELECTION</h2>
+                <ul id="selected-nodes">
+                </ul>
+            </div>
+            <div class="twelve columns">
+            <drugst-one id='drugstone-component-id'></drugst-one>
+            </div>
+            
+            <script>
+                var list = document.getElementById("selected-nodes");
+                var item = list.appendChild(document.createElement("li"));
+                item.innerHTML = node_sym;
+                var nodes = [
+                    {id:node_sym}
+            ];
+                var network = {nodes:nodes};
+                var networkString = JSON.stringify(network);
+                var drugstone = document.getElementById('drugstone-component-id');
+                console.log(networkString);
+                drugstone.setAttribute("network", networkString);
+            </script>
+        </div>
 
         <div id="nodefragment-3">
             <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
