@@ -199,7 +199,7 @@ def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
 
 
 def add_tabs_to_nodepanel_ppi(nodepanel_soup: bs4.BeautifulSoup, to_nodepanel: list):
-    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "nodepanel_tabs")
+    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "tabs")
     return nodepanel_soup
 
 
