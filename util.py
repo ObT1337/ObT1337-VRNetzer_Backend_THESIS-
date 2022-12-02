@@ -184,7 +184,7 @@ def add_tabs(extensions: dict):
     with open("templates/upload.html", "w") as upload_file:
         upload_file.write(str(upload_soup.prettify()))
 
-    with open("templates/new_nodepanel_ppi.html", "w") as nodepanel_ppi_file:
+    with open("templates/new_nodepanelppi.html", "w") as nodepanel_ppi_file:
         nodepanel_ppi_file.write(str(nodepanel_ppi_soup.prettify()))
 
 
@@ -239,12 +239,6 @@ def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
                 break
 
     return soup
-
-
-# TODO: Add Tab to main page, get image from javascript
-# TODO: Change Image on main list div
-# execute every other script
-# TODO: add everything from html to main
 
 
 def add_header(src_soup: bs4.BeautifulSoup, des_soup: bs4.BeautifulSoup):
