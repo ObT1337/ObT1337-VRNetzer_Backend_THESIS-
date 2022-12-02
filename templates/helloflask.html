@@ -2,27 +2,16 @@
 <html>
 	<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}"></link>
 
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 	<script>hljs.highlightAll();</script>
-
-	<script src="https://d3js.org/d3.v4.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
-
-	<script src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
- 
-
-	{% include 'templates.html' %}
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	</head>
 
-	<body>
+<body>
 <div>
 
 <h5>Hello flask - basics</h5>
@@ -108,14 +97,40 @@ mynewroute.html
  &ltdiv&gt
   &lth1 id="label"&gt&lt/h1&gt
   &ltscript&gt
-   var user_data = JSON.parse(&#123&#123user|tojson&#125&#125);
+   var user_data = JSON.parse(&#123&#123user|tojson&#125&#125); // get the input data called user
    var labelstring = "My Name is " + user_data["name"] + ", I am " + user_data["age"] + " Years old";
    document.getElementById("label").innerHTML = labelstring;
   &lt/script&gt
  &lt/div&gt
 &lt/body&gt
 &lt/html&gt</code></pre>
-<a href="/mynewroute">http://127.0.0.1:5000/mynewroute</a><br>
+<a href="/mynewroute">http://127.0.0.1:5000/mynewroute</a><br><br>
+
+<h5>URL Parameters</h5>
+can be used to input data from the client to the server when the page is loaded <br>by adding something like <i>?id=49&user=Julia</i> to the url of the route.<br> 
+
+On the flask side we extract the id and check if it is in the users array. If it is, return that entry. <br>Note that a route can return different templates within an if/else statement<br><br>
+app.py<br>
+<pre><code class="language-python">@app.route("/mynewroute")
+def mynewroute():
+    # retrieve the Url Parameter
+    userid = int(flask.request.args.get("id"))  
+    # an array of json objects - our "database" 
+    users = [json.dumps({"name": "BERND", "age":31}),json.dumps({"name": "KARL", "age":23}),json.dumps({"name": "ANNA", "age":56})] 
+    # check if userid exists
+    if userid &lt len(users):
+        return render_template("mynewroute.html", user=users[userid])
+    else:
+        return "no user with this id in database"</code></pre>
+<a href="/mynewroute?id=0">http://127.0.0.1:5000/mynewroute?id=0</a><br><br>
+<a href="/mynewroute?id=1">http://127.0.0.1:5000/mynewroute?id=1</a><br><br>
+<a href="/mynewroute?id=2">http://127.0.0.1:5000/mynewroute?id=2</a><br><br>
+<a href="/mynewroute?id=3">http://127.0.0.1:5000/mynewroute?id=3</a><br><br>
+
+We have a simple dynamic webpage. It's content changes depending on the supplied URL Parameter.<br>This method is used in the VRNetzerWebApp to pass a user id when a client connects to the server.<br>
+It's not the only way to communicate with the backend.<br>We will cover another method in the next chapter - websockets.
+
 </div>
+
 </body>
 </html>

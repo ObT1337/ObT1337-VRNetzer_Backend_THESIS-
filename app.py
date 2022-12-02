@@ -35,17 +35,24 @@ app, extensions = load_extensions.load(app)
 
 
 socketio = SocketIO(app, manage_session=False)
-
-### HTML ROUTES ###
-@app.route("/mynewroute")
-def helloflask():
-    data  ="BERND"
-    return render_template("mynewroute.html" ,user=json.dumps({"name": "BERND", "age":31}))
-
 # note to self:
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
+
+### HTML ROUTES ###
+
+@app.route("/mynewroute")
+def mynewroute():
+    # retrieve the Url Parameter
+    userid = int(flask.request.args.get("id"))  
+    # an array of json objects - our "database" 
+    users = [json.dumps({"name": "BERND", "age":31}),json.dumps({"name": "KARL", "age":23}),json.dumps({"name": "ANNA", "age":56})] 
+    # check if userid exists
+    if userid < len(users):
+        return render_template("mynewroute.html", user=users[userid])
+    else:
+        return "no user with this id in database"
 
 
 @app.route("/main", methods=["GET"])
@@ -183,24 +190,6 @@ def upload():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
     return upload_files(flask.request)
-
-
-@app.route("/chat", methods=["GET", "POST"])
-def chat():
-    if request.method == "POST":
-        username = request.form["username"]
-        room = request.form["room"]
-        # Store the data in session
-        session["username"] = username
-        session["room"] = room
-        return render_template("chat.html", session=session)
-    else:
-        if session.get("username") is not None:
-            session["username"] = "reee"
-            session["room"] = "2"
-            return render_template("chat.html", session=session)
-        else:
-            return redirect(url_for("index"))
 
 
 @app.route("/ForceLayout")
