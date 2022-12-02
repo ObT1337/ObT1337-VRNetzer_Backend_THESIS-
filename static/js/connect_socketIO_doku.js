@@ -1,18 +1,7 @@
 
 var socket;
 
-
-
-function settextscroll(id, val) {
-    var box = document.getElementById(id).shadowRoot.getElementById("box");
-    $(box).scrollTop(val[0]);
-    $(box).scrollLeft(val[1]);
-}
-
-
 $(document).ready(function(){
-     
-
     ///set up and connect to socket
     console.log('http://' + document.domain + ':' + location.port + '/chat');
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
@@ -22,8 +11,6 @@ $(document).ready(function(){
         socket.emit('join', {});
     });
     socket.on('status', function(data) {
-        //$('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-        //$('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
     socket.on('ex', function(data) {
         console.log("server returned: " + JSON.stringify(data));
@@ -150,3 +137,10 @@ $(document).ready(function(){
 
 });
 
+
+
+function settextscroll(id, val) {
+    var box = document.getElementById(id).shadowRoot.getElementById("box");
+    $(box).scrollTop(val[0]);
+    $(box).scrollLeft(val[1]);
+}

@@ -53,6 +53,10 @@ def help():
 def helloflask(): 
     return render_template('helloflask.html')
 
+@blueprint.route("/websockets")
+def websockets(): 
+    return render_template('websockets.html')
+
 @blueprint.route('/CustomElements1')
 def CustomElements1R():
     return render_template('CustomElements1.html')
