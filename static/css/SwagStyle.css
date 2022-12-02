@@ -537,13 +537,12 @@ input[type="button"] {
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 
-/* ----------- O L D ---------------
-input[type="checkbox"]
-    {
+/* ----------- O L D --------------- */
+input[type=checkbox].visibleCheckbox{
       width: 1em;
       height: 1em;
       background: rgb(75, 114, 2);
-      /*-moz-padding-start: calc(10px - 3px);
+      /*-moz-padding-start: calc(10px - 3px);*/
       font-family: 'Future', sans-serif;
       font-size: 20px;
       font-weight: 10;
@@ -553,9 +552,10 @@ input[type="checkbox"]
       border: 0px solid transparent;
       padding: 10px;
       border-image: url("images/frame1.png") 10 stretch;
+      visibility: visible;
     }
 
-.swagCheckbox {
+/* .swagCheckbox {
   background: rgba(2, 77, 114, 1.0);
   }*/
 
@@ -876,6 +876,24 @@ input[type=checkbox] {
     background-size: 100%;
 }
 
+a:link {
+    color: #00d5ff;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(160, 78, 255);
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: hotpink;
+  }
+  
+  /* selected link */
+  a:active {
+    color: rgb(61, 61, 253);
+  }
 
 /*disable dragging on images */
 

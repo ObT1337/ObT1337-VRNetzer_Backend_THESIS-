@@ -1,3 +1,16 @@
+import json
+import os
+import random
+
+import flask
+from PIL import Image
+
+import GlobalData as GD
+import uploader
+from websocket_functions import bcolors
+
+
+
 import csv
 import json
 import logging
@@ -8,7 +21,6 @@ import string
 from cgi import print_arguments
 from io import StringIO
 
-import flask
 # from flask_session import Session
 import requests
 from engineio.payload import Payload
@@ -19,34 +31,37 @@ from PIL import Image
 
 import GlobalData as GD
 import load_extensions
-import uploader
 from search import *
 from uploader import *
 from websocket_functions import *
-from websocket_functions import bcolors
+
 
 url_prefix = "/doku"
 blueprint = flask.Blueprint(
     "doku",
     __name__,
     url_prefix=url_prefix,
-    template_folder="/templates" ,
-    static_folder="/static",
+    template_folder="/extensions/documentation/src/templates" ,
+    static_folder="/extensions/documentation/src/static",
 )
 
-@blueprint.route("/index")
-def string_main(): 
-    return "reeee"
+@blueprint.route("/help")
+def help(): 
+    return render_template('help.html')
+
+@blueprint.route("/helloflask")
+def helloflask(): 
+    return render_template('helloflask.html')
 
 @blueprint.route('/CustomElements1')
 def CustomElements1R():
-    return render_template('geneElement.html')
+    return render_template('CustomElements1.html')
 
-#@blueprint.route('/ServerSideVar')
-#def ServerSideVarR():
-#    return render_template('scroll.html', data = GD.scb1Data)
+@blueprint.route('/ServerSideVar')
+def ServerSideVarR():
+    return render_template('scroll.html',  data = GD.scb1Data)
 
 @blueprint.route('/CustomElements2')
 def test3():
-    return render_template('test.html')
+    return render_template('CustomElements2.html')
 

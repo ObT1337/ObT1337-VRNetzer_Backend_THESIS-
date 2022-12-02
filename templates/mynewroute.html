@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>
+		<h1 id = "label"></h1>
+        <script>
+            var user_data = JSON.parse({{user|tojson}});
+            document.getElementById("label").innerHTML = "My Name is " + user_data["name"] + ", I am " + user_data["age"] + " Years old";
+        </script>
+	</div>
+</body>
+</html>
