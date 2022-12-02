@@ -876,6 +876,24 @@ input[type=checkbox] {
     background-size: 100%;
 }
 
+a:link {
+    color: #00d5ff;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: rgb(160, 78, 255);
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: hotpink;
+  }
+  
+  /* selected link */
+  a:active {
+    color: rgb(61, 61, 253);
+  }
 
 /*disable dragging on images */
 

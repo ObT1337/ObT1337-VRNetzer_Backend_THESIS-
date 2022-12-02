@@ -40,7 +40,7 @@ socketio = SocketIO(app, manage_session=False)
 @app.route("/mynewroute")
 def helloflask():
     data  ="BERND"
-    return render_template("mynewroute.html" ,name=data )
+    return render_template("mynewroute.html" ,user=json.dumps({"name": "BERND", "age":31}))
 
 # note to self:
 # - only include 100% working code in releases
