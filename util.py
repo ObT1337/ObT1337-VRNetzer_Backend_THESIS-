@@ -171,7 +171,7 @@ def add_tabs(extensions: dict):
     with open("templates/upload_template.html", "r") as upload_file:
         upload_soup = bs(upload_file, "html.parser")
 
-    with open("templates/new_nodepanel_ppi_template.html", "r") as nodepanel_ppi_file:
+    with open("templates/new_nodepanelppi_template.html", "r") as nodepanel_ppi_file:
         nodepanel_ppi_soup = bs(nodepanel_ppi_file, "html.parser")
 
     main_soup = add_tabs_to_main(main_soup, to_main)
@@ -184,7 +184,7 @@ def add_tabs(extensions: dict):
     with open("templates/upload.html", "w") as upload_file:
         upload_file.write(str(upload_soup.prettify()))
 
-    with open("templates/new_nodepanel_ppi.html", "w") as nodepanel_ppi_file:
+    with open("templates/new_nodepanelppi.html", "w") as nodepanel_ppi_file:
         nodepanel_ppi_file.write(str(nodepanel_ppi_soup.prettify()))
 
 
@@ -199,7 +199,7 @@ def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
 
 
 def add_tabs_to_nodepanel_ppi(nodepanel_soup: bs4.BeautifulSoup, to_nodepanel: list):
-    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "nodepanel_tabs")
+    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "tabs")
     return nodepanel_soup
 
 
@@ -224,7 +224,7 @@ def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
             if not soup.find("div", {"id": link}):
                 tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
                 if tab_to_add is None:
-                    print(f"No div with id 'tab_to_add' found in {tab}.")
+                    t(f"No div with id 'tab_to_add' found in {tab}.")
                     break
                 tab_to_add["id"] = link
                 tab_to_add["style"] = tab_to_add["style"].replace(
@@ -239,12 +239,6 @@ def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
                 break
 
     return soup
-
-
-# TODO: Add Tab to main page, get image from javascript
-# TODO: Change Image on main list div
-# execute every other script
-# TODO: add everything from html to main
 
 
 def add_header(src_soup: bs4.BeautifulSoup, des_soup: bs4.BeautifulSoup):
