@@ -1,10 +1,24 @@
 import os
 import random
 import re
+import shutil
 
 import bs4
 import flask
 from bs4 import BeautifulSoup as bs
+
+
+def delete_project(request: flask.request):
+    """
+    Delete a project folder and all its contents.
+    """
+    project_name = request.args.get("project")
+    project_path = os.path.join("static", "projects", project_name)
+    if not os.path.exists(project_path):
+        return f"<h4>Project {project_name} does not exist!</h4>"
+    shutil.rmtree(project_path)
+    os.mkdir(project_path)
+    return f"<h4>Project {project_name} deleted!</h4>"
 
 
 def generate_username():
@@ -38,13 +52,12 @@ def get_all_links(app) -> list[list[str, str]]:
             url = flask.url_for(rule.endpoint, **(rule.defaults or {}))
             links.append((url, rule.endpoint))
     return links
-                
+
 
 def create_dynamic_links(app: flask.app.Flask):
     """
     Construct the navigation bar
     """
-
 
     navbar_html_template = "templates/NavBar_template.html"
     navbar_html = "templates/NavBar.html"
@@ -145,108 +158,102 @@ def add_home_element(
     framebox.append(new_element)
     return framebox
 
-def add_tabs(extensions:dict):
+
+def add_tabs(extensions: dict):
     to_main = extensions.get("main_tabs", [])
     to_upload = extensions.get("upload_tabs", [])
-    
+    to_nodepanel_ppi = extensions.get("nodepanel_ppi_tabs", [])
+    to_nodepanel = extensions.get("nodepanel_ppi_tabs", [])
+
     with open("templates/main_template.html", "r") as main_file:
         main_soup = bs(main_file, "html.parser")
+
     with open("templates/upload_template.html", "r") as upload_file:
         upload_soup = bs(upload_file, "html.parser")
 
+    with open("templates/new_nodepanel_ppi_template.html", "r") as nodepanel_ppi_file:
+        nodepanel_ppi_soup = bs(nodepanel_ppi_file, "html.parser")
+
     main_soup = add_tabs_to_main(main_soup, to_main)
     upload_soup = add_tabs_to_upload(upload_soup, to_upload)
+    nodepanel_ppi_soup = add_tabs_to_nodepanel_ppi(nodepanel_ppi_soup, to_nodepanel_ppi)
 
     with open("templates/main.html", "w") as main_file:
         main_file.write(str(main_soup.prettify()))
-        
+
     with open("templates/upload.html", "w") as upload_file:
         upload_file.write(str(upload_soup.prettify()))
 
+    with open("templates/new_nodepanel_ppi.html", "w") as nodepanel_ppi_file:
+        nodepanel_ppi_file.write(str(nodepanel_ppi_soup.prettify()))
+
+
 def add_tabs_to_main(main_soup: bs4.BeautifulSoup, to_main: list):
-    main_tabs = main_soup.find("div", {"id": "tabs"})
-    extension_code = main_soup.find("div", {"id": "extension_code"})
-    for tab in to_main:
-        with open(tab, "r") as tab_file:
-            tab_soup = bs(tab_file, "html.parser")
-
-        # Add all links to stylesheets to the main head
-        tab_soup,main_soup = add_header(tab_soup,main_soup)
-
-        # Find a free tab, and add content from extension to the tab
-        # Change also the img of the tab if given.
-        for list_object in main_tabs.findChildren("li"):
-            link = list_object.find("a")
-            if link == -1 or link is None:
-                continue
-            link = link.get("href")
-            link = link.replace("#","")
-            if not main_soup.find("div", {"id": link}):
-                tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
-                if tab_to_add is None:
-                    print(f"No div with id 'tab_to_add' found in {tab}.")
-                    break
-                tab_to_add["id"] = link
-                tab_to_add["style"]=tab_to_add["style"].replace("display:none","display:block") 
-                new_img = tab_soup.find("img", {"id": "tab_img"})
-                if new_img:
-                    img = list_object.find("img")
-                    img["src"] = new_img["src"]
-                main_tabs.append(tab_to_add)
-                extension_code.append(tab_soup)
-                break
-
-
+    main_soup = add_tabs_to(main_soup, to_main, "tabs")
     return main_soup
 
+
 def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
-    upload_tabs = upload_soup.find("div", {"id": "tabsUL"})
-    extension_code = upload_soup.find("div", {"id": "extension_code"})
-    for tab in to_upload:
+    upload_soup = add_tabs_to(upload_soup, to_upload, "tabsUL")
+    return upload_soup
+
+
+def add_tabs_to_nodepanel_ppi(nodepanel_soup: bs4.BeautifulSoup, to_nodepanel: list):
+    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "nodepanel_tabs")
+    return nodepanel_soup
+
+
+def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
+    tabs = soup.find("div", {"id": id_tab_list})
+    extension_code = soup.find("div", {"id": "extension_code"})
+    for tab in tabs_to_add:
         with open(tab, "r") as tab_file:
             tab_soup = bs(tab_file, "html.parser")
 
         # Add all links to stylesheets to the main head
-        tab_soup,upload_soup = add_header(tab_soup,upload_soup)
+        tab_soup, soup = add_header(tab_soup, soup)
 
         # Find a free tab, and add content from extension to the tab
         # Change also the img of the tab if given.
-        for list_object in upload_tabs.findChildren("li"):
+        for list_object in tabs.findChildren("li"):
             link = list_object.find("a")
             if link == -1 or link is None:
                 continue
             link = link.get("href")
-            link = link.replace("#","")
-            if not upload_soup.find("div", {"id": link}):
+            link = link.replace("#", "")
+            if not soup.find("div", {"id": link}):
                 tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
                 if tab_to_add is None:
                     print(f"No div with id 'tab_to_add' found in {tab}.")
                     break
                 tab_to_add["id"] = link
-                tab_to_add["style"]=tab_to_add["style"].replace("display:none","display:block") 
+                tab_to_add["style"] = tab_to_add["style"].replace(
+                    "display:none", "display:block"
+                )
                 new_img = tab_soup.find("img", {"id": "tab_img"})
                 if new_img:
                     img = list_object.find("img")
                     img["src"] = new_img["src"]
-                upload_tabs.append(tab_to_add)
+                tabs.append(tab_to_add)
                 extension_code.append(tab_soup)
                 break
 
+    return soup
 
-    return upload_soup
 
-# TODO: Add Tab to main page, get image from javascript 
+# TODO: Add Tab to main page, get image from javascript
 # TODO: Change Image on main list div
 # execute every other script
 # TODO: add everything from html to main
 
-def add_header(src_soup: bs4.BeautifulSoup,des_soup: bs4.BeautifulSoup):
+
+def add_header(src_soup: bs4.BeautifulSoup, des_soup: bs4.BeautifulSoup):
     for link in src_soup.find_all("link"):
         des_soup.head.append(link)
-    
+
     # Add all external scripts to the main head
     for script in src_soup.find_all("script"):
         if script.get("src"):
             des_soup.head.append(script)
 
-    return src_soup,des_soup
+    return src_soup, des_soup

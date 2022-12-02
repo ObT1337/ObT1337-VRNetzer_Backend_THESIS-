@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -35,24 +35,20 @@ app, extensions = load_extensions.load(app)
 
 
 socketio = SocketIO(app, manage_session=False)
+
+### HTML ROUTES ###
+@app.route("/mynewroute")
+def helloflask():
+    data = "BERND"
+    return render_template(
+        "mynewroute.html", user=json.dumps({"name": "BERND", "age": 31})
+    )
+
+
 # note to self:
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
-
-### HTML ROUTES ###
-
-@app.route("/mynewroute")
-def mynewroute():
-    # retrieve the Url Parameter
-    userid = int(flask.request.args.get("id"))  
-    # an array of json objects - our "database" 
-    users = [json.dumps({"name": "BERND", "age":31}),json.dumps({"name": "KARL", "age":23}),json.dumps({"name": "ANNA", "age":56})] 
-    # check if userid exists
-    if userid < len(users):
-        return render_template("mynewroute.html", user=users[userid])
-    else:
-        return "no user with this id in database"
 
 
 @app.route("/main", methods=["GET"])
@@ -103,11 +99,11 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
-        project = GD.sessionData.get("actPro","new_ppi")
+        project = GD.sessionData.get("actPro", "new_ppi")
 
     if project not in GD.sessionData["proj"]:
         project = GD.sessionData["proj"][0]
-        
+
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
         GD.pfile = json.load(json_file)
@@ -190,6 +186,30 @@ def upload():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
     return upload_files(flask.request)
+
+
+@app.route("/delpro", methods=["GET", "POST"])
+def delete_project():
+
+    return util.delete_project(flask.request)
+
+
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    if request.method == "POST":
+        username = request.form["username"]
+        room = request.form["room"]
+        # Store the data in session
+        session["username"] = username
+        session["room"] = room
+        return render_template("chat.html", session=session)
+    else:
+        if session.get("username") is not None:
+            session["username"] = "reee"
+            session["room"] = "2"
+            return render_template("chat.html", session=session)
+        else:
+            return redirect(url_for("index"))
 
 
 @app.route("/ForceLayout")
@@ -418,6 +438,7 @@ def execute_before_first_request():
     util.create_dynamic_links(app)
     util.add_tabs(extensions)
 
+
 ###SocketIO ROUTES###
 
 
@@ -489,6 +510,7 @@ def ex(message):
         """Fetch the structure if it is not already available."""
         if "ProteinStructureFetch" in extensions["loaded"]:
             import extensions.ProteinStructureFetch.src.workflows as psf_workflows
+
             uniprot = message.get("opt")
             if uniprot:
                 psf_workflows.fetch([uniprot])
