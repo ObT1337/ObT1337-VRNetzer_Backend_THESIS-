@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -39,8 +39,11 @@ socketio = SocketIO(app, manage_session=False)
 ### HTML ROUTES ###
 @app.route("/mynewroute")
 def helloflask():
-    data  ="BERND"
-    return render_template("mynewroute.html" ,user=json.dumps({"name": "BERND", "age":31}))
+    data = "BERND"
+    return render_template(
+        "mynewroute.html", user=json.dumps({"name": "BERND", "age": 31})
+    )
+
 
 # note to self:
 # - only include 100% working code in releases
@@ -96,11 +99,11 @@ def nodepanel():
     nodes = {"nodes": []}
     project = flask.request.args.get("project")
     if project is None:
-        project = GD.sessionData.get("actPro","new_ppi")
+        project = GD.sessionData.get("actPro", "new_ppi")
 
     if project not in GD.sessionData["proj"]:
         project = GD.sessionData["proj"][0]
-        
+
     folder = os.path.join("static", "projects", project)
     with open(os.path.join(folder, "pfile.json"), "r") as json_file:
         GD.pfile = json.load(json_file)
@@ -183,6 +186,12 @@ def upload():
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
     return upload_files(flask.request)
+
+
+@app.route("/delpro", methods=["GET", "POST"])
+def delete_project():
+
+    return util.delete_project(flask.request)
 
 
 @app.route("/chat", methods=["GET", "POST"])
@@ -429,6 +438,7 @@ def execute_before_first_request():
     util.create_dynamic_links(app)
     util.add_tabs(extensions)
 
+
 ###SocketIO ROUTES###
 
 
@@ -500,6 +510,7 @@ def ex(message):
         """Fetch the structure if it is not already available."""
         if "ProteinStructureFetch" in extensions["loaded"]:
             import extensions.ProteinStructureFetch.src.workflows as psf_workflows
+
             uniprot = message.get("opt")
             if uniprot:
                 psf_workflows.fetch([uniprot])
