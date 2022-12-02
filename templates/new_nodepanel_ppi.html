@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='css/SwagStyle.css') }}" rel="stylesheet"/>
+  <link href="{{ url_for('static', filename='favicon.ico') }}" rel="shortcut icon"/>
+  <link href="{{ url_for('static', filename='css/NavBar.css') }}" rel="stylesheet"/>
+  <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
+  <!-- rel = "stylesheet"> -->
+  <!-- <link href="jquery-ui.css" rel="stylesheet"> -->
+  <script src="https://d3js.org/d3.v4.js">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js">
+  </script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js">
+  </script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js" type="text/javascript">
+  </script>
+  <script src="{{ url_for('static', filename='js/UI_Module_Config.js') }}" type="text/javascript">
+  </script>
+  <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}">
+  </script>
+  <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}" type="text/javascript">
+  </script>
+  <!--
+    <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
+
+    
+    -->
+  <!-- DrugStone -->
+  <script src="https://cdn.drugst.one/latest/drugstone.js">
+  </script>
+  <link href="https://cdn.drugst.one/latest/styles.css" rel="stylesheet"/>
+ </head>
+ <template id="mcTextBox-template">
+  <link href="{{ url_for('static', filename='css/SwagStyle.css') }}" rel="stylesheet"/>
+  <div class="swagLabelSmall" id="label">
+   TEXT
+  </div>
+  <input autocomplete="off" id="text" type="Text"/>
+ </template>
+ <body>
+  <script>
+   var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var node_data = JSON.parse({{ node | tojson}})["node"];
+        var node_sym = node_data["n"];
+        var node_annot = node_data["description"];
+        var additional = node_data['{{add_key}}'];
+        if (node_data.uniprot) {
+            var uniprot_id = node_data.uniprot[0];
+
+            ue4("prot", { id: uniprot_id });
+        };
+  </script>
+  {% if "UnrealEngine" not in request.user_agent|string%}
+    {% include "NavBar.html" %}
+    {% endif %}
+  <div id="tabs">
+   <script>
+    $(function() {
+                $("#tabs").tabs();
+            });
+            // MULTICAST TAB CHANGES 
+            var last_active_node_panel = 0;
+            $('#tabs').on('click', function(event, ui) {
+                var nodepanel_active = $('#tabs').tabs('option', 'active');
+                if (nodepanel_active != last_active_node_panel) {
+                    console.log("changed tabs to " + nodepanel_active);
+                    last_active_node_panel = nodepanel_active;
+                    socket.emit('ex', { msg: last_active_node_panel, id: "tabs", fn: "cht" });
+                }
+            });
+   </script>
+   <!-- <a href="nodepanel.html" id="" title="Nodepanel"></a> -->
+   <ul id="nodepanel_tabsList">
+    <li>
+     <a class="crosslinks" href="#nodefragment-1">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" width="40"/>
+      1
+     </a>
+    </li>
+    <li>
+     <a class="crosslinks" href="#nodefragment-2">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/active_nodeInfo.png') }}" width="40"/>
+      2
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-3">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/active_protein.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-4">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/networkstructure_white.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-5">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-6">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-7">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" width="40"/>
+     </a>
+    </li>
+    <li>
+     <a href="#nodefragment-8">
+      <img draggable="false" height="40" onmousedown="return false" src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" width="40"/>
+     </a>
+    </li>
+   </ul>
+   <!-- Node information -->
+   <div id="nodefragment-1">
+    <div class="twelve columns">
+     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">
+      Node Info
+     </h2>
+    </div>
+    <!-- Contains Identifier, Species and first UniProtID if these information are available for the Node -->
+    <div id="node_general_information">
+     <h4>
+      General Information
+     </h4>
+     <div class="frameBox" id="identifier">
+      <div class="twelve columns">
+       <div class="five columns">
+        <h4>
+         Identifier ::
+        </h4>
+       </div>
+       <div class="six columns">
+        <h5>
+         <script>
+          document.write(node_data.n);
+         </script>
+        </h5>
+       </div>
+      </div>
+      <!-- Species -->
+      <div class="twelve columns" id="node_species">
+       <div class="five columns">
+        <h4>
+         Species ::
+        </h4>
+       </div>
+       <div class="six columns">
+        <h5>
+         <script>
+          if (node_data.species) {
+                                        document.write(node_data.species);
+                                    } else {
+                                        document.getElementById("node_species").remove();
+                                    };
+         </script>
+        </h5>
+       </div>
+      </div>
+      <!-- UniProtID -->
+      <div class="twelve columns" id="node_main_uniprotid">
+       <div class="five columns">
+        <h4>
+         UniProtID ::
+        </h4>
+       </div>
+       <div class="six columns">
+        <h5>
+         <script>
+          if (node_data.uniprot) {
+                                        document.write(node_data.uniprot[0]);
+                                    } else {
+                                        document.getElementById("node_main_uniprotid").remove();
+                                    };
+         </script>
+        </h5>
+       </div>
+      </div>
+     </div>
+    </div>
+    <!-- Contains protein sequence of the Node if provided. -->
+    <div class="frameBox" id="node_sequence">
+     <div class="twelve columns">
+      <div class="five columns">
+       <h4>
+        Sequence ::
+       </h4>
+      </div>
+      <div class="six columns" id="sequence" style="overflow-y: hidden;padding-bottom:10px;">
+       <h5>
+        <script>
+         if (node_data.sequence) {
+                                    document.write(node_data.sequence);
+                                } else {
+                                    document.getElementById("node_sequence").remove();
+                                };
+        </script>
+       </h5>
+      </div>
+     </div>
+    </div>
+    <!-- Contains Description of the Node if provided. -->
+    <div class="frameBox" id="node_description">
+     <div class="twelve columns">
+      <div class="twelve columns">
+       <h5 style="text-align:end;">
+        Description
+       </h5>
+       <div style="overflow-y:scroll;max-height:300px;padding:20px">
+        <script>
+         if (node_data.description) {
+                                    var description = node_data.description;
+                                    document.write(
+                                        "<p align='justify'>"
+                                        + description
+                                        + "</p>");
+                                } else {
+                                    document.getElementById("node_description").remove();
+                                };
+        </script>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- <div id="nodefragment-2">
+            <div class="twelve columns">
+                <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
+            </div>
+        </div> -->
+   {% if "UnrealEngine" not in request.user_agent|string%}
+   <div id="nodefragment-2">
+    <div class="twelve columns">
+     <h2>
+      SELECTION
+     </h2>
+     <ul id="selected-nodes">
+     </ul>
+    </div>
+    <div class="twelve columns">
+     <drugst-one id="drugstone-component-id">
+     </drugst-one>
+    </div>
+    <script>
+     var list = document.getElementById("selected-nodes");
+                var item = list.appendChild(document.createElement("li"));
+                item.innerHTML = node_sym;
+                var nodes = [
+                    { id: node_sym }
+                ];
+                var network = { nodes: nodes };
+                var networkString = JSON.stringify(network);
+                var drugstone = document.getElementById('drugstone-component-id');
+                console.log(networkString);
+                drugstone.setAttribute("network", networkString);
+    </script>
+   </div>
+   {% endif %}
+   <div id="nodefragment-3">
+    <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
+    <!-- Structural Information -->
+    <div id="node_protein_structures">
+     <h4>
+      Structural Information
+     </h4>
+     <div class="frameBox">
+      <h7>
+       PROTEIN STRUCTURES
+      </h7>
+      <select id="structure">
+      </select>
+      <input id="showStructure" type="button" value="Hide Structure"/>
+      <h7>
+       PROTEIN SIZE
+      </h7>
+      <div id="slider-prot_size">
+      </div>
+      <script>
+       initDropdown('structure', node_data.uniprot, sessiondata["actStruc"]);
+                        initSlider('slider-prot_size');
+                        initButton('showStructure');
+                        //ue4("prot", {id:name});
+
+                        // Will Change wether the button says "Show Structure" or "Hide Structure"
+                        $("#showStructure").on("click", function() {
+                            console.log("lelele")
+                            if (this.value == "Show Structure") {
+                                this.value = "Hide Structure";
+                            } else {
+                                this.value = "Show Structure";
+                            }
+                        });
+      </script>
+     </div>
+    </div>
+   </div>
+   <!-- Crosslinks to external databases -->
+   {% if "UnrealEngine" not in request.user_agent|string%}
+   <div id="nodefragment-4">
+    <div class="twelve columns">
+     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">
+      Crosslinks
+     </h2>
+    </div>
+    <div class="frameBox" id="node_crosslinks">
+     <div class="twelve columns">
+      <div class="twelve columns">
+       <h5 style="text-align:end">
+        Crosslinks
+       </h5>
+      </div>
+      <div class="four columns" id="uniprot-crosslink">
+       <a class="crosslinks" id="uniprot-cross" target="_blank" title="uniprot">
+        UniProt
+       </a>
+      </div>
+      <div class="four columns" id="alphafold-crosslink">
+       <a class="crosslinks" id="alphafold-cross" target="_blank" title="alphafold">
+        AlphaFold
+       </a>
+      </div>
+      <div class="four columns" id="genecards-crosslink">
+       <a class="crosslinks" id="genecards-cross" target="_blank" title="genecards">
+        GeneCards
+       </a>
+      </div>
+      <div class="four columns" id="tissues-crosslink">
+       <a class="crosslinks" id="tissue-cross" target="_blank" title="tissue">
+        TISSUES
+       </a>
+      </div>
+      <div class="four columns" id="disease-crosslink">
+       <a class="crosslinks" id="disease-cross" target="_blank" title="disease">
+        DISEASES
+       </a>
+      </div>
+      <div class="four columns" id="compartments-crosslink">
+       <a class="crosslinks" id="compartments-cross" target="_blank" title="compartments">
+        COMPARTMENTS
+       </a>
+      </div>
+      <div class="four columns" id="pharos-crosslink">
+       <a class="crosslinks" id="pharos-cross" target="_blank" title="pharos">
+        Pharos
+       </a>
+      </div>
+      <script>
+       var link = "https://tissues.jensenlab.org/Search?query=<toChange>"
+                        setHref("tissue-cross", node_data.n, link);
+
+                        var link = "https://diseases.jensenlab.org/Search?query=<toChange>"
+                        setHref("disease-cross", node_data.n, link);
+
+                        var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
+                        setHref("compartments-cross", node_data.n, link);
+                        if (uniprot_id) {
+                            var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
+                            setHref("uniprot-cross", uniprot_id, link);
+
+                            var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
+                            setHref("alphafold-cross", uniprot_id, link);
+
+                            var link = "https://genecards.org/Search/Keyword?queryString=<toChange>"
+                            setHref("genecards-cross", uniprot_id, link);
+
+                            var link = "https://pharos.nih.gov/targets/<toChange>"
+                            setHref("pharos-cross", uniprot_id, link);
+                        } else {
+                            document.getElementById("uniprot-crosslink").remove();
+                            document.getElementById("alphafold-crosslink").remove();
+                            document.getElementById("genecards-crosslink").remove();
+                            document.getElementById("pharos-crosslink").remove();
+                        }
+      </script>
+     </div>
+    </div>
+   </div>
+   {% endif %}
+   <!-- <div id="nodefragment-5">
+        </div> -->
+   <!-- <div id="nodefragment-6">
+        </div> -->
+   <!-- <div id="nodefragment-7">
+        </div> -->
+   <!-- <div id="nodefragment-8">
+        </div> -->
+   <!-- Deactivate unused tabs -->
+   <!-- <h3>Protein Structure</h3>
+                    <div class="frameBox">
+                        <div class="twelve columns">
+                            <div class="five columns">
+                                <h4>Alphafold ID :: </h4>
+                            </div>
+                            <div class="six columns">
+                                <h5>
+                                    <script>
+                                        document.write(uniprot_id);
+                                    </script>
+                                </h5>
+                            </div>
+                        </div>
+                    
+                        <div class="twelve columns">
+                            <div class="five columns">
+                                <h4>Alphafold Size :: </h4>
+                            </div>
+                            <div class="six columns">
+                                <h5>
+                                    <script>
+                                        document.write(alphafold_size);
+                                    </script>
+                                </h5>
+                            </div>
+                        
+                        </div>
+                    </div> 
+
+                </div>
+
+        </div> -->
+  </div>
+  <script>
+   // Will deactivate all tabs for which the if referenced in href cannot be found in the document.
+        deactivateTabs("nodepanel_tabsList")
+  </script>
+  <div id="extension_code">
+  </div>
+ </body>
+</html>
