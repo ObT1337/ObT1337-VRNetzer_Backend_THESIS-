@@ -224,6 +224,7 @@
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
             </div>
         </div> -->
+        {% if "UnrealEngine" not in request.user_agent|string%}
         <div id="nodefragment-2">
             <div class="twelve columns">
                 <h2>SELECTION</h2>
@@ -248,7 +249,7 @@
                 drugstone.setAttribute("network", networkString);
             </script>
         </div>
-
+        {% endif %}
         <div id="nodefragment-3">
             <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
 
