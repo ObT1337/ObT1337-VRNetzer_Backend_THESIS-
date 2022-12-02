@@ -171,7 +171,7 @@ def add_tabs(extensions: dict):
     with open("templates/upload_template.html", "r") as upload_file:
         upload_soup = bs(upload_file, "html.parser")
 
-    with open("templates/new_nodepanel_ppi_template.html", "r") as nodepanel_ppi_file:
+    with open("templates/new_nodepanelppi_template.html", "r") as nodepanel_ppi_file:
         nodepanel_ppi_soup = bs(nodepanel_ppi_file, "html.parser")
 
     main_soup = add_tabs_to_main(main_soup, to_main)
