@@ -235,11 +235,6 @@ def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
 
     return upload_soup
 
-# TODO: Add Tab to main page, get image from javascript 
-# TODO: Change Image on main list div
-# execute every other script
-# TODO: add everything from html to main
-
 def add_header(src_soup: bs4.BeautifulSoup,des_soup: bs4.BeautifulSoup):
     for link in src_soup.find_all("link"):
         des_soup.head.append(link)
