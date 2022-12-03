@@ -4,15 +4,17 @@ import random
 layout = []
 edgelist = []
 
+def normalise_list(in_list):
+    out_list = [(i - min(in_list))/max(in_list) for i in in_list]
+    return(out_list)
+
 
 def rand_color():
     r, g, b = random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
     return [r, g, b, 255]
 
 def create_spring_layout(edgelist):
-    # print(edgelist)
     G = nx.from_edgelist(edgelist)
-    # print("graph",G)
     positions = nx.spring_layout(G, iterations=50, dim=3)
     nodes, x, y, z = [], [], [], []
     # edges = list(G.edges)
@@ -45,11 +47,4 @@ def spring_main(content_list):
         edgelist.append(edge)
     nodes, x, y, z = create_spring_layout(edgelist)
     layout = create_files(nodes, x, y, z)
-    # layout_string = "".join(str(e) for e in layout)
-    # for x in layout:
-    #     print(x)
-    #     layout_string.join(x)
     return(layout)
-
-# content_list =  ['1,4', '2,4', '3,4', '4,1']
-# spring_main(content_list)

@@ -7,8 +7,7 @@ from engineio.payload import Payload
 from PIL import Image
 import csv
 from io import StringIO
-from spring import spring_main
-
+from spring import spring_main,normalise_list
 
 
 
@@ -79,7 +78,7 @@ def listProjects():
 def makeNodeTex(project, name, file, spring_layout=None,annotion_file=None):
     if spring_layout != None:
         csvreader = spring_layout
-        elem = 34
+        elem = len(spring_layout)
         hight = 128 * (int(elem/ 16384) + 1)
 
     else:
@@ -94,6 +93,18 @@ def makeNodeTex(project, name, file, spring_layout=None,annotion_file=None):
     size = 128 * hight 
     path = 'static/projects/' + project 
     
+    x_content,y_content,z_content = [],[],[]
+    for row in csvreader: #to check if user input data is already correctly normalised
+            x_content += list(float(row[i]) for i in [0])
+            y_content += list(float(row[i]) for i in [1])
+            z_content += list(float(row[i]) for i in [2])
+            if not all([0 <= i <= 1 for i in x_content and y_content and z_content]):
+                #TODO: user message
+                normalised_coordinates = True
+                x_content = normalise_list(x_content)
+                y_content = normalise_list(y_content)
+                z_content = normalise_list(z_content)
+
     texh = [(0,0,0)] * size
     texl = [(0,0,0)] * size
     texc = [(0,0,0,0)] * size
@@ -120,10 +131,14 @@ def makeNodeTex(project, name, file, spring_layout=None,annotion_file=None):
             thisnode["attrlist"] = my_list
             thisnode["annotation"] = []
             nodelist["nodes"].append(thisnode)
-
-            x = int(float(row[0])*65280)
-            y = int(float(row[1])*65280)
-            z = int(float(row[2])*65280)
+            if normalised_coordinates:
+                x = int(float(x_content[i])*65280)
+                y = int(float(y_content[i])*65280)
+                z = int(float(z_content[i])*65280)
+            else : 
+                x = int(float(row[0])*65280)
+                y = int(float(row[1])*65280)
+                z = int(float(row[2])*65280)
             r = int(row[3])
             g = int(row[4])
             b = int(row[5])
