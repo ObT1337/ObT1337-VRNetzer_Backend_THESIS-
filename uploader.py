@@ -7,6 +7,7 @@ from engineio.payload import Payload
 from PIL import Image
 import csv
 from io import StringIO
+from spring import spring_main
 
 
 
@@ -72,15 +73,22 @@ def listProjects():
     print(sub_folders)
     return sub_folders
 
+##
 
-def makeNodeTex(project, name, file, annotion_file=None):
 
-    f = StringIO(file)
-    csvreader = csv.reader(f, delimiter=',')
-    elem = sum(1 for x in csvreader)
-    f.seek(0)
-    csvreader = csv.reader(f, delimiter=',')
-    hight = 128 * (int(elem / 16384) + 1)
+def makeNodeTex(project, name, file, spring_layout=None,annotion_file=None):
+    if spring_layout != None:
+        csvreader = spring_layout
+        elem = 34
+        hight = 128 * (int(elem/ 16384) + 1)
+
+    else:
+        f = StringIO(file)
+        csvreader = csv.reader(f, delimiter=',')
+        elem = sum(1 for x in csvreader)
+        f.seek(0)
+        csvreader = csv.reader(f, delimiter=',')
+        hight = 128 * (int(elem / 16384) + 1)
 
     print ("hight is " + str(hight))
     size = 128 * hight 
@@ -106,7 +114,6 @@ def makeNodeTex(project, name, file, annotion_file=None):
             #print(row[7])
             my_list = row[7].split(";")
             attrlist['names'].append(my_list)
-            
             thisnode = {}
             thisnode["id"] = i
             thisnode["n"] = my_list[0]
@@ -321,7 +328,6 @@ def upload_files(request):
             
         #Upload.upload_layouts(namespace, layout_files)
 
-
     # GET EDGES
     edge_files = request.files.getlist("links")
     if len(edge_files) > 0 and len(edge_files[0].filename) > 0:
@@ -333,7 +339,22 @@ def upload_files(request):
             pfile["links"].append(name + "XYZ")
             pfile["linksRGB"].append(name + "RGB")
             state = state + ' <br>'+ makeLinkTex(namespace, name, contents)
-            
+
+
+    layout_file_check = request.files.getlist("layouts")
+    if not layout_files or not any(l for l in layout_file_check):
+        print("no layout file provided. will compute spring layout")
+        content_list = list(contents.split("\n"))
+        spring_layout = spring_main(content_list)
+        # print("layout created:",contents)
+
+        print("test:",namespace, name)
+        #create layout file
+        state = state + ' <br>'+  makeNodeTex(namespace, name, contents, spring_layout, annotation_file)
+        pfile["layouts"].append(name + "XYZ")
+        pfile["layoutsRGB"].append(name + "RGB")
+
+
     #update the projects file
     with open(folder + 'pfile.json', 'w') as json_file:
         json.dump(pfile, json_file)
