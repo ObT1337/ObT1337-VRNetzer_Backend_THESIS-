@@ -15,10 +15,10 @@ from PIL import Image
 
 import GlobalData as GD
 import load_extensions
+import search
 import uploader
 import util
-from search import *
-from websocket_functions import *
+import websocket_functions as webfunc
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -450,10 +450,10 @@ def join(message):
     room = flask.session.get("room")
     join_room(room)
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + " has entered the room."
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     emit(
         "status",
@@ -466,11 +466,11 @@ def join(message):
 def ex(message):
     room = flask.session.get("room")
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + "ex: "
         + json.dumps(message)
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     message["usr"] = flask.session.get("username")
 
@@ -487,7 +487,7 @@ def ex(message):
         if len(message["val"]) > 1:
             x = '{"id": "sres", "val":[], "fn": "sres"}'
             results = json.loads(x)
-            results["val"] = search(message["val"])
+            results["val"] = search.search(message["val"])
 
             emit("ex", results, room=room)
 
@@ -519,7 +519,7 @@ def ex(message):
                 psf_workflows.fetch([uniprot])
     else:
         emit("ex", message, room=room)
-    # sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
+    # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
 
 
 @socketio.on("left", namespace="/chat")
@@ -530,10 +530,10 @@ def left(message):
     flask.session.clear()
     emit("status", {"msg": username + " has left the room."}, room=room)
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + " has left the room."
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     util.construct_nav_bar(app)
 
