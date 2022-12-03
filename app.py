@@ -37,12 +37,10 @@ app, extensions = load_extensions.load(app)
 socketio = SocketIO(app, manage_session=False)
 
 ### HTML ROUTES ###
-@app.route("/mynewroute")
-def helloflask():
-    data = "BERND"
-    return render_template(
-        "mynewroute.html", user=json.dumps({"name": "BERND", "age": 31})
-    )
+@app.route("/websocket_tutorial")
+def websockets_tutorial():
+    data = json.dumps({"fruits": ["apples","bananas","oranges"], "pets": ["lizard","bug","cat","mouse","pokemon"]})
+    return render_template("websockets_tutorial.html", data=data)
 
 
 # note to self:

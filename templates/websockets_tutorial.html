@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+        <script type="text/javascript" src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    </head>
+
+    <body>
+        <div style="width:200px">
+        select your fruit<br>
+        <select id="myfruitdropdown" ></select><br><br>
+        select your pet<br>
+        <select id="mypetdropdown"></select><br>
+        </div>
+        <script>
+            var data = JSON.parse({{data|tojson}});
+            initDropdown("myfruitdropdown", data.fruits, data.fruits[0]);
+            initDropdown("mypetdropdown", data.pets, data.pets[0]);
+        </script> 
+    </body>
+</html>

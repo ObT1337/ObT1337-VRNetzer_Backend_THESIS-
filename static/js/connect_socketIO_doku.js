@@ -84,7 +84,7 @@ $(document).ready(function(){
 
                 $('#'+ data.id).val(data.opt);
                 $('#'+ data.id).selectmenu("refresh");
-                ue4("sel", data);
+                ///ue4("sel", data);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("value", 1);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("change");
            
@@ -101,7 +101,7 @@ $(document).ready(function(){
                    // slider.value= data.val;
                    $('#'+ data.id).slider('value', data.val);
                 }
-                ue4("slider", data);
+                //ue4("slider", data);
                 break; 
             case 'tex':
                     var text = document.getElementById(data.id).shadowRoot.getElementById("text");
@@ -126,7 +126,7 @@ $(document).ready(function(){
 
             case 'sres_butt_clicked':
                     console.log(data.id);
-                    ue4("selectnode", data)
+                    //ue4("selectnode", data)
                     break;
 
 
