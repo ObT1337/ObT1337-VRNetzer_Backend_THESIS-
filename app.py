@@ -15,9 +15,9 @@ from PIL import Image
 
 import GlobalData as GD
 import load_extensions
+import uploader
 import util
 from search import *
-from uploader import *
 from websocket_functions import *
 
 log = logging.getLogger("werkzeug")
@@ -39,7 +39,12 @@ socketio = SocketIO(app, manage_session=False)
 ### HTML ROUTES ###
 @app.route("/websocket_tutorial")
 def websockets_tutorial():
-    data = json.dumps({"fruits": ["apples","bananas","oranges"], "pets": ["lizard","bug","cat","mouse","pokemon"]})
+    data = json.dumps(
+        {
+            "fruits": ["apples", "bananas", "oranges"],
+            "pets": ["lizard", "bug", "cat", "mouse", "pokemon"],
+        }
+    )
     return render_template("websockets_tutorial.html", data=data)
 
 
@@ -64,7 +69,7 @@ def main():
         # Store the data in session
         flask.session["username"] = username
         flask.session["room"] = room
-        # prolist = listProjects()
+        # prolist = uploader.listProjects()
         if project != "none":
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
@@ -177,13 +182,13 @@ def nodepanel():
 
 @app.route("/upload", methods=["GET"])
 def upload():
-    prolist = listProjects()
+    prolist = uploader.listProjects()
     return render_template("upload.html", namespaces=prolist)
 
 
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
-    return upload_files(flask.request)
+    return uploader.upload_files(flask.request)
 
 
 @app.route("/delpro", methods=["GET", "POST"])
@@ -234,7 +239,7 @@ def preview():
     if flask.request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
 
-        data["projects"] = listProjects()
+        data["projects"] = uploader.listProjects()
         return render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data))
 
     if flask.request.args.get("layout") is None:
@@ -417,17 +422,17 @@ def home():
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
 def loadAllProjectsR():
-    return jsonify(projects=listProjects())
+    return jsonify(projects=uploader.listProjects())
 
 
 @app.route("/load_project/<name>", methods=["GET", "POST"])
 def loadProjectInfoR(name):
-    return loadProjectInfo(name)
+    return uploader.loadProjectInfo(name)
 
 
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
-    return loadAnnotations(name)
+    return uploader.loadAnnotations(name)
 
 
 ### Execute code before first request ###
