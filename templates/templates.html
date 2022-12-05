@@ -25,7 +25,7 @@
 
         name_button.textContent = this.getAttribute('name');
         name_button.style.background = this.getAttribute('color');//("background",);
-        //console.log('create: '+ this.getAttribute('id'));
+        console.log('create: '+ this.getAttribute('data'));
 
         name_button.addEventListener('click', () => {
             //console.log('select '+ this.shadowRoot.getAttribute('id'));
@@ -306,10 +306,15 @@ class D3PieChart extends HTMLElement {
         constructor(){
         
         super();
+        }
+        connectedCallback() {
+        
+        
+
 
         let template = document.querySelector('#d3pie-template').content;
         this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
-
+   
         let circle = this.shadowRoot.querySelector("#circle");
         circle.style.fill = this.getAttribute('color');
 
@@ -366,12 +371,12 @@ class D3PieChart extends HTMLElement {
         console.log('select '+ this.getAttribute('id'));
 
 
-
+   
 
         
         });
+    }
         
-        }
 
 
 }
