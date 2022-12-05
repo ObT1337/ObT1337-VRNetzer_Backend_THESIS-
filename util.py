@@ -56,6 +56,7 @@ def get_all_links(app) -> list[list[str, str]]:
 def create_dynamic_links(app: flask.app.Flask):
     # Get all links from flask
     links = get_all_links(app)
+    links = [link for link in links if len(link[0].split("/"))>2]
     GD.sessionData["url_map"] = links
 
 
@@ -85,13 +86,13 @@ def create_dynamic_links(app: flask.app.Flask):
 #     nodepanel_dropdown = nav_soup.find("select", {"id": "nodepanel_dropdown"})
 #     upload_dropdown = nav_soup.find("select", {"id": "uploader_dropdown"})
 #     preview_dropdown = nav_soup.find("select", {"id": "preview_dropdown"})
-#     dropdown_map = {
-#         "home": home_dropdown,
-#         "main": main_dropdown,
-#         "nodepanel": nodepanel_dropdown,
-#         "upload": upload_dropdown,
-#         "preview": preview_dropdown,
-#     }
+    # dropdown_map = {
+    #     "home": home_dropdown,
+    #     "main": main_dropdown,
+    #     "nodepanel": nodepanel_dropdown,
+    #     "upload": upload_dropdown,
+    #     "preview": preview_dropdown,
+    # }
 
 #     # initialize the framebox map
 #     home_framebox = home_soup.find("div", {"id": "home_framebox"})
