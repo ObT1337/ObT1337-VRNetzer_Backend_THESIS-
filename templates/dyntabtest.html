@@ -3,9 +3,16 @@
 <head>
   <meta charset="utf-8">
   <title>tabs demo</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/connect_socketIO_doku.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+  {% include 'templates.html' %}
 </head>
 <body>
  
@@ -27,19 +34,22 @@
     Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
     Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
     Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-  </div>
-
-</div>
- 
 <script>
+
+   
 //$( "#tabs" ).tabs();
 
 var tabs = $( "#tabs" ).tabs();
 var ul = tabs.find( "ul" );
-$( "<li><a href='main'>New Tab</a></li>" ).appendTo( ul );
-$( "<div id='#fragment-4'><p>New Content  for the new tab</p></div>" ).appendTo( tabs );
+$( "<li><a href='#fragment-4'>New Tab</a></li>" ).appendTo( ul );
+$( "<div id='fragment-4'></div>" ).appendTo( tabs );
 tabs.tabs( "refresh" );
-
+var element = document.createElement("mc-rbutton");
+    element.setAttribute("id", "666");
+    element.setAttribute("name", "ATP");
+    element.setAttribute("color", "#000000");  
+    element.appendChild(document.createTextNode('The man who mistook his wife for a hat'));
+    document.getElementById('fragment-4').appendChild(element);
 </script>
  
 </body>

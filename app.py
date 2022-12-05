@@ -47,7 +47,15 @@ def websockets_tutorial():
     )
     return render_template("websockets_tutorial.html", data=data)
 
-
+@app.route("/tabstest")
+def tabstest():
+    data = json.dumps(
+        {
+            "fruits": ["apples", "bananas", "oranges"],
+            "pets": ["lizard", "bug", "cat", "mouse", "pokemon"],
+        }
+    )
+    return render_template("dyntabtest.html", data=data)
 # note to self:
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
