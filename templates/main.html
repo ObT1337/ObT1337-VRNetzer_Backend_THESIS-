@@ -26,6 +26,7 @@
     <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/extension_tab_load.js') }}"></script>
 
     {% include 'templates.html' %}
     <!--
@@ -408,10 +409,20 @@
                                         </script>
 
                             </div>-->
-
+        {% for ext in extensions["ext"] %}
+        {% if "main_tabs" in ext.keys() %}
+        {% for tab in ext["main_tabs"]%}
+        <p>{{tab}}</p>
+        {% include tab %}
+        <script>
+            addTab("mainTabs", "{{ url_for('static', filename='img/active_extension.png') }}");
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
     </div>
     <script>
-        deactivateTabs("mainTabs");
+        // deactivateTabs("mainTabs");
     </script>
     <div id="extension_code"></div>
 

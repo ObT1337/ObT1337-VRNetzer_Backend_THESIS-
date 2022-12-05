@@ -83,6 +83,8 @@ def main():
             session=flask.session,
             sessionData=json.dumps(GD.sessionData),
             pfile=json.dumps(GD.pfile),
+            extensions = extensions,
+
         )
     else:
         return "error"
@@ -146,6 +148,7 @@ def nodepanel():
                 id=id,
                 add_key=add_key,
                 node=json.dumps({"node": node}),
+                extensions = extensions,
             )
 
         else:
@@ -162,6 +165,8 @@ def nodepanel():
             return render_template(
                 "nodepanel.html",
                 data=data,
+                sessionData=json.dumps(GD.sessionData),
+                extensions = extensions,
             )
     else:
         try:
@@ -174,13 +179,15 @@ def nodepanel():
         return render_template(
             "nodepanel.html",
             data=data,
+            sessionData=json.dumps(GD.sessionData),
+            extensions = extensions,
         )
 
 
 @app.route("/upload", methods=["GET"])
 def upload():
     prolist = listProjects()
-    return render_template("upload.html", namespaces=prolist)
+    return render_template("upload.html", namespaces=prolist,extensions = extensions,sessionData=json.dumps(GD.sessionData))
 
 
 @app.route("/uploadfiles", methods=["GET", "POST"])
@@ -222,7 +229,7 @@ def force():
     linkstxt = open(lname + ".json", "r")
     links = json.load(linkstxt)
     return render_template(
-        "threeJSForceLayout.html", nodes=json.dumps(nodes), links=json.dumps(links)
+        "threeJSForceLayout.html", nodes=json.dumps(nodes), links=json.dumps(links),sessionData=json.dumps(GD.sessionData)
     )
 
 
@@ -237,7 +244,7 @@ def preview():
         print("project Argument not provided - redirecting to menu page")
 
         data["projects"] = listProjects()
-        return render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data))
+        return render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data),sessionData=json.dumps(GD.sessionData))
 
     if flask.request.args.get("layout") is None:
         layoutindex = 0
@@ -348,7 +355,7 @@ def preview():
     # print(testNetwork)
     # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template(
-        "threeJS_VIEWER.html", data=json.dumps(testNetwork), pfile=json.dumps(thispfile)
+        "threeJS_VIEWER.html", data=json.dumps(testNetwork), pfile=json.dumps(thispfile),sessionData=json.dumps(GD.sessionData)
     )
 
 
@@ -411,7 +418,7 @@ def home():
     if not flask.session.get("username"):
         flask.session["username"] = util.generate_username()
         flask.session["room"] = 1
-    return render_template("home.html")
+    return render_template("home.html",sessionData=json.dumps(GD.sessionData))
 
 
 ### DATA ROUTES###
@@ -436,7 +443,8 @@ def loadProjectAnnotations(name):
 @app.before_first_request
 def execute_before_first_request():
     util.create_dynamic_links(app)
-    util.add_tabs(extensions)
+    # util.add_tabs(extensions)
+    ...
 
 
 ###SocketIO ROUTES###
