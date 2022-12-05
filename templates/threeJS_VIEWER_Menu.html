@@ -17,7 +17,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script src="{{ url_for('static', filename='js/three.js') }}"></script>
-<script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+<script src="{{ url_for('static', filename='js/OrbitControls.js') }}"></script>
 
 <body style="background-color:rgb(30, 30, 30);">
     {% if "UnrealEngine" not in request.user_agent|string%}

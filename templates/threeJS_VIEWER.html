@@ -29,7 +29,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <script src="{{ url_for('static', filename='js/three.js') }}"></script>
-    <script src="https://rawgit.com/mrdoob/three.js/dev/examples/js/controls/OrbitControls.js"></script>
+    <script src="{{ url_for('static', filename='js/OrbitControls.js') }}"></script>
 	<body>
         {% if "UnrealEngine" not in request.user_agent|string%}
             {% include "NavBar.html" %}
@@ -219,7 +219,7 @@
 
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
+            console.log("clci")
             raycaster.setFromCamera(mouse, camera);
 
             var intersects = raycaster.intersectObject(scene, true); 
