@@ -185,6 +185,7 @@
             // Draw Links
 
             for (let l = 0; l < data['links'].length; l++) {
+                if ((data['links'][l]["c"][0] + data['links'][l]["c"][1] + data['links'][l]["c"][2]) > 0){
                 const material1 = new THREE.LineBasicMaterial({ color: RGB2HTML(data['links'][l]["c"][0], data['links'][l]["c"][1], data['links'][l]["c"][2]), });
                 const points = [];
                 const start = data['links'][l]["s"];
@@ -197,6 +198,7 @@
                 line.layers.set(1);
                 line.linewidth
                 scene.add(line);
+                }
             }
 
 
