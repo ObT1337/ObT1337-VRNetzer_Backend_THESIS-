@@ -46,7 +46,7 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
     _WORKING_DIR = os.path.abspath(os.path.dirname(__file__))
     extensions = os.path.join(_WORKING_DIR, "extensions")
     loaded_extensions = []
-    extensions = []
+    list_of_ext = []
     possible_tabs = ["main_tabs", "upload_tabs", "nodepanel_tabs", "nodepanelppi_tabs"]
     # add_tab_to_nodepanel = []
     if os.path.exists(extensions):
@@ -74,11 +74,11 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
             if hasattr(module, "before_first_request"):
                 main_app.before_first_request_funcs += module.before_first_request
 
-            extensions.append(extension_attr)
+            list_of_ext.append(extension_attr)
     print("\n\n\033[1;32mFinished loading extensions, server is running... \u001b[37m")
     res = {
         "loaded": loaded_extensions,
-        "ext": loaded_extensions,
+        "ext": list_of_ext,
     }
     return main_app, res
 
