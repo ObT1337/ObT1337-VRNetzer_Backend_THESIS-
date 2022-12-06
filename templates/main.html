@@ -412,7 +412,6 @@
         {% for ext in extensions["ext"] %}
         {% if "main_tabs" in ext.keys() %}
         {% for tab in ext["main_tabs"]%}
-        <p>{{tab}}</p>
         {% include tab %}
         <script>
             addTab("mainTabs", "{{ url_for('static', filename='img/active_extension.png') }}");

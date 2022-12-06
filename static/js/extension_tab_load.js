@@ -15,7 +15,6 @@ function addTab(tabList, defaultImg) {
     for (var i = 0; i < childList.length; i++) {
         tab = childList[i];
         tab_href = tab.children[0].href.split("#")[1];
-        console.log(tab_href);
         if (!( document.getElementById(tab_href) ) ) {
             tab.style.display = "inline"; 
             link = tab.children[0];
