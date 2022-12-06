@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
 
     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
     <!-- rel = "stylesheet"> -->
@@ -31,11 +30,11 @@
 
 <template id="mcTextBox-template">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
-        <div id = "label" class = "swagLabelSmall">TEXT</div>
-        <input type="Text" id = "text" autocomplete="off">
-    </template>
+    <div id="label" class="swagLabelSmall">TEXT</div>
+    <input type="Text" id="text" autocomplete="off">
+</template>
 
 
 
@@ -43,26 +42,27 @@
 
     <script>
         var sessiondata = JSON.parse({{ sessionData| tojson}});
-        var node_data = JSON.parse({{node | tojson}})["node"];
-        var node_sym =  node_data["n"];
+        var node_data = JSON.parse({{ node | tojson}})["node"];
+        var node_sym = node_data["n"];
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
-        if (node_data.uniprot){
+        if (node_data.uniprot) {
             var uniprot_id = node_data.uniprot[0];
-            
-            ue4("prot", {id:uniprot_id});
+
+            ue4("prot", { id: uniprot_id });
         };
 
     </script>
     {% if "UnrealEngine" not in request.user_agent|string%}
-        {% include "NavBar.html" %}
+    {% include "NavBar.html" %}
     {% endif %}
 
     <div id="tabsUL">
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
         <ul>
             <li>
-                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40' src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
+                <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
+                        src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
             </li>
         </ul>
 
@@ -99,7 +99,7 @@
             <div class="frameBox">
                 <div class="twelve columns">
                     <div class="five columns">
-                        <h4 style="text-align:end; margin-right:10px" >Gene Info ::</h4>
+                        <h4 style="text-align:end; margin-right:10px">Gene Info ::</h4>
                     </div>
                     <div class="six columns">
                         <h5>
@@ -109,7 +109,7 @@
                         </h5>
                     </div>
                 </div>
-            
+
                 <div class="twelve columns">
                     <div class="five columns">
                         <h4 style="text-align:end; margin-right:10px">Gene ID ::</h4>
@@ -123,7 +123,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <br>
             </br>
             <h7>STRUCTURAL INFORMATION</h7>
@@ -148,25 +148,25 @@
             <div class="cornerBox">
                 <select id='structure'></select>
                 <input type="button" id='showStructure' class="swagBackwardButton"></button>
-                
-                   
 
-                
+
+
+
                 <h7>PROTEIN SIZE</h7>
                 <div id="slider-prot_size"></div>
                 <script>
-                    
 
-                    initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
+
+                    initDropdown('structure', node_data.uniprot, sessiondata["actStruc"]);
                     initSlider('slider-prot_size');
                     initButton('showStructure');
                     //ue4("prot", {id:name});
                 </script>
             </div>
-           
+
         </div>
 
-            <!-- <h3>Protein Structure</h3>
+        <!-- <h3>Protein Structure</h3>
             <div class="frameBox">
                 <div class="twelve columns">
                     <div class="five columns">
@@ -180,9 +180,9 @@
                         </h5>
                     </div>
                 </div>
-            -->     
+            -->
 
-                <!-- 
+        <!-- 
                 <div class="twelve columns">
                     <div class="five columns">
                         <h4>Alphafold Size :: </h4>
