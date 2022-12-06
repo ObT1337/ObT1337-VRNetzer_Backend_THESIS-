@@ -5,6 +5,8 @@ import sys
 
 from PIL import Image
 
+# requires pillow 9.0.1+
+
 
 def main(source, dest):
     ext = ["*.bmp", "*.png"]
@@ -15,9 +17,9 @@ def main(source, dest):
             head, tail = ntpath.split(file)
             sub_dir = head.split(os.sep)[-1]
             if "xyz" in head:
-                sub_dir = os.path.join( head.split(os.sep)[-2], sub_dir)
+                sub_dir = os.path.join(head.split(os.sep)[-2], sub_dir)
             image = Image.open(file)
-            image = image.resize((256, 256), Image.NEAREST)
+            image = image.resize((256, 256), Image.Dither.NONE)
             dest_dir = os.path.join(dest, sub_dir)
             os.makedirs(dest_dir, exist_ok=True)
             file_name = os.path.join(dest_dir, tail)
@@ -26,6 +28,8 @@ def main(source, dest):
 
 if __name__ == "__main__":
     # main(sys.argv[1], sys.argv[2])
-    src = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\MAPS"
-    dest = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\NewMaps"
-    main(src,dest)
+    # src = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\MAPS"
+    # dest = r"c:\Users\sebastian\Documents\Unreal Projects\VRNetzer_Backend\static\NewMaps"
+    src = "/Users/till/Documents/Playground/VRNetzer_Backend/static/maps/cartoons_ss_coloring"
+    dest = "/Users/till/Documents/Playground/VRNetzer_Backend/static/maps/cartoons_ss_coloring_256"
+    main(src, dest)
