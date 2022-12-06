@@ -116,15 +116,14 @@ def nodepanel():
     if project is None:
         project = GD.sessionData.get("actPro", "new_ppi")
 
-    if project not in GD.sessionData["proj"]:
-        project = GD.sessionData["proj"][0]
-
     folder = os.path.join("static", "projects", project)
-    with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-        GD.pfile = json.load(json_file)
 
-    with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-        nodes = json.load(json_file)
+    if os.path.exists(os.path.join(folder, "pfile.json")):
+        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
+            GD.pfile = json.load(json_file)
+
+        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
+            nodes = json.load(json_file)
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
