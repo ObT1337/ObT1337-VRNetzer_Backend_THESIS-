@@ -27,7 +27,7 @@ def import_blueprint(app: flask.Flask, ext: str, extensions_path: str) -> bool:
         print(f"\u001b[33m", traceback.format_exc())
         print(f"\u001b[33mMake sure you installed a necessary python modules.")
         print(
-            f"\u001b[33mYou can use:\n\npython3 -m pip install -r {ext}/requirements.txt\n\nTo install all requirements."
+            f"\u001b[33mYou can use:\n\npython3 -m pip install -r extensions/{ext}/requirements.txt\n\nTo install all requirements."
         )
     except AttributeError:
         print(f"\u001b[33m", traceback.format_exc())
@@ -55,7 +55,7 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
             if module:
                 extension_attr["id"] = ext
             for key in possible_tabs:
-                if hasattr(module,key):
+                if hasattr(module, key):
                     extension_attr[key] = module.__dict__[key]
             # if hasattr(module, "main_tabs"):
             #     extension_attr["main_tabs"] = module.main_tabs
