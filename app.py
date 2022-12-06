@@ -15,10 +15,10 @@ from PIL import Image
 
 import GlobalData as GD
 import load_extensions
+import search
+import uploader
 import util
-from search import *
-from uploader import *
-from websocket_functions import *
+import websocket_functions as webfunc
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -37,12 +37,26 @@ app, extensions = load_extensions.load(app)
 socketio = SocketIO(app, manage_session=False)
 
 ### HTML ROUTES ###
-@app.route("/mynewroute")
-def helloflask():
-    data = "BERND"
-    return render_template(
-        "mynewroute.html", user=json.dumps({"name": "BERND", "age": 31})
+@app.route("/websocket_tutorial")
+def websockets_tutorial():
+    data = json.dumps(
+        {
+            "fruits": ["apples", "bananas", "oranges"],
+            "pets": ["lizard", "bug", "cat", "mouse", "pokemon"],
+        }
     )
+    return render_template("websockets_tutorial.html", data=data)
+
+
+@app.route("/tabstest")
+def tabstest():
+    data = json.dumps(
+        {
+            "fruits": ["apples", "bananas", "oranges"],
+            "pets": ["lizard", "bug", "cat", "mouse", "pokemon"],
+        }
+    )
+    return render_template("dyntabtest.html", data=data)
 
 
 # note to self:
@@ -66,7 +80,7 @@ def main():
         # Store the data in session
         flask.session["username"] = username
         flask.session["room"] = room
-        # prolist = listProjects()
+        # prolist = uploader.listProjects()
         if project != "none":
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
@@ -83,8 +97,7 @@ def main():
             session=flask.session,
             sessionData=json.dumps(GD.sessionData),
             pfile=json.dumps(GD.pfile),
-            extensions = extensions,
-
+            extensions=extensions,
         )
     else:
         return "error"
@@ -148,7 +161,7 @@ def nodepanel():
                 id=id,
                 add_key=add_key,
                 node=json.dumps({"node": node}),
-                extensions = extensions,
+                extensions=extensions,
             )
 
         else:
@@ -166,7 +179,7 @@ def nodepanel():
                 "nodepanel.html",
                 data=data,
                 sessionData=json.dumps(GD.sessionData),
-                extensions = extensions,
+                extensions=extensions,
             )
     else:
         try:
@@ -180,19 +193,24 @@ def nodepanel():
             "nodepanel.html",
             data=data,
             sessionData=json.dumps(GD.sessionData),
-            extensions = extensions,
+            extensions=extensions,
         )
 
 
 @app.route("/upload", methods=["GET"])
 def upload():
-    prolist = listProjects()
-    return render_template("upload.html", namespaces=prolist,extensions = extensions,sessionData=json.dumps(GD.sessionData))
+    prolist = uploader.listProjects()
+    return render_template(
+        "upload.html",
+        namespaces=prolist,
+        extensions=extensions,
+        sessionData=json.dumps(GD.sessionData),
+    )
 
 
 @app.route("/uploadfiles", methods=["GET", "POST"])
 def upload_files():
-    return upload_files(flask.request)
+    return uploader.upload_files(flask.request)
 
 
 @app.route("/delpro", methods=["GET", "POST"])
@@ -229,7 +247,10 @@ def force():
     linkstxt = open(lname + ".json", "r")
     links = json.load(linkstxt)
     return render_template(
-        "threeJSForceLayout.html", nodes=json.dumps(nodes), links=json.dumps(links),sessionData=json.dumps(GD.sessionData)
+        "threeJSForceLayout.html",
+        nodes=json.dumps(nodes),
+        links=json.dumps(links),
+        sessionData=json.dumps(GD.sessionData),
     )
 
 
@@ -243,8 +264,12 @@ def preview():
     if flask.request.args.get("project") is None:
         print("project Argument not provided - redirecting to menu page")
 
-        data["projects"] = listProjects()
-        return render_template("threeJS_VIEWER_Menu.html", data=json.dumps(data),sessionData=json.dumps(GD.sessionData))
+        data["projects"] = uploader.listProjects()
+        return render_template(
+            "threeJS_VIEWER_Menu.html",
+            data=json.dumps(data),
+            sessionData=json.dumps(GD.sessionData),
+        )
 
     if flask.request.args.get("layout") is None:
         layoutindex = 0
@@ -355,7 +380,10 @@ def preview():
     # print(testNetwork)
     # return render_template('threeJSTest1.html', data = json.dumps('{"nodes": [{"p":[1,0.5,0]},{"p":[0,0.5,1]},{"p":[0.5,0.5,0.5]}]}'))
     return render_template(
-        "threeJS_VIEWER.html", data=json.dumps(testNetwork), pfile=json.dumps(thispfile),sessionData=json.dumps(GD.sessionData)
+        "threeJS_VIEWER.html",
+        data=json.dumps(testNetwork),
+        pfile=json.dumps(thispfile),
+        sessionData=json.dumps(GD.sessionData),
     )
 
 
@@ -418,7 +446,7 @@ def home():
     if not flask.session.get("username"):
         flask.session["username"] = util.generate_username()
         flask.session["room"] = 1
-    return render_template("home.html",sessionData=json.dumps(GD.sessionData))
+    return render_template("home.html", sessionData=json.dumps(GD.sessionData))
 
 
 ### DATA ROUTES###
@@ -426,17 +454,17 @@ def home():
 
 @app.route("/load_all_projects", methods=["GET", "POST"])
 def loadAllProjectsR():
-    return jsonify(projects=listProjects())
+    return jsonify(projects=uploader.listProjects())
 
 
 @app.route("/load_project/<name>", methods=["GET", "POST"])
 def loadProjectInfoR(name):
-    return loadProjectInfo(name)
+    return uploader.loadProjectInfo(name)
 
 
 @app.route("/projectAnnotations/<name>", methods=["GET"])
 def loadProjectAnnotations(name):
-    return loadAnnotations(name)
+    return uploader.loadAnnotations(name)
 
 
 ### Execute code before first request ###
@@ -455,10 +483,10 @@ def join(message):
     room = flask.session.get("room")
     join_room(room)
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + " has entered the room."
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     emit(
         "status",
@@ -471,11 +499,11 @@ def join(message):
 def ex(message):
     room = flask.session.get("room")
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + "ex: "
         + json.dumps(message)
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     message["usr"] = flask.session.get("username")
 
@@ -492,7 +520,7 @@ def ex(message):
         if len(message["val"]) > 1:
             x = '{"id": "sres", "val":[], "fn": "sres"}'
             results = json.loads(x)
-            results["val"] = search(message["val"])
+            results["val"] = search.search(message["val"])
 
             emit("ex", results, room=room)
 
@@ -524,7 +552,7 @@ def ex(message):
                 psf_workflows.fetch([uniprot])
     else:
         emit("ex", message, room=room)
-    # sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
+    # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
 
 
 @socketio.on("left", namespace="/chat")
@@ -535,10 +563,10 @@ def left(message):
     flask.session.clear()
     emit("status", {"msg": username + " has left the room."}, room=room)
     print(
-        bcolors.WARNING
+        webfunc.bcolors.WARNING
         + flask.session.get("username")
         + " has left the room."
-        + bcolors.ENDC
+        + webfunc.bcolors.ENDC
     )
     util.construct_nav_bar(app)
 

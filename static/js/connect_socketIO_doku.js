@@ -1,18 +1,7 @@
 
 var socket;
 
-
-
-function settextscroll(id, val) {
-    var box = document.getElementById(id).shadowRoot.getElementById("box");
-    $(box).scrollTop(val[0]);
-    $(box).scrollLeft(val[1]);
-}
-
-
 $(document).ready(function(){
-     
-
     ///set up and connect to socket
     console.log('http://' + document.domain + ':' + location.port + '/chat');
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
@@ -22,8 +11,6 @@ $(document).ready(function(){
         socket.emit('join', {});
     });
     socket.on('status', function(data) {
-        //$('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-        //$('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
     socket.on('ex', function(data) {
         console.log("server returned: " + JSON.stringify(data));
@@ -97,7 +84,7 @@ $(document).ready(function(){
 
                 $('#'+ data.id).val(data.opt);
                 $('#'+ data.id).selectmenu("refresh");
-                ue4("sel", data);
+                ///ue4("sel", data);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("value", 1);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("change");
            
@@ -114,7 +101,7 @@ $(document).ready(function(){
                    // slider.value= data.val;
                    $('#'+ data.id).slider('value', data.val);
                 }
-                ue4("slider", data);
+                //ue4("slider", data);
                 break; 
             case 'tex':
                     var text = document.getElementById(data.id).shadowRoot.getElementById("text");
@@ -139,7 +126,7 @@ $(document).ready(function(){
 
             case 'sres_butt_clicked':
                     console.log(data.id);
-                    ue4("selectnode", data)
+                    //ue4("selectnode", data)
                     break;
 
 
@@ -150,3 +137,10 @@ $(document).ready(function(){
 
 });
 
+
+
+function settextscroll(id, val) {
+    var box = document.getElementById(id).shadowRoot.getElementById("box");
+    $(box).scrollTop(val[0]);
+    $(box).scrollLeft(val[1]);
+}
