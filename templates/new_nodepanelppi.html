@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/NavBar.css') }}">
 
 
     <!-- <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" -->
@@ -20,6 +19,7 @@
     <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
     <script src="{{ url_for('static', filename='js/connect_socketIO_node.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/extension_tab_load.js') }}"></script>
     <!--
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
 
@@ -409,7 +409,16 @@
                 </div>
 
         </div> -->
-
+        {% for ext in extensions["ext"] %}
+        {% if "nodepanelppi_tabs" in ext.keys() %}
+        {% for tab in ext["nodepanelppi_tabs"]%}
+        {% include tab %}
+        <script>
+            addTab("nodepanel_tabsList", "{{ url_for('static', filename='img/active_nodeInfo.png') }}");
+        </script>
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
     </div>
     <script>
         // Will deactivate all tabs for which the if referenced in href cannot be found in the document.

@@ -46,6 +46,7 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
     _WORKING_DIR = os.path.abspath(os.path.dirname(__file__))
     extensions = os.path.join(_WORKING_DIR, "extensions")
     loaded_extensions = []
+    possible_tabs = ["main_tabs", "upload_tabs", "nodepanel_tabs", "nodepanelppi_tabs"]
     # add_tab_to_nodepanel = []
     if os.path.exists(extensions):
         for ext in os.listdir(extensions):
@@ -53,20 +54,20 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
             module = import_blueprint(main_app, ext, extensions)
             if module:
                 extension_attr["id"] = ext
-            if hasattr(module, "main_tabs"):
-                extension_attr["main_tabs"] = module.main_tabs
-                # extension_attr["main_tabs"] = add_tabs(module.main_tabs, ext)
-            if hasattr(module, "upload_tabs"):
-                # extension_attr["upload_tabs"]  = add_tabs(module.upload_tabs, ext)
-                extension_attr["upload_tabs"] = module.upload_tabs
-            if hasattr(module, "nodepanel_ppi_tabs"):
-                # extension_attr["nodepanel_ppi_tabs"]  = add_tabs(module.nodepanel_ppi_tabs, ext)
-                extension_attr["nodepanel_ppi_tabs"]  = module.nodepanel_ppi_tabs
-            # TODO: Add other websites with tabs
-
+            for key in possible_tabs:
+                if hasattr(module,key):
+                    extension_attr[key] = module.__dict__[key]
+            # if hasattr(module, "main_tabs"):
+            #     extension_attr["main_tabs"] = module.main_tabs
+            #     # extension_attr["main_tabs"] = add_tabs(module.main_tabs, ext)
+            # if hasattr(module, "upload_tabs"):
+            #     # extension_attr["upload_tabs"]  = add_tabs(module.upload_tabs, ext)
+            #     extension_attr["upload_tabs"] = module.upload_tabs
+            # if hasattr(module, "nodepanel_ppi_tabs"):
+            #     # extension_attr["nodepanel_ppi_tabs"]  = add_tabs(module.nodepanel_ppi_tabs, ext)
+            #     extension_attr["nodepanel_ppi_tabs"]  = module.nodepanel_ppi_tabs
             # if hasattr(module, "nodepanel_tabs"):
             #     extension_attr["nodepanel_tabs"] = add_tabs(module.nodepanel_ppi_tabs, ext)
-            # ...
 
             if hasattr(module, "before_first_request"):
                 main_app.before_first_request_funcs += module.before_first_request
