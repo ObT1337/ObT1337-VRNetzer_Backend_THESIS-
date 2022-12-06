@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}" />
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/UI_Module_Config.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_WebUI.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/connect_socketIO_main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+</head>
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                                       body
+                                        
+    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+<body>
+    {% if "UnrealEngine" not in request.user_agent|string%}
+    {% include "NavBar.html" %}
+    {% endif %}
+    <script>
+        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var links = sessiondata.url_map;
+    </script>
+    <!-- Main Header -->
+    <div class="twelve columns">
+        <h2 class="lineglowslow">Home</h2>
+    </div>
+    <div id="home_block" class="twelve columns">
+        <div id="home_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+            <h4>Home</h4>
+            <input onclick="followLink('/home')" class="home_button" type="submit" value="home" />
+            <div id="extensions">
+                <h6>Extensions</h6>
+            </div>
+        </div>
+    </div>
+    <div id="mainpanel_framebox" class="twelve columns">
+        <div class="six columns">
+            <div id="main_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+                <h4>Main Panels</h4>
+                <input onclick="followLink('/main')" class="home_button" type="submit" value="main" />
+                <div id="extensions">
+                    <h6>Extensions</h6>
+                </div>
+
+            </div>
+        </div>
+        <div class="six columns">
+            <div id="nodepanel_framebox" class="frameBox"
+                style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+                <h4>Node Info</h4>
+                <input onclick="followLink('/nodepanel')" class="home_button" type="submit" value="nodepanel" />
+                <div id="extensions">
+                    <h6>Extensions</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="upload_preview_block" class="twelve columns">
+        <div class="six columns">
+            <div id="upload_framebox" class="frameBox"
+                style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+                <h4>Uploader</h4>
+                <input onclick="followLink('/upload')" class="home_button" type="submit" value="upload" />
+                <div id="extensions">
+                    <h6>Extensions</h6>
+                </div>
+            </div>
+        </div>
+        <div class="six columns">
+            <div id="preview_framebox" class="frameBox"
+                style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+                <h4>Previews</h4>
+                <input onclick="followLink('/preview')" class="home_button" type="submit" value="preview" />
+                <div id="extensions">
+                    <h6>Extensions</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if "UnrealEngine" in request.user_agent|string%}
+    <script>
+        document.getElementById("home_block").style.display = "none";
+        document.getElementById("nodepanel_framebox").style.display = "none";
+        document.getElementById("upload_preview_block").style.display = "none";
+    </script>
+    {% else %}
+    <script>
+        var categories = ["home", "main", "nodepanel", "upload", "preview"];
+        var extension = null;
+        for (var i = 0; i < links.length; i++) {
+            var link = links[i];
+            console.log(link)
+            var thisExtension = link[0].split("/")[1];
+            if (thisExtension != extension) {
+                extension = thisExtension;
+            }
+            if (link[1].includes("upload") && link[1].includes("files")) {
+                continue;
+            };
+            framebox_map = {
+                "home": "home_framebox",
+                "main": "main_framebox",
+                "nodepanel": "nodepanel_framebox",
+                "upload": "upload_framebox",
+                "preview": "preview_framebox",
+            }
+            for (cat in categories) {
+                var cat = categories[cat]
+                if (link[1].includes(cat)) {
+
+                    links[i] = (link[0], link[1].replace(".", " / ").replace("_", " "));
+                    var framebox = document.getElementById(framebox_map[cat]);
+                    var extension_div = framebox.children[2];
+                    var extensionHeader = null;
+                    for (var i = 0; i < extension_div.children.length; i++) {
+                        if (extension_div.children[i].innerHTML == extension) {
+                            extensionHeader = extension_div.children[i];
+                            break;
+                        }
+                    }
+                    if (!extensionHeader) {
+                        extension_div.appendChild(document.createElement("hr"))
+                        var newHeader = document.createElement("div");
+                        newHeader.setAttribute("name", "extension_header");
+                        newHeader.setAttribute("class", "framebox");
+                        newHeader.innerHTML = extension;
+                        extension_div.appendChild(newHeader);
+                        extensionHeader = newHeader;
+                    }
+                    var newElement = document.createElement("input");
+                    newElement.setAttribute("onclick", "followLink('" + link[0] + "')");
+                    newElement.setAttribute("class", "home_button");
+                    newElement.setAttribute("type", "submit");
+                    newElement.setAttribute("value", link[1].split(".")[1]);
+                    extensionHeader.appendChild(newElement);
+                };
+            };
+        };
+
+        // Hide empty Extension seperators
+        for (cat in framebox_map) {
+            var framebox = document.getElementById(framebox_map[cat]);
+            if (framebox.children[2].children.length == 1) {
+                framebox.children[2].style.display = "none";
+            }
+        }
+    </script>
+    {% endif %}
+</body>
+
+</html>
+<!--     # for link in links:
+    #     # Skip upload files
+    #     if ("upload" and "files") in link[1]:
+    #         continue
+    #     for category in categories:
+    #         if category in link[1]:
+    #             link = (link[0], link[1].replace(".", " / ").replace("_", " "))
+    #             dropdown_map[category] = add_nav_element(
+    #                 nav_soup, dropdown_map[category], link
+    #             )
+    #             framebox_map[category] = add_home_element(
+    #                 home_soup, framebox_map[category], link
+ -->

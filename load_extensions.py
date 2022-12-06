@@ -46,37 +46,35 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
     _WORKING_DIR = os.path.abspath(os.path.dirname(__file__))
     extensions = os.path.join(_WORKING_DIR, "extensions")
     loaded_extensions = []
-    add_tab_to_main, add_tab_to_upload, add_tab_to_nodepanel_ppi = [], [], []
     # add_tab_to_nodepanel = []
     if os.path.exists(extensions):
         for ext in os.listdir(extensions):
+            extension_attr = {}
             module = import_blueprint(main_app, ext, extensions)
             if module:
-                loaded_extensions.append(ext)
+                extension_attr["id"] = ext
             if hasattr(module, "main_tabs"):
-                add_tab_to_main += add_tabs(module.main_tabs, ext)
+                extension_attr["main_tabs"] = module.main_tabs
+                # extension_attr["main_tabs"] = add_tabs(module.main_tabs, ext)
             if hasattr(module, "upload_tabs"):
-                add_tab_to_upload += add_tabs(module.upload_tabs, ext)
+                # extension_attr["upload_tabs"]  = add_tabs(module.upload_tabs, ext)
+                extension_attr["upload_tabs"] = module.upload_tabs
             if hasattr(module, "nodepanel_ppi_tabs"):
-                add_tab_to_nodepanel_ppi += add_tabs(module.nodepanel_ppi_tabs, ext)
-
+                # extension_attr["nodepanel_ppi_tabs"]  = add_tabs(module.nodepanel_ppi_tabs, ext)
+                extension_attr["nodepanel_ppi_tabs"]  = module.nodepanel_ppi_tabs
             # TODO: Add other websites with tabs
 
             # if hasattr(module, "nodepanel_tabs"):
-            #     add_tab_to_nodepanel_ppi += add_tabs(module.nodepanel_ppi_tabs, ext)
+            #     extension_attr["nodepanel_tabs"] = add_tabs(module.nodepanel_ppi_tabs, ext)
             # ...
 
             if hasattr(module, "before_first_request"):
                 main_app.before_first_request_funcs += module.before_first_request
 
+            loaded_extensions.append(extension_attr)
     print("\n\n\033[1;32mFinished loading extensions, server is running... \u001b[37m")
     res = {
-        "loaded": loaded_extensions,
-        "main_tabs": add_tab_to_main,
-        "upload_tabs": add_tab_to_upload,
-        "nodepanel_ppi_tabs": add_tab_to_nodepanel_ppi,
-        # "nodepanel_tabs": add_tab_to_nodepanel_ppi,
-        # ...
+        "ext": loaded_extensions,
     }
     return main_app, res
 

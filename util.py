@@ -6,7 +6,7 @@ import shutil
 import bs4
 import flask
 from bs4 import BeautifulSoup as bs
-
+import GlobalData as GD
 
 def delete_project(request: flask.request):
     """
@@ -53,73 +53,79 @@ def get_all_links(app) -> list[list[str, str]]:
             links.append((url, rule.endpoint))
     return links
 
-
 def create_dynamic_links(app: flask.app.Flask):
-    """
-    Construct the navigation bar
-    """
-
-    navbar_html_template = "templates/NavBar_template.html"
-    navbar_html = "templates/NavBar.html"
-
-    home_html_template = "templates/home_template.html"
-    home_html = "templates/home.html"
-
     # Get all links from flask
     links = get_all_links(app)
+    links = [link for link in links if len(link[0].split("/"))>2]
+    GD.sessionData["url_map"] = links
 
-    with open(navbar_html_template, "r") as nav_file:
-        nav_soup = bs(nav_file, "html.parser")
-    with open(home_html_template, "r") as home_file:
-        home_soup = bs(home_file, "html.parser")
-    categories = ["home", "main", "nodepanel", "upload", "preview"]
 
-    # initialize the dropdown map
-    home_dropdown = nav_soup.find("select", {"id": "home_dropdown"})
-    main_dropdown = nav_soup.find("select", {"id": "mainpanel_dropdown"})
-    nodepanel_dropdown = nav_soup.find("select", {"id": "nodepanel_dropdown"})
-    upload_dropdown = nav_soup.find("select", {"id": "uploader_dropdown"})
-    preview_dropdown = nav_soup.find("select", {"id": "preview_dropdown"})
-    dropdown_map = {
-        "home": home_dropdown,
-        "main": main_dropdown,
-        "nodepanel": nodepanel_dropdown,
-        "upload": upload_dropdown,
-        "preview": preview_dropdown,
-    }
+# def create_dynamic_links(app: flask.app.Flask):
+#     """
+#     Construct the navigation bar
+#     """
 
-    # initialize the framebox map
-    home_framebox = home_soup.find("div", {"id": "home_framebox"})
-    main_framebox = home_soup.find("div", {"id": "mainpanel_framebox"})
-    nodepanel_framebox = home_soup.find("div", {"id": "nodepanel_framebox"})
-    upload_framebox = home_soup.find("div", {"id": "uploader_framebox"})
-    preview_framebox = home_soup.find("div", {"id": "preview_framebox"})
-    framebox_map = {
-        "home": home_framebox,
-        "main": main_framebox,
-        "nodepanel": nodepanel_framebox,
-        "upload": upload_framebox,
-        "preview": preview_framebox,
-    }
+#     navbar_html_template = "templates/NavBar_template.html"
+#     navbar_html = "templates/NavBar.html"
 
-    for link in links:
-        # Skip upload files
-        if ("upload" and "files") in link[1]:
-            continue
-        for category in categories:
-            if category in link[1]:
-                link = (link[0], link[1].replace(".", " / ").replace("_", " "))
-                dropdown_map[category] = add_nav_element(
-                    nav_soup, dropdown_map[category], link
-                )
-                framebox_map[category] = add_home_element(
-                    home_soup, framebox_map[category], link
-                )
+#     home_html_template = "templates/home_template.html"
+#     home_html = "templates/home.html"
 
-    with open(navbar_html, "w") as nav_file:
-        nav_file.write(str(nav_soup))
-    with open(home_html, "w") as home_file:
-        home_file.write(str(home_soup))
+#     # Get all links from flask
+#     links = get_all_links(app)
+
+#     with open(navbar_html_template, "r") as nav_file:
+#         nav_soup = bs(nav_file, "html.parser")
+#     with open(home_html_template, "r") as home_file:
+#         home_soup = bs(home_file, "html.parser")
+#     categories = ["home", "main", "nodepanel", "upload", "preview"]
+
+#     # initialize the dropdown map
+#     home_dropdown = nav_soup.find("select", {"id": "home_dropdown"})
+#     main_dropdown = nav_soup.find("select", {"id": "mainpanel_dropdown"})
+#     nodepanel_dropdown = nav_soup.find("select", {"id": "nodepanel_dropdown"})
+#     upload_dropdown = nav_soup.find("select", {"id": "uploader_dropdown"})
+#     preview_dropdown = nav_soup.find("select", {"id": "preview_dropdown"})
+    # dropdown_map = {
+    #     "home": home_dropdown,
+    #     "main": main_dropdown,
+    #     "nodepanel": nodepanel_dropdown,
+    #     "upload": upload_dropdown,
+    #     "preview": preview_dropdown,
+    # }
+
+#     # initialize the framebox map
+#     home_framebox = home_soup.find("div", {"id": "home_framebox"})
+#     main_framebox = home_soup.find("div", {"id": "mainpanel_framebox"})
+#     nodepanel_framebox = home_soup.find("div", {"id": "nodepanel_framebox"})
+#     upload_framebox = home_soup.find("div", {"id": "uploader_framebox"})
+#     preview_framebox = home_soup.find("div", {"id": "preview_framebox"})
+#     framebox_map = {
+#         "home": home_framebox,
+#         "main": main_framebox,
+#         "nodepanel": nodepanel_framebox,
+#         "upload": upload_framebox,
+#         "preview": preview_framebox,
+#     }
+
+#     for link in links:
+#         # Skip upload files
+#         if ("upload" and "files") in link[1]:
+#             continue
+#         for category in categories:
+#             if category in link[1]:
+#                 link = (link[0], link[1].replace(".", " / ").replace("_", " "))
+#                 dropdown_map[category] = add_nav_element(
+#                     nav_soup, dropdown_map[category], link
+#                 )
+#                 framebox_map[category] = add_home_element(
+#                     home_soup, framebox_map[category], link
+#                 )
+
+#     with open(navbar_html, "w") as nav_file:
+#         nav_file.write(str(nav_soup))
+#     with open(home_html, "w") as home_file:
+#         home_file.write(str(home_soup))
 
 
 def add_nav_element(
@@ -224,7 +230,7 @@ def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
             if not soup.find("div", {"id": link}):
                 tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
                 if tab_to_add is None:
-                    print(f"No div with id 'tab_to_add' found in {tab}.")
+                    t(f"No div with id 'tab_to_add' found in {tab}.")
                     break
                 tab_to_add["id"] = link
                 tab_to_add["style"] = tab_to_add["style"].replace(

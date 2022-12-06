@@ -1,0 +1,35 @@
+<link href="{{ url_for('static', filename='css/NavBar.css') }}" rel="stylesheet" />
+<script src="{{ url_for('static', filename='js/navbar.js') }}" type="text/javascript"></script>
+<ul class="navbar" id="navbar">
+    <li class="navbar">
+        <a href="/home" class="navbar"> <button type="button" id='navbar_mainpanel' class="navbar"
+                style="min-width:fit-content">Home</button></a>
+    </li>
+    <li class="navbar">
+        <a href="/main" class="navbar">
+            <button type="button" id='navbar_mainpanel' class="navbar" style="min-width:fit-content">Main Panel</button>
+        </a>
+
+    </li>
+    <li class="navbar">
+        <a href="/nodepanel" class="navbar">
+            <button type="button" id='navbar_mainpanel' class="navbar" style="min-width:fit-content">Node
+                Info</button>
+        </a>
+    </li>
+    <li class="navbar">
+        <a href="/upload" class="navbar">
+            <button type="button" id='navbar_mainpanel' class="navbar" style="min-width:fit-content">Upload</button>
+        </a>
+    </li>
+    <li class="navbar">
+        <a href="/preview" class="navbar">
+            <button type="button" id='navbar_mainpanel' class="navbar" style="min-width:fit-content">Preview</button>
+        </a>
+    </li>
+</ul>
+<script>
+    $(function() {
+        $("#navbar").tabs();
+    });
+</script>

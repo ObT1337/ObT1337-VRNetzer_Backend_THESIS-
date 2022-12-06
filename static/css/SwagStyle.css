@@ -1010,3 +1010,8 @@ a.crosslinks:visited {
     max-height: 200px;
     overflow:auto;
 }
+.input.home_button{
+    margin: 10px;
+    min-width: 40%;
+    max-width: fit-content;
+}
