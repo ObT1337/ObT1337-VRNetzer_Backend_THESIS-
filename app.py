@@ -124,6 +124,8 @@ def nodepanel():
 
         with open(os.path.join(folder, "nodes.json"), "r") as json_file:
             nodes = json.load(json_file)
+    else:
+        GD.pfile = None
 
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
