@@ -19,6 +19,7 @@ function initDropdown(id, data, active) {
 
 }
 
+
 /// a test to add json string as attribute to dropdown option
 function initDropdownX(id, data, active) {
 
@@ -44,27 +45,6 @@ function initDropdownX(id, data, active) {
 }
 
 
-
-
-function initProjectDropdown(id, data, active) {
-
-  $('#' + id).selectmenu();
-
-  for (let i = 0; i < data.length; i++) {
-    $('#' + id).append(new Option(data[i]));
-  }
-  $('#' + id).val(active);
-  $('#' + id).selectmenu("refresh");
-
-  $('#' + id).on('selectmenuselect', function() {
-    var name = $('#' + id).find(':selected').text();
-    socket.emit('ex', { id: "projects", opt: name, fn: "sel" });
-    ///logger($('#selectMode').val());
-  });
-
-}
-
-
 function initSlider(id) {
 
   $('#' + id).slider({
@@ -82,7 +62,7 @@ function initSlider(id) {
 
 
 function initCheckbox(id) {
-  $('#' + id, function() {
+  $('#' + id).on("click", function() {
     socket.emit('ex', { id: id, val: $('#' + id).is(":checked"), fn: "chk" });
   });
 

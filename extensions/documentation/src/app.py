@@ -45,7 +45,8 @@ blueprint = flask.Blueprint(
     static_folder="/extensions/documentation/src/static",
 )
 
-@blueprint.route("/help")
+
+@blueprint.route("/")
 def help(): 
     return render_template('help.html')
 
