@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -63,6 +63,11 @@ def tabstest():
 # - only include 100% working code in releases
 # - have homies commit stuff and star the git
 # - make a webscraper for git and display contributors for a spec software in vr
+
+
+@app.route("/")
+def index():
+    return flask.redirect("/home")
 
 
 @app.route("/main", methods=["GET"])
@@ -539,7 +544,6 @@ def ex(message):
                 message["prot"].append("x")
                 message["protsize"].append(-1)
 
-        
         emit("ex", message, room=room)
 
     if message["id"] == "structure":

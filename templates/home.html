@@ -88,6 +88,7 @@
     <div id="data_block" class="twelve columns">
         <div id="data_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
             <h4>Other Routes</h4>
+            <div name="coreRoutes"></div>
             <div name="extensions">
                 <h6>Extensions</h6>
             </div>
@@ -133,20 +134,25 @@
             console.log(linkCat, link)
             link = [link[0], link[1].replaceAll("_", " ")];
             var framebox = document.getElementById(framebox_map[linkCat]);
-            var extension_div = framebox.querySelector('[name="extensions"]');
-
-            var thisExtension = link[0].split("/")[1];
-            var extensionHeader = document.getElementById(framebox.id + "_" + thisExtension);
-            if (!extensionHeader) {
-                extension_div.appendChild(document.createElement("hr"))
-                var newHeader = document.createElement("div");
-                newHeader.setAttribute("name", "extension_header");
-                newHeader.setAttribute("id", framebox.id + "_" + thisExtension);
-                newHeader.setAttribute("class", "framebox");
-                newHeader.innerHTML = thisExtension;
-                extension_div.appendChild(newHeader);
-                extensionHeader = newHeader;
-            };
+            var extensionDiv = framebox.querySelector('[name="extensions"]');
+            var parentDiv = null;
+            if (link[0].split("/").length < 3) {
+                parentDiv = framebox.querySelector('[name="coreRoutes"]');;
+            } else {
+                var thisExtension = link[0].split("/")[1];
+                var extensionHeader = document.getElementById(framebox.id + "_" + thisExtension);
+                if (!extensionHeader) {
+                    extensionDiv.appendChild(document.createElement("hr"))
+                    var newHeader = document.createElement("div");
+                    newHeader.setAttribute("name", "extension_header");
+                    newHeader.setAttribute("id", framebox.id + "_" + thisExtension);
+                    newHeader.setAttribute("class", "framebox");
+                    newHeader.innerHTML = thisExtension;
+                    extensionDiv.appendChild(newHeader);
+                    extensionHeader = newHeader;
+                };
+                parentDiv = extensionHeader;
+            }
             var newElement = document.createElement("input");
             newElement.setAttribute("onclick", "followLink('" + link[0] + "')");
             newElement.setAttribute("class", "home_button");
@@ -156,8 +162,8 @@
             } else {
                 newElement.setAttribute("value", link[1]);
             }
-            extensionHeader.appendChild(document.createElement("br"));
-            extensionHeader.appendChild(newElement);
+            parentDiv.appendChild(document.createElement("br"));
+            parentDiv.appendChild(newElement);
         };
 
         // Hide empty Extension seperators
