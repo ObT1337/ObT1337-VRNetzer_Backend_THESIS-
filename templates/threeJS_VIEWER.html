@@ -185,19 +185,19 @@
             // Draw Links
 
             for (let l = 0; l < data['links'].length; l++) {
-                if ((data['links'][l]["c"][0] + data['links'][l]["c"][1] + data['links'][l]["c"][2]) > 0){
-                const material1 = new THREE.LineBasicMaterial({ color: RGB2HTML(data['links'][l]["c"][0], data['links'][l]["c"][1], data['links'][l]["c"][2]), });
-                const points = [];
-                const start = data['links'][l]["s"];
-                const end = data['links'][l]["e"];
-                points.push(new THREE.Vector3(data['nodes'][start]["p"][0] * scale, data['nodes'][start]["p"][1] * scale, data['nodes'][start]["p"][2] * scale));
-                points.push(new THREE.Vector3(data['nodes'][end]["p"][0] * scale, data['nodes'][end]["p"][1] * scale, data['nodes'][end]["p"][2] * scale));
+                if ((data['links'][l]["c"][0] + data['links'][l]["c"][1] + data['links'][l]["c"][2]) > 0) {
+                    const material1 = new THREE.LineBasicMaterial({ color: RGB2HTML(data['links'][l]["c"][0], data['links'][l]["c"][1], data['links'][l]["c"][2]), });
+                    const points = [];
+                    const start = data['links'][l]["s"];
+                    const end = data['links'][l]["e"];
+                    points.push(new THREE.Vector3(data['nodes'][start]["p"][0] * scale, data['nodes'][start]["p"][1] * scale, data['nodes'][start]["p"][2] * scale));
+                    points.push(new THREE.Vector3(data['nodes'][end]["p"][0] * scale, data['nodes'][end]["p"][1] * scale, data['nodes'][end]["p"][2] * scale));
 
-                const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
-                const line = new THREE.Line(geometry1, material1);
-                line.layers.set(1);
-                line.linewidth
-                scene.add(line);
+                    const geometry1 = new THREE.BufferGeometry().setFromPoints(points);
+                    const line = new THREE.Line(geometry1, material1);
+                    line.layers.set(1);
+                    line.linewidth
+                    scene.add(line);
                 }
             }
 
