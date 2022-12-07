@@ -286,7 +286,7 @@
                     <h7>
                         PROTEIN STRUCTURES
                     </h7>
-                    <select id="structure">
+                    <select id="mystructure">
                     </select>
                     <input id="showStructure" type="button" value="Hide Structure" />
                     <h7>
@@ -295,7 +295,7 @@
                     <div id="slider-prot_size">
                     </div>
                     <script>
-                        initDropdown('structure', node_data.uniprot, sessiondata["actStruc"]);
+                        initDropdown('mystructure', node_data.uniprot, sessiondata["actStruc"]);
                         initSlider('slider-prot_size');
                         initButton('showStructure');
                         //ue4("prot", {id:name});
