@@ -539,7 +539,7 @@ def ex(message):
                 message["prot"].append("x")
                 message["protsize"].append(-1)
 
-        print("Message:", message)
+        
         emit("ex", message, room=room)
 
     if message["id"] == "structure":

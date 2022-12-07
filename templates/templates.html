@@ -247,10 +247,6 @@
 
 
 
-
-
-
-
 <script>
     class mcColorBox extends HTMLElement {
 
@@ -264,6 +260,12 @@
 
         let colorbox = this.shadowRoot.querySelector("#color");
 
+        
+
+        colorbox.addEventListener('change', () => {
+            console.log(colorbox.value);
+            socket.emit('ex', {id: this.getAttribute('id'), val: colorbox.value, fn: "col"});
+        });
 
         }
     }
