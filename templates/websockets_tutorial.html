@@ -12,26 +12,38 @@
     </head>
 
     <body>
-        <div>
-        <div style="width:200px">
-        select your fruit<br>
-        <select id="myfruitdropdown" ></select><br><br>
-        select your pet<br>
-        <select id="mypetdropdown"></select><br><br>
-        Slider
-        <div id="wst_slider"></div>
-        Checkbox<br>
-        <input type="checkbox" value="true" id = "wst_chkb" name="check"></checkbox>
-        </div>
-        <script>
-            var data = JSON.parse({{data|tojson}});
-            initDropdown("myfruitdropdown", data.fruits, data.fruits[0]);
-            initDropdown("mypetdropdown", data.pets, data.pets[0]);
-            initSlider("wst_slider");
-            initCheckbox("wst_chkb");
+
+
+    <div>
+        <h5>WEBSocket Tutorial</h5>
+
+        open this page two times.<br>
+        change the value of the UI elements on one page and observe what happens to it in the other window.<br>
+        Inspect the page, look at the output of the console when u change the dropdown. <br>
+        Also have a look at the output of the python console in VSCode<br><br>
             
-        </script> 
+        <div style="width:200px">
+            select your fruit<br>
+            <select id="myfruitdropdown" ></select><br><br>
+            select your pet<br>
+            <select id="mypetdropdown"></select><br><br>
+            
+            Slider
+            <div id="wst_slider"></div>
+            Checkbox<br>
+            <input type="checkbox" id = "wst_chkb"></input>
+            <br>
+            <input type="button" id = "wst_button" value="Button"></input>
+            <script>
+                var data = JSON.parse({{data|tojson}});
+                initDropdown("myfruitdropdown", data.fruits, data.fruits[0]);
+                initDropdown("mypetdropdown", data.pets, data.pets[0]);
+                initSlider("wst_slider");
+                initCheckbox("wst_chkb");
+                initButton("wst_button");
+            </script> 
         </div>
+    </div>
     </body>
 </html>
 
