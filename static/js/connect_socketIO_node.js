@@ -83,7 +83,7 @@ $(document).ready(function(){
 */
             case 'sel':
                 // SPECIAL CASE: Refresh Page When loading new project
-                if (data.id == "structure"){
+                if (data.id == "mystructure"){
                     ue4("prot", data);
                 }
 
