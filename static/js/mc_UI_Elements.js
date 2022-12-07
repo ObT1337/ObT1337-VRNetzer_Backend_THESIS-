@@ -72,23 +72,12 @@ function initCheckbox(id) {
 function initButton(id) {
   $('#' + id).on("click", function() {
     var $this = $(this);
-    socket.emit('ex', { id: id, val: $this.val(), fn: "but" });
+    socket.emit('ex', { id: id, val: "clicked", fn: "but" });
   });
 }
 
 
-function initToggle(id, texts) {
-  $('#' + id).on("click", function() {
-    var $this = $(this);
-    if ($this.val() == texts[1]) {
-      $this.val(texts[0]);
-    } else {
-      $this.val(texts[1]);
-    }
-    socket.emit('ex', { id: id, val: $this.val(), fn: "tgl" });
-  });
 
-}
 
 
 

@@ -11,16 +11,12 @@ li.navbar{
 }
 a.navbar {
   font-size: 20px;
-  background:rgb(115, 164, 228);
   text-decoration: none;
   border-image: url("images/frame1.png");
-  margin-left: 1%;
-  margin-right: 1%;
 }
 
 a.navbar:visited {
   font-size: 20px;
-  background:rgb(115, 164, 228);
   text-decoration: none;
 }
 a.navbar:hover {

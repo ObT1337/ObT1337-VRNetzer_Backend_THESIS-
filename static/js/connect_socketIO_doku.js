@@ -2,7 +2,9 @@
 var socket;
 
 $(document).ready(function(){
+    //username = makeid(5);
     ///set up and connect to socket
+    //console.log(username);
     console.log('http://' + document.domain + ':' + location.port + '/chat');
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
     socket.io.opts.transports = ['websocket'];
@@ -25,10 +27,7 @@ $(document).ready(function(){
                 $('#'+data.id).tabs('option', 'active',data.msg);
                 break;
 
-            case 'scb':
-                if (data.usr != username){
-                    settextscroll(data.id, data.msg);
-                }
+
                 
                 break;
                 
@@ -47,44 +46,51 @@ $(document).ready(function(){
 
             case 'tgl':
                 $('#'+ data.id).val(data.val)
-                ue4("tgl", data);
+                //ue4("tgl", data);
                 break;
 
             case 'but':
                 //$('#'+ data.id).val(data.val)
-                ue4("but", data);
+                //ue4("but", data);
                 break;
 
             case 'chk':
                 $('#'+ data.id).prop('checked', (data.val));
-                ue4("chk", data);
+                //ue4("chk", data);
                 break;
 
             case 'cnl':
-                ue4("cnl", data);
+                //ue4("cnl", data);
                 break;
 
             case 'nlc':
-                ue4("nlc", data);
+                //ue4("nlc", data);
                 break;
+            case 'sel':
+                    // SPECIAL CASE: Refresh Page When loading new project
 
+                    $('#'+ data.id).val(data.opt);
+                    $('#'+ data.id).selectmenu("refresh");
+
+                    break; 
+            case 'col':
+                        // SPECIAL CASE: Refresh Page When loading new project
+                        var colorpicker = document.getElementById(data.id).shadowRoot.getElementById("color");
+                        colorpicker.value= data.val;
+                     
+                      //  $('#'+ data.id).value(data.val);
+                        console.log(data.val);
+    
+                        break; 
             case 'prot':
-                ue4("prot", data);
+                //ue4("prot", data);
                 //console.log(data);
                 break;
 
-            case 'sel':
-                // SPECIAL CASE: Refresh Page When loading new project
-                if (data.id == "projects"){
-                    var url = window.location.href.split('?')[0] + "?usr="  + username + "&project=" + data.opt;
-                    console.log(url);
-                    window.location.href = url;
-
-                }
 
                 $('#'+ data.id).val(data.opt);
                 $('#'+ data.id).selectmenu("refresh");
-                ///ue4("sel", data);
+                /////ue4("sel", data);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("value", 1);
                 //$("#dropdown", $(data.id).shadowRoot).selectmenu("change");
            
@@ -96,12 +102,9 @@ $(document).ready(function(){
                 break; 
 
             case 'sli':
-                if (data.usr != username){
-                    //var slider = document.getElementById(data.id).shadowRoot.getElementById("slider");
-                   // slider.value= data.val;
-                   $('#'+ data.id).slider('value', data.val);
-                }
-                //ue4("slider", data);
+                $('#'+ data.id).slider('value', data.val);
+
+                ////ue4("slider", data);
                 break; 
             case 'tex':
                     var text = document.getElementById(data.id).shadowRoot.getElementById("text");
@@ -126,7 +129,7 @@ $(document).ready(function(){
 
             case 'sres_butt_clicked':
                     console.log(data.id);
-                    //ue4("selectnode", data)
+                    ////ue4("selectnode", data)
                     break;
 
 
