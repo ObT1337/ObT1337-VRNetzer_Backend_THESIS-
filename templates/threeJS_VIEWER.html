@@ -200,22 +200,21 @@
                     scene.add(line);
                 }
             }
-        }
 
 
-        if (data['links'].length == 30000) {
-            document.getElementById("warning").innerHTML = "TOO MANY LINKS<br>FOR PREVIEW";
-        }
+            if (data['links'].length == 30000) {
+                document.getElementById("warning").innerHTML = "TOO MANY LINKS<br>FOR PREVIEW";
+            }
 
-        document.getElementById("size").innerHTML = data["links"].length + " LINKS<br>" + data["nodes"].length + " NODES";
-        // camera rotation-> https://jsfiddle.net/8kn4qrz0/
+            document.getElementById("size").innerHTML = data["links"].length + " LINKS<br>" + data["nodes"].length + " NODES";
+            // camera rotation-> https://jsfiddle.net/8kn4qrz0/
 
-        function RGB2HTML(red, green, blue) {
-            var decColor = 0x1000000 + blue + 0x100 * green + 0x10000 * red;
-            return '#' + decColor.toString(16).substr(1);
-        }
-        window.addEventListener('resize', onWindowResize, false);
-        renderer.domElement.addEventListener('click', onClick, false);
+            function RGB2HTML(red, green, blue) {
+                var decColor = 0x1000000 + blue + 0x100 * green + 0x10000 * red;
+                return '#' + decColor.toString(16).substr(1);
+            }
+            window.addEventListener('resize', onWindowResize, false);
+            renderer.domElement.addEventListener('click', onClick, false);
         }
 
 
