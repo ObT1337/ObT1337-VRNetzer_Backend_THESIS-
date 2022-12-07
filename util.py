@@ -6,7 +6,9 @@ import shutil
 import bs4
 import flask
 from bs4 import BeautifulSoup as bs
+
 import GlobalData as GD
+
 
 def delete_project(request: flask.request):
     """
@@ -56,7 +58,7 @@ def get_all_links(app) -> list[list[str, str]]:
 def create_dynamic_links(app: flask.app.Flask):
     # Get all links from flask
     links = get_all_links(app)
-    links = [link for link in links if len(link[0].split("/"))>2]
+    # links = [link for link in links if len(link[0].split("/"))>2]
     GD.sessionData["url_map"] = links
 
 

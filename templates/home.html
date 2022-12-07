@@ -35,9 +35,16 @@
     </div>
     <div id="home_block" class="twelve columns">
         <div id="home_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
-            <h4>Home</h4>
-            <input onclick="followLink('/home')" class="home_button" type="submit" value="home" />
-            <div id="extensions">
+            <h4>Extension Homes</h4>
+            <div name="extensions">
+                <h6>Extensions</h6>
+            </div>
+        </div>
+    </div>
+    <div id="data_block" class="twelve columns">
+        <div id="data_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
+            <h4>Other Routes</h4>
+            <div name="extensions">
                 <h6>Extensions</h6>
             </div>
         </div>
@@ -47,7 +54,7 @@
             <div id="main_framebox" class="frameBox" style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
                 <h4>Main Panels</h4>
                 <input onclick="followLink('/main')" class="home_button" type="submit" value="main" />
-                <div id="extensions">
+                <div name="extensions">
                     <h6>Extensions</h6>
                 </div>
 
@@ -58,7 +65,7 @@
                 style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
                 <h4>Node Info</h4>
                 <input onclick="followLink('/nodepanel')" class="home_button" type="submit" value="nodepanel" />
-                <div id="extensions">
+                <div name="extensions">
                     <h6>Extensions</h6>
                 </div>
             </div>
@@ -70,7 +77,7 @@
                 style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
                 <h4>Uploader</h4>
                 <input onclick="followLink('/upload')" class="home_button" type="submit" value="upload" />
-                <div id="extensions">
+                <div name="extensions">
                     <h6>Extensions</h6>
                 </div>
             </div>
@@ -80,7 +87,7 @@
                 style="display: inline-block; margin-top: 6px; margin-bottom: 6px">
                 <h4>Previews</h4>
                 <input onclick="followLink('/preview')" class="home_button" type="submit" value="preview" />
-                <div id="extensions">
+                <div name="extensions">
                     <h6>Extensions</h6>
                 </div>
             </div>
@@ -99,13 +106,8 @@
         var extension = null;
         for (var i = 0; i < links.length; i++) {
             var link = links[i];
-            console.log(link)
-            var thisExtension = link[0].split("/")[1];
-            if (thisExtension != extension) {
-                extension = thisExtension;
-            }
-            if (link[1].includes("upload") && link[1].includes("files")) {
-                continue;
+            if (["home", "main", "nodepanel", "upload", "preview"].includes(link[1])) {
+                continue
             };
             framebox_map = {
                 "home": "home_framebox",
@@ -113,45 +115,61 @@
                 "nodepanel": "nodepanel_framebox",
                 "upload": "upload_framebox",
                 "preview": "preview_framebox",
+                "data": "data_framebox"
             }
+            var linkCat = null;
             for (cat in categories) {
                 var cat = categories[cat]
                 if (link[1].includes(cat)) {
-
-                    links[i] = (link[0], link[1].replace(".", " / ").replace("_", " "));
-                    var framebox = document.getElementById(framebox_map[cat]);
-                    var extension_div = framebox.children[2];
-                    var extensionHeader = null;
-                    for (var i = 0; i < extension_div.children.length; i++) {
-                        if (extension_div.children[i].innerHTML == extension) {
-                            extensionHeader = extension_div.children[i];
-                            break;
-                        }
-                    }
-                    if (!extensionHeader) {
-                        extension_div.appendChild(document.createElement("hr"))
-                        var newHeader = document.createElement("div");
-                        newHeader.setAttribute("name", "extension_header");
-                        newHeader.setAttribute("class", "framebox");
-                        newHeader.innerHTML = extension;
-                        extension_div.appendChild(newHeader);
-                        extensionHeader = newHeader;
-                    }
-                    var newElement = document.createElement("input");
-                    newElement.setAttribute("onclick", "followLink('" + link[0] + "')");
-                    newElement.setAttribute("class", "home_button");
-                    newElement.setAttribute("type", "submit");
-                    newElement.setAttribute("value", link[1].split(".")[1]);
-                    extensionHeader.appendChild(newElement);
+                    linkCat = cat;
+                    break;
                 };
             };
+            if (link[1].includes("upload") && link[1].includes("files")) {
+                linkCat = "data";
+            };
+
+            if (!linkCat) linkCat = "data";
+            console.log(linkCat, link)
+            link = [link[0], link[1].replaceAll("_", " ")];
+            var framebox = document.getElementById(framebox_map[linkCat]);
+            var extension_div = framebox.querySelector('[name="extensions"]');
+
+            var thisExtension = link[0].split("/")[1];
+            var extensionHeader = document.getElementById(framebox.id + "_" + thisExtension);
+            if (!extensionHeader) {
+                extension_div.appendChild(document.createElement("hr"))
+                var newHeader = document.createElement("div");
+                newHeader.setAttribute("name", "extension_header");
+                newHeader.setAttribute("id", framebox.id + "_" + thisExtension);
+                newHeader.setAttribute("class", "framebox");
+                newHeader.innerHTML = thisExtension;
+                extension_div.appendChild(newHeader);
+                extensionHeader = newHeader;
+            };
+            var newElement = document.createElement("input");
+            newElement.setAttribute("onclick", "followLink('" + link[0] + "')");
+            newElement.setAttribute("class", "home_button");
+            newElement.setAttribute("type", "submit");
+            if (link[1].split(".").length == 2) {
+                newElement.setAttribute("value", link[1].split(".")[1]);
+            } else {
+                newElement.setAttribute("value", link[1]);
+            }
+            extensionHeader.appendChild(document.createElement("br"));
+            extensionHeader.appendChild(newElement);
         };
 
         // Hide empty Extension seperators
         for (cat in framebox_map) {
             var framebox = document.getElementById(framebox_map[cat]);
-            if (framebox.children[2].children.length == 1) {
-                framebox.children[2].style.display = "none";
+            // consoel.log(framebox)
+            var extensions = framebox.querySelector('[name="extensions"]')
+            if (extensions.children.length == 1) {
+                extensions.style.display = "none";
+            }
+            if (framebox.id == "home_framebox" && extensions.children.length == 1) {
+                document.getElementById("home_block").style.display = "none";
             }
         }
     </script>
@@ -159,16 +177,3 @@
 </body>
 
 </html>
-<!--     # for link in links:
-    #     # Skip upload files
-    #     if ("upload" and "files") in link[1]:
-    #         continue
-    #     for category in categories:
-    #         if category in link[1]:
-    #             link = (link[0], link[1].replace(".", " / ").replace("_", " "))
-    #             dropdown_map[category] = add_nav_element(
-    #                 nav_soup, dropdown_map[category], link
-    #             )
-    #             framebox_map[category] = add_home_element(
-    #                 home_soup, framebox_map[category], link
- -->

@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
-
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -408,13 +408,12 @@ def get_structure_scale() -> float or str:
 
     uniprot = flask.request.args.get("uniprot")
     mode = flask.request.args.get("mode")
-
     if mode is None:
         print("Error: No mode provided. Will use default mode 'cartoon'.")
         mode = "cartoon"
 
     if uniprot is None:
-        return "Error: No UniProtID provided."
+        return f"Error: No UniProtID provided. Example:\n<a href='{flask.request.base_url}?uniprot=A1IGU5'>{flask.request.base_url}?uniprot=A1IGU5</a>"
 
     possible_files = {
         "cartoon": os.path.join(".", "static", "csv", "scales_Cartoon.csv"),
