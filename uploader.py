@@ -1,14 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+import csv
 import json
 import os
-from GlobalData import *
-from flask import jsonify
-from engineio.payload import Payload
-from PIL import Image
-import csv
+import traceback
 from io import StringIO
 
+from engineio.payload import Payload
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
+from PIL import Image
 
+from GlobalData import *
 
 
 def makeProjectFolders(name):
@@ -136,6 +137,7 @@ def makeNodeTex(project, name, file):
             i += 1
 
     except (IndexError, ValueError):
+        traceback.print_exc()
         return '<a style="color:red;">ERROR </a>' + name + " nodefile malformated?" 
     
     with open(path + '/names.json', 'w') as outfile:
@@ -282,7 +284,8 @@ def upload_files(request):
         print(layout_files[0])
         for file in layout_files:
             # TODO: fix the below line to account for dots in filenames
-            name = file.filename.split(".")[0]
+            name, _ = os.path.splitext(file.filename)
+            # name = file.filename.split(".")[0]
             contents = file.read().decode('utf-8')
             state = state + ' <br>'+  makeNodeTex(namespace, name, contents)
             pfile["layouts"].append(name + "XYZ")
@@ -303,7 +306,8 @@ def upload_files(request):
         print("loading links", len(edge_files))
         #Upload.upload_edges(namespace, edge_files)
         for file in edge_files:
-            name = file.filename.split(".")[0]
+            name, _ = os.path.splitext(file.filename)
+            # name = file.filename.split(".")[0]
             contents = file.read().decode('utf-8')
             pfile["links"].append(name + "XYZ")
             pfile["linksRGB"].append(name + "RGB")

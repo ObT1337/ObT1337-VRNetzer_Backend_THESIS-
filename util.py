@@ -8,6 +8,7 @@ import flask
 from bs4 import BeautifulSoup as bs
 
 import GlobalData as GD
+import uploader
 
 
 def delete_project(request: flask.request):
@@ -15,11 +16,14 @@ def delete_project(request: flask.request):
     Delete a project folder and all its contents.
     """
     project_name = request.args.get("project")
+    projects = uploader.listProjects()
+    if project_name is None:
+        return f"Error: No project name provided. Example:\n<a href='{flask.request.base_url}?project={projects[0]}'>{flask.request.base_url}?project={projects[0]}</a>"
+
     project_path = os.path.join("static", "projects", project_name)
     if not os.path.exists(project_path):
         return f"<h4>Project {project_name} does not exist!</h4>"
     shutil.rmtree(project_path)
-    os.mkdir(project_path)
     return f"<h4>Project {project_name} deleted!</h4>"
 
 

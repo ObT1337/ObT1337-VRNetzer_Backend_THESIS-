@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
-
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import Flask, jsonify, redirect, render_template, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -221,7 +221,6 @@ def upload_files():
 
 @app.route("/delpro", methods=["GET", "POST"])
 def delete_project():
-
     return util.delete_project(flask.request)
 
 
