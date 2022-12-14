@@ -9,7 +9,7 @@ This is a flask server that provides the network data to the UnrealEngine VRNetz
    - install python 3.9 plus
    - windows: run `Buildandrun.ps` in console
    - linux: run `linux_buildandrun.sh` in console
-   - mac: run `linux_buildandrun.sh` in console
+   - mac: run `mac_buildandrun.sh` in console
 
    If all dependencies installed correctly, the console should show </br>
    `The server is now running at 127.0.0.1:5000`

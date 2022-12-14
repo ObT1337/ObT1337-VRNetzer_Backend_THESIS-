@@ -222,7 +222,7 @@ function initDropdown(id, data, active) {
 
 }
 
-function initDropdownX (id, data, active){
+function initDropdownX(id, data, active){
 
   $('#'+ id).selectmenu();
 
