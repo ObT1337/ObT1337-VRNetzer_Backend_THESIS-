@@ -154,13 +154,13 @@ def makeNodeTex(project, name, file):
     pathXYZl = path + '/layoutsl/' +  name + 'XYZl.bmp' 
     pathRGB = path + '/layoutsRGB/' +  name +  'RGB.png'
 
-    if os.path.exists(pathXYZ):
-        return '<a style="color:red;">ERROR </a>' +  name + " Nodelist already in project"
-    else:
-        new_imgh.save(pathXYZ)
-        new_imgl.save(pathXYZl)
-        new_imgc.save(pathRGB, "PNG")
-        return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
+    # if os.path.exists(pathXYZ):
+    #     return '<a style="color:red;">ERROR </a>' +  name + " Nodelist already in project"
+    # else:
+    new_imgh.save(pathXYZ)
+    new_imgl.save(pathXYZl)
+    new_imgc.save(pathRGB, "PNG")
+    return '<a style="color:green;">SUCCESS </a>' + name + " Node Textures Created"
     
        
 def makeLinkTex(project, name, file):
@@ -236,12 +236,12 @@ def makeLinkTex(project, name, file):
     pathl = path + '/links/' +  name + 'XYZ.bmp'
     pathRGB = path + '/linksRGB/' +  name +  'RGB.png'
 
-    if os.path.exists(pathl):
-        return '<a style="color:red;">ERROR </a>' +  name  + " linklist already in project"
-    else:
-        new_imgl.save(pathl, "PNG")
-        new_imgc.save(pathRGB, "PNG")
-        return '<a style="color:green;">SUCCESS </a>' +  name +  " Link Textures Created"
+    # if os.path.exists(pathl):
+    #     return '<a style="color:red;">ERROR </a>' +  name  + " linklist already in project"
+    # else:
+    new_imgl.save(pathl, "PNG")
+    new_imgc.save(pathRGB, "PNG")
+    return '<a style="color:green;">SUCCESS </a>' +  name +  " Link Textures Created"
     return "successfully created node textures and names file"
 
 def upload_files(request):
