@@ -369,8 +369,7 @@ def preview():
             i = i + 1
 
     # print(testNetwork)
-
-    for x in range(length - 1):
+    for x in range(length):
         if (
             x < 30000
         ):  # we dont negotiate with terrorists (chris V.R. huetter), who want to render millions of links
