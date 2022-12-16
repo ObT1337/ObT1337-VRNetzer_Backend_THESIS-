@@ -16,3 +16,5 @@ static/csv/overview.csv
 static/csv/STRING/**/*.csv
 static/csv/STRING/**/*.tgz
 logs/**
+static/MAPS/*
+static/maps/*
