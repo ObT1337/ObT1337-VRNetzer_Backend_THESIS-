@@ -276,22 +276,21 @@ def preview():
             sessionData=json.dumps(GD.sessionData),
         )
 
-    if flask.request.args.get("layout") is None:
+    layoutindex = flask.request.args.get("layout")
+    if layoutindex is None:
         layoutindex = 0
-    else:
-        layoutindex = int(flask.request.args.get("layout"))
 
-    if flask.request.args.get("ncol") is None:
+    layoutRGBIndex = flask.request.args.get("ncol")
+    if layoutRGBIndex is None:
         layoutRGBIndex = 0
-    else:
-        layoutRGBIndex = int(flask.request.args.get("ncol"))
 
-    if flask.request.args.get("lcol") is None:
+    l_lay = flask.request.args.get("l_lay")
+    if l_lay is None:
+        l_lay = 0
+
+    linkRGBIndex = flask.request.args.get("lcol")
+    if linkRGBIndex is None:
         linkRGBIndex = 0
-    else:
-        linkRGBIndex = int(flask.request.args.get("lcol"))
-
-    print(flask.request.args.get("layout"))
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
