@@ -238,7 +238,7 @@
 
                 <h4 style="margin-top:50px; margin-bottom:25px">PROTEIN STRUCTURES</h4>
                 <div class="cornerBox">
-                    <select id='structure'></select>
+                    <select id='mystructure'></select>
                     <script>
                         if (node_data.uniprot){
                             function initDropdown (id, data, active){
@@ -258,7 +258,7 @@
                                 });
 
                                 };
-                                initDropdown('structure', node_data.uniprot,sessiondata["actStruc"]);
+                                initDropdown('mystructure', node_data.uniprot,sessiondata["actStruc"]);
                         }else{
                             document.getElementById("node_protein_structures").remove();
                         };
