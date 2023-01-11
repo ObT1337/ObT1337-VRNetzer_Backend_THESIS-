@@ -9,7 +9,6 @@
 flask_session/
 venv/
 c_vrnetzer_env/
-NewMaps/
 Electrostatic_Surface_MAPS/
 **/*.DS_Store
 static/csv/overview.csv
