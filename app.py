@@ -275,22 +275,40 @@ def preview():
             data=json.dumps(data),
             sessionData=json.dumps(GD.sessionData),
         )
+    
+    def check_if_given(index:str,index_name:str) -> int or str:
+        """Checks whether the layout index is given correctly as integer
 
-    layoutindex = flask.request.args.get("layout")
-    if layoutindex is None:
-        layoutindex = 0
+        Args:
+            index (str): str to be checked
 
-    layoutRGBIndex = flask.request.args.get("ncol")
-    if layoutRGBIndex is None:
-        layoutRGBIndex = 0
+        Returns:
+            _type_: _description_
+        """
+        if index is None:
+            return 0
+        elif index.isdigit():
+            return int(index)
+        else:
+            return json.dumps({"error": f"{index_name} is not an integer"})
 
-    l_lay = flask.request.args.get("l_lay")
-    if l_lay is None:
-        l_lay = 0
 
-    linkRGBIndex = flask.request.args.get("lcol")
-    if linkRGBIndex is None:
-        linkRGBIndex = 0
+    layoutindex = check_if_given(flask.request.args.get("layout"),"layout")
+    if isinstance(layoutindex, str):
+        return layoutindex
+    
+    layoutRGBIndex = check_if_given(flask.request.args.get("ncol"),"ncol")
+    if isinstance(layoutRGBIndex, str):
+        return layoutRGBIndex
+    
+    l_lay = check_if_given(flask.request.args.get("l_lay"),"l_lay")
+    if isinstance(l_lay, str):
+        return l_lay
+
+    linkRGBIndex = check_if_given(flask.request.args.get("lcol"),"lcol")
+    if isinstance(linkRGBIndex, str):
+        return linkRGBIndex
+
     y = '{"nodes": [], "links":[]}'
     testNetwork = json.loads(y)
     scale = 0.000254
@@ -547,7 +565,6 @@ def ex(message):
         """Fetch the structure if it is not already available."""
         if "ProteinStructureFetch" in extensions["loaded"]:
             import extensions.ProteinStructureFetch.src.workflows as psf_workflows
-
             uniprot = message.get("opt")
             if uniprot:
                 psf_workflows.fetch([uniprot])
