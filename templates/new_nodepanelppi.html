@@ -52,11 +52,20 @@
         var node_sym = node_data["n"];
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
-        if (node_data.uniprot) {
-            var uniprot_id = node_data.uniprot[0];
+        var uniprot_ids = node_data.uniprot;
 
-            ue4("prot", { id: uniprot_id });
-        };
+        if(node_data.attrlist){
+            if (node_annot == null){
+                node_annot = node_data.attrlist[2]
+            }
+            if (uniprot_ids == null){
+                uniprot_ids = [node_data.attrlist[1]]
+            }
+        }
+        if (uniprot_ids){
+            ue4("prot", { id: uniprot_id[0] });
+        }
+
     </script>
     {% if "UnrealEngine" not in request.user_agent|string%}
     {% include "NavBar.html" %}
@@ -186,8 +195,8 @@
                         <div class="six columns">
                             <h5>
                                 <script>
-                                    if (node_data.uniprot) {
-                                        document.write(node_data.uniprot[0]);
+                                    if (uniprot_ids) {
+                                        document.write(uniprot_ids[0]);
                                     } else {
                                         document.getElementById("node_main_uniprotid").remove();
                                     };
@@ -227,11 +236,10 @@
                         </h5>
                         <div style="overflow-y:scroll;max-height:300px;padding:20px">
                             <script>
-                                if (node_data.description) {
-                                    var description = node_data.description;
+                                if (node_annot) {
                                     document.write(
                                         "<p align='justify'>"
-                                        + description
+                                        + node_annot
                                         + "</p>");
                                 } else {
                                     document.getElementById("node_description").remove();
@@ -247,6 +255,7 @@
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>
             </div>
         </div> -->
+        {#
         {% if "UnrealEngine" not in request.user_agent|string%}
         <div id="nodefragment-2">
             <div class="twelve columns">
@@ -275,6 +284,7 @@
             </script>
         </div>
         {% endif %}
+        #}
         <div id="nodefragment-3">
             <!-- Contains a Button to show/hide the UniProtID and a drop down menu to select the desired protein structure. -->
             <!-- Structural Information -->
@@ -295,7 +305,7 @@
                     <div id="slider-prot_size">
                     </div>
                     <script>
-                        initDropdown('mystructure', node_data.uniprot, sessiondata["actStruc"]);
+                        initDropdown('mystructure', uniprot_ids, sessiondata["actStruc"]);
                         initSlider('slider-prot_size');
                         initButton('showStructure');
                         //ue4("prot", {id:name});
@@ -372,18 +382,18 @@
 
                         var link = "https://compartments.jensenlab.org/Search?query=<toChange>"
                         setHref("compartments-cross", node_data.n, link);
-                        if (uniprot_id) {
+                        if (uniprot_ids) {
                             var link = "https://www.uniprot.org/uniprotkb/<toChange>/entry"
-                            setHref("uniprot-cross", uniprot_id, link);
+                            setHref("uniprot-cross", uniprot_ids[0], link);
 
                             var link = "https://alphafold.ebi.ac.uk/entry/<toChange>"
-                            setHref("alphafold-cross", uniprot_id, link);
+                            setHref("alphafold-cross", uniprot_ids[0], link);
 
                             var link = "https://genecards.org/Search/Keyword?queryString=<toChange>"
-                            setHref("genecards-cross", uniprot_id, link);
+                            setHref("genecards-cross", uniprot_ids[0], link);
 
                             var link = "https://pharos.nih.gov/targets/<toChange>"
-                            setHref("pharos-cross", uniprot_id, link);
+                            setHref("pharos-cross", uniprot_ids[0], link);
                         } else {
                             document.getElementById("uniprot-crosslink").remove();
                             document.getElementById("alphafold-crosslink").remove();
@@ -413,7 +423,7 @@
                             <div class="six columns">
                                 <h5>
                                     <script>
-                                        document.write(uniprot_id);
+                                        document.write(uniprot_ids);
                                     </script>
                                 </h5>
                             </div>
