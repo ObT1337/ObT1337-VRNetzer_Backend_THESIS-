@@ -6,10 +6,10 @@ from cgi import print_arguments
 from io import StringIO
 
 import flask
+
 # from flask_session import Session
 from engineio.payload import Payload
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from PIL import Image
 
@@ -276,8 +276,8 @@ def preview():
             data=json.dumps(data),
             sessionData=json.dumps(GD.sessionData),
         )
-    
-    def check_if_given(index:str,index_name:str) -> int or str:
+
+    def check_if_given(index: str, index_name: str) -> int or str:
         """Checks whether the layout index is given correctly as integer
 
         Args:
@@ -293,20 +293,19 @@ def preview():
         else:
             return json.dumps({"error": f"{index_name} is not an integer"})
 
-
-    layoutindex = check_if_given(flask.request.args.get("layout"),"layout")
+    layoutindex = check_if_given(flask.request.args.get("layout"), "layout")
     if isinstance(layoutindex, str):
         return layoutindex
-    
-    layoutRGBIndex = check_if_given(flask.request.args.get("ncol"),"ncol")
+
+    layoutRGBIndex = check_if_given(flask.request.args.get("ncol"), "ncol")
     if isinstance(layoutRGBIndex, str):
         return layoutRGBIndex
-    
-    l_lay = check_if_given(flask.request.args.get("l_lay"),"l_lay")
+
+    l_lay = check_if_given(flask.request.args.get("l_lay"), "l_lay")
     if isinstance(l_lay, str):
         return l_lay
 
-    linkRGBIndex = check_if_given(flask.request.args.get("lcol"),"lcol")
+    linkRGBIndex = check_if_given(flask.request.args.get("lcol"), "lcol")
     if isinstance(linkRGBIndex, str):
         return linkRGBIndex
 
@@ -566,10 +565,11 @@ def ex(message):
         """Fetch the structure if it is not already available."""
         if "ProteinStructureFetch" in extensions["loaded"]:
             import extensions.ProteinStructureFetch.src.workflows as psf_workflows
+
             uniprot = message.get("opt")
             if uniprot:
                 psf_workflows.fetch([uniprot])
-                emit("ex", message, room=room)
+        emit("ex", message, room=room)
     else:
         emit("ex", message, room=room)
     # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
