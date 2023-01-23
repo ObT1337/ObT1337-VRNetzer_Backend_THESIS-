@@ -15,7 +15,8 @@ function addTab(tabList, defaultImg) {
     for (var i = 0; i < childList.length; i++) {
         tab = childList[i];
         tab_href = tab.children[0].href.split("#")[1];
-        if (!( document.getElementById(tab_href) ) ) {
+        // If there is no reference to this tab and the innerHTML is empty, it is free. Take it.
+        if (!( document.getElementById(tab_href) ) && tab.innerHTML == "" ) {
             tab.style.display = "inline"; 
             link = tab.children[0];
             link.href= "#"+tab_href;

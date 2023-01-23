@@ -62,12 +62,12 @@ $(document).ready(function(){
                 //$('#'+ data.id).val(data.val)
                 ue4("but", data);
                 break;
-
+            */
             case 'chk':
                 $('#'+ data.id).prop('checked', (data.val));
                 ue4("chk", data);
                 break;
-
+            /*
             case 'cnl':
                 ue4("cnl", data);
                 break;

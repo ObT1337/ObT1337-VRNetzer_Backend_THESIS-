@@ -19,6 +19,54 @@ function initDropdown(id, data, active) {
 
 }
 
+function initMyStructureDropdown(id, data, active, message_id,gif_id) {
+  $('#' + id).selectmenu();
+
+  for (let i = 0; i < data.length; i++) {
+   $('#' + id).append(new Option(data[i]));
+  }
+
+  $('#' + id).val(active);
+  $('#' + id).selectmenu("refresh");
+
+  $('#' + id).on('selectmenuselect', function() {
+    var name = $('#' + id).find(':selected').text();
+    var base_url = "http://" + window.location.href.split("/")[2];
+    var url = base_url + "/vrprot/fetch?id=" + name;
+    document.getElementById(gif_id).style.display = "block";
+    $.ajax({
+      type: "POST",
+      url: url,
+      cache: false,
+      contentType: false,
+      processData: false,
+      success: function(data) {
+        console.log(data)
+        if (data["already_exists"].includes(name)) {
+          $("#" + message_id).html("<h4 style=color:green>Structure exists already! Turn on overwrite to reprocess it.</h4>");
+        } else if (name in data["results"]) {
+          $("#" + message_id).html("<h4 style=color:green>Structure downloaded! </h4>");
+        } else if (data["not_fetched"].includes(name)){
+          $("#" + message_id).html("<h4 style=color:red>Could not fetch a structure with this UniProt ID from AlphaFold DB! </h4>");
+        };
+        setTimeout(function() {
+          $("#" + message_id).html("");
+        }, 10000);
+        document.getElementById(gif_id).style.display = "none" ;
+        socket.emit('ex', { id: id, opt: name, fn: "sel" });
+      },
+      error: function(err) {
+        console.log(err);
+        $("#" + message_id).html("<h4 style=color:yellow>ProteinStructureFetch is not installed. Structure will be loaded, if you manually prepared it.</h4>");
+        setTimeout(function() {
+          $("#" + message_id).html("");
+        }, 5000);
+        document.getElementById(gif_id).style.display = "none" ;
+        socket.emit('ex', { id: id, opt: name, fn: "sel" });
+      }
+    });
+  });
+}
 
 /// a test to add json string as attribute to dropdown option
 function initDropdownX(id, data, active) {

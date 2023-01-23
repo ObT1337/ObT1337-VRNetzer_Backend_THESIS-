@@ -53,17 +53,18 @@
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
         var uniprot_ids = node_data.uniprot;
+        console.log(uniprot_ids)
 
-        if(node_data.attrlist){
-            if (node_annot == null){
+        if (node_data.attrlist) {
+            if (node_annot == null) {
                 node_annot = node_data.attrlist[2]
             }
-            if (uniprot_ids == null){
+            if (uniprot_ids == null) {
                 uniprot_ids = [node_data.attrlist[1]]
             }
         }
-        if (uniprot_ids){
-            ue4("prot", { id: uniprot_id[0] });
+        if (uniprot_ids) {
+            ue4("prot", { id: uniprot_ids[0] });
         }
 
     </script>
@@ -298,6 +299,12 @@
                     </h7>
                     <select id="mystructure">
                     </select>
+                    <div class="six columns" style="min-height:130px">
+                        <img id="mystructure_procesing" src="{{ url_for('static', filename='img/processing.gif') }}"
+                            style="display:none;" />
+                        <div id="mystrcture_message_id">
+                        </div>
+                    </div>
                     <input id="showStructure" type="button" value="Hide Structure" />
                     <h7>
                         PROTEIN SIZE
@@ -305,7 +312,7 @@
                     <div id="slider-prot_size">
                     </div>
                     <script>
-                        initDropdown('mystructure', uniprot_ids, sessiondata["actStruc"]);
+                        initMyStructureDropdown('mystructure', uniprot_ids, sessiondata["actStruc"], 'mystrcture_message_id', "mystructure_procesing");
                         initSlider('slider-prot_size');
                         initButton('showStructure');
                         //ue4("prot", {id:name});

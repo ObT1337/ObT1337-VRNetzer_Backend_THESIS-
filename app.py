@@ -560,16 +560,6 @@ def ex(message):
                 message["protsize"].append(-1)
 
         emit("ex", message, room=room)
-
-    if message["id"] == "mystructure":
-        """Fetch the structure if it is not already available."""
-        if "ProteinStructureFetch" in extensions["loaded"]:
-            import extensions.ProteinStructureFetch.src.workflows as psf_workflows
-
-            uniprot = message.get("opt")
-            if uniprot:
-                psf_workflows.fetch([uniprot])
-        emit("ex", message, room=room)
     else:
         emit("ex", message, room=room)
     # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
