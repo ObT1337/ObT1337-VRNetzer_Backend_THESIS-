@@ -43,21 +43,22 @@ function initMyStructureDropdown(id, data, active, message_id,gif_id) {
       success: function(data) {
         console.log(data)
         if (data["already_exists"].includes(name)) {
-          $("#" + message_id).html("<h4 style=color:green>Structure exists already! Turn on overwrite to reprocess it.</h4>");
+          $("#" + message_id).html("<h4 style=color:green;font-size:20px>Structure loaded. Turn on overwrite to reprocess it.</h4>");
         } else if (name in data["results"]) {
-          $("#" + message_id).html("<h4 style=color:green>Structure downloaded! </h4>");
+          $("#" + message_id).html("<h4 style=color:green;font-size:20px>Structure downloaded! </h4>");
         } else if (data["not_fetched"].includes(name)){
-          $("#" + message_id).html("<h4 style=color:red>Could not fetch a structure with this UniProt ID from AlphaFold DB! </h4>");
+          $("#" + message_id).html("<h4 style=color:red;font-size:20px>Could not fetch a structure with this UniProt ID from AlphaFold DB! </h4>");
         };
+        document.getElementById(gif_id).style.display = "none" ;
+        socket.emit('ex', { id: id, opt: name, fn: "sel" });
         setTimeout(function() {
           $("#" + message_id).html("");
         }, 10000);
-        document.getElementById(gif_id).style.display = "none" ;
-        socket.emit('ex', { id: id, opt: name, fn: "sel" });
+
       },
       error: function(err) {
         console.log(err);
-        $("#" + message_id).html("<h4 style=color:yellow>ProteinStructureFetch is not installed. Structure will be loaded, if you manually prepared it.</h4>");
+        $("#" + message_id).html("<h4 style=color:yellow;font-size:20px;>ProteinStructureFetch is not installed. Structure will be loaded, if you manually prepared it.</h4>");
         setTimeout(function() {
           $("#" + message_id).html("");
         }, 5000);
