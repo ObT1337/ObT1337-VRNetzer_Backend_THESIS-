@@ -91,7 +91,6 @@ def main():
             folder = "static/projects/" + project + "/"
             with open(folder + "pfile.json", "r") as json_file:
                 GD.pfile = json.load(json_file)
-                print(GD.pfile)
             json_file.close()
 
             with open(folder + "names.json", "r") as json_file:
@@ -533,7 +532,7 @@ def ex(message):
         with open(os.path.join(folder, "names.json"), "r") as json_file:
             GD.names = json.load(json_file)
         print("changed project to " + GD.sessionData["actPro"])
-        print("names_files to " + str(GD.names))
+        # print("names_files to " + str(GD.names))
         print("changed activ project " + message["opt"])
 
     if message["id"] == "search":

@@ -51,7 +51,10 @@ function addTab(tabList, defaultImg) {
     img.width = '40';
 
     var new_tab = document.getElementById("tab_to_add");
-    new_tab.display = "inline";
-    new_tab.id = tabId;
+    if (new_tab != null) {
+        new_tab.display = "inline";
+        new_tab.id = tabId;
+    };
+
 
   }

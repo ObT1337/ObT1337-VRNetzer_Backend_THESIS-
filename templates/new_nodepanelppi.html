@@ -26,16 +26,17 @@
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}" type="text/javascript">
     </script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/extension_tab_load.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/fetch_protein_structure.js') }}" type="text/javascript">
     <!--
         
     <script type="text/javascript" src="{{ url_for('static', filename='js/upload_UI.js') }}"></script>
 
     
     -->
-    <!-- DrugStone -->
-    <script src="https://cdn.drugst.one/latest/drugstone.js">
+    < !--DrugStone -->
+        < !-- < script src = "https://cdn.drugst.one/latest/drugstone.js" >
     </script>
-    <link href="https://cdn.drugst.one/latest/styles.css" rel="stylesheet" />
+    <link href="https://cdn.drugst.one/latest/styles.css" rel="stylesheet" /> -->
 </head>
 <template id="mcTextBox-template">
     <link href="{{ url_for('static', filename='css/SwagStyle.css') }}" rel="stylesheet" />
@@ -53,8 +54,7 @@
         var node_annot = node_data["description"];
         var additional = node_data['{{add_key}}'];
         var uniprot_ids = node_data.uniprot;
-        console.log(uniprot_ids)
-
+        var node_id = node_data.id;
         if (node_data.attrlist) {
             if (node_annot == null) {
                 node_annot = node_data.attrlist[2]
@@ -71,19 +71,19 @@
     {% if "UnrealEngine" not in request.user_agent|string%}
     {% include "NavBar.html" %}
     {% endif %}
-    <div id="tabs">
+    <div id="nodepanel_tabs">
         <script>
             $(function() {
-                $("#tabs").tabs();
+                $("#nodepanel_tabs").tabs();
             });
             // MULTICAST TAB CHANGES 
             var last_active_node_panel = 0;
-            $('#tabs').on('click', function(event, ui) {
-                var nodepanel_active = $('#tabs').tabs('option', 'active');
+            $('#nodepanel_tabs').on('click', function(event, ui) {
+                var nodepanel_active = $('#nodepanel_tabs').tabs('option', 'active');
                 if (nodepanel_active != last_active_node_panel) {
                     console.log("changed tabs to " + nodepanel_active);
                     last_active_node_panel = nodepanel_active;
-                    socket.emit('ex', { msg: last_active_node_panel, id: "tabs", fn: "cht" });
+                    socket.emit('ex', { msg: last_active_node_panel, id: "nodepanel_tabs", fn: "cht" });
                 }
             });
         </script>

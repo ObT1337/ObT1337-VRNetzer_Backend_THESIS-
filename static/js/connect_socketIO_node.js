@@ -28,11 +28,11 @@ $(document).ready(function(){
                 makeButton(data.id, data.msg, data.msg);
                 break;
 
-
+            */
             case 'cht':
                 $('#'+data.id).tabs('option', 'active',data.msg);
                 break;
-
+            /*
             case 'scb':
                 if (data.usr != username){
                     settextscroll(data.id, data.msg);

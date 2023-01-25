@@ -1,5 +1,3 @@
-
-
 <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                 TEMPLATES & THEIR JS CLASSES
@@ -7,43 +5,163 @@
     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
 
 
-        
+<script>
+    class mcButton extends HTMLElement {
+
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            let template = document.querySelector('#mcB-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+
+            let name_button = this.shadowRoot.querySelector("#name");
+
+            name_button.textContent = this.getAttribute('name');
+            name_button.style.width = this.getAttribute('w') + "px";
+            name_button.style.background = this.getAttribute('color');//("background",);
+            var fun = this.getAttribute('fn');
+            //console.log('create: '+ this.getAttribute('data'));
+
+            name_button.addEventListener('click', () => {
+                console.log('select ' + name_button.textContent);
+                socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('parent'), val: this.getAttribute('val'), fn: fun });
+            });
+
+
+        }
+
+    }
+
+    customElements.define('mc-button', mcButton);
+</script>
+
+
+<template id="mcB-template">
+    <style>
+        button {
+            width: 380px;
+            height: 30px;
+            font-family: 'Future', sans-serif;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            box-sizing: border-box;
+            padding: 0px 6px;
+            text-align: left;
+            border-radius: 7px;
+
+            border-bottom-left-radius: 0px;
+            font-size: 24px;
+
+            color: rgb(255, 255, 255);
+            cursor: pointer;
+            background: rgba(66, 66, 66, 0);
+            border: 2px solid transparent;
+
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            border: 2px solid rgb(124, 124, 124);
+            background: rgba(66, 66, 66, 1);
+
+
+        }
+    </style>
+    <div id="container" style="width: auto; height: 30p0x; display: inline-block; padding: 4px 2px">
+        <button id="name"></button>
+    </div>
+
+</template>
+
+
+
+
+
+<script>
+    class mcButton1 extends HTMLElement {
+
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            let template = document.querySelector('#mcB1-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+
+            let name_button = this.shadowRoot.querySelector("#name");
+
+            name_button.textContent = this.getAttribute('name');
+
+            var fun = this.getAttribute('fn');
+            //console.log('create: '+ this.getAttribute('data'));
+
+            name_button.addEventListener('click', () => {
+                console.log('select ' + name_button.textContent);
+                socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), parent: this.getAttribute('parent'), val: this.getAttribute('val'), fn: fun });
+            });
+
+
+        }
+
+    }
+
+    customElements.define('mc-button1', mcButton1);
+</script>
+
+
+<template id="mcB1-template">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <div id="container" style="width: auto; height: 30p0x; display: inline-block;">
+
+        <button id="name" class="swagButton"></button>
+    </div>
+
+</template>
+
+
+
+
 <script>
     class mcRButton extends HTMLElement {
 
 
         constructor() {
-        super();
+            super();
         }
 
         connectedCallback() {
-        let template = document.querySelector('#mcRB-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#mcRB-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-        let name_button = this.shadowRoot.querySelector("#name");
-        let x_button = this.shadowRoot.querySelector("#x");
+            let name_button = this.shadowRoot.querySelector("#name");
+            let x_button = this.shadowRoot.querySelector("#x");
 
-        name_button.textContent = this.getAttribute('name');
-        name_button.style.background = this.getAttribute('color');//("background",);
-        console.log('create: '+ this.getAttribute('data'));
+            name_button.textContent = this.getAttribute('name');
+            name_button.style.background = this.getAttribute('color');//("background",);
+            console.log('create: ' + this.getAttribute('data'));
 
-        name_button.addEventListener('click', () => {
-            //console.log('select '+ this.shadowRoot.getAttribute('id'));
-            socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "rem_butt_clicked" });
-        });
+            name_button.addEventListener('click', () => {
+                //console.log('select '+ this.shadowRoot.getAttribute('id'));
+                socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "rem_butt_clicked" });
+            });
 
-        x_button.addEventListener('click', () => {
+            x_button.addEventListener('click', () => {
 
-            console.log(name_button.parentElement);
-            var parent = this.getRootNode().host;
-            if (parent != null) { //is in shadowDom
+                console.log(name_button.parentElement);
+                var parent = this.getRootNode().host;
+                if (parent != null) { //is in shadowDom
 
-            socket.emit('ex', { id: this.getAttribute('id'), parent: parent.getAttribute('id'), fn: "rem_butt_del_sbox" });
-            } else {
-            socket.emit('ex', { id: this.getAttribute('id'), parent: this.parentElement.getAttribute('id'), fn: "rem_butt_del" });
-            }
+                    socket.emit('ex', { id: this.getAttribute('id'), parent: parent.getAttribute('id'), fn: "rem_butt_del_sbox" });
+                } else {
+                    socket.emit('ex', { id: this.getAttribute('id'), parent: this.parentElement.getAttribute('id'), fn: "rem_butt_del" });
+                }
 
-        });
+            });
 
         }
 
@@ -74,9 +192,140 @@
 
     <div id="container" style="width: 120px; height: 30p0x; display: inline-block; padding: 4px 2px">
         <button id="name"
-            style="width: 90px; height: 30p0x; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px"></button><button
-            id="x"
-            style="width: 30px; height: 30p0x;border-top-left-radius: 0px; border-bottom-left-radius: 0px; background-color: #3d3d3d;">X</button>
+            style=" float: left; width: 90px; height: 30p0x; border-top-right-radius: 0px; border-bottom-right-radius: 0px; border-right: 0px"></button>
+        <button id="x"
+            style="float: right; width: 30px; height: 30p0x;border-top-left-radius: 0px; border-bottom-left-radius: 0px; background-color: #3d3d3d;">X</button>
+    </div>
+</template>
+
+
+
+
+
+
+
+<script>
+    class mcTInput extends HTMLElement {
+
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            let template = document.querySelector('#mcTextInput-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+
+            let text = this.shadowRoot.querySelector("#text");
+            let x_button = this.shadowRoot.querySelector("#x");
+
+            //name_button.textContent = this.getAttribute('name');
+            //name_button.style.background = this.getAttribute('color');//("background",);
+            console.log('create: ' + this.getAttribute('container'));
+
+            x_button.addEventListener('click', () => {
+
+                console.log(text.value);
+
+
+                socket.emit('ex', { id: this.getAttribute('id'), parent: this.getAttribute('container'), fn: this.getAttribute('fn'), val: text.value });
+
+
+            });
+
+        }
+
+
+    }
+
+    customElements.define('mc-textinput', mcTInput);
+</script>
+
+<template id="mcTextInput-template">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <div id="container" style="display: inline-block; width:100%; padding: 0px 0px">
+        <input type="text" id="text" placeholder="Enter your message here" style="float:left; width:80%;"></input>
+        <input type="button" id="x" value="OK" class="swagTextButton"
+            style="width: 20%; float:right; height:50px; text-align: right"></input>
+    </div>
+</template>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    class mcDropdown extends HTMLElement {
+
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            let template = document.querySelector('#mcdropdown-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let select = this.shadowRoot.querySelector("#sel");
+            let content = this.shadowRoot.querySelector("#content");
+
+            let label = this.shadowRoot.querySelector("#label");
+            label.innerHTML = this.getAttribute('name');
+
+
+            // let newOption = new Option('Option Text','Option Value');
+            // select.add(newOption,undefined);
+            // select.add(new Option('Option2','Option2Value'));
+            // select.add(new Option('Option3'));
+            // select.value="Option3"
+            //name_button.textContent = this.getAttribute('name');
+            //name_button.style.background = this.getAttribute('color');//("background",);
+            //console.log( select.options[select.selectedIndex].text);
+
+            select.addEventListener('click', () => {
+                //socket.emit('ex', { id: this.getAttribute('id'), fn: fn, val: select.selectedIndex});
+
+                //console.log(this.getAttribute('opt'));
+                //console.log(select.value);
+                //console.log(select.options[select.selectedIndex].text);
+                if (content.style.display === "none") {
+                    content.style.display = "block";
+                } else {
+                    content.style.display = "none";
+                }
+                //ocket.emit('ex', { id: this.getAttribute('id'), parent: this.getAttribute('container'), fn: this.getAttribute('fn'), val: text.value});
+
+
+            });
+
+        }
+
+
+    }
+
+    customElements.define('mc-dropdown', mcDropdown);
+</script>
+
+<template id="mcdropdown-template">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <div id="container" style="display: inline-block; width:auto;  padding: 3px 3px">
+        <h5 id="label"
+            style="float:left; font-size: 25px;  color: rgb(102, 102, 102); margin-top:5px; margin-bottom:5px;">PROJECT
+        </h5>
+        <p id="count"
+            style="font-size: 15px; color: rgb(255, 255, 255); margin-top:0px; padding-left:10px ; margin-bottom: 0px; text-indent: 10px;  ">
+        </p>
+        <div class="gradient"></div>
+        <input type="button" id="sel" style="width:400px; height:50px; font-family: future; font-size: 25px; " />
+        <div id="content" class="swagBoxT"
+            style="width:400px; max-height: 600px; height:auto; overflow-y: auto; overflow-x: hidden;">
+        </div>
     </div>
 </template>
 
@@ -88,29 +337,84 @@
 
 
 <script>
+    class mcSlider extends HTMLElement {
+
+
+        constructor() {
+            super();
+        }
+
+        connectedCallback() {
+            let template = document.querySelector('#mcSlider-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+
+            let slider = this.shadowRoot.querySelector("#myRange");
+            let label = this.shadowRoot.querySelector("#label");
+
+            label.textContent = this.getAttribute('name');
+            //name_button.style.background = this.getAttribute('color');//("background",);
+            console.log('create: ' + this.getAttribute('container'));
+
+
+
+            slider.addEventListener('input', () => {
+                console.log(slider.value);
+                //socket.emit('ex', { id: this.getAttribute('id'), parent: this.getAttribute('container'), fn: "submit_butt", val: text.value});
+            });
+
+            slider.addEventListener('change', () => {
+                console.log(slider.value);
+                socket.emit('ex', { id: this.getAttribute('id'), fn: "sli", val: slider.value });
+            });
+
+        }
+
+
+    }
+
+    customElements.define('mc-slider', mcSlider);
+</script>
+
+<template id="mcSlider-template">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+    <div id="container" style="position:relative; display: inline-block; width:100%; padding: 0px 0px">
+
+        <input type="range" min="0" max="1000" value="500" class="slider" id="myRange"
+            style="display: inline-block; width:100%; position:relative; ; Z-index: 1;"></input>
+        <h5 id="label"
+            style="margin-top:2px; color: rgb(100, 100, 100); position:absolute; top: 0 ; Z-index: 0; text-align: right; font-size: 20px;">
+        </h5>
+    </div>
+</template>
+
+
+
+
+
+<script>
     class mcSresult extends HTMLElement {
 
         constructor() {
-        super();
+            super();
         }
 
         connectedCallback() {
 
 
-        let template = document.querySelector('#mcSresult-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#mcSresult-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-        let name_button = this.shadowRoot.querySelector("#name");
-        let x_button = this.shadowRoot.querySelector("#x");
+            let name_button = this.shadowRoot.querySelector("#name");
+            let x_button = this.shadowRoot.querySelector("#x");
 
-        name_button.textContent = this.getAttribute('name');
-        name_button.style.background = this.getAttribute('color');//("background",);
-        //console.log('create: '+ this.getAttribute('id'));
+            name_button.textContent = this.getAttribute('name');
+            name_button.style.background = this.getAttribute('color');//("background",);
+            //console.log('create: '+ this.getAttribute('id'));
 
-        name_button.addEventListener('click', () => {
-            //console.log('select '+ this.shadowRoot.getAttribute('id'));
-            socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "sres_butt_clicked" });
-        });
+            name_button.addEventListener('click', () => {
+                //console.log('select '+ this.shadowRoot.getAttribute('id'));
+                socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "sres_butt_clicked" });
+            });
 
 
 
@@ -142,41 +446,39 @@
     class mcScrollBox extends HTMLElement {
 
         constructor() {
-        super();
+            super();
         }
 
         connectedCallback() {
-        let template = document.querySelector('#mcScrollBox-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#mcScrollBox-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
 
 
-        let scrollbox = this.shadowRoot.querySelector("#box");
-        let label = this.shadowRoot.querySelector("#label");
-        label.innerHTML = this.getAttribute('id').toUpperCase();
+            let scrollbox = this.shadowRoot.querySelector("#box");
 
-        var isScroll = false;
-        var lastscroll = 0;
-        scrollbox.addEventListener('mouseup', () => {
-            //console.log(scrollbox.value);
-            isScroll = false;
-            //socket.emit('ex', {id: this.getAttribute('id'), val: slider.value, fn: "sli"});
-        });
+            var isScroll = false;
+            var lastscroll = 0;
+            scrollbox.addEventListener('mouseup', () => {
+                //console.log(scrollbox.value);
+                isScroll = false;
+                //socket.emit('ex', {id: this.getAttribute('id'), val: slider.value, fn: "sli"});
+            });
 
-        scrollbox.addEventListener('mousedown', () => {
-            isScroll = true;
-        });
+            scrollbox.addEventListener('mousedown', () => {
+                isScroll = true;
+            });
 
-        scrollbox.addEventListener('scroll', () => {
-            var out = [$(scrollbox).scrollTop(), $(scrollbox).scrollLeft()];
-            var thisscroll = out[0] + out[1];
-            if (isScroll && Math.abs(thisscroll - lastscroll) > 10) {
-            socket.emit('ex', { msg: out, id: this.getAttribute('id'), fn: "scb" });
-            lastscroll = out[0] + out[1];
-            console.log(out[0])
+            scrollbox.addEventListener('scroll', () => {
+                var out = [$(scrollbox).scrollTop(), $(scrollbox).scrollLeft()];
+                var thisscroll = out[0] + out[1];
+                if (isScroll && Math.abs(thisscroll - lastscroll) > 10) {
+                    socket.emit('ex', { msg: out, id: this.getAttribute('id'), fn: "scb" });
+                    lastscroll = out[0] + out[1];
+                    console.log(out[0])
 
-            }
-        });
+                }
+            });
 
         }
     }
@@ -188,7 +490,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
 
     <!-- <div id = "label" class = "swagLabelSmall">TEXT</div> -->
-    <div id='box' name='box' class='swagBox'>
+    <div id='box' name='box' class='swagBoxT'
+        style="width:398px; max-height: 380px; height:auto; overflow-y: auto; overflow-x: hidden;">
 
     </div>
 </template>
@@ -201,31 +504,31 @@
 
 
 
-<script>  
+<script>
 
     class mcTextBox extends HTMLElement {
 
         constructor() {
-        super();
+            super();
         }
 
         connectedCallback() {
-        let template = document.querySelector('#mcTextBox-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#mcTextBox-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-        let textbox = this.shadowRoot.querySelector("#text");
-        let label = this.shadowRoot.querySelector("#label");
-        label.innerHTML = this.getAttribute('id').toUpperCase();
+            let textbox = this.shadowRoot.querySelector("#text");
+            let label = this.shadowRoot.querySelector("#label");
+            label.innerHTML = this.getAttribute('id').toUpperCase();
 
-        textbox.addEventListener('keyup', () => {
-            console.log(textbox.value);
-            socket.emit('ex', { id: this.getAttribute('id'), val: textbox.value, fn: "tex" });
-        });
+            textbox.addEventListener('keyup', () => {
+                console.log(textbox.value);
+                socket.emit('ex', { id: this.getAttribute('id'), val: textbox.value, fn: "tex" });
+            });
 
-        textbox.addEventListener('change', () => {
-            console.log(textbox.value);
-            //socket.emit('ex', {id: this.getAttribute('id'), val: slider.value, fn: "sli"});
-        });
+            textbox.addEventListener('change', () => {
+                console.log(textbox.value);
+                //socket.emit('ex', {id: this.getAttribute('id'), val: slider.value, fn: "sli"});
+            });
 
 
         }
@@ -251,21 +554,21 @@
     class mcColorBox extends HTMLElement {
 
         constructor() {
-        super();
+            super();
         }
 
         connectedCallback() {
-        let template = document.querySelector('#mcColorBox-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#mcColorBox-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-        let colorbox = this.shadowRoot.querySelector("#color");
+            let colorbox = this.shadowRoot.querySelector("#color");
 
-        
 
-        colorbox.addEventListener('change', () => {
-            console.log(colorbox.value);
-            socket.emit('ex', {id: this.getAttribute('id'), val: colorbox.value, fn: "col"});
-        });
+
+            colorbox.addEventListener('change', () => {
+                console.log(colorbox.value);
+                socket.emit('ex', { id: this.getAttribute('id'), val: colorbox.value, fn: "col" });
+            });
 
         }
     }
@@ -302,29 +605,29 @@
 
 
 <script>
-    
 
-class D3PieChart extends HTMLElement {
-        constructor(){
-        
-        super();
+
+    class D3PieChart extends HTMLElement {
+        constructor() {
+
+            super();
         }
         connectedCallback() {
-        
-        
 
 
-        let template = document.querySelector('#d3pie-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
-   
-        let circle = this.shadowRoot.querySelector("#circle");
-        circle.style.fill = this.getAttribute('color');
 
-        let svgCont = this.shadowRoot.querySelector("#container");
+
+            let template = document.querySelector('#d3pie-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+
+            let circle = this.shadowRoot.querySelector("#circle");
+            circle.style.fill = this.getAttribute('color');
+
+            let svgCont = this.shadowRoot.querySelector("#container");
 
 
             var width = 100
-            var  height = 100
+            var height = 100
             var margin = 5
 
             // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
@@ -332,10 +635,10 @@ class D3PieChart extends HTMLElement {
 
             // append the svg object to the div called 'my_dataviz'
             var svg = d3.select(svgCont)
-            .append("svg")
+                .append("svg")
                 .attr("width", width)
                 .attr("height", height)
-            .append("g")
+                .append("g")
                 .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
             // Create dummy data
@@ -344,147 +647,147 @@ class D3PieChart extends HTMLElement {
             console.log(data);
             // set the color scale
             var color = d3.scaleOrdinal()
-            .domain(data)
-            .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FF00BF", "#F0E08B", "#0DAE61", "#006D43", "#D53E4F", "#9E0142"])
+                .domain(data)
+                .range(["#5E4FA2", "#3288BD", "#66C2A5", "#ABDDA4", "#E6F598", "#FF00BF", "#F0E08B", "#0DAE61", "#006D43", "#D53E4F", "#9E0142"])
 
             // Compute the position of each group on the pie:
             var pie = d3.pie()
-            .value(function(d) {return d.value; })
+                .value(function(d) { return d.value; })
             var data_ready = pie(d3.entries(data))
 
             // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
             svg
-            .selectAll('whatever')
-            .data(data_ready)
-            .enter()
-            .append('path')
-            .attr('d', d3.arc()
-                .innerRadius(49)         // This is the size of the donut hole
-                .outerRadius(20)
-            )
-            .attr('fill', function(d){ return(color(d.data.key)) })
-            //.attr("stroke", "black")
-            //.style("stroke-width", "2px")
-            .style("opacity", 0.7)
+                .selectAll('whatever')
+                .data(data_ready)
+                .enter()
+                .append('path')
+                .attr('d', d3.arc()
+                    .innerRadius(49)         // This is the size of the donut hole
+                    .outerRadius(20)
+                )
+                .attr('fill', function(d) { return (color(d.data.key)) })
+                //.attr("stroke", "black")
+                //.style("stroke-width", "2px")
+                .style("opacity", 0.7)
 
 
 
-        circle.addEventListener('click', () => {
-        console.log('select '+ this.getAttribute('id'));
+            circle.addEventListener('click', () => {
+                console.log('select ' + this.getAttribute('id'));
 
 
-   
 
-        
-        });
+
+
+            });
+        }
+
+
+
     }
-        
 
-
-}
-
-customElements.define('d3pie-widget', D3PieChart);
+    customElements.define('d3pie-widget', D3PieChart);
 </script>
 
 <template id="d3pie-template" value='!!!'>
     <svg id="container" width="100" height="100">
-      <circle id="circle" cx="50" cy="50" r="12" style fill="green" />
+        <circle id="circle" cx="50" cy="50" r="12" style fill="green" />
     </svg>
 </template>
 
 
 
 <script>
-    
 
 
 
-class D3HistoPlot extends HTMLElement {
+
+    class D3HistoPlot extends HTMLElement {
 
 
-    constructor() {
-    super();
+        constructor() {
+            super();
 
-    let template = document.querySelector('#d3bar-template').content;
-        this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
+            let template = document.querySelector('#d3bar-template').content;
+            this.attachShadow({ mode: 'open' }).appendChild(template.cloneNode(true));
 
-        let svgCont = this.shadowRoot.querySelector("#container");
-        svgCont.style.width = 360;
-        svgCont.style.height = 400;
+            let svgCont = this.shadowRoot.querySelector("#container");
+            svgCont.style.width = 360;
+            svgCont.style.height = 400;
 
-        var margin = {top: 10, right: 30, bottom: 30, left: 30}
-        var width = 460 - margin.left - margin.right
-        var height = 400 - margin.top - margin.bottom
+            var margin = { top: 10, right: 30, bottom: 30, left: 30 }
+            var width = 460 - margin.left - margin.right
+            var height = 400 - margin.top - margin.bottom
 
-        // append the svg object to the body of the page
-        
-    // append the svg object to the body of the page
-        var svg = d3.select(svgCont)
-        .append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
+            // append the svg object to the body of the page
 
-        // get the data
-        d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
+            // append the svg object to the body of the page
+            var svg = d3.select(svgCont)
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
-        // X axis: scale and draw:
-        var x = d3.scaleLinear()
-            .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
-            .range([0, width]);
-        svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(x));
+            // get the data
+            d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function(data) {
 
-        // set the parameters for the histogram
-        var histogram = d3.histogram()
-            .value(function(d) { return d.price; })   // I need to give the vector of value
-            .domain(x.domain())  // then the domain of the graphic
-            .thresholds(x.ticks(70)); // then the numbers of bins
+                // X axis: scale and draw:
+                var x = d3.scaleLinear()
+                    .domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+                    .range([0, width]);
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
 
-        // And apply this function to data to get the bins
-        var bins = histogram(data);
+                // set the parameters for the histogram
+                var histogram = d3.histogram()
+                    .value(function(d) { return d.price; })   // I need to give the vector of value
+                    .domain(x.domain())  // then the domain of the graphic
+                    .thresholds(x.ticks(70)); // then the numbers of bins
 
-        // Y axis: scale and draw:
-        var y = d3.scaleLinear()
-            .range([height, 0]);
-            y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
-        svg.append("g")
-            .call(d3.axisLeft(y));
+                // And apply this function to data to get the bins
+                var bins = histogram(data);
 
-        // append the bar rectangles to the svg element
-        svg.selectAll("rect")
-            .data(bins)
-            .enter()
-            .append("rect")
-                .attr("x", 1)
-                .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
-                .attr("width", function(d) { 
-                    var w = x(d.x1) - x(d.x0) - 1 ;
-                    if (w > 0){return w;}
-                    else {return 0;} })
-                .attr("height", function(d) { return height - y(d.length); })
-                .style("fill", "#69b3a2")
+                // Y axis: scale and draw:
+                var y = d3.scaleLinear()
+                    .range([height, 0]);
+                y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+
+                // append the bar rectangles to the svg element
+                svg.selectAll("rect")
+                    .data(bins)
+                    .enter()
+                    .append("rect")
+                    .attr("x", 1)
+                    .attr("transform", function(d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+                    .attr("width", function(d) {
+                        var w = x(d.x1) - x(d.x0) - 1;
+                        if (w > 0) { return w; }
+                        else { return 0; }
+                    })
+                    .attr("height", function(d) { return height - y(d.length); })
+                    .style("fill", "#69b3a2")
                 // Show tooltip on hover
-            // .on("mouseover", showTooltip )
-            // .on("mousemove", moveTooltip )
-            //  .on("mouseleave", hideTooltip )
+                // .on("mouseover", showTooltip )
+                // .on("mousemove", moveTooltip )
+                //  .on("mouseleave", hideTooltip )
 
-        });
+            });
+
+        }
+
 
     }
-
-
-}
-customElements.define('d3bar-widget', D3HistoPlot);
+    customElements.define('d3bar-widget', D3HistoPlot);
 
 </script>
 
 <template id="d3bar-template" value='!!!'>
     <svg id="container" style="width: auto">
-     
+
     </svg>
 </template>
-    
