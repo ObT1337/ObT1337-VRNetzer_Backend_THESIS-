@@ -61,7 +61,8 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
                     extension_attr[key] = module.__dict__[key]
 
             list_of_ext.append(extension_attr)
-    print("\n\n\033[1;32mFinished loading extensions, server is running... \u001b[37m")
+    print("\033[1;32m" + "=" * 50)
+    print("\033[1;32mFinished loading extensions, server is running... \u001b[37m")
     res = {
         "loaded": loaded_extensions,
         "ext": list_of_ext,
