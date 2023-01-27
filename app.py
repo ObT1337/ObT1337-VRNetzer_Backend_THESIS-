@@ -36,6 +36,9 @@ app, extensions = load_extensions.load(app)
 
 socketio = SocketIO(app, manage_session=False)
 
+with app.app_context():
+    app.socketio = socketio
+
 ### HTML ROUTES ###
 @app.route("/websocket_tutorial")
 def websockets_tutorial():
