@@ -14,6 +14,7 @@ function initMyStructureDropdown(id, data, active, message_id, gif_id) {
     var base_url = "http://" + window.location.href.split("/")[2];
     var url = base_url + "/vrprot/fetch?id=" + name;
     document.getElementById(gif_id).style.display = "block";
+    socket.emit("ex", { id: id, gif_id: gif_id, fn: "fetch" });
     $.ajax({
       type: "POST",
       url: url,
@@ -26,53 +27,63 @@ function initMyStructureDropdown(id, data, active, message_id, gif_id) {
       error: function (err) {
         console.log(err);
         message =
-          "<h4 style=color:yellow;font-size:20px;>" +
-          "ProteinStructureFetch is not installed.Structure will be loaded, if you manually prepared it." +
-          "</h4 >";
-        $("#" + message_id).html(message);
+          "ProteinStructureFetch is not installed.Structure will be loaded, if you manually prepared it.";
+        $("#" + message_id).css("color", "yellow");
+        $("#" + message_id).text(message);
+        $("#" + message_id).css("opacity", "1");
         setTimeout(function () {
-          $("#" + message_id).html("");
+          $("#" + message_id).css("opacity", "0");
         }, 5000);
         document.getElementById(gif_id).style.display = "none";
-        socket.emit("ex", { id: id, opt: name, fn: "sel" });
+        socket.emit("ex", {
+          id: id,
+          opt: name,
+          fn: "sel",
+          message_id: message_id,
+          message: message,
+          gif_id: gif_id,
+          color: "yellow",
+        });
       },
     });
   });
 }
 function evaluateResults(id, data, name, message_id, gif_id) {
   var message = "";
+  color = "green";
   if (data["already_exists"].includes(name)) {
-    message =
-      "<h4 style=color:green;font-size:20px>" +
-      "Structure loaded. Turn on overwrite to reprocess it." +
-      "</h4 > ";
+    message = "Structure loaded. Turn on overwrite to reprocess it.";
   } else if (name in data["alternative_ids"]) {
     var old = name;
     name = data["alternative_ids"][name];
     message =
-      "<h4 style=color:green;font-size:20px>" +
       "Alternative structure downloaded: " +
       name +
       "! " +
       "Updated accordingly" +
-      "</h4 >";
-    updateUniprot(name, old);
+      updateUniprot(name, old);
   } else if (name in data["results"]) {
-    message =
-      "<h4 style=color:green;font-size:20px>" +
-      "Structure downloaded!" +
-      " </h4 > ";
+    message = "Structure downloaded!";
   } else if (data["not_fetched"].includes(name)) {
     message =
-      "<h4 style=color:red;font-size:20px>" +
-      "Could not fetch a structure with this UniProt ID from AlphaFold DB!" +
-      "</h4 > ";
+      "Could not fetch a structure with this UniProt ID from AlphaFold DB!";
+    color = "red";
   }
-  $("#" + message_id).html(message);
+  $("#" + message_id).css("color", "red");
+  $("#" + message_id).text(message);
+  $("#" + message_id).css("opacity", "1");
   document.getElementById(gif_id).style.display = "none";
-  socket.emit("ex", { id: id, opt: name, fn: "sel" });
+  socket.emit("ex", {
+    id: id,
+    opt: name,
+    fn: "sel",
+    message_id: message_id,
+    message: message,
+    gif_id: gif_id,
+    color: color,
+  });
   setTimeout(function () {
-    $("#" + message_id).html("");
+    $("#" + message_id).css("opacity", "0");
   }, 10000);
 }
 
