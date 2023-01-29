@@ -20,3 +20,4 @@ static/MAPS/**/*
 static/NewMaps/**/*
 static/csv/*
 static/projects/*
+string_interactomes/*
