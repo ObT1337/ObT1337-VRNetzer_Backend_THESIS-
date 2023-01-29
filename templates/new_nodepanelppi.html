@@ -294,24 +294,36 @@
                     Structural Information
                 </h4>
                 <div class="frameBox">
-                    <h7>
-                        PROTEIN STRUCTURES
-                    </h7>
-                    <select id="mystructure">
-                    </select>
-                    <div class="twelve columns" style="min-height:130px">
-                        <img id="mystructure_procesing" src="{{ url_for('static', filename='img/processing.gif') }}"
-                            style="display:none;" />
-                        <div id="mystrcture_message_id">
+                    <div class="six columns">
+                        <h7 class="twelve columns">
+                            PROTEIN STRUCTURES
+                        </h7>
+                        <div class="twelve columns">
+                            <select id="mystructure">
+
+                            </select>
+                            <div id="mystrcture_message_id" style="height:7vh;overflow: hidden;opacity: 0;"
+                                class="twelve columns">
+                            </div>
                         </div>
                     </div>
-                    <input id="showStructure" type="button" value="Hide Structure" />
-                    <h7>
-                        PROTEIN SIZE
-                    </h7>
-                    <div id="slider-prot_size">
+                    <div class="six columns" style="height:12vh;overflow: hidden;padding:10px;">
+                        <img id="mystructure_procesing" src="{{ url_for('static', filename='img/processing.gif') }}"
+                            style="display:none;" />
+
                     </div>
-                    <script>
+
+                </div>
+                <input id="showStructure" type="button" value="Hide Structure" />
+                <h7>
+                    PROTEIN SIZE
+                </h7>
+                <div id="slider-prot_size">
+                </div>
+                <script>
+                    if (typeof uniprot_ids === "undefined") {
+                        document.getElementById("nodefragment-3").remove();
+                    } else {
                         initMyStructureDropdown('mystructure', uniprot_ids, sessiondata["actStruc"], 'mystrcture_message_id', "mystructure_procesing");
                         initSlider('slider-prot_size');
                         initButton('showStructure');
@@ -326,8 +338,8 @@
                                 this.value = "Show Structure";
                             }
                         });
-                    </script>
-                </div>
+                    }
+                </script>
             </div>
         </div>
         <!-- Crosslinks to external databases -->
