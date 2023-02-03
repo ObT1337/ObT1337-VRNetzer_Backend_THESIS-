@@ -31,11 +31,11 @@ app.debug = False
 app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
 
-app, extensions = load_extensions.load(app)
 
 
 socketio = SocketIO(app, manage_session=False)
 
+app, extensions = load_extensions.load(app)
 with app.app_context():
     app.socketio = socketio
 
