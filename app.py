@@ -32,7 +32,6 @@ app.config["SECRET_KEY"] = "secret"
 app.config["SESSION_TYPE"] = "filesystem"
 
 
-
 socketio = SocketIO(app, manage_session=False)
 
 app, extensions = load_extensions.load(app)
@@ -515,6 +514,12 @@ def join(message):
         {"msg": flask.session.get("username") + " has entered the room."},
         room=room,
     )
+    user = {
+        "username": flask.session.get("username"),
+        "room": flask.session.get("room"),
+        "ip": flask.request.remote_addr,
+    }
+    GD.sessionData["connectedUsers"].append(user)
 
 
 @socketio.on("ex", namespace="/chat")
@@ -530,6 +535,7 @@ def ex(message):
     message["usr"] = flask.session.get("username")
 
     if message["id"] == "projects":
+        GD.sessionData["selected"] = []
         GD.sessionData["actPro"] = message["opt"]
         folder = os.path.join("static", "projects", GD.sessionData["actPro"])
         with open(os.path.join(folder, "names.json"), "r") as json_file:
@@ -560,7 +566,13 @@ def ex(message):
             else:
                 message["prot"].append("x")
                 message["protsize"].append(-1)
-
+        emit("ex", message, room=room)
+    if message["id"] == "x":
+        GD.sessionData["selected"].append(message["data"])
+        print("selected " + str(GD.sessionData["selected"]))
+        emit("ex", message, room=room)
+    if message["id"] == "re":
+        GD.sessionData["selected"] = []
         emit("ex", message, room=room)
     else:
         emit("ex", message, room=room)
