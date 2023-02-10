@@ -4,8 +4,6 @@ from importlib import import_module
 
 import flask
 
-import util
-
 
 def import_blueprint(app: flask.Flask, ext: str, extensions_path: str) -> bool:
     try:
@@ -69,11 +67,11 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
     }
     return main_app, res
 
-
-def add_tabs(tabs: list[str], ext: str) -> list[str]:
-    """Add tabs to the list of tabs."""
-    to_add = []
-    for tab in tabs:
-        tab = os.path.join("extensions", ext, "templates", tab)
-        to_add.append(tab)
-    return to_add
+# Deprecated
+# def add_tabs(tabs: list[str], ext: str) -> list[str]:
+#     """Add tabs to the list of tabs."""
+#     to_add = []
+#     for tab in tabs:
+#         tab = os.path.join("extensions", ext, "templates", tab)
+#         to_add.append(tab)
+#     return to_add

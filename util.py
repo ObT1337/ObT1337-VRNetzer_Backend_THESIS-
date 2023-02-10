@@ -67,132 +67,133 @@ def create_dynamic_links(app: flask.app.Flask):
     GD.sessionData["url_map"] = links
 
 
-def add_nav_element(
-    soup: bs4.BeautifulSoup, dropdown: bs4.element.Tag, link: list[str, str]
-):
-    """
-    Add a new element to the navigation bar.
-    """
-    # Don't add if already exists
-    for element in dropdown.find_all("option"):
-        if element["value"] == link[0]:
-            return dropdown
+# Deprecated
+# def add_nav_element(
+#     soup: bs4.BeautifulSoup, dropdown: bs4.element.Tag, link: list[str, str]
+# ):
+#     """
+#     Add a new element to the navigation bar.
+#     """
+#     # Don't add if already exists
+#     for element in dropdown.find_all("option"):
+#         if element["value"] == link[0]:
+#             return dropdown
 
-    new_element = soup.new_tag("option")
-    new_element.string = link[1]
-    new_element["value"] = link[0]
-    dropdown.append(new_element)
-    return dropdown
-
-
-def add_home_element(
-    soup: bs4.BeautifulSoup, framebox: bs4.element.Tag, link: list[str, str]
-):
-    """
-    Adds a new link to the corresponding framebox.
-    """
-    on_click_event = f"followLink('{link[0]}')"
-    for element in framebox.find_all("input"):
-        if element["onclick"] == on_click_event:
-            return framebox
-    new_element = soup.new_tag("input")
-    new_element["type"] = "submit"
-    new_element["onclick"] = on_click_event
-    new_element["value"] = link[1]
-    new_element["style"] = "margin: 10px;min-width: 48%; max-width: fit-content;"
-    framebox.append(new_element)
-    return framebox
+#     new_element = soup.new_tag("option")
+#     new_element.string = link[1]
+#     new_element["value"] = link[0]
+#     dropdown.append(new_element)
+#     return dropdown
 
 
-def add_tabs(extensions: dict):
-    to_main = extensions.get("main_tabs", [])
-    to_upload = extensions.get("upload_tabs", [])
-    to_nodepanel_ppi = extensions.get("nodepanel_ppi_tabs", [])
-    to_nodepanel = extensions.get("nodepanel_ppi_tabs", [])
-
-    with open("templates/main_template.html", "r") as main_file:
-        main_soup = bs(main_file, "html.parser")
-
-    with open("templates/upload_template.html", "r") as upload_file:
-        upload_soup = bs(upload_file, "html.parser")
-
-    with open("templates/new_nodepanelppi_template.html", "r") as nodepanel_ppi_file:
-        nodepanel_ppi_soup = bs(nodepanel_ppi_file, "html.parser")
-
-    main_soup = add_tabs_to_main(main_soup, to_main)
-    upload_soup = add_tabs_to_upload(upload_soup, to_upload)
-    nodepanel_ppi_soup = add_tabs_to_nodepanel_ppi(nodepanel_ppi_soup, to_nodepanel_ppi)
-
-    with open("templates/main.html", "w") as main_file:
-        main_file.write(str(main_soup.prettify()))
-
-    with open("templates/upload.html", "w") as upload_file:
-        upload_file.write(str(upload_soup.prettify()))
-
-    with open("templates/new_nodepanelppi.html", "w") as nodepanel_ppi_file:
-        nodepanel_ppi_file.write(str(nodepanel_ppi_soup.prettify()))
+# def add_home_element(
+#     soup: bs4.BeautifulSoup, framebox: bs4.element.Tag, link: list[str, str]
+# ):
+#     """
+#     Adds a new link to the corresponding framebox.
+#     """
+#     on_click_event = f"followLink('{link[0]}')"
+#     for element in framebox.find_all("input"):
+#         if element["onclick"] == on_click_event:
+#             return framebox
+#     new_element = soup.new_tag("input")
+#     new_element["type"] = "submit"
+#     new_element["onclick"] = on_click_event
+#     new_element["value"] = link[1]
+#     new_element["style"] = "margin: 10px;min-width: 48%; max-width: fit-content;"
+#     framebox.append(new_element)
+#     return framebox
 
 
-def add_tabs_to_main(main_soup: bs4.BeautifulSoup, to_main: list):
-    main_soup = add_tabs_to(main_soup, to_main, "tabs")
-    return main_soup
+# def add_tabs(extensions: dict):
+#     to_main = extensions.get("main_tabs", [])
+#     to_upload = extensions.get("upload_tabs", [])
+#     to_nodepanel_ppi = extensions.get("nodepanel_ppi_tabs", [])
+#     to_nodepanel = extensions.get("nodepanel_ppi_tabs", [])
+
+#     with open("templates/main_template.html", "r") as main_file:
+#         main_soup = bs(main_file, "html.parser")
+
+#     with open("templates/upload_template.html", "r") as upload_file:
+#         upload_soup = bs(upload_file, "html.parser")
+
+#     with open("templates/new_nodepanelppi_template.html", "r") as nodepanel_ppi_file:
+#         nodepanel_ppi_soup = bs(nodepanel_ppi_file, "html.parser")
+
+#     main_soup = add_tabs_to_main(main_soup, to_main)
+#     upload_soup = add_tabs_to_upload(upload_soup, to_upload)
+#     nodepanel_ppi_soup = add_tabs_to_nodepanel_ppi(nodepanel_ppi_soup, to_nodepanel_ppi)
+
+#     with open("templates/main.html", "w") as main_file:
+#         main_file.write(str(main_soup.prettify()))
+
+#     with open("templates/upload.html", "w") as upload_file:
+#         upload_file.write(str(upload_soup.prettify()))
+
+#     with open("templates/new_nodepanelppi.html", "w") as nodepanel_ppi_file:
+#         nodepanel_ppi_file.write(str(nodepanel_ppi_soup.prettify()))
 
 
-def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
-    upload_soup = add_tabs_to(upload_soup, to_upload, "tabsUL")
-    return upload_soup
+# def add_tabs_to_main(main_soup: bs4.BeautifulSoup, to_main: list):
+#     main_soup = add_tabs_to(main_soup, to_main, "tabs")
+#     return main_soup
 
 
-def add_tabs_to_nodepanel_ppi(nodepanel_soup: bs4.BeautifulSoup, to_nodepanel: list):
-    nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "tabs")
-    return nodepanel_soup
+# def add_tabs_to_upload(upload_soup: bs4.BeautifulSoup, to_upload: list):
+#     upload_soup = add_tabs_to(upload_soup, to_upload, "tabsUL")
+#     return upload_soup
 
 
-def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
-    tabs = soup.find("div", {"id": id_tab_list})
-    extension_code = soup.find("div", {"id": "extension_code"})
-    for tab in tabs_to_add:
-        with open(tab, "r") as tab_file:
-            tab_soup = bs(tab_file, "html.parser")
-
-        # Add all links to stylesheets to the main head
-        tab_soup, soup = add_header(tab_soup, soup)
-
-        # Find a free tab, and add content from extension to the tab
-        # Change also the img of the tab if given.
-        for list_object in tabs.findChildren("li"):
-            link = list_object.find("a")
-            if link == -1 or link is None:
-                continue
-            link = link.get("href")
-            link = link.replace("#", "")
-            if not soup.find("div", {"id": link}):
-                tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
-                if tab_to_add is None:
-                    t(f"No div with id 'tab_to_add' found in {tab}.")
-                    break
-                tab_to_add["id"] = link
-                tab_to_add["style"] = tab_to_add["style"].replace(
-                    "display:none", "display:block"
-                )
-                new_img = tab_soup.find("img", {"id": "tab_img"})
-                if new_img:
-                    img = list_object.find("img")
-                    img["src"] = new_img["src"]
-                tabs.append(tab_to_add)
-                extension_code.append(tab_soup)
-                break
-
-    return soup
+# def add_tabs_to_nodepanel_ppi(nodepanel_soup: bs4.BeautifulSoup, to_nodepanel: list):
+#     nodepanel_soup = add_tabs_to(nodepanel_soup, to_nodepanel, "tabs")
+#     return nodepanel_soup
 
 
-def add_header(src_soup: bs4.BeautifulSoup, des_soup: bs4.BeautifulSoup):
-    for link in src_soup.find_all("link"):
-        des_soup.head.append(link)
+# def add_tabs_to(soup: bs4.BeautifulSoup, tabs_to_add: list, id_tab_list: str):
+#     tabs = soup.find("div", {"id": id_tab_list})
+#     extension_code = soup.find("div", {"id": "extension_code"})
+#     for tab in tabs_to_add:
+#         with open(tab, "r") as tab_file:
+#             tab_soup = bs(tab_file, "html.parser")
 
-    # Add all external scripts to the main head
-    for script in src_soup.find_all("script"):
-        if script.get("src"):
-            des_soup.head.append(script)
+#         # Add all links to stylesheets to the main head
+#         tab_soup, soup = add_header(tab_soup, soup)
 
-    return src_soup, des_soup
+#         # Find a free tab, and add content from extension to the tab
+#         # Change also the img of the tab if given.
+#         for list_object in tabs.findChildren("li"):
+#             link = list_object.find("a")
+#             if link == -1 or link is None:
+#                 continue
+#             link = link.get("href")
+#             link = link.replace("#", "")
+#             if not soup.find("div", {"id": link}):
+#                 tab_to_add = tab_soup.find("div", {"id": "tab_to_add"})
+#                 if tab_to_add is None:
+#                     t(f"No div with id 'tab_to_add' found in {tab}.")
+#                     break
+#                 tab_to_add["id"] = link
+#                 tab_to_add["style"] = tab_to_add["style"].replace(
+#                     "display:none", "display:block"
+#                 )
+#                 new_img = tab_soup.find("img", {"id": "tab_img"})
+#                 if new_img:
+#                     img = list_object.find("img")
+#                     img["src"] = new_img["src"]
+#                 tabs.append(tab_to_add)
+#                 extension_code.append(tab_soup)
+#                 break
+
+#     return soup
+
+
+# def add_header(src_soup: bs4.BeautifulSoup, des_soup: bs4.BeautifulSoup):
+#     for link in src_soup.find_all("link"):
+#         des_soup.head.append(link)
+
+#     # Add all external scripts to the main head
+#     for script in src_soup.find_all("script"):
+#         if script.get("src"):
+#             des_soup.head.append(script)
+
+#     return src_soup, des_soup

@@ -492,7 +492,7 @@ def loadProjectAnnotations(name):
 @app.before_first_request
 def execute_before_first_request():
     util.create_dynamic_links(app)
-    # util.add_tabs(extensions)
+    # util.add_tabs(extensions) # DEPRECATED
     ...
 
 

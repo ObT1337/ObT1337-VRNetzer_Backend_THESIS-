@@ -1,11 +1,12 @@
 """
 A Flask Blueprint class to be used with Flask-SocketIO.
 This class inherits from the Flask Blueprint class so that
- we can use the standard Blueprint interface.
+we can use the standard Blueprint interface.
 Derived from https://github.com/m-housh/io-blueprint
 Original work by Michael Housh, mhoush@houshhomeenergy.com
 Modified by Brian Wojtczak
-@author Brian Wojtczak
+Further modified by Till Oblau
+@author Till Oblau
 """
 
 # noinspection PyPackageRequirements
