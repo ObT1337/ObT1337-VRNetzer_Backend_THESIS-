@@ -1,0 +1,1 @@
+{"network_type": "ppi", "name": "HIV", "layouts": ["cyXYZ", "spring2dXYZ", "springXYZ"], "layoutsRGB": ["cyRGB", "spring2dRGB", "springRGB"], "links": ["anyXYZ"], "linksRGB": ["anyRGB"], "selections": []}
