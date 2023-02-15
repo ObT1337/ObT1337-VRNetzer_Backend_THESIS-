@@ -7,6 +7,29 @@ import pandas as pd
 import swifter
 from PIL import Image
 
+SELECTED = (
+    255,
+    0,
+    0,
+    255,
+)
+NOT_SELECTED = (
+    0,
+    0,
+    200,
+    10,
+)
+
+
+def selected_color(x):
+    # return x
+    return SELECTED
+
+
+def not_selected_color(x):
+    # return x[:3] + (10,)
+    return NOT_SELECTED
+
 
 def extract_node_data_from_tex(project, layout):
     # layout = os.path.join("static", "projects", project, "layouts",layout+"XYZ.bmp")
@@ -26,11 +49,14 @@ def extract_node_data_from_tex(project, layout):
     image = Image.open(layout_rgb)
     nodes["c"] = [
         x
-        if x != (0, 0, 0) and x != "<NA>" and x != np.nan and not isinstance(x, float)
-        else 0
+        if x != (0, 0, 0, 0)
+        and x != "<NA>"
+        and x != np.nan
+        and not isinstance(x, float)
+        else pd.NA
         for x in image.getdata()
     ]
-    nodes = nodes.dropna(how="all")
+    nodes = nodes[nodes["c"].notna()].copy()
     nodes = nodes.reindex(range(0, nodes.index.max() + 1))
 
     # names_file = os.path.join("static", "projects", project, "names.json")
@@ -63,11 +89,14 @@ def extract_link_data_from_tex(project, layout):
     img_data = pd.DataFrame()
     img_data["data"] = [
         x
-        if x != (0, 0, 0) and x != "<NA>" and x != np.nan and not isinstance(x, float)
-        else 0
+        if x != (0, 0, 0, 0)
+        and x != "<NA>"
+        and x != np.nan
+        and not isinstance(x, float)
+        else pd.NA
         for x in image.getdata()
     ]
-    img_data = img_data.dropna(how="all")
+    img_data = img_data[img_data["data"].notna()].copy()
     img_data = img_data.reindex(range(0, img_data.index.max() + 1))
     img_data = img_data.applymap(get_index)
     links["start"] = img_data[::2].reset_index().drop(columns="index")
@@ -90,8 +119,9 @@ def handle_node_layout(selected_nodes, project, out, layout):
     selected_nodes = nodes.index.isin(selected_nodes)
     not_selected = nodes[~selected_nodes].copy()
     selected = nodes[selected_nodes].copy()
-    # nodes[selected_nodes]["c"].swifter.apply(lambda x: x[:3] + (255,))
-    not_selected["c"] = not_selected["c"].swifter.apply(lambda x: x[:3] + (5,))
+
+    selected["c"] = selected["c"].swifter.apply(selected_color)
+    not_selected["c"] = not_selected["c"].swifter.apply(not_selected_color)
     nodes = pd.concat([selected, not_selected])
     color_float = nodes["c"].apply(lambda x: True if x == np.nan else False)
     color_float = nodes[color_float]
@@ -112,7 +142,7 @@ def highlight_nodes(selected, layouts, project, out):
     p = n
     if n > os.cpu_count():
         p = os.cpu_count()
-    pool = Pool(n)
+    pool = Pool(p)
     pool.starmap(
         handle_node_layout, zip([selected] * n, [project] * n, [out] * n, layouts)
     )

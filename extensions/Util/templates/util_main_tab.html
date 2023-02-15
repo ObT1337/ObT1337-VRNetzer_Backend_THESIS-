@@ -2,7 +2,6 @@
 </link> -->
 <script src="{{ url_for('Util.static', filename='js/socket.js') }}"></script>
 <script src="{{ url_for('Util.static', filename='js/highlight_script.js') }}"></script>
-
 <style>
     input.loadingButton[type="button"] {
         background-image: url("{{url_for('static', filename='/img/processing.gif')}}");
@@ -20,7 +19,22 @@
         </div>
         <div id="util_highlight" class="twelve columns">
             <input id="util_highlight_selection" type="button" value="Highlight selection">
+
         </div>
+        <!-- <div id="util_highlight" class="twelve columns" style="margin-top: 20px;
+        margin-bottom: 20px;">
+            <div class="three columns">
+                <input type="checkbox">
+            </div>
+            <mc-colorbox id="ColorInput" class="three columns"></mc-colorbox>
+            <div class="three columns">
+                <p></p>
+            </div>
+        </div> -->
+        <div id="util_highlight" class="twelve columns">
+            <input id="util_reset_selection" type="button" value="Reset selection">
+        </div>
+
     </div>
 </div>
 

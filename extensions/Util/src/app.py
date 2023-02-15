@@ -35,87 +35,49 @@ nodepanelppi_tabs = []
 
 
 @blueprint.on("highlight")
-def example_highlight(message):
+def util_highlight(message):
     blueprint.emit("highlight")
-    util.highlight_workflow(message, blueprint)
+    try:
+        util.highlight_selected_node_links(message)
+    except Exception as e:
+        blueprint.emit("status", {"message": e, "status": "error"})
+
+    set_project("tmp")
+    blueprint.emit("status", {"message": "Selection highlighted!", "status": "success"})
+
+
+@blueprint.on("reset")
+def util_reset(message):
+    project = GD.sessionData["actPro"]
+    with open(os.path.join("static", "projects", project, "pfile.json")) as f:
+        pfile = json.load(f)
+        origin = pfile.get("origin")
+        if not origin:
+            return
+    with open(os.path.join("static", "projects", origin, "pfile.json")) as f:
+        pfile = json.load(f)
+        pfile["selections"] = {
+            "layout": message["layout"],
+            "layoutRGB": message["layoutRGB"],
+            "linkl": message["linkl"],
+            "linkRGB": message["linkRGB"],
+            "main_tab": message["main_tab"],
+        }
+    with open(os.path.join("static", "projects", origin, "pfile.json"), "w") as f:
+        json.dump(pfile, f)
+
+    set_project(origin)
+
+    print("Resetting..")
 
 
 @blueprint.on("getSelection")
-def analytics_get_selection():
+def util_get_selection():
     print("Selection requested!")
     blueprint.emit("selection", GD.sessionData["selected"])
 
 
-# # Define your first route
-# @blueprint.route("/hello", methods=["GET"])
-# def hello():
-#     return "Hello World!"
-
-
-# # Adds a tab to the main panel route to this is /example/main
-# @blueprint.route("/main", methods=["GET"])
-# def example_main():
-#     return flask.render_template("example_main.html")
-
-
-# @blueprint.route("/nodepanel", methods=["GET"])
-# def example_node_info():
-#     return "Node Info"
-
-
-# @blueprint.route("/upload", methods=["GET"])
-# def example_upload():
-#     return "Upload"
-
-
-# @blueprint.route("/preview", methods=["GET"])
-# def example_preview():
-#     return "Example Preview"
-
-
-# @blueprint.route("/uploadfiles", methods=["POST"])
-# def example_upload_files():
-#     success = False
-#     if success:
-#         return "<a style='color:green;'>Success</a>", 200
-#     else:
-#         return "<a style='color:red;'>Error</a>", 500
-
-
-# @blueprint.before_app_first_request
-# def example_extension_setup():
-#     # prepare some important variables
-#     # do more important stuff
-#     pass
-
-
-# @blueprint.route("/emit", methods=["GET"])
-# def example_emit_socketio_to_main():
-#     """This will send a socketio message to the main panel. Check the console of the main panel to see the message."""
-#     namespace = "/chat"
-#     room = 1
-#     blueprint.emit(
-#         "ex",
-#         {"id": "someId", "opt": "someOption", "fn": "SomeFunction"},
-#         namespace=namespace,
-#         room=room,
-#     )
-#     return "sent"
-
-
-# @blueprint.route("/send", methods=["GET"])
-# def example_send_socketio():
-#     """Webpage with a button, when pressed a socketio message to this extension is send."""
-#     return flask.render_template("example_send_socketio.html")
-
-
-# @blueprint.on("example")
-# def example_receive_socketio(message):
-#     print("Received example form client:")
-#     print(message)
-
-
-# @blueprint.on("example", namespace="/chat")
-# def example_receive_socketio_in_main(message):
-#     print("Received example form client:")
-#     print(message)
+def set_project(project):
+    blueprint.emit(
+        "ex", {"id": "projects", "opt": project, "fn": "sel"}, namespace="/chat"
+    )

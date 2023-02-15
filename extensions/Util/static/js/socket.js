@@ -31,15 +31,14 @@ $(document).ready(function () {
     button = document.getElementById("util_highlight_selection");
     button.value = "";
     button.disabled = true;
+    message = getSelections();
     $("#util_highlight_selection").addClass("loadingButton");
-    message = {
-      layout: $("#layouts").val(),
-      layoutRGB: $("#nodecolors").val(),
-      linkl: $("#links").val(),
-      linkRGB: $("#linkcolors").val(),
-      main_tab: $("#tabs").tabs("option", "active"),
-    };
     utilSocket.emit("highlight", message);
+  });
+  $("#util_reset_selection").click(function () {
+    socket.emit("ex", { id: "reset", fn: "" });
+    message = getSelections();
+    utilSocket.emit("reset", message);
   });
   // Turn of the Highlight button on other clients
   utilSocket.on("highlight", function (data) {
@@ -67,3 +66,14 @@ $(document).ready(function () {
     }, 5000);
   });
 });
+
+function getSelections() {
+  message = {
+    layout: $("#layouts").val(),
+    layoutRGB: $("#nodecolors").val(),
+    linkl: $("#links").val(),
+    linkRGB: $("#linkcolors").val(),
+    main_tab: $("#tabs").tabs("option", "active"),
+  };
+  return message;
+}

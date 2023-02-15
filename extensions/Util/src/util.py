@@ -10,24 +10,10 @@ import GlobalData as GD
 from . import highlight
 
 
-def highlight_workflow(message, blueprint):
-    try:
-        print("Highlighting..")
-        highlight_node_links(message)
-    except Exception as e:
-        blueprint.emit("status", {"message": e, "status": "error"})
-
-    blueprint.emit(
-        "ex", {"id": "projects", "opt": "tmp", "fn": "sel"}, namespace="/chat"
-    )
-    blueprint.emit("status", {"message": "Selection highlighted!", "status": "success"})
-
-
-def highlight_node_links(message):
-
+def highlight_selected_node_links(message):
     selected = GD.sessionData["selected"]
-    selected = random.choices(range(16421), k=100)
-    print(selected)
+    # selected = random.choices(range(16421), k=100)
+    selected = [int(i) for i in selected]
     project = GD.sessionData["actPro"]
     layout = message["layout"]
     layout_rgb = message["layoutRGB"]

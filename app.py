@@ -570,14 +570,18 @@ def ex(message):
         emit("ex", message, room=room)
     if message["id"] == "x":
         if message["data"] not in GD.sessionData["selected"]:
-            GD.sessionData["selected"].append(message["data"])
+            GD.sessionData["selected"].append(int(message["data"]))
         print("selection " + str(GD.sessionData["selected"]))
         emit("selection", {"data": GD.sessionData["selected"]}, room=room)
         emit("ex", message, room=room)
     if message["fn"] == "sres_butt_clicked":
         if message["id"] not in GD.sessionData["selected"]:
-            GD.sessionData["selected"].append(message["id"])
+            GD.sessionData["selected"].append(int(message["id"]))
         print("selection " + str(GD.sessionData["selected"]))
+        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
+        emit("ex", message, room=room)
+    if message["id"] == "reset":
+        GD.sessionData["selected"] = []
         emit("selection", {"data": GD.sessionData["selected"]}, room=room)
         emit("ex", message, room=room)
     else:
