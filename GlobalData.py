@@ -16,7 +16,7 @@ pairs = [("a", "1"), ("b", "2"), ("c", "3")]
 sliders = [("ddfd", "1"), ("bfsd", "2"), ("cdfsdf", "3")]
 
 # prolist = json.dumps(listProjects())
-x = '{"proj": ["ere","rrr"], "actPro": "alz_100_ppi","connectedUsers":[],"selected":[10,50,30,59,60,20,12,45]}'
+x = '{"proj": ["ere","rrr"], "actPro": "alz","connectedUsers":[],"selected":[10,50,30,59,60,20,12,45]}'
 sessionData = json.loads(x)
 
 

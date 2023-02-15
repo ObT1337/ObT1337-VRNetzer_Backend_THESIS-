@@ -1,24 +1,27 @@
+import csv
 import json
 import os
-import csv
 import re
+
 from GlobalData import *
+
 
 def search(term):
     project = sessionData["actPro"]
     if project != "none":
-        folder = 'static/projects/' + project + '/'
-        
+        folder = "static/projects/" + project + "/"
 
         results = []
         i = 0
-        with open(folder + 'names.json', 'r') as json_file:
+        with open(folder + "names.json", "r") as json_file:
             names = json.load(json_file)
             for name in names["names"]:
                 for attr in name:
-                    #contains: 
+                    if len(attr) > 100:
+                        continue
+                    # contains:
                     match = re.search(term, attr, re.IGNORECASE)
-                    #match = re.match(term, attr, re.IGNORECASE)
+                    # match = re.match(term, attr, re.IGNORECASE)
                     if match:
                         res = {"id": i, "name": attr}
                         results.append(res)
@@ -27,12 +30,12 @@ def search(term):
                 i += 1
 
         json_file.close()
-    
+
     return results
+
 
 def get_structure_scale(uniprot, mode) -> float or str:
     """Return the scale of the structure as a float. If the structure is not found (or not provided), the size file is not available or the mode is not given, the function will return an error message as string. To provide the UniProtID add the 'uniprot=<UniProtID>', for the mode add 'mode=<mode>' to the URL. Currently available modes are 'cartoon' and 'electrostatic'. The default mode is 'cartoon'."""
-
 
     if mode is None:
         print("Error: No mode provided. Will use default mode 'cartoon'.")
@@ -65,4 +68,3 @@ def get_structure_scale(uniprot, mode) -> float or str:
 
     # Structure not found in the scale file -> no available.
     return "Error: No structure available for this UniProtID."
-

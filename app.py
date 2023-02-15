@@ -150,6 +150,7 @@ def nodepanel():
             except Exception as e:
                 print(e)
                 id = 0
+            print(id)
             node = nodes["nodes"][id]
             uniprots = node.get("uniprot")
             if uniprots:
@@ -568,11 +569,16 @@ def ex(message):
                 message["protsize"].append(-1)
         emit("ex", message, room=room)
     if message["id"] == "x":
-        GD.sessionData["selected"].append(message["data"])
-        print("selected " + str(GD.sessionData["selected"]))
+        if message["data"] not in GD.sessionData["selected"]:
+            GD.sessionData["selected"].append(message["data"])
+        print("selection " + str(GD.sessionData["selected"]))
+        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
         emit("ex", message, room=room)
-    if message["id"] == "re":
-        GD.sessionData["selected"] = []
+    if message["fn"] == "sres_butt_clicked":
+        if message["id"] not in GD.sessionData["selected"]:
+            GD.sessionData["selected"].append(message["id"])
+        print("selection " + str(GD.sessionData["selected"]))
+        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
         emit("ex", message, room=room)
     else:
         emit("ex", message, room=room)
