@@ -114,7 +114,23 @@ $(document).ready(function () {
         }
         ue4("slider", data);
         break;
+      case "sres_butt_clicked":
+        // Get the current URL
+        var currentUrl = window.location.href.replace("#%5B%5D", "");
 
+        // Check if the URL contains an "id" parameter
+        if (currentUrl.indexOf("id=") == -1) {
+          // If the "id" parameter is not present, add it with a default value of "2123"
+          currentUrl += (currentUrl.indexOf("?") == -1 ? "?" : "&") + "id=2123";
+        } else {
+          // If the "id" parameter is already present, replace its value with a new one
+          currentUrl = currentUrl.replace(/id=\d+/g, "id=" + data.id);
+        }
+        console.log(currentUrl);
+        // Update the URL
+        window.location.href = currentUrl;
+
+        break;
       case "fetch":
         console.log("fetching");
         document.getElementById(data.gif_id).style.display = "block";
