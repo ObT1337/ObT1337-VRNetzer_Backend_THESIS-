@@ -1,0 +1,57 @@
+{% include "util_flask_styles.html" %}
+{% include "util_scripts.html" %}
+<script src="{{ url_for('Util.static', filename='js/selectionTab.js') }}"></script>
+<!-- This Tab will be added -->
+<div id="tab_to_add" class="container" style="display:none;">
+    <div id="util_tab">
+        <div class="twelve columns">
+            <h2 class="lineglowslow" style="margin-bottom:50px;margin-top:30px">util</h2>
+        </div>
+        <div class="frameBox">
+            <div class="frameBox" id="util_node_annot" style="max-height:370px;min-height:370px;">
+                <h4>Node Annotation</h4>
+                <select id="util_node_select" type="button" value="Highlight selection" class="twelve columns"></select>
+                <div id="util_node_variable" style="max-height:62px;min-height:62px;">
+                    <p></p>
+                </div>
+                <div class="twelve columns" style="display:flex;align-items:center;">
+                    <h4 style="margin-right: 10%"># Nodes:</h4>
+                    <h4 id="util_num_nodes" style="margin: 0;">
+                    </h4>
+                </div>
+                <div class="twelve columns" style="display:flex;align-items:center;">
+                    <input type="button" value="Select" id="util_node_sel_btn" class="six columns">
+                    <input type="button" value="Reset" id="util_node_reset_btn" class="six columns">
+                </div>
+            </div>
+            <div class="frameBox" id="util_link_annot" style="max-height:370px;min-height:370px;">
+                <h4>Link Annotation</h4>
+                <select id="util_link_select" type="button" value="Highlight selection" class="twelve columns"></select>
+                <div id="util_link_variable" style="max-height:62px;min-height:62px">
+                    <p></p>
+                </div>
+                <div class="twelve columns" style="display:flex;align-items:center;">
+                    <h4 style="margin-right: 10%"># Links:</h4>
+                    <h4 id="util_num_links" style="margin: 0;">
+                    </h4>
+                </div>
+                <div class="twelve columns" style="display:flex;align-items:center;">
+                    <input type="button" value="Select" id="util_link_sel_btn" class="twelve columns">
+                    <input type="button" value="Reset" id="util_link_reset_btn" class="twelve columns">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var node_annotations = ["Annotation 1", "Annotation 2", "Annotation 3"]
+            var link_annotations = ["Annotation 1", "Annotation 2", "Annotation 3"]
+            utilSocket.emit("annotation", { "type": "node", "project": sessionData.actPro })
+            utilSocket.emit("annotation", { "type": "link", "project": sessionData.actPro })
+        });
+    </script>
+</div>
+
+<!--Define the image which will be shown on the tab icon-->
+<img id="tab_img" src="{{ url_for('static', filename='img/active_gears.png') }}" style="display: none;" ;>

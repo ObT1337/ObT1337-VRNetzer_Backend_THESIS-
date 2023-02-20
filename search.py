@@ -17,12 +17,12 @@ def search(term):
             names = json.load(json_file)
             for name in names["names"]:
                 for attr in name:
-                    if len(attr) > 100:
-                        continue
                     # contains:
                     match = re.search(term, attr, re.IGNORECASE)
                     # match = re.match(term, attr, re.IGNORECASE)
                     if match:
+                        if len(attr) > 100:
+                            attr = attr[:100] + "..."
                         res = {"id": i, "name": attr}
                         results.append(res)
                         break
@@ -30,7 +30,7 @@ def search(term):
                 i += 1
 
         json_file.close()
-
+        results.sort(key=lambda x: len(x["name"]))
     return results
 
 

@@ -24,6 +24,15 @@
 
 <body>
 
+    {% if "UnrealEngine" in request.user_agent|string%}
+    <style>
+        div.content {
+            height: 1000px;
+            width: 570px;
+            overflow: hidden;
+        }
+    </style>
+    {% endif %}
     <script>
         var node_data = '{{data}}';
         var node_id = '{{data[0]}}';
@@ -37,7 +46,7 @@
 
     <div id="tabsUL">
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
-        <ul id="nodepanel_tabs">
+        <ul id="nodepanel_tabs" style="display: flex; overflow-x: auto;height: fit-content;overflow-y: hidden;">
             <li>
                 <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>

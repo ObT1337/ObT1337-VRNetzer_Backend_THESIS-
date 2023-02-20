@@ -2,14 +2,11 @@
 
 function initDropdown(id, data, active) {
   $("#" + id).selectmenu();
-
   for (let i = 0; i < data.length; i++) {
     $("#" + id).append(new Option(data[i]));
   }
-
   $("#" + id).val(active);
   $("#" + id).selectmenu("refresh");
-
   $("#" + id).on("selectmenuselect", function () {
     var name = $("#" + id)
       .find(":selected")
@@ -75,6 +72,13 @@ function initButton(id) {
     var $this = $(this);
     socket.emit("ex", { id: id, val: $this.val(), fn: "but" });
   });
+  if (id == "backwardstep") {
+    initBackwardStep();
+  } else if (id == "forwardstep") {
+    initForwardStep();
+  } else if (id == "reset") {
+    initResetButton();
+  }
 }
 
 function makeid(length) {
@@ -108,4 +112,114 @@ function setHref(id, uniprot, link) {
 function followLink(link) {
   var url = "http://" + window.location.href.split("/")[2];
   window.location.href = url + link;
+}
+function nextLayout(id) {
+  var idx = $("#" + id).prop("selectedIndex");
+  var numOptions = $("#" + id).children().length;
+  if (idx == numOptions - 1) {
+    idx = 0;
+  } else {
+    idx++;
+  }
+  $("#" + id).prop("selectedIndex", idx);
+  $("#" + id).selectmenu("refresh");
+}
+function prevLayout(id) {
+  var idx = $("#" + id).prop("selectedIndex");
+  if (idx == 0) {
+    idx = -1;
+  } else {
+    idx--;
+  }
+  $("#" + id).prop("selectedIndex", idx);
+  $("#" + id).selectmenu("refresh");
+}
+function initBackwardStep() {
+  $("#backwardstep").on("click", function () {
+    if (document.getElementById("chbXYZ").checked == true) {
+      prevLayout("layouts");
+    }
+    if (document.getElementById("chbNrgb").checked == true) {
+      prevLayout("nodecolors");
+    }
+    if (document.getElementById("chbLXYZ").checked == true) {
+      prevLayout("links");
+    }
+    if (document.getElementById("chbLrgb").checked == true) {
+      prevLayout("linkcolors");
+    }
+  });
+}
+function initForwardStep() {
+  $("#forwardstep").on("click", function () {
+    if (document.getElementById("chbXYZ").checked == true) {
+      nextLayout("layouts");
+    }
+    if (document.getElementById("chbNrgb").checked == true) {
+      nextLayout("nodecolors");
+    }
+    if (document.getElementById("chbLXYZ").checked == true) {
+      nextLayout("links");
+    }
+    if (document.getElementById("chbLrgb").checked == true) {
+      nextLayout("linkcolors");
+    }
+  });
+}
+
+function initResetButton() {
+  $("#reset").on("click", function () {
+    ["layouts", "nodecolors", "links", "linkcolors"].forEach((id) => {
+      $("#" + id).prop("selectedIndex", 0);
+      $("#" + id).selectmenu("refresh");
+    });
+  });
+}
+function setStateData(pdata) {
+  $(document).ready(function () {
+    var selections = pdata["stateData"];
+    if (selections != undefined) {
+      var ids = ["layouts", "nodecolors", "links", "linkcolors"];
+      ids.forEach((id) => {
+        if (selections[id] != undefined) {
+          $("#" + id).val(selections[id]);
+          setTimeout(function () {
+            socket.emit("ex", { id: id, opt: selections[id], fn: "sel" });
+          }, 5000);
+        }
+      });
+      var ids = [
+        "slider-node_size",
+        "slider-link_size",
+        "slider-link_transparency",
+        "slider-label_scale",
+      ];
+      ids.forEach((id) => {
+        if (selections[id] != undefined) {
+          $("#" + id).slider("value", selections[id]);
+          setTimeout(function () {
+            socket.emit("ex", { id: id, val: selections[id], fn: "sli" });
+          }, 5000);
+        }
+      });
+      if (selections["main_tab"] != undefined) {
+        $("#tabs").tabs("option", "active", selections["main_tab"]);
+      }
+    }
+  });
+}
+
+function setStatus(status, id, message, timeout = 5000) {
+  if (status == "error") {
+    $("#" + id).css("color", "red");
+  } else if (status == "success") {
+    $("#" + id).css("color", "green");
+  } else if (status == "warning") {
+    $("#" + id).css("color", "yellow");
+  }
+  $("#" + id).text(message);
+  $("#" + id).css("opacity", "1");
+  setTimeout(function () {
+    $("#" + id).css("opacity", "0");
+  }, timeout);
 }

@@ -48,7 +48,7 @@
 
 <body>
     <script>
-        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var sessionData = JSON.parse({{ sessionData| tojson}});
         var node_data = JSON.parse({{ node | tojson}})["node"];
         var node_sym = node_data["n"];
         var node_annot = node_data["description"];
@@ -324,7 +324,7 @@
                     if (typeof uniprot_ids === "undefined") {
                         document.getElementById("nodefragment-3").remove();
                     } else {
-                        initMyStructureDropdown('mystructure', uniprot_ids, sessiondata["actStruc"], 'mystrcture_message_id', "mystructure_procesing");
+                        initMyStructureDropdown('mystructure', uniprot_ids, sessionData["actStruc"], 'mystrcture_message_id', "mystructure_procesing");
                         initSlider('slider-prot_size');
                         initButton('showStructure');
                         //ue4("prot", {id:name});

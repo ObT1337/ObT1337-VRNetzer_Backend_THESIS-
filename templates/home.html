@@ -26,8 +26,8 @@
     {% include "NavBar.html" %}
     {% endif %}
     <script>
-        var sessiondata = JSON.parse({{ sessionData| tojson}});
-        var links = sessiondata.url_map;
+        var sessionData = JSON.parse({{ sessionData| tojson}});
+        var links = sessionData.url_map;
     </script>
     <!-- Main Header -->
     <div class="twelve columns">

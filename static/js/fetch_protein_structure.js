@@ -28,12 +28,7 @@ function initMyStructureDropdown(id, data, active, message_id, gif_id) {
         console.log(err);
         message =
           "ProteinStructureFetch is not installed.Structure will be loaded, if you manually prepared it.";
-        $("#" + message_id).css("color", "yellow");
-        $("#" + message_id).text(message);
-        $("#" + message_id).css("opacity", "1");
-        setTimeout(function () {
-          $("#" + message_id).css("opacity", "0");
-        }, 5000);
+        setStatus("warning", message_id, message);
         document.getElementById(gif_id).style.display = "none";
         socket.emit("ex", {
           id: id,
@@ -69,9 +64,7 @@ function evaluateResults(id, data, name, message_id, gif_id) {
       "Could not fetch a structure with this UniProt ID from AlphaFold DB!";
     color = "red";
   }
-  $("#" + message_id).css("color", "red");
-  $("#" + message_id).text(message);
-  $("#" + message_id).css("opacity", "1");
+  setStatus(color, message_id, message, 10000);
   document.getElementById(gif_id).style.display = "none";
   socket.emit("ex", {
     id: id,
@@ -82,9 +75,6 @@ function evaluateResults(id, data, name, message_id, gif_id) {
     gif_id: gif_id,
     color: color,
   });
-  setTimeout(function () {
-    $("#" + message_id).css("opacity", "0");
-  }, 10000);
 }
 
 function updateUniprot(name, old) {

@@ -16,9 +16,11 @@ from PIL import Image
 import GlobalData as GD
 import load_extensions
 import search
+import socket_handlers
 import uploader
 import util
 import websocket_functions as webfunc
+from project import Project
 
 log = logging.getLogger("werkzeug")
 log.setLevel(logging.ERROR)
@@ -90,15 +92,9 @@ def main():
         flask.session["room"] = room
         # prolist = uploader.listProjects()
         if project != "none":
-            folder = "static/projects/" + project + "/"
-            with open(folder + "pfile.json", "r") as json_file:
-                GD.pfile = json.load(json_file)
-            json_file.close()
-
-            with open(folder + "names.json", "r") as json_file:
-                GD.names = json.load(json_file)
-                # print(names)
-            json_file.close()
+            project = Project(project)
+            GD.pfile = project.pfile
+            GD.names = project.names
         return render_template(
             "main.html",
             session=flask.session,
@@ -122,18 +118,14 @@ def nodepanel():
     project = flask.request.args.get("project")
     if project is None:
         project = GD.sessionData.get("actPro", "new_ppi")
-
-    folder = os.path.abspath(os.path.join("static", "projects", project))
-
-    if os.path.isfile(os.path.join(folder, "pfile.json")):
-        with open(os.path.join(folder, "pfile.json"), "r") as json_file:
-            GD.pfile = json.load(json_file)
-
-        with open(os.path.join(folder, "nodes.json"), "r") as json_file:
-            nodes = json.load(json_file)
+    project = Project(project)
+    if project.exists():
+        GD.pfile = project.pfile
+        GD.names = project.names
+        nodes = project.nodes
     else:
         GD.pfile = None
-
+    print(GD.pfile)
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
 
@@ -268,8 +260,8 @@ def preview():
     layoutindex = 0
     layoutRGBIndex = 0
     linkRGBIndex = 0
-
-    if flask.request.args.get("project") is None:
+    project = flask.request.args.get("project")
+    if project is None or project not in uploader.listProjects():
         print("project Argument not provided - redirecting to menu page")
 
         data["projects"] = uploader.listProjects()
@@ -295,6 +287,7 @@ def preview():
         else:
             return json.dumps({"error": f"{index_name} is not an integer"})
 
+    project = Project(project)
     layoutindex = check_if_given(flask.request.args.get("layout"), "layout")
     if isinstance(layoutindex, str):
         return layoutindex
@@ -315,28 +308,21 @@ def preview():
     testNetwork = json.loads(y)
     scale = 0.000254
 
-    pname = "static/projects/" + flask.request.args.get("project") + "/pfile"
-    p = open(pname + ".json", "r")
-    thispfile = json.load(p)
-    thispfile["selected"] = [layoutindex, layoutRGBIndex, linkRGBIndex]
+    project.set_pfile_value("selected", [layoutindex, layoutRGBIndex, linkRGBIndex])
     # print(thispfile["layouts"])
 
-    name = "static/projects/" + flask.request.args.get("project") + "/nodes"
-    n = open(name + ".json", "r")
-    nodes = json.load(n)
+    nodes = project.nodes
     nlength = len(nodes["nodes"])
     # print(nlength)
 
-    lname = "static/projects/" + flask.request.args.get("project") + "/links"
-    f = open(lname + ".json", "r")
-    links = json.load(f)
+    links = project.links
     length = len(links["links"])
 
     im = Image.open(
         "static/projects/"
         + flask.request.args.get("project")
         + "/layouts/"
-        + thispfile["layouts"][layoutindex]
+        + project.get_pfile_value("layouts")[layoutindex]
         + ".bmp",
         "r",
     )
@@ -344,7 +330,7 @@ def preview():
         "static/projects/"
         + flask.request.args.get("project")
         + "/layoutsl/"
-        + thispfile["layouts"][layoutindex]
+        + project.get_pfile_value("layouts")[layoutindex]
         + "l.bmp",
         "r",
     )
@@ -352,7 +338,7 @@ def preview():
         "static/projects/"
         + flask.request.args.get("project")
         + "/layoutsRGB/"
-        + thispfile["layoutsRGB"][layoutRGBIndex]
+        + project.get_pfile_value("layoutsRGB")[layoutRGBIndex]
         + ".png",
         "r",
     )
@@ -360,7 +346,7 @@ def preview():
         "static/projects/"
         + flask.request.args.get("project")
         + "/linksRGB/"
-        + thispfile["linksRGB"][linkRGBIndex]
+        + project.get_pfile_value("linksRGB")[linkRGBIndex]
         + ".png",
         "r",
     )
@@ -405,7 +391,7 @@ def preview():
     return render_template(
         "threeJS_VIEWER.html",
         data=json.dumps(testNetwork),
-        pfile=json.dumps(thispfile),
+        pfile=json.dumps(project.pfile),
         sessionData=json.dumps(GD.sessionData),
     )
 
@@ -415,9 +401,11 @@ def preview():
 def nodeinfo():
     id = flask.request.args.get("id")
     key = flask.request.args.get("key")
-    name = "static/projects/" + str(flask.request.args.get("project")) + "/nodes"
-    nodestxt = open(name + ".json", "r")
-    nodes = json.load(nodestxt)
+    project = flask.request.args.get("project")
+    if project is None:
+        return 0
+    project = Project(project)
+    nodes = project.nodes
     if key:
         return str(nodes["nodes"][int(id)].get(key))
     else:
@@ -492,6 +480,10 @@ def loadProjectAnnotations(name):
 ### Execute code before first request ###
 @app.before_first_request
 def execute_before_first_request():
+    project = Project(GD.sessionData["actPro"])
+    GD.pfile = project.pfile
+    if "stateData" not in GD.pfile:
+        GD.pfile["stateData"] = {}
     util.create_dynamic_links(app)
     # util.add_tabs(extensions) # DEPRECATED
     ...
@@ -536,56 +528,32 @@ def ex(message):
     message["usr"] = flask.session.get("username")
 
     if message["id"] == "projects":
-        GD.sessionData["selected"] = []
-        GD.sessionData["actPro"] = message["opt"]
-        folder = os.path.join("static", "projects", GD.sessionData["actPro"])
-        with open(os.path.join(folder, "names.json"), "r") as json_file:
-            GD.names = json.load(json_file)
-        print("changed project to " + GD.sessionData["actPro"])
-        # print("names_files to " + str(GD.names))
-        print("changed activ project " + message["opt"])
+        socket_handlers.projects(message)
 
     if message["id"] == "search":
         if len(message["val"]) > 1:
-            x = '{"id": "sres", "val":[], "fn": "sres"}'
-            results = json.loads(x)
-            results["val"] = search.search(message["val"])
-
+            results = socket_handlers.search(message)
             emit("ex", results, room=room)
 
     if message["id"] == "nl":
-        message["names"] = []
-        message["fn"] = "cnl"
-        message["prot"] = []
-        message["protsize"] = []
-        for id in message["data"]:
-            message["names"].append(GD.names["names"][id][0])
+        socket_handlers.node_labels(message)
 
-            if len(GD.names["names"][id]) == 5:
-                message["prot"].append(GD.names["names"][id][3])
-                message["protsize"].append(GD.names["names"][id][4])
-            else:
-                message["prot"].append("x")
-                message["protsize"].append(-1)
-        emit("ex", message, room=room)
     if message["id"] == "x":
-        if message["data"] not in GD.sessionData["selected"]:
-            GD.sessionData["selected"].append(int(message["data"]))
-        print("selection " + str(GD.sessionData["selected"]))
-        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
-        emit("ex", message, room=room)
+        socket_handlers.node_selection(message)
+
     if message["fn"] == "sres_butt_clicked":
-        if message["id"] not in GD.sessionData["selected"]:
-            GD.sessionData["selected"].append(int(message["id"]))
-        print("selection " + str(GD.sessionData["selected"]))
-        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
-        emit("ex", message, room=room)
-    if message["id"] == "reset":
-        GD.sessionData["selected"] = []
-        emit("selection", {"data": GD.sessionData["selected"]}, room=room)
-        emit("ex", message, room=room)
-    else:
-        emit("ex", message, room=room)
+        socket_handlers.sres_button_clicked(message)
+
+    if message["fn"] == "sli":
+        socket_handlers.slider(message)
+
+    if message["fn"] == "sel":
+        socket_handlers.select_menu(message)
+
+    if message["fn"] == "cht":
+        socket_handlers.tab(message)
+
+    emit("ex", message, room=room)
     # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
 
 

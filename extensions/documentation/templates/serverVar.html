@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}"></link>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}"></link>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/atelier-cave.min.css') }}"></link>
+
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+<script src="{{ url_for('doku.static', filename='js/connect_socketIO_doku.js') }}"></script>
+<script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
+
+
+{% include 'templates.html' %}
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<body>   
+    <div id="outer" style="width: 800px; height: auto;">
+        <a href="/doku/">BACK</a><br>
+        <h5 >SERVER SIDE VARIABLE</h5>
+        <br>
+        write something in the textfield and press + to add a button to the scrollbox <br>
+        duplicate the browser window and refresh <br>
+        the new entry is stored on the server so
+        clients joining later still get the full list
+        <br>
+        <br>
+
+
+           
+        <mc-dropdown id ="projDD" class="PD" type="dropdown" fn="dropdown" opt='[]' name="PROJECT" ></mc-dropdown>
+
+        <mc-dropdown id ="layoutsDD" class="GD" type="dropdown" fn="dropdown" opt='[]' name="Layouts" ></mc-dropdown>
+
+        <mc-dropdown id ="layoutsRGBDD" class="GD" type="dropdown" fn="dropdown" opt='[]' name="LayoutsRGB" ></mc-dropdown>
+
+        <mc-dropdown id ="linksDD" class="GD" type="dropdown" fn="dropdown" opt='[]' name="Links" ></mc-dropdown>
+
+        <mc-dropdown id ="linksRGBDD" class="GD" type="dropdown" fn="dropdown" opt='[]' name="LinksRGB" ></mc-dropdown>
+        <!-- 
+        <br><br>
+        <mc-dropdown id ="layoutsDD" class="GD" type="dropdown" fn="dropdown" opt='["reee","yyy"]' ></mc-dropdown>
+        <br><br>
+        
+        <mc-dropdown id ="layoutsRGBDD" class="GD" type="dropdown" fn="dropdown" opt='["reee","yyy"]' ></mc-dropdown>
+        <br>
+        <div style="width: 450px; height: auto;">
+           
+            <mc-slider id ="slider-label_scale" name="LABEL SCALE" class="GD" type="slider" ></mc-slider>
+            <mc-slider id ="slider-node_scale" name="NODE SCALE" class="GD" type="slider" ></mc-slider>
+            
+        </div>
+
+        <div style="width: 450px; height: auto;">
+
+            <mc-TextInput id ="bel_scale" container ="scrollbox2" class="GD" type="textinput" fn="submit_butt" ></mc-TextInput>
+            
+        </div>
+        <br>
+        <div class="demo" id = "scrollbox2" style = "width: 450px; height: 450px; overflow:auto; padding: 10px;">
+        </div>
+        
+        <br>
+
+        <div style="width: 450px; height: auto;">
+           
+            <mc-TextInput id ="svarsend2" container ="scrollbox3" class="GD" type="textinput" fn="submit_butt"></mc-TextInput>
+            
+        </div>
+        <br>
+        <div class="demo" id = "scrollbox3" style = "width: 450px; height: 450px; overflow:auto; padding: 10px;">
+        </div>
+        -->
+        <br>
+    </div>
+    
+
+
+</body>
+
+</html>

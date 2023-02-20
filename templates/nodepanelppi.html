@@ -40,9 +40,18 @@
 
 
 <body>
+    {% if "UnrealEngine" in request.user_agent|string%}
+    <style>
+        div.content {
+            height: 1000px;
+            width: 570px;
+            overflow: hidden;
+        }
+    </style>
+    {% endif %}
 
     <script>
-        var sessiondata = JSON.parse({{ sessionData| tojson}});
+        var sessionData = JSON.parse({{ sessionData| tojson}});
         var node_data = JSON.parse({{ node | tojson}})["node"];
         var node_sym = node_data["n"];
         var node_annot = node_data["description"];
@@ -54,13 +63,14 @@
         };
 
     </script>
+
     {% if "UnrealEngine" not in request.user_agent|string%}
     {% include "NavBar.html" %}
     {% endif %}
 
     <div id="tabsUL">
         <a href="nodepanel.html" id="" title="Nodepanel"></a>
-        <ul>
+        <ul id="nodepanel_ppi_tabs" style="display: flex; overflow-x: auto;height: fit-content;overflow-y: hidden;">
             <li>
                 <a href="#nodefragment-1"><img draggable="false" onmousedown="return false" height='40' width='40'
                         src="{{ url_for('static', filename='img/networkicon-white-small.png') }}" /></a>
@@ -158,7 +168,7 @@
                 <script>
 
 
-                    initDropdown('structure', node_data.uniprot, sessiondata["actStruc"]);
+                    initDropdown('structure', node_data.uniprot, sessionData["actStruc"]);
                     initSlider('slider-prot_size');
                     initButton('showStructure');
                     //ue4("prot", {id:name});
