@@ -2,7 +2,6 @@ import multiprocessing as mp
 import os
 import threading
 import time
-from turtle import goto
 
 import uploader
 from project import Project
