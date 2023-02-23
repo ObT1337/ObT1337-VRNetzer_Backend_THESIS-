@@ -2,6 +2,7 @@ import multiprocessing as mp
 import os
 import threading
 import time
+from turtle import goto
 
 import uploader
 from project import Project
@@ -101,11 +102,9 @@ class AnnotationScraper:
 
         self.pool.close()
         self.pool.join()
-        while True:
-            if not self.all_projects_processed():
-                break
+        while not self.all_projects_processed() and not self.queue.empty():
             print("Annotation scraper idling...", end="\r")
-            time.sleep(500)
+            time.sleep(5)
         self.start()
 
     def execute_request(self, request):
@@ -139,34 +138,38 @@ class AnnotationScraper:
 
     def wait_for_annotation(self, message):
         project = Project(message.get("project"), False)
+
         if project in IGNORE_PROJECTS:
             return
+
         requested_project = project.name
         data_type = message.get("type")
-        if project.name in self.handled_anno_requests:
-            if data_type in self.handled_anno_requests[project.name]:
-                return
-            self.handled_anno_requests[project.name].append(data_type)
-        else:
-            self.handled_anno_requests[project.name] = [data_type]
         if not project.exists():
             return
-        project.read_pfile()
-        if project.origin:
-            project = find_data_origin(project, data_type)
         # Handle copies of project to only process annotations once
+        if project.get_origin():
+            project = find_data_origin(project, data_type)
+        # Reject multiple anno request for the same project and data type, e.g. multiple clients request while already processing.
         project = project.name
+        if project in self.handled_anno_requests:
+            if data_type in self.handled_anno_requests[project]:
+                return
+            self.handled_anno_requests[project].append(data_type)
+        else:
+            self.handled_anno_requests[project] = [data_type]
+
         arg = (project, data_type)
         while True:
             # print("Waiting for annotation", project, data_type)
             if project in self.handled_projects:
                 if data_type in self.annotations[project]:
-                    # print("Annotation already processed", project, data_type)
+                    print("Annotation processed", project, data_type)
                     break
                 self.add_to_queue(*arg)
             else:
                 self.add_to_queue(*arg)
             time.sleep(1)
+
         message = self.annotations[project][data_type]
         message["project"] = requested_project
         if project in self.handled_anno_requests:
@@ -174,24 +177,6 @@ class AnnotationScraper:
                 self.handled_anno_requests[project].remove(data_type)
         # print("Sending annotation result for ", project, data_type)
         return message
-
-
-def find_data_origin(project, data_type):
-    function_call = {
-        "node": project.has_own_nodes,
-        "link": project.has_own_links,
-    }
-    if data_type in function_call:
-        if not function_call[data_type]():
-            origin = Project(project.origin, check_exists=True)
-            if origin.exists():
-                project = origin
-    return project
-
-
-def worker_task(queue, fast_queue, results, all_done):
-    worker = Worker(queue, fast_queue, results, all_done)
-    worker.run()
 
 
 class Worker(threading.Thread):
@@ -225,15 +210,20 @@ class Worker(threading.Thread):
             project = self.find_data_origin(tmp, data_type)
         return project.name, data_type
 
-    def process_annotations(self, message, project, data_type):
-        # print("Processing annotation request..")
-        if project not in self.annotations:
-            self.annotations[project] = {}
-        self.annotations[project][data_type] = "processing"
-        manager = mp.Manager()
-        return_dict = manager.dict()
-        p = mp.Process(target=util.get_annotation, args=(message, return_dict))
-        p.start()
-        p.join()
-        # print("Annotation request processed..")
-        self.annotations[project][data_type] = return_dict["annotations"]
+
+def find_data_origin(project, data_type):
+    function_call = {
+        "node": project.has_own_nodes,
+        "link": project.has_own_links,
+    }
+    if data_type in function_call:
+        if not function_call[data_type]():
+            origin = Project(project.origin, check_exists=True)
+            if origin.exists():
+                project = origin
+    return project
+
+
+def worker_task(queue, fast_queue, results, all_done):
+    worker = Worker(queue, fast_queue, results, all_done)
+    worker.run()

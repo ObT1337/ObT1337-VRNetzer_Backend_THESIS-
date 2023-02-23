@@ -143,7 +143,11 @@ class Project:
             dir (str): Path to the directory to be made.
         """
         os.makedirs(dir, exist_ok=True)
-
+    def get_origin(self):
+        if self.exists():
+            self.read_pfile()
+            return self.origin
+            
     def write_pfile(
         self,
     ):
