@@ -3,16 +3,16 @@ import os
 import random
 import shutil
 import time
+import traceback
 from multiprocessing import Process
 
-import pandas as pd
-
 import GlobalData as GD
-from project import Project
+import pandas as pd
+from project import PROJECTS_DIR, Project
 
 from . import const, highlight
 
-MAX_ANNOT = 30
+MAX_ANNOT = 20
 
 
 def highlight_selected_node_links(message):
@@ -24,14 +24,23 @@ def highlight_selected_node_links(message):
     link_rgb = message.get("linkcolors")
     tab = message.get("main_tab")
 
-    selected = GD.sessionData.get("selected")
-    node_annotation = GD.sessionData.get("node_annotation")
-    selected_links = GD.sessionData.get("selected_links")
-    link_annotation = GD.sessionData.get("link_annotation")
+    node_color = message.get("node_color")
+    if node_color:
+        node_color = hex_to_rgb(node_color)
+    link_color = message.get("link_color")
+    if link_color:
+        link_color = hex_to_rgb(link_color)
+    project = Project(GD.sessionData["actPro"])
+    state_data = GD.pfile.get("stateData")
+    if state_data is None:
+        return
+    selected = state_data.get("selected")
+
+    selected_links = state_data.get("selectedLinks")
+
     # selected = random.choices(range(16421), k=100)
     selected = [int(i) for i in selected]
-    project = GD.sessionData["actPro"]
-    project = Project(project)
+
     if layout is None:
         layout = project.get_all_layouts()[0]
     if layout_rgb is None:
@@ -41,28 +50,25 @@ def highlight_selected_node_links(message):
     if link_rgb is None:
         link_rgb = project.get_all_link_colors()[0]
 
-    origin = project.get_pfile_value("origin")
-    if origin:
-        project = Project(origin)
-
-    process = Project("process")
-    process.pfile = project.pfile
-    process.set_pfile_value(
-        "stateData",
-        {
-            "layout": layout,
-            "nodecolors": layout_rgb,
-            "links": linkl,
-            "linkcolors": link_rgb,
-            "main_tab": tab,
-        },
-    )
+    if project.origin:
+        project = Project(project.origin, read=False)
+    process = Project("process", read=False)
+    process.pfile = GD.pfile
+    if "stateData" not in process.pfile:
+        process.pfile["stateData"] = {}
+    for key, layout_list in zip(
+        ["layouts", "nodecolors", "links", "linkcolors"],
+        ["layouts", "layoutsRGB", "links", "linksRGB"],
+    ):
+        if key not in process.pfile["stateData"]:
+            process.pfile["stateData"][key] = project.pfile[layout_list][0]
+    process.pfile["stateData"]["main_tab"] = tab
     process.set_pfile_value("origin", project.name)
 
     if process.exists():
         process.remove()
 
-    project.copy(process.location)
+    project.copy(process.location, ignore=True)
     process.remove_subdir("layoutsRGB")
     process.remove_subdir("linksRGB")
     process.set_pfile_value("name", "tmp")
@@ -72,7 +78,7 @@ def highlight_selected_node_links(message):
         project.get_files_in_dir("layoutsRGB"),
         project,
         process,
-        node_annotation,
+        node_color,
     )
     links_args = (
         selected,
@@ -81,9 +87,9 @@ def highlight_selected_node_links(message):
         project,
         process,
         mode,
-        link_annotation,
+        link_color,
     )
-    if len(selected) == 0:
+    if selected is None or len(selected) == 0:
         selected = highlight.highlight_links(*links_args)
         nodes_args[0] = selected
         nodes = highlight.highlight_nodes(*nodes_args)
@@ -112,12 +118,19 @@ def highlight_selected_node_links(message):
 def select_nodes(message):
     proj = GD.sessionData["actPro"]
     proj = Project(proj)
+    proj.read_nodes()
     nodes = pd.DataFrame(proj.nodes["nodes"])
-    dtype = message["dtype"]
-    annotation = message["annotation"]
-    value = message["value"]
+    dtype = message.get("dtype")
+    annotation = message.get("annotation")
+    value = message.get("value")
     if dtype in ["float", "int"]:
-        nodes = nodes[nodes[annotation] >= value]
+        operator = message["operator"]
+        if operator == 0:
+            nodes = nodes[nodes[annotation] <= value]
+        elif operator == 1:
+            nodes = nodes[nodes[annotation] == value]
+        elif operator == 2:
+            nodes = nodes[nodes[annotation] >= value]
     elif dtype in ["object", "bool"]:
         nodes = nodes[nodes[annotation] == value]
     elif dtype in ["str"]:
@@ -134,15 +147,22 @@ def select_nodes(message):
 def select_links(message):
     proj = GD.sessionData["actPro"]
     proj = Project(proj)
+    proj.read_links()
     links = pd.DataFrame(proj.links["links"])
     dtype = message["dtype"]
     annotation = message["annotation"]
     value = message["value"]
     if dtype in ["float", "int"]:
-        links = links[links[annotation] >= value]
+        operator = message["operator"]
+        if operator == 0:
+            links = links[links[annotation] <= value]
+        elif operator == 1:
+            links = links[links[annotation] == value]
+        elif operator == 2:
+            links = links[links[annotation] >= value]
     elif dtype in ["object", "bool"]:
         links = links[links[annotation] == value]
-    GD.sessionData["selected_links"] = links["id"].tolist()
+    GD.sessionData["selected_links"] = links.index.tolist()
     return GD.sessionData["selected_links"]
 
 
@@ -150,43 +170,47 @@ def get_annotation(message, return_dict):
     project = message["project"]
     project = Project(project)
     annotation_type = message["type"]
+    project.read_nodes()
     if annotation_type == "node":
         df = pd.DataFrame(project.nodes["nodes"])
     if annotation_type == "link":
+        project.read_links()
         df = pd.DataFrame(project.links["links"])
-        nodes = pd.DataFrame(project.nodes["nodes"])
+        names = pd.DataFrame(project.nodes["nodes"])[const.NAME_COL]
     dtypes = df.dtypes.astype(str).to_dict()
     drops = [c for c in const.IGNORE_COLS if c in df.columns]
     df = df.drop(columns=drops)
-    annotations = {}
-    option_annots = {}
     lengths = {}
-    for col in df.columns:
-        dtype = dtypes[col]
+    print(project.name, annotation_type, len(df.columns))
+
+    def extract_annot(col, dtypes, names=None):
+        name = str(col.name)
+        dtype = dtypes[name]
         annot = {"dtype": dtype}
-        if col in [const.START_COL, const.END_COL]:
+        if name in [const.START_COL, const.END_COL]:
             annot["dtype"] = "int"
             annot["min"] = 0
-            annot["max"] = len(nodes) - 1
-            annot["values"] = nodes[const.NAME_COL].tolist()
-        elif col in const.NAME_COL and annotation_type == "node":
+            annot["max"] = len(names) - 1
+            annot["values"] = names.tolist()
+        elif name in const.NAME_COL and annotation_type == "node":
             annot["dtype"] = "int"
             annot["min"] = 0
-            annot["max"] = len(df) - 1
-            annot["values"] = df[const.NAME_COL].tolist()
-            df = df.drop(columns=const.NAME_COL)
+            annot["max"] = len(col) - 1
+            annot["values"] = col.tolist()
         elif pd.api.types.is_integer_dtype(dtype):
-            annot["min"] = int(df[col].min())
-            annot["max"] = int(df[col].max())
+            annot["min"] = int(col.min())
+            annot["max"] = int(col.max())
             annot["dtype"] = "int"
-        elif pd.api.types.is_float_dtype(dtype):
-            annot["min"] = float(df[col].min())
-            annot["max"] = float(df[col].max())
             if annot["min"] == annot["max"]:
-                continue
+                return
+        elif pd.api.types.is_float_dtype(dtype):
+            annot["min"] = float(col.min())
+            annot["max"] = float(col.max())
+            if annot["min"] == annot["max"]:
+                return
             annot["dtype"] = "float"
         elif pd.api.types.is_string_dtype(dtype):
-
+            # TODO: check if there is a better way to do this maybe creating a new series of every new value and make it true if this value is in the row
             class set_counter:
                 def __init__(self):
                     self.set = set()
@@ -206,9 +230,7 @@ def get_annotation(message, return_dict):
 
             options = set_counter()
 
-            def collect_values(x):
-                if len(options.set) > 100:
-                    return
+            def collect_values(x, options):
                 if isinstance(x, str):
                     options.add_value(x)
                 if pd.api.types.is_list_like(x):
@@ -217,42 +239,108 @@ def get_annotation(message, return_dict):
                             continue
                         options.add_value(val)
 
-            df[col].swifter.progress_bar(False).apply(lambda x: collect_values(x))
-            for value in options.counter:
-                if options.counter[value] <= 1:
-                    options.set.remove(value)
+            col.swifter.progress_bar(False).apply(collect_values, args=(options,))
+            for k, v in options.counter.items():
+                if v <= 1:
+                    options.set.remove(k)
             if len(options.set) < 2:
-                continue
+                for k, v in options.counter.items():
+                    if v <= 1:
+                        if k in options.set:
+                            options.set.remove(k)
+            if len(options.set) == len(col):
+                return
             options.set = sorted(
                 options.set, key=lambda x: options.counter[x], reverse=True
             )
-            annot["dtype"] = "str"
+            if len(options.set) > MAX_ANNOT:
+                options.set = options.set[:MAX_ANNOT]
+            if len(options.set) == 0:
+                return
+            if len(options.set) > 3:
+                annot["dtype"] = "str"
+            else:
+                annot["dtype"] = "bool"
             annot["options"] = list(options.set)
-            if len(annot["options"]) > 100:
-                continue
-            option_annots[col] = annot
-            lengths[col] = len(annot["options"])
-            continue
         elif dtype == "object":
-            continue
-        annotations[col] = annot
+            return
+        else:
+            print("not implemented dtype:", name, dtype)
+            return
+        return annot
+
+    if annotation_type == "link":
+        annotations = df.swifter.progress_bar(False).apply(
+            extract_annot, args=(dtypes, names)
+        )
+    else:
+        annotations = df.swifter.progress_bar(False).apply(
+            extract_annot, args=(dtypes, None)
+        )
+
+    if annotations.empty:
+        return
+    if isinstance(annotations, pd.Series):
+        annotations = pd.DataFrame(annotations.to_dict())
+        annotations = annotations.dropna(how="all", axis=1)
+
+    annotations_transposed = annotations.T
+    option_annots = annotations_transposed[annotations_transposed["dtype"] == "str"]
+
+    def print_annot(annotation_dict):
+        for key in annotation_dict:
+            print(key, end="\t")
+            if pd.Series(annotation_dict[key]).empty:
+                print(annotation_dict[key])
+
     # limit the number of annotations to 20 to reduce traffic
-    if not len(annotations) + len(option_annots) > MAX_ANNOT:
+    if (
+        not len(annotations) + len(option_annots) > MAX_ANNOT
+        and not option_annots.empty
+    ):
+        annotations = annotations.drop(columns=option_annots.index)
         space = MAX_ANNOT - len(annotations)
-        lengths = sorted(lengths.items(), key=lambda x: x[1], reverse=True)
-        option_annots = {key: option_annots[key] for key, _ in lengths[:space]}
-        annotations.update(option_annots)
+        lengths = option_annots.apply(lambda x: len(x["options"]), axis=1)
+        lengths = lengths.sort_values(ascending=True)
+        option_annots = option_annots.loc[lengths.index[:space]].T
+        annotations = pd.concat([annotations, option_annots], axis=1)
+        # if project.name == "string_ecoli_ppi":
+        #     if "zinc ion binding:GO:0008270" in option_annots:
+        #         print(option_annots["zinc ion binding:GO:0008270"])
+        # print("=" * 20)
+        # print(
+        #     project.name,
+        #     annotation_type,
+        # )
+        # print(annotations)
+        # print("=" * 20)
+    # Fill nan values with None to filter them out
+    annotations = annotations.where(pd.notnull(annotations), None)
+    annotations = {
+        k: {k1: v1 for k1, v1 in v.items() if v1 is not None}
+        for k, v in annotations.to_dict().items()
+    }
+    if project.name == "string_ecoli_ppi":
+        ...
+        # print("=" * 20)
+        # print(project.name, annotation_type)
+        # print_annot(annotations)
+        # print("=" * 20)
+
     message = (
         {
             "data": "annotations",
             "type": annotation_type,
+            "project": project.name,
             "annotations": annotations,
         },
     )
     return_dict["annotations"] = message
+    return message
 
 
 def get_selection(message):
+    print("Handling selection request:", message)
     if message["type"] == "node":
         if message["annotation"] in [const.NAME_COL, const.ID_COL, const.SUID_COL]:
             message["dtype"] = "object"
@@ -265,11 +353,10 @@ def get_selection(message):
         selection = select_links(message)
         GD.pfile["stateData"]["link_annotation"] = message["annotation"]
         GD.pfile["stateData"]["selectedLinks"] = selection
-    message = {
-        "data": "selection",
-        "selection": selection,
-        "type": message["type"],
-    }
+
+    message["data"] = "selection"
+    message["selection"] = selection
+    message["type"] = message["type"]
     return message
 
 
@@ -286,8 +373,13 @@ def highlight_func(message):
             return message
         try:
             highlight_selected_node_links(message)
-            response = {"message": "Selection highlighted!", "status": "success"}
+            response = {
+                "message": "Selection highlighted!",
+                "status": "success",
+                "set_project": True,
+            }
         except Exception as e:
+            print(traceback.format_exc(e))
             response = {"message": str(e), "status": "error"}
     message.update(response)
     return message
@@ -298,49 +390,59 @@ def store_highlight(message):
     project = Project(project)
     origin = project.get_pfile_value("origin")
     if not origin:
-        message = {"message": "Nothing highlighted!", "status": "error"}
+        message = {
+            "message": "Nothing highlighted!",
+            "status": "error",
+            "set_project": False,
+        }
         return message
     project = Project(origin)
     new_name = project.name + "_highlight"
     i = 1
-    while True:
-        if new_name not in GD.sessionData["proj"]:
-            break
-        new_name += str(i)
-        i += 1
-    project.copy(new_name)
-    GD.sessionData["proj"].append(new_name)
+    if new_name in GD.sessionData["proj"]:
+        while True:
+            if new_name + str(i) not in GD.sessionData["proj"]:
+                new_name += str(i)
+                break
+            i += 1
+    project.copy(os.path.join(PROJECTS_DIR, new_name), ignore=True)
     highlight = Project(new_name)
+    highlight.pfile = GD.pfile
+    GD.sessionData["proj"].append(new_name)
+
     highlight.set_pfile_value("origin", origin)
-    stateData = {
-        "layouts": message["layout"],
-        "nodecolors": message["nodecolors"],
-        "links": message["links"],
-        "linkcolors": message["linkcolors"],
-        "main_tab": message["main_tab"],
-    }
+
+    stateData = highlight.pfile.get("stateData", {})
+    stateData["main_tab"] = message["main_tab"]
     highlight.set_pfile_value("stateData", stateData)
     highlight.write_pfile()
-    message = {"message": f"Highlighting store as {new_name}", "status": "error"}
-    print("Highlighting stored..")
+    message = {
+        "message": f"Highlighting store as {new_name}",
+        "status": "success",
+        "projectName": new_name,
+    }
     return message
 
 
-def reset(message):
+def reset():
     project = GD.sessionData["actPro"]
     project = Project(project)
     origin = project.pfile.get("origin")
     if not origin:
-        return None
-    project.set_pfile_value(
-        "stateData",
-        {
-            "layouts": message["layout"],
-            "nodecolors": message["nodecolors"],
-            "links": message["links"],
-            "linkcolors": message["linkcolors"],
-            "main_tab": message["main_tab"],
-        },
-    )
+        return {
+            "message": f"Nothing highlighted!",
+            "status": "error",
+        }
+    project.pfile = GD.pfile
     project.write_pfile()
-    return origin
+    origin = Project(origin)
+    origin.pfile["stateData"] = GD.pfile["stateData"]
+    return {
+        "message": f"Resetting to {origin.name}",
+        "status": "success",
+        "projectName": origin.name,
+    }
+
+
+def hex_to_rgb(hex):
+    return tuple(int(hex.lstrip("#")[i : i + 2], 16) for i in (0, 2, 4))

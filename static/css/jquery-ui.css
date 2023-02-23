@@ -358,7 +358,9 @@ a.ui-button:active,
 ------------------------------------------ */
 .ui-slider {
 	position: relative;
-	width:89%; /* temporary fix for slider to not exceed range limits in UI position */
+	width: 100%-60px;
+	margin-left: 30px;
+	margin-right: 30px;
 	margin-bottom: 20px;
 }
 
@@ -403,11 +405,13 @@ a.ui-button:active,
 
 .ui-slider-horizontal {
 	z-index:0;
+	padding: 0 30px;
 }
 .ui-slider-horizontal .ui-slider-handle {
 	top: 0px;
-	margin-left: 0;
-	padding-right: 60px;
+    width: 60px;
+    margin-left: -30px;
+    margin-right: -30px;
 }
 .ui-slider-horizontal .ui-slider-range {
 	top: 0px;

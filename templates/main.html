@@ -59,7 +59,7 @@
     if (user_agent.includes("UnrealEngine")) {
         style = document.createElement('style');
         style.type = 'text/css';
-        style.innerHTML = "div.content {height: 1000px;width: 570px;overflow: hidden;}";
+        style.innerHTML = "div.content {height: 1000px;width: 580px;overflow: hidden;}";
         document.getElementsByTagName('head')[0].appendChild(style);
     }
 </script>
@@ -70,9 +70,15 @@
         <script>
             var pdata = JSON.parse({{ pfile| tojson}});
             pdata = variableListener(pdata);
+            ue4("project", pdata.getInternals());
+            console.log(pdata.getInternals())
             var username = '{{session['username']}}';
             var sessionData = JSON.parse({{ sessionData| tojson}});
-
+            url = new URL(window.location.href);
+            if (url.searchParams.get("usr") == null) {
+                url.searchParams.set("usr", username);
+                window.location.href = url;
+            }
         </script>
         {% if "UnrealEngine" not in request.user_agent|string%}
         {% include "NavBar.html" %}
@@ -146,7 +152,11 @@
             <div id="tabs-1" class="container">
 
                 <div class="twelve columns" style="background-color:rgba(0,0,0,0.65);">
+                    <div class="three columns">
+                        <input type="button" value="REFRESH" onclick="location.reload();">
+                    </div>
                     <h2 class="lineglowslow">Project</h2>
+
                 </div>
 
                 <div class="twelve columns">
@@ -398,7 +408,7 @@
                 </div> -->
             <!-- SLIDERS 
                                     <h3 class="border">SCALE</h3>
-                                    <div id="slider_scale"></div>
+                                    <div id="slider_scale "></div>
                 <h3 class="border">NODE SIZE</h3>
                 <div id="slider-node_size"></div>
                 <h3 class="border">LINK SIZE</h3>
@@ -493,7 +503,7 @@
         </div>
         <script>
             deactivateTabs("mainTabs");
-            setStateData(pdata);
+            // setStateData(pdata);
         </script>
     </div>
 

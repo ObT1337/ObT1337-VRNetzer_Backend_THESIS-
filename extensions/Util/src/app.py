@@ -1,16 +1,12 @@
-import json
+import multiprocessing as mp
 import os
-import shutil
+import threading
 import time
-from multiprocessing import Manager, Process
-
-import pandas as pd
 
 import GlobalData as GD
 from io_blueprint import IOBlueprint
-from project import Project
 
-from . import const, util
+from . import anntoation_scraper, util
 
 # Prefix for the extension, as well as the names space of the extension
 url_prefix = "/Util"  # MANDATORY
@@ -39,9 +35,24 @@ nodepanelppi_tabs = []
 annotations = []
 
 
+@blueprint.before_app_first_request
+def util_setup():
+    GD.annotationScraper = anntoation_scraper.AnnotationScraper()
+    threading.Thread(target=GD.annotationScraper.start).start()
+
+
 @blueprint.on("annotation")
 def util_get_annotation(message):
-    handle_annotation_request(message)
+    threading.Thread(target=waiter, args=(message,)).start()
+    pass
+
+
+def waiter(message):
+    response = GD.annotationScraper.wait_for_annotation(message)
+    if response is not None:
+        message.update(response)
+    send_result(message)
+    pass
 
 
 @blueprint.on("select")
@@ -54,18 +65,26 @@ def util_select(message):
 def util_highlight(message):
     blueprint.emit("started", {"id": message["id"]})
     message = util.highlight_func(message)
-    if message["status"] == "success":
+    print(message)
+    if message.get("set_project"):
+        print("Setting project..")
         set_project("tmp")
+        time.sleep(2)
+
     send_status(message)
 
 
 @blueprint.on("reset")
 def util_reset(message):
     if message["type"] == "project":
-        origin = util.reset(message)
-        if origin:
-            set_project(origin)
+        message.update(util.reset())
+        project = message.get("projectName")
+        if project:
+
+            set_project(project)
             print("Resetting..")
+            time.sleep(0.5)
+        send_status(message)
         return
 
     state_data = GD.pfile.get("stateData")
@@ -79,38 +98,8 @@ def util_reset(message):
     GD.pfile["stateData"] = state_data
 
 
-def handle_annotation_request(message):
-    project = GD.sessionData["actPro"]
-    data_type = message["type"]
-    if not hasattr(GD, "annotations"):
-        GD.annotations = {}
-    if project not in GD.annotations:
-        process_annotations(message, project, data_type)
-    if data_type not in GD.annotations[project]:
-        process_annotations(message, project, data_type)
-    if GD.annotations[project][data_type] == "processing":
-        time.sleep(0.5)
-        handle_annotation_request(message)
-        print("Waiting for annotation..")
-    message = GD.annotations[project][data_type]
-    send_result(message)
-
-
-def process_annotations(message, project, data_type):
-    print("Processing annotation request..")
-    if project not in GD.annotations:
-        GD.annotations[project] = {}
-    GD.annotations[project][data_type] = "processing"
-    manager = Manager()
-    return_dict = manager.dict()
-    p = Process(target=util.get_annotation, args=(message, return_dict))
-    p.start()
-    p.join()
-    print("Annotation request processed..")
-    GD.annotations[project][data_type] = return_dict["annotations"]
-
-
 def set_project(project):
+    print("Setting project..", project)
     blueprint.emit(
         "ex", {"id": "projects", "opt": project, "fn": "sel"}, namespace="/chat"
     )

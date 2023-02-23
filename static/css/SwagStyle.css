@@ -1021,7 +1021,13 @@ a.crosslinks:visited {
     overflow:auto;
 }
 .ui-selectmenu-menu.sixten-open::-webkit-scrollbar-thumb {
+    background: transparent;
+    height: 50px;
+}
+.ui-selectmenu-menu.sixten-open::-webkit-scrollbar-thumb:hover {
     background: rgba(42, 113, 148,0.6);
+    border-radius: 5px;
+    opacity: 0.5;
 }
 .ui-selectmenu-menu.sixten-open::-webkit-scrollbar-track {
     background: black;
@@ -1031,7 +1037,13 @@ a.crosslinks:visited {
     overflow:auto;
 }
 .ui-selectmenu-menu.twozerozero-open::-webkit-scrollbar-thumb{
+    background:transparent;
+    height: 50px;
+}
+.ui-selectmenu-menu.twozerozero-open::-webkit-scrollbar-thumb:hover {
     background: rgba(42, 113, 148,0.6);
+    border-radius: 5px;
+    opacity: 0.5;
 }
 .ui-selectmenu-menu.twozerozero-open::-webkit-scrollbar-track {
     background:black;

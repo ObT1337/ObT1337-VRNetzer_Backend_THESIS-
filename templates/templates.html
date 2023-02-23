@@ -412,8 +412,15 @@
             //console.log('create: '+ this.getAttribute('id'));
 
             name_button.addEventListener('click', () => {
+                var id = this.getAttribute("id");
+                try {
+                    addToSelection(id)
+                } catch (error) {
+                    console.log(error);
+                };
+                console.log(pdata.stateData.selected)
                 //console.log('select '+ this.shadowRoot.getAttribute('id'));
-                socket.emit('ex', { msg: this.getAttribute('name'), id: this.getAttribute('id'), fn: "sres_butt_clicked" });
+                socket.emit('ex', { msg: this.getAttribute('name'), id: id, fn: "sres_butt_clicked" });
             });
 
 

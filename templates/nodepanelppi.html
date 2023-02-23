@@ -40,15 +40,19 @@
 
 
 <body>
-    {% if "UnrealEngine" in request.user_agent|string%}
-    <style>
-        div.content {
-            height: 1000px;
-            width: 570px;
-            overflow: hidden;
+    <div id="user_agent" style="display: none;">
+        {{request.user_agent|string}}
+    </div>
+    <script>
+        var user_agent = document.getElementById("user_agent").innerHTML;
+        if (user_agent.includes("UnrealEngine")) {
+            style = document.createElement('style');
+            style.type = 'text/css';
+            style.innerHTML = "div.content {height: 1000px;width: 570px;overflow: hidden;}";
+            document.getElementsByTagName('head')[0].appendChild(style);
         }
-    </style>
-    {% endif %}
+    </script>
+
 
     <script>
         var sessionData = JSON.parse({{ sessionData| tojson}});
@@ -78,7 +82,6 @@
         </ul>
 
         <div id="nodefragment-1">
-
 
             <div class="twelve columns">
                 <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">Node Info</h2>

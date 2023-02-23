@@ -15,7 +15,6 @@ from PIL import Image
 
 import GlobalData as GD
 import load_extensions
-import search
 import socket_handlers
 import uploader
 import util
@@ -79,13 +78,14 @@ def main():
     username = util.generate_username()
     project = flask.request.args.get("project")
     GD.sessionData["proj"] = uploader.listProjects()
+    if project not in GD.sessionData["proj"]:
+        project = "none"
     if project is None:
         project = "none"
     else:
         print(project)
 
     if flask.request.method == "GET":
-
         room = 1
         # Store the data in session
         flask.session["username"] = username
@@ -93,6 +93,7 @@ def main():
         # prolist = uploader.listProjects()
         if project != "none":
             project = Project(project)
+            project.read_all_jsons()
             GD.pfile = project.pfile
             GD.names = project.names
         return render_template(
@@ -118,14 +119,16 @@ def nodepanel():
     project = flask.request.args.get("project")
     if project is None:
         project = GD.sessionData.get("actPro", "new_ppi")
-    project = Project(project)
+    project = Project(project, read=False)
     if project.exists():
+        project.run_functions(
+            [project.read_pfile, project.read_names, project.read_nodes]
+        )
         GD.pfile = project.pfile
         GD.names = project.names
         nodes = project.nodes
     else:
         GD.pfile = None
-    print(GD.pfile)
     add_key = "NA"  # Additional key to show under Structural Information
     # nodes = {node["id"]: node for node in nodes}
 
@@ -288,6 +291,7 @@ def preview():
             return json.dumps({"error": f"{index_name} is not an integer"})
 
     project = Project(project)
+    project.read_all_jsons()
     layoutindex = check_if_given(flask.request.args.get("layout"), "layout")
     if isinstance(layoutindex, str):
         return layoutindex
@@ -405,6 +409,7 @@ def nodeinfo():
     if project is None:
         return 0
     project = Project(project)
+    project.read_nodes()
     nodes = project.nodes
     if key:
         return str(nodes["nodes"][int(id)].get(key))
@@ -481,6 +486,7 @@ def loadProjectAnnotations(name):
 @app.before_first_request
 def execute_before_first_request():
     project = Project(GD.sessionData["actPro"])
+    project.read_all_jsons()
     GD.pfile = project.pfile
     if "stateData" not in GD.pfile:
         GD.pfile["stateData"] = {}

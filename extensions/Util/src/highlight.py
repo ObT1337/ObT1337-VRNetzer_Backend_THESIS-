@@ -4,10 +4,9 @@ from multiprocessing import Pool
 
 import numpy as np
 import pandas as pd
+import project as Project
 import swifter
 from PIL import Image
-
-import project as Project
 
 SELECTED = (
     255,
@@ -24,18 +23,20 @@ NOT_SELECTED = (
 
 
 def selected_color(x):
-    if x[1]:
-        return (SELECTED[:3] + (x[1],),)
-    return x[0]
+    if isinstance(x, float):
+        return int(0)
+    return (SELECTED[:3] + (x[1],),)
     # return SELECTED
 
 
 def not_selected_color(x):
+    if isinstance(x, float):
+        return int(0)
     # return x[:3] + (10,)
-    return NOT_SELECTED
+    return (NOT_SELECTED[:3] + (x[1],),)
 
 
-def extract_node_data_from_tex(project: Project, layout, node_annotation):
+def extract_node_data_from_tex(project: Project, layout):
     # layout = os.path.join("static", "projects", project, "layouts",layout+"XYZ.bmp")
     # layout_low = os.path.join("static", "projects", project, "layoutsl",layout+"XYZl.bmp")
 
@@ -50,8 +51,6 @@ def extract_node_data_from_tex(project: Project, layout, node_annotation):
     # ]
     layout_rgb = os.path.join(project.layouts_rgb_dir, layout)
     columns = ["id"]
-    if node_annotation:
-        columns.append(node_annotation)
     nodes = project.nodes_df.copy()
 
     image = Image.open(layout_rgb)
@@ -68,12 +67,10 @@ def extract_node_data_from_tex(project: Project, layout, node_annotation):
     return nodes
 
 
-def extract_link_data_from_tex(project: Project, layout, link_annotation):
+def extract_link_data_from_tex(project: Project, layout):
     # layout_xyz = os.path.join(project.links_dir, layout.replace("RGB.png", "XYZ.bmp"))
     layout_rgb = os.path.join(project.links_rgb_dir, layout)
     columns = ["s", "e"]
-    if link_annotation:
-        columns.append(link_annotation)
     links = project.links_df[[c for c in columns]].copy()
 
     # Colors
@@ -85,14 +82,21 @@ def extract_link_data_from_tex(project: Project, layout, link_annotation):
     return links, image.size
 
 
-def handle_node_layout(selected_nodes, project, out, layout, node_annotation):
-    nodes = extract_node_data_from_tex(project, layout, node_annotation)
+def handle_node_layout(selected_nodes, project, out, layout, node_color):
+    nodes = extract_node_data_from_tex(project, layout)
 
     selected_nodes = nodes.index.isin(selected_nodes)
     not_selected = nodes[~selected_nodes].copy()
     selected = nodes[selected_nodes].copy()
 
-    selected["c"] = selected["c"].swifter.progress_bar(False).apply(selected_color)
+    if node_color:
+        selected["c"] = (
+            selected["c"]
+            .swifter.progress_bar(False)
+            .apply(lambda x: node_color + (x[3],))
+        )
+    else:
+        selected["c"] = selected["c"].swifter.progress_bar(False).apply(selected_color)
     not_selected["c"] = (
         not_selected["c"].swifter.progress_bar(False).apply(not_selected_color)
     )
@@ -110,25 +114,31 @@ def handle_node_layout(selected_nodes, project, out, layout, node_annotation):
     return
 
 
-def highlight_nodes(selected, layouts, project, out, node_annotation):
-    n = len(layouts)
-    p = n
+def highlight_nodes(selected, layouts, project, out, node_color):
     project.read_nodes()
     project.nodes_df = pd.DataFrame(project.nodes["nodes"])
+
+    args = [(selected, project, out, layout, node_color) for layout in layouts]
+    n = len(layouts)
+    p = n
     if n > os.cpu_count():
         p = os.cpu_count()
-    pool = Pool(p)
-    args = [(selected, project, out, layout, node_annotation) for layout in layouts]
-    pool.starmap(handle_node_layout, args)
-    pool.close()
+    with Pool(p) as pool:
+        pool.starmap(handle_node_layout, args)
     return
 
 
 def handle_link_layout(
-    selected_nodes, selected_links, project, out, mode, layout, link_annotation
+    selected_nodes,
+    selected_links,
+    project,
+    out,
+    mode,
+    layout,
+    link_color,
 ):
     # log.debug("Handling layout", layout)
-    links, img_size = extract_link_data_from_tex(project, layout, link_annotation)
+    links, img_size = extract_link_data_from_tex(project, layout)
     if mode == "highlight":
         selected_links = links["s"].isin(selected_nodes) | links["e"].isin(
             selected_nodes
@@ -145,6 +155,12 @@ def handle_link_layout(
     selected = links[selected_links.values].copy()
 
     not_selected["c"].values[:] = 0
+    if link_color:
+        selected["c"] = (
+            selected["c"]
+            .swifter.progress_bar(False)
+            .apply(lambda x: link_color + (x[3],))
+        )
 
     links = pd.concat([selected, not_selected])
 
@@ -165,25 +181,36 @@ def highlight_links(
     project: Project,
     out,
     mode,
-    link_annotation,
+    link_color,
 ):
-    n = len(layouts)
-    p = n
     project.read_links()
     project.links_df = pd.DataFrame(project.links["links"])
     project.links_df: pd.DateOffset
-    if len(selected_nodes) == 0:
+
+    if selected_nodes is None or len(selected_nodes) == 0:
         project.links_df = project.links_df[project.links_df.index.isin(selected_links)]
         selected_nodes = pd.concat(project.links_df[["s", "e"]]).unique()
-
-    if n > os.cpu_count():
-        p = os.cpu_count()
-    pool = Pool(p)
+    if selected_links is not None:
+        print("filtering links")
+        project.links_df = project.links_df[project.links_df.index.isin(selected_links)]
     args = [
-        (selected_nodes, selected_links, project, out, mode, layout, link_annotation)
+        (
+            selected_nodes,
+            selected_links,
+            project,
+            out,
+            mode,
+            layout,
+            link_color,
+        )
         for layout in layouts
     ]
-    pool.starmap(handle_link_layout, args)
+    n = len(layouts)
+    p = n
+    if n > os.cpu_count():
+        p = os.cpu_count()
+    with Pool(p) as pool:
+        pool.starmap(handle_link_layout, args)
     return selected_nodes
 
 

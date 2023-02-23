@@ -20,6 +20,8 @@ $(document).ready(function () {
     Object.keys(link_annotations),
     Object.keys(link_annotations)[0]
   );
+  updateDropDownClass("util_node_select");
+  updateDropDownClass("util_link_select");
   $("#util_node_select").on("selectmenuselect", function () {
     var key = $("#util_node_select").val();
     initVariables(key, "util_node_variable", node_annotations);
@@ -36,10 +38,10 @@ $(document).ready(function () {
   });
 
   $("#util_node_reset_btn").on("click", function () {
-    resetSelection("node");
+    resetSelection("util_node_reset_btn", "node");
   });
   $("#util_link_reset_btn").on("click", function () {
-    resetSelection("link");
+    resetSelection("util_link_reset_btn", "link");
   });
   setTimeout(function () {
     utilSocket.emit("getSelection");
@@ -50,10 +52,10 @@ $(document).ready(function () {
   }
   console.log(pdata);
   if (pdata.stateData.selected == undefined) {
-    addListener(pdata.stateData, "selected", []);
+    addListener(pdata.stateData, "selected", null);
   }
   if (pdata.stateData.selectedLinks == undefined) {
-    addListener(pdata.stateData, "selectedLinks", []);
+    addListener(pdata.stateData, "selectedLinks", null);
   }
   setSelectionNumber("util_num_nodes")(pdata.stateData.selected);
   setSelectionNumber("util_num_links")(pdata.stateData.selectedLinks);
@@ -72,7 +74,7 @@ function getSetNumberFunction(id) {
 }
 function setSelectionNumber(id) {
   return function (val) {
-    if (val == undefined) {
+    if ((val == null) | (val == undefined)) {
       val = "None";
     } else {
       val = val.length;
@@ -82,14 +84,6 @@ function setSelectionNumber(id) {
 }
 utilSocket.on("selection", function (data) {
   sessionData["selected"] = data;
-});
-// receive status
-utilSocket.on("status", function (data) {
-  button = document.getElementById(data.id);
-  button.value = data.text;
-  button.disabled = false;
-  setStatus(data.status, "util_highlight_sm", data.message);
-  $("#" + data.id).removeClass("loadingButton");
 });
 // Turn of the Highlight button on other clients
 utilSocket.on("started", function (data) {
@@ -101,19 +95,13 @@ utilSocket.on("started", function (data) {
 
 // Turn update context depending on result
 utilSocket.on("result", function (data) {
+  console.log(data);
+  if (data.project != sessionData["actPro"]) {
+    return;
+  }
   if (data.data == "annotations") {
     updatedAnnotations(data);
   } else if (data.data == "selection") {
     updateSelection(data, pdata);
   }
 });
-// Reset project, selected nodes or selected links
-function resetSelection(type) {
-  var message = {
-    id: "reset",
-    type: type,
-    selection: null,
-  };
-  utilSocket.emit("reset", message);
-  updateSelection(message);
-}

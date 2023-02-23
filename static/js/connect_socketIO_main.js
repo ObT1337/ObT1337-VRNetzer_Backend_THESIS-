@@ -29,8 +29,6 @@ function settextscroll(id, val) {
 }
 
 $(document).ready(function () {
-  ue4("project", pdata);
-
   ///set up and connect to socket
   console.log("http://" + document.domain + ":" + location.port + "/chat");
   socket = io.connect(
@@ -112,14 +110,12 @@ $(document).ready(function () {
       case "sel":
         // SPECIAL CASE: Refresh Page When loading new project
         if (data.id == "projects") {
-          var url =
-            window.location.href.split("?")[0] +
-            "?usr=" +
-            username +
-            "&project=" +
-            data.opt;
-          console.log(url);
-          window.location.href = url;
+          console.log("refreshing page");
+          url = new URL(window.location.href);
+          url.searchParams.set("project", data.opt);
+          window.location.href = url.href;
+          ue4("sel", data);
+          window.location.reload();
         }
 
         $("#" + data.id).val(data.opt);

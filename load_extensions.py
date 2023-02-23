@@ -4,6 +4,8 @@ from importlib import import_module
 
 import flask
 
+IGNORE_DIRS = ["__pycache__", ".ds_store"]
+
 
 def import_blueprint(app: flask.Flask, ext: str, extensions_path: str) -> bool:
     try:
@@ -43,12 +45,23 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
     """Loads all extensions contained in the directory extensions."""
     _WORKING_DIR = os.path.abspath(os.path.dirname(__file__))
     extensions = os.path.join(_WORKING_DIR, "extensions")
+    ignore = []
     loaded_extensions = []
     list_of_ext = []
     possible_tabs = ["main_tabs", "upload_tabs", "nodepanel_tabs", "nodepanelppi_tabs"]
     # add_tab_to_nodepanel = []
     if os.path.exists(extensions):
+        if os.path.isfile(os.path.join(extensions, "ignore.py")):
+            ignore_py = import_module("extensions.ignore")
+            if hasattr(ignore_py, "ignore"):
+                ignore = ignore_py.ignore
         for ext in os.listdir(extensions):
+            if (
+                not os.path.isdir(os.path.join(extensions, ext))
+                or ext in ignore
+                or ext in IGNORE_DIRS
+            ):
+                continue
             extension_attr = {}
             module = import_blueprint(main_app, ext, extensions)
             if module:
@@ -66,6 +79,7 @@ def load(main_app: flask.Flask) -> tuple[flask.Flask, dict]:
         "ext": list_of_ext,
     }
     return main_app, res
+
 
 # Deprecated
 # def add_tabs(tabs: list[str], ext: str) -> list[str]:

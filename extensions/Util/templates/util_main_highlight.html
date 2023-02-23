@@ -1,45 +1,72 @@
 {% include "util_flask_styles.html" %}
 {% include "util_scripts.html" %}
 <script src="{{ url_for('Util.static', filename='js/highlightTab.js') }}"></script>
+<style>
+    .highlight-row {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .highlight-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .highlight-content input {
+        margin-right: 2%;
+    }
+
+    .highlight-content input[type="checkbox"] {
+        margin-right: 25px;
+    }
+
+    .highlight-label {
+        margin-bottom: 10px;
+    }
+</style>
 <!-- This Tab will be added -->
 <div id="tab_to_add" class="container" style="display:none;">
     <div id="util_tab">
         <div class="twelve columns">
-            <h2 class="lineglowslow" style="margin-bottom:50px;margin-top:30px">util</h2>
+            <h2 class="lineglowslow" style="margin-bottom:20px;margin-top:30px;font-size: 80px;">HIGHLIGHT</h2>
         </div>
         <div class="frameBox">
-            <div id="util_highlight" class="twelve columns frameBox" style="margin: 0px;width: 100%;">
-                <div style="display: flex; align-items: center;">
-                    <label for="vr_checkbox" style="margin-right: 2%;">
-                        <h4>Highlight Color</h4>
-                    </label>
-                    <input type="checkbox" id="util_use_highlight" class="vr_checkbox" style="margin-right:2%;">
-
+            <div id="util_highlight" class="twelve columns frameBox">
+                <div class="highlight-row six columns">
+                    <div class="highlight-label">
+                        <h4>Define Node Color</h4>
+                    </div>
+                    <div class="highlight-content">
+                        <input type="checkbox" id="util_use_node_highlight_color" class="vr_checkbox">
+                        <mc-colorbox id="util_highlight_node_color"></mc-colorbox>
+                    </div>
                 </div>
-                <script>
-                    initCheckbox("util_use_highlight")
-                </script>
-                <mc-colorbox id="util_highlight_color" style="margin-left:20%"></mc-colorbox>
+
+                <div class="highlight-row six columns">
+                    <div class="highlight-label">
+                        <h4>Define Link Color</h4>
+                    </div>
+                    <div class="highlight-content">
+                        <input type="checkbox" id="util_use_link_highlight_color" class="vr_checkbox">
+
+                        <mc-colorbox id="util_highlight_link_color"></mc-colorbox>
+                    </div>
+                </div>
             </div>
-            <div class="frameBox">
+
+
+            <div clas="frameBox">
                 <div class="twelve columns">
                     <input id="util_highlight_bnt" type="button" value="Highlight selection" class="twelve columns">
                 </div>
-                <script>
-                    initHighlightButton("util_highlight_bnt", "highlight")
-                </script>
                 <div class="twelve columns">
                     <input id="util_isolate_bnt" type="button" value="Isolate selection" class="twelve columns">
                 </div>
-                <script>
-                    initHighlightButton("util_isolate_bnt", "isolate")
-                </script>
                 <div class="twelve columns">
                     <input id="util_bipartite_bnt" type="button" value="Bipartite selection" class="twelve columns">
                 </div>
-                <script>
-                    initHighlightButton("util_bipartite_bnt", "bipartite")
-                </script>
             </div>
             <div class="twelve columns">
                 <div id="util_highlight_sm" class="updateMessage">
@@ -49,14 +76,10 @@
                 <div id="util_store_highlight" class="twelve columns">
                     <input id="util_store_highlight_btn" type="button" value="Store Highlight" class="twelve columns">
                 </div>
-                <script>
-                    initHighlightButton("util_store_highlight_btn", "store")
-                </script>
-                <div id="util_reset_selection" class="twelve columns">
-                    <input id="util_reset_selection_btn" type="button" value="Reset Highlight" class="twelve columns">
+                <div id="util_reset_highlight" class="twelve columns">
+                    <input id="util_reset_highlight_btn" type="button" value="Reset Highlight" class="twelve columns">
                 </div>
                 <script>
-                    initHighlightButton("util_store_highlight_btn", "reset")
                 </script>
             </div>
             {% if "UnrealEngine" not in request.user_agent|string%}

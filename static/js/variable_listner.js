@@ -1,3 +1,22 @@
+function constructInternalObject(obj) {
+  var keys = Object.keys(obj);
+  var internalObjects = {};
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var value = obj[key];
+
+    if (value == undefined) {
+      continue;
+    }
+    if (isJsonObject(value)) {
+      value = constructInternalObject(value);
+    }
+    if (key.endsWith("Internal")) {
+      internalObjects[key.replace("Internal", "")] = value;
+    }
+  }
+  return internalObjects;
+}
 function variableListener(obj) {
   var keys = Object.keys(obj);
   newListnerObject = {};
@@ -9,6 +28,9 @@ function variableListener(obj) {
     }
     newListnerObject = addListener(newListnerObject, key, obj[key]);
   }
+  newListnerObject.getInternals = function () {
+    return constructInternalObject(this);
+  };
   return newListnerObject;
 }
 

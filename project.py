@@ -19,8 +19,13 @@ DEFAULT_LINKS = {"links": []}
 
 
 class Project:
-    def __init__(self, name: str):
-        """Project class for handling project directories and their data."""
+    def __init__(self, name: str, read=True, check_exists=True):
+        """Project class for handling project directories and their data.
+        Initializes a project object. All variables are initialized and the pfile is read, if it does not exist, it is created.
+        Args:
+            name (str): Name of the project
+            read (bool, optional): If the pfile should be read. Defaults to True.
+        """
         if not isinstance(name, str):
             raise TypeError(f"Name must be a string, not {type(name)}")
         self.name = name
@@ -37,6 +42,7 @@ class Project:
 
         self.pfile = DEFAULT_PFILE
         self.pfile["name"] = name
+        self.origin = None
         self.names = DEFAUT_NAMES
         self.nodes = DEFAULT_NODES
         self.links = DEFAULT_LINKS
@@ -65,7 +71,11 @@ class Project:
             self.create_links_dir,
             self.create_links_rgb_dir,
         ]
-        self.read_all_jsons()
+        if read:
+            if check_exists and not self.exists():
+                pass
+            else:
+                self.read_pfile()
 
     @staticmethod
     def write_json(file: str, data: object):
@@ -155,6 +165,7 @@ class Project:
         self,
     ):
         self.pfile = self.read_json(self.pfile_file, DEFAULT_PFILE)
+        self.origin = self.get_pfile_value("origin", None)
 
     def read_names(self):
         self.names = self.read_json(self.names_file, DEFAUT_NAMES)
@@ -283,18 +294,27 @@ class Project:
     def get_files_in_dir(self, dir: str):
         return os.listdir(os.path.join(self.location, dir))
 
+    def has_own_nodes(self):
+        return os.path.exists(self.nodes_file)
+
+    def has_own_links(self):
+        return os.path.exists(self.links_file)
+
     def remove(self):
-        shutil.rmtree(self.location)
+        shutil.rmtree(self.location, ignore_errors=True)
 
     def remove_subdir(self, subdir: str):
         shutil.rmtree(os.path.join(self.location, subdir))
 
-    def copy(self, target: str, *args, **kwargs):
+    def copy(self, target: str, *args, ignore=None, **kwargs):
         """Copies the whole directory of the project to the target location."""
+        if ignore:
+            ignore = shutil.ignore_patterns("names.json", "nodes.json", "links.json")
         shutil.copytree(
             self.location,
             target,
             *args,
             **kwargs,
-            ignore=shutil.ignore_patterns("names.json", "nodes.json", "links.json"),
+            ignore=ignore,
+            dirs_exist_ok=True,
         )

@@ -1,6 +1,18 @@
 $(document).ready(function () {
-  $("#util_project_reset_btn").on("click", function () {
-    resetSelection("project");
+  initHighlightButton("util_isolate_bnt", "isolate");
+  initHighlightButton("util_bipartite_bnt", "bipartite");
+  initHighlightButton("util_store_highlight_btn", "store");
+  initHighlightButton("util_highlight_bnt", "highlight");
+  initCheckbox("util_use_highlight");
+
+  $("#util_reset_highlight_btn").on("click", function () {
+    statusID = "util_highlight_sm";
+    resetSelection(
+      "util_reset_highlight_btn",
+      "project",
+      statusID,
+      "Reset Highlight"
+    );
   });
 });
 // Highlight on click
@@ -10,10 +22,16 @@ function initHighlightButton(id, mode) {
     message["mode"] = mode;
     message["id"] = id;
     message["text"] = document.getElementById(id).value;
-    if ($("#util_use_highlight").is(":checked")) {
-      message["highlight"] = true;
-    } else {
-      message["highlight"] = false;
+    message["sm"] = "util_highlight_sm";
+    if (document.getElementById("util_highlight_node_color").checked) {
+      message["node_color"] = document
+        .getElementById("util_highlight_node_color")
+        .shadowRoot.querySelector("#color");
+    }
+    if (document.getElementById("util_use_link_highlight_color").checked) {
+      message["link_color"] = document
+        .getElementById("util_highlight_link_color")
+        .shadowRoot.querySelector("#color");
     }
     // message["color"] = $("#util_highlight_color").colorbox.value;
     utilSocket.emit("highlight", message);
