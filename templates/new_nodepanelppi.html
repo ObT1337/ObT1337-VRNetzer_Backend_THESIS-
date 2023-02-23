@@ -491,6 +491,20 @@
         <script>
             // Will deactivate all tabs for which the if referenced in href cannot be found in the document.
             deactivateTabs("nodepanel_tabsList")
+            var item = document.getElementById("nodepanel_tabsList");
+
+item.addEventListener("wheel", function (e) {
+    if (e.deltaY > 0) {
+        item.scrollLeft += 100;
+    e.preventDefault();
+// prevenDefault() will help avoid worrisome 
+// inclusion of vertical scroll 
+    }
+    else {
+        item.scrollLeft -= 100;
+    e.preventDefault();
+    }
+});
         </script>
         <div id="extension_code">
         </div>

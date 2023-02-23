@@ -109,6 +109,7 @@
                 }
             </style>
             <ul id="mainTabs" style="display: flex; overflow-x: auto;height: fit-content;overflow-y: hidden;">
+  
                 <li>
                     <a href="#tabs-1">
                         <img draggable="false" onmousedown="return false" height='40' width='40'
@@ -503,7 +504,22 @@
         </div>
         <script>
             deactivateTabs("mainTabs");
-            // setStateData(pdata);
+            setStateData(pdata);
+            var item = document.getElementById("mainTabs");
+
+            item.addEventListener("wheel", function (e) {
+                if (e.deltaY > 0) {
+                    item.scrollLeft += 100;
+                e.preventDefault();
+            // prevenDefault() will help avoid worrisome 
+            // inclusion of vertical scroll 
+                }
+                else {
+                    item.scrollLeft -= 100;
+                e.preventDefault();
+                }
+            });
+
         </script>
     </div>
 

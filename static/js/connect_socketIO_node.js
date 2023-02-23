@@ -67,7 +67,11 @@ $(document).ready(function () {
         break;
 
       case "nlc":
+        console.log("GOT DATA");
+        url = new URL(window.location.href);
+        url.searchParams.set("id", data.data);
         ue4("nlc", data);
+        window.location.href = url.href;
         break;
       /*
             case 'cnl':
@@ -116,11 +120,16 @@ $(document).ready(function () {
         ue4("slider", data);
         break;
       case "sres_butt_clicked":
-        // Get the current URL
         url = new URL(window.location.href);
-        url.query = url.searchParams.set("id", data.id);
-        window.location.href = currentUrl;
-        window.location.reload();
+        url.searchParams.set("id", data.id);
+        data={
+          "id":x,
+          "data":data.id,
+          "fn":"nlc",
+          "usr":data.usr
+        }
+        ue4("nlc", data);
+        window.location.href = url;
         break;
       case "fetch":
         console.log("fetching");
