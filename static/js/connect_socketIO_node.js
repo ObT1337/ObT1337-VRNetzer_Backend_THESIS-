@@ -122,13 +122,6 @@ $(document).ready(function () {
       case "sres_butt_clicked":
         url = new URL(window.location.href);
         url.searchParams.set("id", data.id);
-        data={
-          "id":x,
-          "data":data.id,
-          "fn":"nlc",
-          "usr":data.usr
-        }
-        ue4("nlc", data);
         window.location.href = url;
         break;
       case "fetch":
