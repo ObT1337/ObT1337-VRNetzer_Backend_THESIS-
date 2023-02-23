@@ -65,14 +65,15 @@ $(document).ready(function () {
         $("#" + data.id).prop("checked", data.val);
         ue4("chk", data);
         break;
+
+      case "nlc":
+        ue4("nlc", data);
+        break;
       /*
             case 'cnl':
                 ue4("cnl", data);
                 break;
 
-            case 'nlc':
-                ue4("nlc", data);
-                break;
 
             case 'prot':
                 ue4("prot", data);
@@ -116,20 +117,10 @@ $(document).ready(function () {
         break;
       case "sres_butt_clicked":
         // Get the current URL
-        var currentUrl = window.location.href.replace("#%5B%5D", "");
-
-        // Check if the URL contains an "id" parameter
-        if (currentUrl.indexOf("id=") == -1) {
-          // If the "id" parameter is not present, add it with a default value of "2123"
-          currentUrl += (currentUrl.indexOf("?") == -1 ? "?" : "&") + "id=2123";
-        } else {
-          // If the "id" parameter is already present, replace its value with a new one
-          currentUrl = currentUrl.replace(/id=\d+/g, "id=" + data.id);
-        }
-        console.log(currentUrl);
-        // Update the URL
+        url = new URL(window.location.href);
+        url.query = url.searchParams.set("id", data.id);
         window.location.href = currentUrl;
-
+        window.location.reload();
         break;
       case "fetch":
         console.log("fetching");

@@ -98,9 +98,9 @@ $(document).ready(function () {
         ue4("cnl", data);
         break;
 
-      case "nlc":
-        ue4("nlc", data);
-        break;
+      // case "nlc":
+      //   ue4("nlc", data);
+      //   break;
 
       case "prot":
         ue4("prot", data);
