@@ -37,11 +37,7 @@ $(document).ready(function () {
   socket.io.opts.transports = ["websocket"];
 
   socket.on("connect", function () {
-    socket.emit("join", {});
-  });
-  socket.on("status", function (data) {
-    //$('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-    //$('#chat').scrollTop($('#chat')[0].scrollHeight);
+    socket.emit("join", { uid: uid });
   });
   socket.on("ex", function (data) {
     console.log("server returned: " + JSON.stringify(data));
@@ -108,19 +104,23 @@ $(document).ready(function () {
         break;
 
       case "sel":
+        console.log("NEW PROJECT SELECTED");
         // SPECIAL CASE: Refresh Page When loading new project
         if (data.id == "projects") {
-          console.log("refreshing page");
-          url = new URL(window.location.href);
-          url.searchParams.set("project", data.opt);
-          window.location.href = url.href;
+          console.log("NEW PROJECT SELECTED", data.opt);
+          url = new URL(location.href);
+          url.searchParams.delete("project", data.opt);
           ue4("sel", data);
-          window.location.reload();
+          console.log(data);
+          location.href = url.href;
+          location.reload();
+          break;
         }
 
         $("#" + data.id).val(data.opt);
         $("#" + data.id).selectmenu("refresh");
         ue4("sel", data);
+
         //$("#dropdown", $(data.id).shadowRoot).selectmenu("value", 1);
         //$("#dropdown", $(data.id).shadowRoot).selectmenu("change");
 
@@ -135,6 +135,7 @@ $(document).ready(function () {
         if (data.usr != username) {
           //var slider = document.getElementById(data.id).shadowRoot.getElementById("slider");
           // slider.value= data.val;
+          console.log(data);
           $("#" + data.id).slider("value", data.val);
         }
         ue4("slider", data);

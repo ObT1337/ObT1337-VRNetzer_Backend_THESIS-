@@ -4,6 +4,7 @@ import threading
 import time
 
 import GlobalData as GD
+import socket_handlers
 from io_blueprint import IOBlueprint
 
 from . import anntoation_scraper, util
@@ -68,6 +69,7 @@ def util_highlight(message):
     print(message)
     if message.get("set_project"):
         print("Setting project..")
+        GD.annotationScraper.update_annotations("tmp")
         set_project("tmp")
         time.sleep(2)
 
@@ -100,9 +102,10 @@ def util_reset(message):
 
 def set_project(project):
     print("Setting project..", project)
-    blueprint.emit(
-        "ex", {"id": "projects", "opt": project, "fn": "sel"}, namespace="/chat"
-    )
+    message = {"id": "projects", "opt": project, "fn": "sel"}
+    socket_handlers.projects(message)
+    blueprint.emit("ex", message, namespace="/chat")
+    print("Project set..")
 
 
 def send_result(message):

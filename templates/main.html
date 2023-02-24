@@ -28,6 +28,7 @@
     <script src="{{ url_for('static', filename='js/mc_UI_Elements.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/extension_tab_load.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/variable_listner.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/init_routine.js') }}"></script>
 
     {% include 'templates.html' %}
     <!--
@@ -109,7 +110,7 @@
                 }
             </style>
             <ul id="mainTabs" style="display: flex; overflow-x: auto;height: fit-content;overflow-y: hidden;">
-  
+
                 <li>
                     <a href="#tabs-1">
                         <img draggable="false" onmousedown="return false" height='40' width='40'
@@ -504,22 +505,8 @@
         </div>
         <script>
             deactivateTabs("mainTabs");
-            setStateData(pdata);
-            var item = document.getElementById("mainTabs");
-
-            item.addEventListener("wheel", function (e) {
-                if (e.deltaY > 0) {
-                    item.scrollLeft += 100;
-                e.preventDefault();
-            // prevenDefault() will help avoid worrisome 
-            // inclusion of vertical scroll 
-                }
-                else {
-                    item.scrollLeft -= 100;
-                e.preventDefault();
-                }
-            });
-
+            scrollHorizontal("mainTabs");
+            // setStateData(pdata);
         </script>
     </div>
 

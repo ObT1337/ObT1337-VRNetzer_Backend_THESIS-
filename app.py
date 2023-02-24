@@ -78,12 +78,10 @@ def main():
     username = util.generate_username()
     project = flask.request.args.get("project")
     GD.sessionData["proj"] = uploader.listProjects()
-    if project not in GD.sessionData["proj"]:
-        project = "none"
-    if project is None:
-        project = "none"
-    else:
-        print(project)
+    if project not in GD.sessionData["proj"] or project is None:
+        project = GD.sessionData["actPro"]
+    if project is not None:
+        GD.sessionData["actPro"] = project
 
     if flask.request.method == "GET":
         room = 1
@@ -502,19 +500,13 @@ def execute_before_first_request():
 def join(message):
     room = flask.session.get("room")
     join_room(room)
+    uid = message.get("uid")
     print(
-        webfunc.bcolors.WARNING
-        + flask.session.get("username")
-        + " has entered the room."
-        + webfunc.bcolors.ENDC
+        webfunc.bcolors.WARNING + uid + " has entered the room." + webfunc.bcolors.ENDC
     )
-    emit(
-        "status",
-        {"msg": flask.session.get("username") + " has entered the room."},
-        room=room,
-    )
+    emit("status", {"uid": uid, "msg": uid + " has entered the room."}, room=room)
     user = {
-        "username": flask.session.get("username"),
+        "username": uid,
         "room": flask.session.get("room"),
         "ip": flask.request.remote_addr,
     }
@@ -563,6 +555,12 @@ def ex(message):
     # webfunc.sendUE4('http://127.0.0.1:3000/in',  {'msg': flask.session.get('username') + ' : ' + message['msg']})
 
 
+@socketio.on("init", namespace="/chat")
+def init(message):
+    message["ids"] = socket_handlers.get_stateData(message)
+    emit("init", message)
+
+
 @socketio.on("left", namespace="/chat")
 def left(message):
     room = flask.session.get("room")
@@ -576,7 +574,6 @@ def left(message):
         + " has left the room."
         + webfunc.bcolors.ENDC
     )
-    util.construct_nav_bar(app)
 
 
 if __name__ == "__main__":

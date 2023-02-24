@@ -17,7 +17,6 @@ class AnnotationScraper:
     ):
         self.manager = mp.Manager()
         self.queue = self.manager.Queue()
-        self.fast_queue = self.manager.Queue()
         self.results = self.manager.Queue()
         self.done = self.manager.Value("all_done", False)
         self.pool = None
@@ -38,7 +37,6 @@ class AnnotationScraper:
             n = 1
         bg_args = (
             self.queue,
-            self.fast_queue,
             self.results,
             self.done,
         )
@@ -48,9 +46,13 @@ class AnnotationScraper:
         # for _ in range(n):
         #     worker_task(*bg_args)
 
-    def add_to_queue(self, project, data_type):
-        if not self.is_processing(project, data_type):
-            print("Adding to queue..", project, data_type)
+    def update_annotations(self, project):
+        for data_type in ["node", "link"]:
+            self.add_to_queue(project, data_type, force=True)
+
+    def add_to_queue(self, project, data_type, force=False):
+        if not self.is_processing(project, data_type) or force:
+            print("Adding to queue..", project, data_type, end="\r")
             all_jobs = []
             while not self.queue.empty():
                 all_jobs.append(self.queue.get())
@@ -97,7 +99,7 @@ class AnnotationScraper:
             i = (i + 1) % 2
 
         self.done.value = True
-        print("All annotations scraped!")
+        print("\nAll annotations scraped!")
 
         self.pool.close()
         self.pool.join()
@@ -105,9 +107,6 @@ class AnnotationScraper:
             print("Annotation scraper idling...", end="\r")
             time.sleep(5)
         self.start()
-
-    def execute_request(self, request):
-        self.add_to_queue(*request, queue=self.fast_queue)
 
     def all_projects_processed(self):
         for project in self.projects:
@@ -162,7 +161,7 @@ class AnnotationScraper:
             # print("Waiting for annotation", project, data_type)
             if project in self.handled_projects:
                 if data_type in self.annotations[project]:
-                    print("Annotation processed", project, data_type)
+                    print("Annotation processed", project, data_type, end="\r")
                     break
                 self.add_to_queue(*arg)
             else:
@@ -179,10 +178,9 @@ class AnnotationScraper:
 
 
 class Worker(threading.Thread):
-    def __init__(self, queue, fast, results, all_done):
+    def __init__(self, queue, results, all_done):
         threading.Thread.__init__(self)
         self.queue = queue
-        self.fast_queue = fast
         self.results = results
         self.all_done = all_done
 
@@ -192,15 +190,14 @@ class Worker(threading.Thread):
             self.collect_annotations()
         # print("Worker done:")
 
-    def collect_annotations(self, fast=False):
+    def collect_annotations(self):
         """Collects all the annotations of every project and stores them in the GlobalData."""
         project, data_type = self.queue.get()
-        print("Collecting Anntoation for:", project, data_type)
-        args = self.collect_args(project, data_type)
+        print("Collecting Anntoation for:", project, data_type, end="\r")
         message = {"project": project, "type": data_type}
         message = util.get_annotation(message, {})
         self.results.put(message)
-        print("Done collecting annotation for:", project, data_type)
+        print("Done collecting annotation for:", project, data_type, end="\r")
 
     def collect_args(self, project, data_type):
         project = Project(project)
@@ -223,6 +220,6 @@ def find_data_origin(project, data_type):
     return project
 
 
-def worker_task(queue, fast_queue, results, all_done):
-    worker = Worker(queue, fast_queue, results, all_done)
+def worker_task(queue, results, all_done):
+    worker = Worker(queue, results, all_done)
     worker.run()

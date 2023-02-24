@@ -8,11 +8,7 @@ function initDropdown(id, data, active) {
   $("#" + id).val(active);
   $("#" + id).selectmenu("refresh");
   $("#" + id).on("selectmenuselect", function () {
-    var name = $("#" + id)
-      .find(":selected")
-      .text();
-    socket.emit("ex", { id: id, opt: name, fn: "sel" });
-    ///logger($('#selectMode').val());
+    emitSelectmenuSelect(id);
   });
 }
 
@@ -46,6 +42,11 @@ function initDropdownX(id, data, active) {
 }
 
 function initSlider(id) {
+  value = document.createElement("input");
+  value.setAttribute("id", id + "_val");
+  value.setAttribute("type", "number");
+  value.setAttribute("value", 128);
+  value.setAttribute("style", "display:none");
   $("#" + id).slider({
     animate: true,
     range: "max",
@@ -53,6 +54,10 @@ function initSlider(id) {
     max: 255,
     value: 128,
     slide: function (event, ui) {
+      $("#" + id + "_val").val(ui.value);
+      ue4("slider", { id: id, val: ui.value });
+    },
+    stop: function (event, ui) {
       socket.emit("ex", { id: id, val: ui.value, fn: "sli" });
     },
   });
@@ -72,6 +77,13 @@ function initButton(id) {
     var $this = $(this);
     socket.emit("ex", { id: id, val: $this.val(), fn: "but" });
   });
+  if (id == "backwardstep") {
+    initBackwardStep();
+  } else if (id == "forwardstep") {
+    initForwardStep();
+  } else if (id == "reset") {
+    initResetButton();
+  }
 }
 
 function makeid(length) {
@@ -115,39 +127,6 @@ function initResetButton() {
     });
   });
 }
-function setStateData(pdata) {
-  $(document).ready(function () {
-    var selections = pdata["stateData"];
-    if (selections != undefined) {
-      var ids = ["layouts", "nodecolors", "links", "linkcolors"];
-      ids.forEach((id) => {
-        if (selections[id] != undefined) {
-          $("#" + id).val(selections[id]);
-          setTimeout(function () {
-            socket.emit("ex", { id: id, opt: selections[id], fn: "sel" });
-          }, 5000);
-        }
-      });
-      var ids = [
-        "slider-node_size",
-        "slider-link_size",
-        "slider-link_transparency",
-        "slider-label_scale",
-      ];
-      ids.forEach((id) => {
-        if (selections[id] != undefined) {
-          $("#" + id).slider("value", selections[id]);
-          setTimeout(function () {
-            socket.emit("ex", { id: id, val: selections[id], fn: "sli" });
-          }, 5000);
-        }
-      });
-      if (selections["main_tab"] != undefined) {
-        $("#tabs").tabs("option", "active", selections["main_tab"]);
-      }
-    }
-  });
-}
 
 function setStatus(status, id, message, timeout = 5000) {
   console.log(status, id, message, timeout);
@@ -163,4 +142,81 @@ function setStatus(status, id, message, timeout = 5000) {
   setTimeout(function () {
     $("#" + id).css("opacity", "0");
   }, timeout);
+}
+function scrollHorizontal(id) {
+  var item = document.getElementById(id);
+
+  item.addEventListener("wheel", function (e) {
+    if (e.deltaY > 0) {
+      item.scrollLeft += 100;
+      e.preventDefault();
+      // prevenDefault() will help avoid worrisome
+      // inclusion of vertical scroll
+    } else {
+      item.scrollLeft -= 100;
+      e.preventDefault();
+    }
+  });
+}
+
+function nextLayout(id) {
+  var idx = $("#" + id).prop("selectedIndex");
+  var numOptions = $("#" + id).children().length;
+  if (idx == numOptions - 1) {
+    idx = 0;
+  } else {
+    idx++;
+  }
+  $("#" + id).prop("selectedIndex", idx);
+  $("#" + id).selectmenu("refresh");
+}
+function prevLayout(id) {
+  var idx = $("#" + id).prop("selectedIndex");
+  if (idx == 0) {
+    idx = -1;
+  } else {
+    idx--;
+  }
+  $("#" + id).prop("selectedIndex", idx);
+  $("#" + id).selectmenu("refresh");
+}
+function initBackwardStep() {
+  $("#backwardstep").on("click", function () {
+    if (document.getElementById("chbXYZ").checked == true) {
+      prevLayout("layouts");
+    }
+    if (document.getElementById("chbNrgb").checked == true) {
+      prevLayout("nodecolors");
+    }
+    if (document.getElementById("chbLXYZ").checked == true) {
+      prevLayout("links");
+    }
+    if (document.getElementById("chbLrgb").checked == true) {
+      prevLayout("linkcolors");
+    }
+  });
+}
+function initForwardStep() {
+  $("#forwardstep").on("click", function () {
+    if (document.getElementById("chbXYZ").checked == true) {
+      nextLayout("layouts");
+    }
+    if (document.getElementById("chbNrgb").checked == true) {
+      nextLayout("nodecolors");
+    }
+    if (document.getElementById("chbLXYZ").checked == true) {
+      nextLayout("links");
+    }
+    if (document.getElementById("chbLrgb").checked == true) {
+      nextLayout("linkcolors");
+    }
+  });
+}
+
+function emitSelectmenuSelect(id) {
+  var name = $("#" + id)
+    .find(":selected")
+    .text();
+  socket.emit("ex", { id: id, opt: name, fn: "sel" });
+  ///logger($('#selectMode').val());
 }

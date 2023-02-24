@@ -181,7 +181,7 @@ def get_annotation(message, return_dict):
     drops = [c for c in const.IGNORE_COLS if c in df.columns]
     df = df.drop(columns=drops)
     lengths = {}
-    print(project.name, annotation_type, len(df.columns))
+    # print(project.name, annotation_type, len(df.columns))
 
     def extract_annot(col, dtypes, names=None):
         name = str(col.name)
@@ -211,7 +211,7 @@ def get_annotation(message, return_dict):
             annot["dtype"] = "float"
         elif pd.api.types.is_string_dtype(dtype):
             # TODO: check if there is a better way to do this maybe creating a new series of every new value and make it true if this value is in the row
-            class set_counter:
+            class SetCounter:
                 def __init__(self):
                     self.set = set()
                     self.counter = {}
@@ -228,9 +228,9 @@ def get_annotation(message, return_dict):
                         self.counter[value] = 0
                     self.counter[value] += 1
 
-            options = set_counter()
+            options = SetCounter()
 
-            def collect_values(x, options):
+            def collect_values(x, options: SetCounter):
                 if isinstance(x, str):
                     options.add_value(x)
                 if pd.api.types.is_list_like(x):
@@ -287,17 +287,11 @@ def get_annotation(message, return_dict):
     annotations_transposed = annotations.T
     option_annots = annotations_transposed[annotations_transposed["dtype"] == "str"]
 
-    def print_annot(annotation_dict):
-        for key in annotation_dict:
-            print(key, end="\t")
-            if pd.Series(annotation_dict[key]).empty:
-                print(annotation_dict[key])
-
     # limit the number of annotations to 20 to reduce traffic
-    if (
-        not len(annotations) + len(option_annots) > MAX_ANNOT
-        and not option_annots.empty
-    ):
+    if len(annotations) + len(option_annots) > MAX_ANNOT and not option_annots.empty:
+        print("=====================================")
+        print("TO MANY ANNOTATIONS", len(annotations), len(option_annots), MAX_ANNOT)
+        print("=====================================")
         annotations = annotations.drop(columns=option_annots.index)
         space = MAX_ANNOT - len(annotations)
         lengths = option_annots.apply(lambda x: len(x["options"]), axis=1)

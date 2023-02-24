@@ -43,6 +43,7 @@ def projects(message: dict) -> None:
     print("changed project to " + GD.sessionData["actPro"])
     # print("names_files to " + str(GD.names))
     print("changed activ project " + message["opt"])
+    print(message)
 
 
 def node_labels(message):
@@ -73,6 +74,7 @@ def add_node(selected_id):
         selected.append(selected_id)
     print(GD.pfile["stateData"]["selected"])
     GD.pfile["stateData"]["selected"] = selected
+    GD.save_pfile(GD.pfile)
 
 
 def node_selection(message):
@@ -96,6 +98,7 @@ def slider(message):
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
         GD.pfile["stateData"][message["id"]] = message["val"]
+        GD.save_pfile(GD.pfile)
 
 
 def select_menu(message):
@@ -104,6 +107,7 @@ def select_menu(message):
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
         GD.pfile["stateData"][message["id"]] = message["opt"]
+        GD.save_pfile(GD.pfile)
 
 
 def tab(message):
@@ -112,9 +116,24 @@ def tab(message):
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
         GD.pfile["stateData"][message["id"]] = message["msg"]
+        GD.save_pfile(GD.pfile)
 
 
 def search(message):
     results = {"id": "sres", "val": [], "fn": "sres"}
     results["val"] = label_search.search(message["val"])
     return results
+
+
+def get_stateData(message):
+    ids = message.get("ids")
+    values = {}
+    sateData = GD.pfile.get("stateData")
+    for id in ids:
+        if id == "projects":
+            values[id] = GD.sessionData["actPro"]
+            continue
+
+        if sateData:
+            values[id] = sateData.get(id)
+    return values

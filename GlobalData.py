@@ -1,5 +1,7 @@
 import json
 
+from project import Project
+
 idata = {"mes": "dfhdfhfh", "usr": "NaS7QA89nxLg9nKQAAAn", "tag": "flask"}
 
 scb1Data = [
@@ -27,3 +29,12 @@ sessionData = {
 
 pfile = {}
 names = {}
+
+
+def save_pfile(pfile):
+    project = pfile.get("project")
+    if project is None:
+        return
+    project = Project(project, read=False)
+    project.pfile = pfile
+    project.write_pfile()
