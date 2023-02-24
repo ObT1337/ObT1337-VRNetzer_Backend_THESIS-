@@ -149,10 +149,6 @@
             </ul>
             <!-- Node information -->
             <div id="nodefragment-1">
-
-                <div class="three columns">
-                    <input type="button" value="REFRESH" onclick="location.reload();">
-                </div>
                 <div class="twelve columns">
                     <h2 class="lineglowslow" style="font-size: 68px; margin-bottom:30px;margin-top:30px">
                         Node Info
@@ -493,18 +489,18 @@
             deactivateTabs("nodepanel_tabsList")
             var item = document.getElementById("nodepanel_tabsList");
 
-item.addEventListener("wheel", function (e) {
-    if (e.deltaY > 0) {
-        item.scrollLeft += 100;
-    e.preventDefault();
-// prevenDefault() will help avoid worrisome 
-// inclusion of vertical scroll 
-    }
-    else {
-        item.scrollLeft -= 100;
-    e.preventDefault();
-    }
-});
+            item.addEventListener("wheel", function(e) {
+                if (e.deltaY > 0) {
+                    item.scrollLeft += 100;
+                    e.preventDefault();
+                    // prevenDefault() will help avoid worrisome 
+                    // inclusion of vertical scroll 
+                }
+                else {
+                    item.scrollLeft -= 100;
+                    e.preventDefault();
+                }
+            });
         </script>
         <div id="extension_code">
         </div>

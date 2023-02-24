@@ -159,6 +159,17 @@ function scrollHorizontal(id) {
   });
 }
 
+function refreshWithoutEmit(id, event_name = "selectmenuselect") {
+  var selectMenu = $("#" + id);
+  var selectmenuselectHandler = jQuery._data(selectMenu[0], "events")[
+    event_name
+  ][0].handler;
+  console.log(selectmenuselectHandler);
+  selectMenu.off(event_name, selectmenuselectHandler);
+  selectMenu.selectmenu("refresh");
+  selectMenu.on(event_name, selectmenuselectHandler);
+}
+
 function nextLayout(id) {
   var idx = $("#" + id).prop("selectedIndex");
   var numOptions = $("#" + id).children().length;
@@ -168,7 +179,7 @@ function nextLayout(id) {
     idx++;
   }
   $("#" + id).prop("selectedIndex", idx);
-  $("#" + id).selectmenu("refresh");
+  refreshWithoutEmit(id);
 }
 function prevLayout(id) {
   var idx = $("#" + id).prop("selectedIndex");
@@ -178,7 +189,7 @@ function prevLayout(id) {
     idx--;
   }
   $("#" + id).prop("selectedIndex", idx);
-  $("#" + id).selectmenu("refresh");
+  refreshWithoutEmit(id);
 }
 function initBackwardStep() {
   $("#backwardstep").on("click", function () {

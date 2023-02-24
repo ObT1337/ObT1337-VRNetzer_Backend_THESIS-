@@ -2,6 +2,9 @@ import json
 import os
 import shutil
 
+import numpy as np
+from PIL import Image
+
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 PROJECTS_DIR = os.path.join(STATIC_DIR, "projects")
 DEFAULT_PFILE = {
@@ -16,6 +19,17 @@ DEFAULT_PFILE = {
 DEFAUT_NAMES = {"names": []}
 DEFAULT_NODES = {"nodes": []}
 DEFAULT_LINKS = {"links": []}
+
+LAYOUTS = "layouts"
+LAYOUTSL = "layoutsl"
+LAYOUTS_RGB = "layoutsRGB"
+LINKS = "links"
+LINKS_RGB = "linksRGB"
+LINK = "link"
+NODE = "node"
+LAYOUT = "layout"
+LAYOUT_LOW = "layout_low"
+COLOR = "color"
 
 
 class Project:
@@ -40,12 +54,11 @@ class Project:
         self.links_dir = os.path.join(self.location, f"links")
         self.links_rgb_dir = os.path.join(self.location, f"linksRGB")
 
-        self.pfile = DEFAULT_PFILE
-        self.pfile["name"] = name
+        self.pfile = None
         self.origin = None
-        self.names = DEFAUT_NAMES
-        self.nodes = DEFAULT_NODES
-        self.links = DEFAULT_LINKS
+        self.names = None
+        self.nodes = None
+        self.links = None
         self.write_functions = [
             self.write_pfile,
             self.write_names,
@@ -92,11 +105,12 @@ class Project:
         Returns:
             json: Data from file or default value.
         """
-        origin = self.get_pfile_value("origin")
-        if not origin and not os.path.exists(file):
-            Project.create_directory(os.path.dirname(file))
-            Project.write_json(file, default)
-            return default
+        if self.pfile is not None:
+            origin = self.get_pfile_value("origin")
+            if not origin and not os.path.exists(file):
+                Project.create_directory(os.path.dirname(file))
+                Project.write_json(file, default)
+                return default
         if "pfile.json" not in file:
             if origin and not os.path.exists(file):
                 origin = Project(origin)
@@ -143,24 +157,29 @@ class Project:
             dir (str): Path to the directory to be made.
         """
         os.makedirs(dir, exist_ok=True)
+
     def get_origin(self):
         if self.exists():
             self.read_pfile()
             return self.origin
-            
+
     def write_pfile(
         self,
     ):
-        self.write_json(self.pfile_file, self.pfile)
+        if self.pfile is not None:
+            self.write_json(self.pfile_file, self.pfile)
 
     def write_names(self):
-        self.write_json(self.names_file, self.names)
+        if self.names is not None:
+            self.write_json(self.names_file, self.names)
 
     def write_nodes(self):
-        self.write_json(self.nodes_file, self.nodes)
+        if self.nodes is not None:
+            self.write_json(self.nodes_file, self.nodes)
 
     def write_links(self):
-        self.write_json(self.links_file, self.links)
+        if self.links is not None:
+            self.write_json(self.links_file, self.links)
 
     def write_all_jsons(self):
         self.run_functions(self.write_functions)
@@ -207,12 +226,14 @@ class Project:
         self.pfile[key] = value
 
     def append_pfile_value(self, key: str, value: object):
+        if self.pfile is None:
+            return
         if key not in self.pfile:
             self.pfile[key] = []
         if type(self.pfile[key]) != list:
             raise TypeError(f"pfile[{key}] is not a list.\n{self.pfile[key]}")
-        self.pfile[key]: list
-        self.pfile[key].append(value)
+        if value not in self.pfile[key]:
+            self.pfile[key].append(value)
 
     def define_pfile_value(self, key, dict_key, value):
         self.pfile[key][dict_key] = value
@@ -322,3 +343,89 @@ class Project:
             ignore=ignore,
             dirs_exist_ok=True,
         )
+
+    def write_bitmap(
+        self,
+        bitmap: Image,
+        layout_name: str,
+        data_type: str,
+        bitmap_type: str,
+    ):
+        print("writing bitmap: ", layout_name, data_type, bitmap_type)
+        file_path = self.get_file_path(
+            layout_name,
+            data_type,
+            bitmap_type,
+        )
+
+        print("writing layout to file: ", file_path)
+        bitmap.save(file_path)
+
+    def load_bitmap(
+        self, layout_name: str, data_type: str, bitmap_type: str, numpy=False
+    ):
+        file_path = self.get_file_path(
+            layout_name,
+            data_type,
+            bitmap_type,
+        )
+        if numpy:
+            return np.array(Image.open(file_path))
+        return Image.open(file_path)
+
+    @staticmethod
+    def make_layout_name(layout_name: str, low=False):
+        if low:
+            if layout_name.endswith("XYZl.bmp"):
+                return layout_name
+            if layout_name.endswith("XYZl"):
+                return layout_name + ".bmp"
+            return layout_name + "XYZl.bmp"
+
+        if layout_name.endswith("XYZ.bmp"):
+            return
+        if layout_name.endswith("XYZ"):
+            return layout_name + ".bmp"
+        return layout_name + "XYZ.bmp"
+
+    @staticmethod
+    def make_color_name(color_name: str):
+        if color_name.endswith("RGB.png"):
+            return color_name
+        if color_name.endswith("RGB"):
+            return color_name + ".png"
+        return color_name + "RGB.png"
+
+    def get_file_path(self, layout_name: str, data_type: str, bitmap_type: str = None):
+        if bitmap_type is None:
+            if layout_name.endswith("XYZ.bmp"):
+                bitmap_type = LAYOUT
+            elif layout_name.endswith("RGB.png"):
+                bitmap_type = COLOR
+            elif layout_name.endswith("XYZl.bmp"):
+                bitmap_type = LAYOUT_LOW
+                data_type = NODE
+            else:
+                raise ValueError(
+                    f"Cannot determine data type of layout {layout_name} and data type is not specified."
+                )
+        if bitmap_type == LAYOUT:
+            layout_name = self.make_layout_name(layout_name)
+        elif bitmap_type == LAYOUT_LOW:
+            layout_name = self.make_layout_name(layout_name, low=True)
+        if bitmap_type == COLOR:
+            layout_name = self.make_color_name(layout_name)
+
+        if data_type == NODE:
+            target_dir = {
+                LAYOUT: self.layouts_dir,
+                LAYOUT_LOW: self.layoutsl_dir,
+                COLOR: self.layouts_rgb_dir,
+            }
+        elif data_type == LINK:
+            target_dir = {
+                LAYOUT: self.links_dir,
+                COLOR: self.links_rgb_dir,
+            }
+
+        return os.path.join(target_dir[bitmap_type], layout_name)

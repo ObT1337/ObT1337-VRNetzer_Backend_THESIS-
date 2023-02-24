@@ -40,7 +40,7 @@ $(document).ready(function () {
         console.log("Updating Projects:" + id + " with " + val);
         console.log($("#" + id));
         $("#" + id).val(val);
-        refreshWithoutTrigger(id, "selectmenuselect");
+        refreshWithoutEmit(id);
         message = { id: id, fn: "sel", opt: val };
         console.log(message);
         ue4("sel", message);
@@ -54,7 +54,7 @@ $(document).ready(function () {
         case "dropdown":
           console.log("Updating dropdown: " + id + " with " + val);
           $("#" + id).val(val);
-          refreshWithoutTrigger(id, "selectmenuselect");
+          refreshWithoutEmit(id);
           message = { id: id, fn: "sel", opt: val };
           console.log(message);
           ue4("sel", message);
@@ -83,14 +83,3 @@ $(document).ready(function () {
     //CONNECTION Established - initialize the project (Ui elements initialize when project changes)
   });
 });
-
-function refreshWithoutTrigger(id, event_name) {
-  var selectMenu = $("#" + id);
-  var selectmenuselectHandler = jQuery._data(selectMenu[0], "events")[
-    event_name
-  ][0].handler;
-  console.log(selectmenuselectHandler);
-  selectMenu.off(event_name, selectmenuselectHandler);
-  selectMenu.selectmenu("refresh");
-  selectMenu.on(event_name, selectmenuselectHandler);
-}
