@@ -20,7 +20,7 @@ sliders = [("ddfd", "1"), ("bfsd", "2"), ("cdfsdf", "3")]
 # prolist = json.dumps(listProjects())
 sessionData = {
     "proj": ["ere", "rrr"],
-    "actPro": "alz",
+    "actPro": "dummy",
     "connectedUsers": [],
     "selected": [10, 50, 30, 59, 60, 20, 12, 45],
     "selections": {},

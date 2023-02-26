@@ -52,9 +52,9 @@
         });
 
         $('#projects').on('selectmenuselect', function() {
-            //alert( this.value );
-            console.log(this.value);
-            window.location.search += '&project=' + this.value;
+            url = new URL(window.location.href);
+            url.searchParams.set('project', this.value);
+            window.location.href = url;
         });
 
     </script>

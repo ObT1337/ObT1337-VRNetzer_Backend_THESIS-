@@ -17,21 +17,18 @@ def projects(message: dict) -> None:
     if state_data:
         curr_project.set_pfile_value("stateData", state_data)
     else:
-        curr_project.set_pfile_value("stateData", {})
+        state_data = {}
     for key, layout_list in zip(
         ["layouts", "nodecolors", "links", "linkcolors"],
         ["layouts", "layoutsRGB", "links", "linksRGB"],
     ):
-        if key not in curr_project.pfile["stateData"]:
+        if key not in state_data:
             curr_project.define_pfile_value(
                 "stateData", key, curr_project.pfile[layout_list][0]
             )
-    for sel in ["selected", "selectedLinks"]:
-        if sel in curr_project.pfile["stateData"]:
-            selected_ids = curr_project.pfile["stateData"][sel]
-            if selected_ids is not None:
-                curr_project.pfile["stateData"][sel] = list(set(selected_ids))
-    curr_project.define_pfile_value("stateData", "main_tab", 0)
+        for sel in ["selected", "selectedLinks"]:
+            if sel not in state_data:
+                curr_project.define_pfile_value("stateData", sel, [])
     curr_project.write_pfile()
 
     GD.sessionData["actPro"] = message["opt"]
@@ -66,14 +63,14 @@ def add_node(selected_id):
     stateData = GD.pfile.get("stateData")
     if stateData is None:
         stateData = {}
-        GD.pfile["stateData"] = stateData
     selected = stateData.get("selected")
     if selected is None:
         selected = []
     if selected_id not in selected:
         selected.append(selected_id)
+    stateData["selected"] = selected
+    GD.pfile["stateData"] = stateData
     print(GD.pfile["stateData"]["selected"])
-    GD.pfile["stateData"]["selected"] = selected
     GD.save_pfile(GD.pfile)
 
 
@@ -121,7 +118,12 @@ def tab(message):
 
 def search(message):
     results = {"id": "sres", "val": [], "fn": "sres"}
-    results["val"] = label_search.search(message["val"])
+    project = Project(GD.sessionData["actPro"])
+    if project.origin:
+        project = project.origin
+    else:
+        project = project.name
+    results["val"] = label_search.search(message["val"], project)
     return results
 
 

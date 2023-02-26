@@ -6,8 +6,7 @@ import re
 from GlobalData import *
 
 
-def search(term):
-    project = sessionData["actPro"]
+def search(term, project):
     if project != "none":
         folder = "static/projects/" + project + "/"
 
