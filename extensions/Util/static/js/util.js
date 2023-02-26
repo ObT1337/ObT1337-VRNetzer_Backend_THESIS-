@@ -1,3 +1,15 @@
+$(document).ready(function () {
+  if (pdata.stateData == undefined) {
+    addListener(pdata, "stateData", {});
+  }
+  console.log(pdata);
+  if (pdata.stateData.selected == undefined) {
+    addListener(pdata.stateData, "selected", null);
+  }
+  if (pdata.stateData.selectedLinks == undefined) {
+    addListener(pdata.stateData, "selectedLinks", null);
+  }
+});
 function getSelections() {
   message = {
     layout: $("#layouts").val(),
@@ -318,14 +330,16 @@ function utilVariableSlider(id, min, max, middle, step, func, kwargs = {}) {
     value: middle,
     step: step,
     slide: function (event, ui) {
+      if (func != undefined) {
+        func(ui, kwargs);
+      }
+    },
+    stop: function (event, ui) {
       socket.emit("ex", {
         id: id,
         val: ui.value,
         fn: "sli",
       });
-      if (func != undefined) {
-        func(ui, kwargs);
-      }
     },
   });
 }

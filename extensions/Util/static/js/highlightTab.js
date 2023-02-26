@@ -1,10 +1,11 @@
+var highlightButton = [];
 $(document).ready(function () {
-  initHighlightButton("util_isolate_bnt", "isolate");
-  initHighlightButton("util_bipartite_bnt", "bipartite");
+  initHighlightButton("util_isolate_bnt", "isolate", true);
+  initHighlightButton("util_bipartite_bnt", "bipartite", true);
   initHighlightButton("util_store_highlight_btn", "store");
   initHighlightButton("util_highlight_bnt", "highlight");
   initCheckbox("util_use_highlight");
-
+  highlightButton.push("util_reset_highlight_btn");
   $("#util_reset_highlight_btn").on("click", function () {
     statusID = "util_highlight_sm";
     resetSelection(
@@ -14,9 +15,16 @@ $(document).ready(function () {
       "Reset Highlight"
     );
   });
+  pdata.stateData.selectedRegisterListener(
+    hideShow(["util_isolate_bnt", "util_bipartite_bnt"])
+  );
 });
 // Highlight on click
-function initHighlightButton(id, mode) {
+function initHighlightButton(id, mode, check = false) {
+  highlightButton.push(id);
+  if (check) {
+    hideShow([id])(pdata.stateData.selected);
+  }
   $("#" + id).on("click", function () {
     message = getSelections();
     message["mode"] = mode;
@@ -36,4 +44,23 @@ function initHighlightButton(id, mode) {
     // message["color"] = $("#util_highlight_color").colorbox.value;
     utilSocket.emit("highlight", message);
   });
+}
+// If No nodes are selected, disable isolate and bipartite buttons
+function hideShow(ids) {
+  return function (val) {
+    var disable = false;
+    console.log("SELECTED IS ", val);
+    if (val == null || val == undefined) {
+      disable = true;
+    } else if (val.length == 0) {
+      disable = true;
+    }
+    console.log("DISABLE IS ", disable);
+    for (var i = 0; i < ids.length; i++) {
+      document.getElementById(ids[i]).disabled = disable;
+      document.getElementById(ids[i]).style.display = disable
+        ? "none"
+        : "block";
+    }
+  };
 }

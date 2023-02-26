@@ -46,17 +46,6 @@ $(document).ready(function () {
   setTimeout(function () {
     utilSocket.emit("getSelection");
   }, 1000);
-  console.log(pdata);
-  if (pdata.stateData == undefined) {
-    addListener(pdata, "stateData", {});
-  }
-  console.log(pdata);
-  if (pdata.stateData.selected == undefined) {
-    addListener(pdata.stateData, "selected", null);
-  }
-  if (pdata.stateData.selectedLinks == undefined) {
-    addListener(pdata.stateData, "selectedLinks", null);
-  }
   setSelectionNumber("util_num_nodes")(pdata.stateData.selected);
   setSelectionNumber("util_num_links")(pdata.stateData.selectedLinks);
   // Node selection listener
@@ -85,14 +74,6 @@ function setSelectionNumber(id) {
 utilSocket.on("selection", function (data) {
   sessionData["selected"] = data;
 });
-// Turn of the Highlight button on other clients
-utilSocket.on("started", function (data) {
-  button = document.getElementById(data.id);
-  button.value = "";
-  button.disabled = true;
-  $("#" + data.id).addClass("loadingButton");
-});
-
 // Turn update context depending on result
 utilSocket.on("result", function (data) {
   console.log(data);
