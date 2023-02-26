@@ -18,7 +18,8 @@ class AnnotationScraper:
         self.manager = mp.Manager()
         self.queue = self.manager.Queue()
         self.results = self.manager.Queue()
-        self.done = self.manager.Value("all_done", False)
+        self.done = self.manager.Value("done", False)
+        self.lock = self.manager.Lock()
         self.pool = None
         self.pool_args = []
         self.handled_projects = {}
@@ -39,6 +40,7 @@ class AnnotationScraper:
             self.queue,
             self.results,
             self.done,
+            self.lock,
         )
         self.pool = mp.Pool(n)
         for _ in range(n):
@@ -54,14 +56,15 @@ class AnnotationScraper:
         if not self.is_processing(project, data_type) or force:
             print("Adding to queue..", project, data_type, end="\r")
             all_jobs = []
-            while not self.queue.empty():
-                all_jobs.append(self.queue.get())
-            if (project, data_type) in all_jobs:
-                all_jobs.remove((project, data_type))
-            all_jobs = [(project, data_type)] + all_jobs
+            with self.lock:
+                while not self.queue.empty():
+                    all_jobs.append(self.queue.get())
+                if (project, data_type) in all_jobs:
+                    all_jobs.remove((project, data_type))
+                all_jobs = [(project, data_type)] + all_jobs
 
-            for job in all_jobs:
-                self.queue.put(job)
+                for job in all_jobs:
+                    self.queue.put(job)
 
             self.annotations[project] = {}
             if project not in self.handled_projects:
@@ -178,21 +181,28 @@ class AnnotationScraper:
 
 
 class Worker(threading.Thread):
-    def __init__(self, queue, results, all_done):
+    def __init__(self, queue, results, done, lock):
         threading.Thread.__init__(self)
         self.queue = queue
         self.results = results
-        self.all_done = all_done
+        self.done = done
+        self.lock = lock
 
     def run(self):
         # print("Starting worker")
-        while True and not self.queue.empty() or self.all_done.get():
+        while True:
+            if self.done.value:
+                break
+            if self.queue.empty():
+                time.sleep(2)
+                continue
             self.collect_annotations()
         # print("Worker done:")
 
     def collect_annotations(self):
         """Collects all the annotations of every project and stores them in the GlobalData."""
-        project, data_type = self.queue.get()
+        with self.lock:
+            project, data_type = self.queue.get()
         print("Collecting Anntoation for:", project, data_type, end="\r")
         message = {"project": project, "type": data_type}
         message = util.get_annotation(message, {})
@@ -220,6 +230,6 @@ def find_data_origin(project, data_type):
     return project
 
 
-def worker_task(queue, results, all_done):
-    worker = Worker(queue, results, all_done)
+def worker_task(*args):
+    worker = Worker(*args)
     worker.run()
