@@ -27,6 +27,8 @@ blueprint = IOBlueprint(
 )  # MANDATORY
 
 main_tabs = [
+    "util_flask_styles.html",
+    "util_scripts.html",
     "util_main_highlight.html",
     "util_main_selection.html",
 ]  # List of tab templates to be loaded in the main panel
@@ -40,12 +42,13 @@ annotations = []
 def util_setup():
     GD.annotationScraper = anntoation_scraper.AnnotationScraper()
     threading.Thread(target=GD.annotationScraper.start).start()
+    ...
 
 
 @blueprint.on("annotation")
 def util_get_annotation(message):
     threading.Thread(target=waiter, args=(message,)).start()
-    pass
+    ...
 
 
 def waiter(message):
@@ -68,6 +71,7 @@ def util_highlight(message):
     message = util.highlight_func(message)
     print(message)
     if message.get("set_project"):
+
         print("Setting project..")
         GD.annotationScraper.update_annotations("tmp")
         set_project("tmp")

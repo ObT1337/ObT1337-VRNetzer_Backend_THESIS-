@@ -39,7 +39,8 @@ def highlight_selected_node_links(message):
     selected_links = state_data.get("selectedLinks")
 
     # selected = random.choices(range(16421), k=100)
-    selected = [int(i) for i in selected]
+    if selected is not None:
+        selected = [int(i) for i in selected]
 
     if layout is None:
         layout = project.get_all_layouts()[0]
@@ -51,7 +52,7 @@ def highlight_selected_node_links(message):
         link_rgb = project.get_all_link_colors()[0]
 
     if project.origin:
-        project = Project(project.origin, read=False)
+        project = Project(project.origin)
     process = Project("process", read=False)
     process.pfile = GD.pfile
     if "stateData" not in process.pfile:
@@ -64,6 +65,7 @@ def highlight_selected_node_links(message):
             process.pfile["stateData"][key] = project.pfile[layout_list][0]
     process.pfile["stateData"]["main_tab"] = tab
     process.set_pfile_value("origin", project.name)
+    print(process.pfile["stateData"]["main_tab"])
 
     if process.exists():
         process.remove()
@@ -89,9 +91,10 @@ def highlight_selected_node_links(message):
         mode,
         link_color,
     )
+
     if selected is None or len(selected) == 0:
         selected = highlight.highlight_links(*links_args)
-        nodes_args[0] = selected
+        nodes_args = (selected,) + nodes_args[1:]
         nodes = highlight.highlight_nodes(*nodes_args)
     else:
         nodes = Process(
@@ -107,8 +110,7 @@ def highlight_selected_node_links(message):
             proc.start()
         for proc in [nodes, links]:
             proc.join()
-
-    tmp = Project("tmp")
+    tmp = Project("tmp", read=False)
     if tmp.exists():
         tmp.remove()
     process.copy(tmp.location)

@@ -63,7 +63,6 @@ def extract_node_data_from_tex(project: Project, layout):
         else pd.NA
         for x in image.getdata()
     ][: len(nodes)]
-    nodes = nodes[nodes["c"].notna()].copy()
     return nodes
 
 
@@ -78,7 +77,6 @@ def extract_link_data_from_tex(project: Project, layout):
     links["c"] = [x if x != (0, 0, 0, 0) or pd.isna(x) else 0 for x in image.getdata()][
         : len(links)
     ]
-    links = links[links["c"].notna()].copy()
     return links, image.size
 
 
@@ -101,9 +99,9 @@ def handle_node_layout(selected_nodes, project, out, layout, node_color):
         not_selected["c"].swifter.progress_bar(False).apply(not_selected_color)
     )
     nodes = pd.concat([selected, not_selected])
-
-    nodes["c"] = nodes["c"].fillna(0)
     nodes = nodes.sort_index()
+    nodes = nodes.reindex(range(len(nodes)))
+    nodes["c"] = nodes["c"].apply(lambda x: 0 if isinstance(x, float) else x)
 
     out = os.path.join(out.layouts_rgb_dir, layout)
     os.makedirs(os.path.dirname(out), exist_ok=True)
@@ -139,20 +137,30 @@ def handle_link_layout(
 ):
     # log.debug("Handling layout", layout)
     links, img_size = extract_link_data_from_tex(project, layout)
+    if selected_links is not None:
+        consider = links.index.isin(selected_links)
+        consider = links[consider].copy()
+    else:
+        consider = links.copy()
+
     if mode == "highlight":
-        selected_links = links["s"].isin(selected_nodes) | links["e"].isin(
+        selected_links = consider["s"].isin(selected_nodes) | consider["e"].isin(
             selected_nodes
         )
     elif mode == "isolate":
-        selected_links = links["s"].isin(selected_nodes) & links["e"].isin(
+        selected_links = consider["s"].isin(selected_nodes) & consider["e"].isin(
             selected_nodes
         )
     elif mode == "bipartite":
-        selected_links = links["s"].isin(selected_nodes) ^ links["e"].isin(
+        selected_links = consider["s"].isin(selected_nodes) ^ consider["e"].isin(
             selected_nodes
         )
-    not_selected = links[~selected_links.values].copy()
-    selected = links[selected_links.values].copy()
+
+    selected = consider[selected_links].copy()
+    not_selected = links.loc[
+        [link for link in links.index if link not in selected.index]
+    ]
+    # print(not_selected)
 
     not_selected["c"].values[:] = 0
     if link_color:
@@ -165,7 +173,9 @@ def handle_link_layout(
     links = pd.concat([selected, not_selected])
 
     links = links.sort_index()
-    links["c"] = links["c"].fillna(0)
+    links = links.reindex(range(len(links)))
+    links["c"] = links["c"].apply(lambda x: 0 if isinstance(x, float) else x)
+
     out = os.path.join(out.links_rgb_dir, layout)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     img = Image.new("RGBA", img_size)
@@ -187,12 +197,12 @@ def highlight_links(
     project.links_df = pd.DataFrame(project.links["links"])
     project.links_df: pd.DateOffset
 
-    if selected_nodes is None or len(selected_nodes) == 0:
-        project.links_df = project.links_df[project.links_df.index.isin(selected_links)]
-        selected_nodes = pd.concat(project.links_df[["s", "e"]]).unique()
+    consider = project.links_df
     if selected_links is not None:
-        print("filtering links")
-        project.links_df = project.links_df[project.links_df.index.isin(selected_links)]
+        consider = project.links_df[project.links_df.index.isin(selected_links)]
+    if selected_nodes is None or len(selected_nodes) == 0:
+        selected_nodes = consider["s"].append(consider["e"]).unique()
+
     args = [
         (
             selected_nodes,
