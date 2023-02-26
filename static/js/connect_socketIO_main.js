@@ -1,6 +1,5 @@
 var socket;
 var lastval = 0;
-
 /// UE4 connection
 
 /// ue4 to webui routes
@@ -109,11 +108,14 @@ $(document).ready(function () {
         if (data.id == "projects") {
           console.log("NEW PROJECT SELECTED", data.opt);
           url = new URL(location.href);
-          url.searchParams.delete("project", data.opt);
-          ue4("sel", data);
-          console.log(data);
-          location.href = url.href;
-          location.reload();
+          if (url.searchParams.has("project")) {
+            url.searchParams.delete("project");
+            ue4("sel", data);
+            location.href = url.href;
+          } else {
+            ue4("sel", data);
+            location.reload();
+          }
           break;
         }
 

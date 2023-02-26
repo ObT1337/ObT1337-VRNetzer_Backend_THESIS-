@@ -1,8 +1,8 @@
 var socket;
 var lastval = 0;
-
 $(document).ready(function () {
   username = "reeeee";
+  var uid = makeid(10);
 
   ///set up and connect to socket
   console.log("http://" + document.domain + ":" + location.port + "/chat");
@@ -12,7 +12,11 @@ $(document).ready(function () {
   socket.io.opts.transports = ["websocket"];
 
   socket.on("connect", function () {
-    socket.emit("join", {});
+    socket.emit("join", { uid: uid });
+  });
+  socket.on("disconnect", function () {
+    console.log("disconnected");
+    location.reload();
   });
   socket.on("status", function (data) {
     //$('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
