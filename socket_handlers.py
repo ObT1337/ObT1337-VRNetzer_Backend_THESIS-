@@ -35,6 +35,8 @@ def projects(message: dict) -> None:
     project = Project(GD.sessionData["actPro"])
     project.read_names()
     GD.pfile = project.pfile
+    if "stateData" not in GD.pfile:
+        GD.pfile["stateData"] = {}
     GD.names = project.names
 
     print("changed project to " + GD.sessionData["actPro"])

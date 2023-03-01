@@ -302,7 +302,11 @@
                 $('#' + id).append(new Option(data[i]));
             }
             document.getElementById(id).selectedIndex = opt;
-            $('#' + id).selectmenu();
+            $('#' + id).selectmenu({
+                classes: {
+                    "ui-selectmenu-open": "sixten-open",
+                },
+            });
             $('#' + id).on('selectmenuselect', function() {
                 var name = $('#' + id).find(':selected').text();
                 console.log(name);

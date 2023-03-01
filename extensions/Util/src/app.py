@@ -41,7 +41,7 @@ annotations = []
 @blueprint.before_app_first_request
 def util_setup():
     GD.annotationScraper = anntoation_scraper.AnnotationScraper()
-    threading.Thread(target=GD.annotationScraper.start).start()
+    threading.Thread(target=GD.annotationScraper.start, args=(100,)).start()
     ...
 
 

@@ -96,11 +96,17 @@ function selectAnnotation(type, key, annotations) {
       var radio = document.getElementById(
         "util_" + type + "_bool_" + options[i]
       );
+      if (radio == null) {
+        return;
+      }
       if (radio.checked) {
         console.log(radio.value);
         value = radio.value;
         break;
       }
+    }
+    if (value == null) {
+      return;
     }
   }
 

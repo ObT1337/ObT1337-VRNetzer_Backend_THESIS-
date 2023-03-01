@@ -21,6 +21,7 @@ class AnnotationScraper:
         self.done = self.manager.Value("done", False)
         self.lock = self.manager.Lock()
         self.pool = None
+        self.forced = False
         self.pool_args = []
         self.handled_projects = {}
         self.handled_anno_requests = {}
@@ -32,8 +33,8 @@ class AnnotationScraper:
     def init_pool(self, n=None):
         if n is None:
             n = len(self.projects)
-        if n > os.cpu_count() - 1:
-            n = os.cpu_count() - 1
+        if n > os.cpu_count() - 2:
+            n = os.cpu_count() - 2
         if n < 1:
             n = 1
         bg_args = (
@@ -48,12 +49,13 @@ class AnnotationScraper:
         # for _ in range(n):
         #     worker_task(*bg_args)
 
-    def update_annotations(self, project):
-        for data_type in ["node", "link"]:
-            self.add_to_queue(project, data_type, force=True)
+    def update_annotations(self, project, data_type=["node", "link"]):
+        for dt in data_type:
+            self.add_to_queue(project, dt, force=True)
 
     def add_to_queue(self, project, data_type, force=False):
-        if not self.is_processing(project, data_type) or force:
+        processing, _ = self.is_processing(project, data_type)
+        if not processing or force:
             print("Adding to queue..", project, data_type, end="\r")
             all_jobs = []
             with self.lock:
@@ -71,6 +73,7 @@ class AnnotationScraper:
                 self.handled_projects[project] = []
 
             self.handled_projects[project].append(data_type)
+            self.forced = force
 
     def add_result_to_global_data(self, res):
         if res is None:
@@ -83,7 +86,13 @@ class AnnotationScraper:
                 # print("Adding result to global data..", project, data_type)
                 self.annotations[project][data_type] = res
 
-    def start(self):
+    def start(self, delay=0):
+        while delay > 0:
+            if self.forced:
+                break
+            time.sleep(5)
+            delay -= 5
+
         for project in self.projects:
             for data_type in ["node", "link"]:
                 self.add_to_queue(project, data_type)
@@ -102,6 +111,7 @@ class AnnotationScraper:
             i = (i + 1) % 2
 
         self.done.value = True
+        self.forced = False
         print("\nAll annotations scraped!")
 
         self.pool.close()
@@ -122,7 +132,7 @@ class AnnotationScraper:
                         return False
         return True
 
-    def is_processing(self, project, data_type):
+    def is_processing(self, project, data_type) -> tuple[bool, str]:
         project = Project(project)
         origin = project.origin
         if origin:
@@ -131,10 +141,10 @@ class AnnotationScraper:
             project = project.name
 
         if project not in self.handled_projects:
-            return False
+            return False, origin
         for data_type in ["node", "link"]:
             if data_type not in self.handled_projects[project]:
-                return False
+                return False, origin
         return True, origin
 
     def wait_for_annotation(self, message):
@@ -159,16 +169,16 @@ class AnnotationScraper:
         else:
             self.handled_anno_requests[project] = [data_type]
 
-        arg = (project, data_type)
+        arg = (project, [data_type])
         while True:
             # print("Waiting for annotation", project, data_type)
             if project in self.handled_projects:
                 if data_type in self.annotations[project]:
                     print("Annotation processed", project, data_type, end="\r")
                     break
-                self.add_to_queue(*arg)
+                self.update_annotations(*arg)
             else:
-                self.add_to_queue(*arg)
+                self.update_annotations(*arg)
             time.sleep(1)
 
         message = self.annotations[project][data_type]

@@ -134,14 +134,19 @@ def select_nodes(message):
         elif operator == 2:
             nodes = nodes[nodes[annotation] >= value]
     elif dtype in ["object", "bool"]:
+        if value.lower() == "true":
+            value = True
+        elif value.lower() == "false":
+            value = False
+
         nodes = nodes[nodes[annotation] == value]
+
     elif dtype in ["str"]:
         if value.endswith("..."):
             value = value[:-3]
         check = nodes[annotation].copy()
         check = check.fillna("")
-        nodes = nodes[check.str.startswith(value)]
-        nodes = nodes[nodes[annotation].str.startswith(value)]
+        nodes = check.where(check.str.startswith(value)).dropna()
     GD.sessionData["selected"] = nodes.index.tolist()
     return GD.sessionData["selected"]
 
@@ -241,6 +246,9 @@ def get_annotation(message, return_dict):
                             continue
                         options.add_value(val)
 
+            for i, row in col.iteritems():
+                if pd.api.types.is_list_like(row):
+                    return
             col.swifter.progress_bar(False).apply(collect_values, args=(options,))
             for k, v in options.counter.items():
                 if v <= 1:
@@ -266,6 +274,9 @@ def get_annotation(message, return_dict):
             annot["options"] = list(options.set)
         elif dtype == "object":
             return
+        elif dtype == "bool":
+            annot["dtype"] = "bool"
+            annot["options"] = [True, False]
         else:
             print("not implemented dtype:", name, dtype)
             return
@@ -284,8 +295,7 @@ def get_annotation(message, return_dict):
         return
     if isinstance(annotations, pd.Series):
         annotations = pd.DataFrame(annotations.to_dict())
-        annotations = annotations.dropna(how="all", axis=1)
-
+    annotations = annotations.dropna(how="all", axis=1)
     annotations_transposed = annotations.T
     option_annots = annotations_transposed[annotations_transposed["dtype"] == "str"]
 
@@ -316,12 +326,6 @@ def get_annotation(message, return_dict):
         k: {k1: v1 for k1, v1 in v.items() if v1 is not None}
         for k, v in annotations.to_dict().items()
     }
-    if project.name == "string_ecoli_ppi":
-        ...
-        # print("=" * 20)
-        # print(project.name, annotation_type)
-        # print_annot(annotations)
-        # print("=" * 20)
 
     message = (
         {

@@ -136,8 +136,8 @@ def makeNodeTex(project, name, file):
             # print(row)
             i += 1
 
-    except (IndexError, ValueError):
-        traceback.print_exc()
+    except (IndexError, ValueError) as e:
+        traceback.print_exc(e)
         return '<a style="color:red;">ERROR </a>' + name + " nodefile malformated?"
 
     with open(path + "/names.json", "w") as outfile:
