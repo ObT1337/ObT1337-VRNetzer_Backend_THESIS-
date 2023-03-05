@@ -19,7 +19,7 @@ DEFAULT_PFILE = {
 DEFAUT_NAMES = {"names": []}
 DEFAULT_NODES = {"nodes": []}
 DEFAULT_LINKS = {"links": []}
-
+DEFAULT_ANNOTATIONS = {"node": None, "link": None}
 LAYOUTS = "layouts"
 LAYOUTSL = "layoutsl"
 LAYOUTS_RGB = "layoutsRGB"
@@ -53,29 +53,34 @@ class Project:
         self.layouts_rgb_dir = os.path.join(self.location, f"layoutsRGB")
         self.links_dir = os.path.join(self.location, f"links")
         self.links_rgb_dir = os.path.join(self.location, f"linksRGB")
+        self.annotations_file = os.path.join(self.location, f"annotations.json")
 
         self.pfile = None
         self.origin = None
         self.names = None
         self.nodes = None
         self.links = None
+        self.annotations = None
         self.write_functions = [
             self.write_pfile,
             self.write_names,
             self.write_nodes,
             self.write_links,
+            self.write_annotations,
         ]
         self.read_functions = [
             self.read_pfile,
             self.read_names,
             self.read_nodes,
             self.read_links,
+            self.read_annotations,
         ]
         self.print_functions = [
             self.print_pfile,
             self.print_names,
             self.print_nodes,
             self.print_links,
+            self.print_annotations,
         ]
         self.create_directory_functions = [
             self.create_layouts_dir,
@@ -106,15 +111,17 @@ class Project:
             json: Data from file or default value.
         """
         if self.pfile is not None:
-            origin = self.get_pfile_value("origin")
-            if not origin and not os.path.exists(file):
+            self.origin = self.get_pfile_value("origin")
+            if not self.origin and not os.path.exists(file):
                 Project.create_directory(os.path.dirname(file))
                 Project.write_json(file, default)
                 return default
         if "pfile.json" not in file:
-            if origin and not os.path.exists(file):
-                origin = Project(origin)
-                file = os.path.join(origin.location, os.path.basename(file))
+            if self.origin and not os.path.exists(file):
+                self.origin = Project(self.origin)
+                file = os.path.join(self.origin.location, os.path.basename(file))
+        if not os.path.exists(file):
+            return default
         with open(file, "r", encoding="UTF-8") as f:
             return json.load(f)
 
@@ -129,6 +136,7 @@ class Project:
             args (list[tuple], optional): List of tuples with arguments, one tuple for every function. Defaults to None.
             kwargs (list[dict], optional): List of dicts with key word arguments, one for every function. Defaults to None.
         """
+        results = []
         if args is None:
             args = [[]] * len(functions)
         if kwargs is None:
@@ -138,7 +146,8 @@ class Project:
                 args[idx] = []
             if kwargs[idx] is None:
                 kwargs[idx] = {}
-            func(*args[idx], **kwargs[idx])
+            results.append(func(*args[idx], **kwargs[idx]))
+        return results
 
     @staticmethod
     def print_data(data: object):
@@ -161,7 +170,9 @@ class Project:
     def get_origin(self):
         if self.exists():
             self.read_pfile()
-            return self.origin
+            if self.origin:
+                return self.origin
+        return self.name
 
     def write_pfile(
         self,
@@ -181,26 +192,77 @@ class Project:
         if self.links is not None:
             self.write_json(self.links_file, self.links)
 
+    def write_annotations(self):
+        if self.annotations is not None:
+            self.write_json(self.annotations_file, self.annotations)
+
     def write_all_jsons(self):
         self.run_functions(self.write_functions)
 
     def read_pfile(
         self,
+        set_pfile: bool = True,
+        set_origin: bool = True,
     ):
-        self.pfile = self.read_json(self.pfile_file, DEFAULT_PFILE)
-        self.origin = self.get_pfile_value("origin", None)
+        pfile = self.read_json(self.pfile_file, DEFAULT_PFILE)
+        origin = pfile.get("origin", None)
+        if set_pfile:
+            self.pfile = pfile
+        if set_origin:
+            self.origin = origin
+        return pfile, origin
 
-    def read_names(self):
-        self.names = self.read_json(self.names_file, DEFAUT_NAMES)
+    def read_names(self, set_names: bool = True):
+        names = self.read_json(self.names_file, DEFAUT_NAMES)
+        if set_names:
+            self.names = names
+        return names
 
-    def read_nodes(self):
-        self.nodes = self.read_json(self.nodes_file, DEFAULT_NODES)
+    def read_nodes(self, set_nodes: bool = True):
+        nodes = self.read_json(self.nodes_file, DEFAULT_NODES)
+        if set_nodes:
+            self.nodes = nodes
+        return nodes
 
-    def read_links(self):
-        self.links = self.read_json(self.links_file, DEFAULT_LINKS)
+    def read_links(self, set_links: bool = True):
+        links = self.read_json(self.links_file, DEFAULT_LINKS)
+        if set_links:
+            self.links = links
+        return links
 
-    def read_all_jsons(self):
-        self.run_functions(self.read_functions)
+    def read_annotations(
+        self,
+        data_type: list[str] = ["node", "link"],
+        set_annotations: bool = True,
+    ):
+        annotations = self.read_json(self.annotations_file, DEFAULT_ANNOTATIONS)
+        annotations = {
+            key: value for key, value in annotations.items() if key in data_type
+        }
+        if set_annotations:
+            self.annotations = annotations
+        return annotations
+
+    def read_all_jsons(self, set_all: bool = True):
+        kwargs = [
+            {"set_pfile": set_all, "set_origin": set_all},
+            {"set_names": set_all},
+            {"set_nodes": set_all},
+            {"set_links": set_all},
+            {"set_annotations": set_all},
+        ]
+        data = self.run_functions(
+            self.read_functions,
+            kwargs=kwargs,
+        )
+
+        if set_all:
+            self.pfile, self.origin = data[0]
+            self.names = data[1]
+            self.nodes = data[2]
+            self.links = data[3]
+            self.annotations = data[4]
+        return data
 
     def print_pfile(self):
         self.print_data(self.pfile)
@@ -213,6 +275,9 @@ class Project:
 
     def print_links(self):
         self.print_data(self.links)
+
+    def print_annotations(self):
+        self.print_data(self.annotations)
 
     def print_all_jsons(self):
         self.run_functions(self.print_functions)
@@ -255,6 +320,82 @@ class Project:
 
     def get_state_data(self):
         return self.get_pfile_value("stateData", [])
+
+    def get_annotations(self, data_type=["node", "link"]):
+        if isinstance(data_type, str):
+            data_type = [data_type]
+        return self.read_annotations(data_type, False)
+
+    def add_layout(self, layout: str):
+        if not layout.endswith("XYZ"):
+            layout += "XYZ"
+        if layout not in self.get_all_layouts():
+            self.append_pfile_value("layouts", layout)
+
+    def add_node_color(self, color: str):
+        if not color.endswith("RGB"):
+            color += "RGB"
+        if color not in self.get_all_node_colors():
+            self.append_pfile_value("layoutsRGB", color)
+
+    def add_link(self, link: str):
+        if not link.endswith("XYZ"):
+            link += "XYZ"
+        if link not in self.get_all_links():
+            self.append_pfile_value("links", link)
+
+    def add_link_color(self, color: str):
+        if not color.endswith("RGB"):
+            color += "RGB"
+        if color not in self.get_all_link_colors():
+            self.append_pfile_value("linksRGB", color)
+
+    def get_pfile(self):
+        """Read the pfile of the project and return it. This will not set the pfile variable of this Project instance but will just return the current written state of the pfile json.
+
+        Returns:
+            dict: Pfile json of the project.
+        """
+        return self.read_pfile(False)
+
+    def get_nodes(self):
+        """Read the nodes of the project and return them. This will not set the nodes variable of this Project instance but will just return the current written state of the nodes json.
+
+        Returns:
+            dict: Nodes json of the project.
+        """
+        return self.read_nodes(False)
+
+    def get_links(self):
+        """Read the links of the project and return them. This will not set the links variable of this Project instance but will just return the current written state of the links json.
+
+        Returns:
+            dict: Links json of the project.
+        """
+        return self.read_links(False)
+
+    def get_names(self):
+        """Read the names of the project and return them. This will not set the names variable of this Project instance but will just return the current written state of the names json.
+
+        Returns:
+            dict: Names json of the project.
+        """
+        return self.read_names(False)
+
+    def get_all_data(self):
+        """Read all jsons of the project and return them. This will not set the variables of this Project instance but will just return the current written state of the jsons.
+
+        Returns:
+            dict: All jsons of the project.
+        """
+        data = self.read_all_jsons(False)
+        return {
+            "pfile": self.pfile,
+            "names": self.names,
+            "nodes": self.nodes,
+            "links": self.links,
+            "annotations": self.annotations,
+        }
 
     def set_all_layouts(self, layouts):
         self.set_pfile_value("layouts", layouts)
@@ -333,16 +474,18 @@ class Project:
 
     def copy(self, target: str, *args, ignore=None, **kwargs):
         """Copies the whole directory of the project to the target location."""
-        if ignore:
+        if ignore == True:
             ignore = shutil.ignore_patterns("names.json", "nodes.json", "links.json")
-        shutil.copytree(
-            self.location,
-            target,
-            *args,
-            **kwargs,
-            ignore=ignore,
-            dirs_exist_ok=True,
-        )
+        elif ignore == False:
+            ignore = None
+            shutil.copytree(
+                self.location,
+                target,
+                *args,
+                **kwargs,
+                ignore=ignore,
+                dirs_exist_ok=True,
+            )
 
     def write_bitmap(
         self,
@@ -350,15 +493,17 @@ class Project:
         layout_name: str,
         data_type: str,
         bitmap_type: str,
+        debug=False,
     ):
-        print("writing bitmap: ", layout_name, data_type, bitmap_type)
+        if debug:
+            print("writing bitmap: ", layout_name, data_type, bitmap_type)
         file_path = self.get_file_path(
             layout_name,
             data_type,
             bitmap_type,
         )
-
-        print("writing layout to file: ", file_path)
+        if debug:
+            print("writing layout to file: ", file_path)
         bitmap.save(file_path)
 
     def load_bitmap(
@@ -372,6 +517,14 @@ class Project:
         if numpy:
             return np.array(Image.open(file_path))
         return Image.open(file_path)
+
+    def delete_bitmap(self, layout_name: str, data_type: str, bitmap_type: str):
+        file_path = self.get_file_path(
+            layout_name,
+            data_type,
+            bitmap_type,
+        )
+        os.remove(file_path)
 
     @staticmethod
     def make_layout_name(layout_name: str, low=False):
@@ -413,7 +566,7 @@ class Project:
             layout_name = self.make_layout_name(layout_name)
         elif bitmap_type == LAYOUT_LOW:
             layout_name = self.make_layout_name(layout_name, low=True)
-        if bitmap_type == COLOR:
+        elif bitmap_type == COLOR:
             layout_name = self.make_color_name(layout_name)
 
         if data_type == NODE:

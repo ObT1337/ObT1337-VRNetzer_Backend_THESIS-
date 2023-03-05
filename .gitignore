@@ -21,3 +21,5 @@ static/NewMaps/**/*
 static/csv/*
 string_interactomes/*
 extensions/ignore.py
+static/projects/**/*
+!static/projects/dummy

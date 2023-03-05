@@ -9,6 +9,7 @@ from flask import Flask, jsonify, redirect, render_template, request, session, u
 from PIL import Image
 
 from GlobalData import *
+import util
 
 
 def makeProjectFolders(name):
@@ -233,6 +234,7 @@ def makeLinkTex(project, name, file):
 
     new_imgl.putdata(texl)
     new_imgc.putdata(texc)
+
     pathl = path + "/links/" + name + "XYZ.bmp"
     pathRGB = path + "/linksRGB/" + name + "RGB.png"
 
@@ -284,10 +286,12 @@ def upload_files(request):
             # TODO: fix the below line to account for dots in filenames
             name, _ = os.path.splitext(file.filename)
             # name = file.filename.split(".")[0]
+
             contents = file.read().decode("utf-8")
-            state = state + " <br>" + makeNodeTex(namespace, name, contents)
+            name = util.get_valid_filename(name)
             pfile["layouts"].append(name + "XYZ")
             pfile["layoutsRGB"].append(name + "RGB")
+            state = state + " <br>" + makeNodeTex(namespace, name, contents)
 
             # print(contents)
             # x = validate_layout(contents.split("\n"))
@@ -305,6 +309,7 @@ def upload_files(request):
             name, _ = os.path.splitext(file.filename)
             # name = file.filename.split(".")[0]
             contents = file.read().decode("utf-8")
+            name = util.get_valid_filename(name)
             pfile["links"].append(name + "XYZ")
             pfile["linksRGB"].append(name + "RGB")
             state = state + " <br>" + makeLinkTex(namespace, name, contents)

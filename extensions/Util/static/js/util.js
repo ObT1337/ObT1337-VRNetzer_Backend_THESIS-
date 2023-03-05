@@ -2,7 +2,6 @@ $(document).ready(function () {
   if (pdata.stateData == undefined) {
     addListener(pdata, "stateData", {});
   }
-  console.log(pdata);
   if (pdata.stateData.selected == undefined) {
     addListener(pdata.stateData, "selected", null);
   }
@@ -53,7 +52,6 @@ function updatedAnnotations(data) {
       var key = clearOptions(option, "node");
       node_annotations[key] = data.annotations[option];
     }
-    console.log("node", node_annotations);
     updateDropDown(
       "util_node_annot",
       "util_node_select",
@@ -69,7 +67,6 @@ function updatedAnnotations(data) {
       var key = clearOptions(option, "link");
       link_annotations[key] = data.annotations[option];
     }
-    console.log("link", link_annotations);
     updateDropDown(
       "util_link_annot",
       "util_link_select",
@@ -80,17 +77,17 @@ function updatedAnnotations(data) {
   }
 }
 function selectAnnotation(type, key, annotations) {
-  console.log(key);
   var data = annotations[key];
   var dtype = data.dtype;
   var operator = null;
   var value = null;
+  console.log(dtype);
   if ((dtype == "float") | (dtype == "int")) {
     value = $("#util_" + type + "_int").slider("option", "value");
     operator = $("#util_" + type + "_operator").slider("option", "value");
   } else if (dtype == "str") {
     value = $("#util_" + type + "_str").val();
-  } else if (dtype == "bool") {
+  } else if ((dtype == "category") | (dtype == "bool")) {
     options = data.options;
     for (var i = 0; i < options.length; i++) {
       var radio = document.getElementById(
@@ -100,7 +97,6 @@ function selectAnnotation(type, key, annotations) {
         return;
       }
       if (radio.checked) {
-        console.log(radio.value);
         value = radio.value;
         break;
       }
@@ -119,7 +115,6 @@ function selectAnnotation(type, key, annotations) {
     operator: operator,
     project: sessionData["actPro"],
   };
-  console.log(message);
   utilSocket.emit("select", message);
 }
 // Update selectmenu size
@@ -178,7 +173,7 @@ function initVariables(key, variable_id, annotation) {
     utilHandleNumericVariable(data, key, dtype, space, type);
   } else if (dtype == "str") {
     utilHandleStringVariable(data, space, type);
-  } else if (dtype == "bool") {
+  } else if ((dtype == "bool") | (dtype == "category")) {
     untilHandleBoolVariable(data, space, type);
   }
 }
@@ -202,6 +197,7 @@ function clearOptions(option, type, reverse = false) {
   if (to_check.includes(option)) {
     option = replaceMap[option];
   }
+
   return option;
 }
 function utilHandleNumericVariable(data, key, dtype, space, type) {
@@ -211,6 +207,7 @@ function utilHandleNumericVariable(data, key, dtype, space, type) {
     special = true;
     operator_middle = 1;
   }
+
   var max = data.max;
   var min = data.min;
   if (min >= 0) {
@@ -292,7 +289,7 @@ function utilHandleNumericVariable(data, key, dtype, space, type) {
 
   slider_container.appendChild(slider);
 
-  if (special) {
+  if (special && data.values) {
     value.innerHTML = data.values[middle];
   } else {
     value.innerHTML = middle;
@@ -304,7 +301,7 @@ function utilHandleNumericVariable(data, key, dtype, space, type) {
   space.appendChild(slider_container);
   space.appendChild(operator_container);
 
-  if (special) {
+  if (special && data.values) {
     kwargs = { type: type, values: data.values, value_id: value.id };
     func = function (ui, { type: type, value_id: value_id, values: values }) {
       $("#" + value_id).text(values[ui.value]);
@@ -388,7 +385,6 @@ function untilHandleBoolVariable(data, space, type) {
   space.innerHTML = "<p></p>";
   space.appendChild(option_div);
   if (options.length == 1) {
-    console.log(options[0]);
     var radio = document.getElementById("util_" + type + "_bool_" + options[0]);
     radio.checked = true;
     radio.disabled = true;
@@ -403,7 +399,6 @@ function resetSelection(id, type, sm) {
     sm: sm,
     text: $(document.getElementById(id)).val(),
   };
-  console.log(message);
   utilSocket.emit("reset", message);
   updateSelection(message);
 }

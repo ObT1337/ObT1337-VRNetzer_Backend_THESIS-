@@ -4,13 +4,15 @@ import random
 import shutil
 import time
 import traceback
-from multiprocessing import Process
+import multiprocessing as mp
 
 import GlobalData as GD
 import pandas as pd
-from project import PROJECTS_DIR, Project
+from project import PROJECTS_DIR, Project, COLOR, NODE, LINK
 
 from . import const, highlight
+import numpy as np
+from PIL import Image
 
 MAX_ANNOT = 20
 
@@ -31,7 +33,8 @@ def highlight_selected_node_links(message):
     if link_color:
         link_color = hex_to_rgb(link_color)
     project = Project(GD.sessionData["actPro"])
-    state_data = GD.pfile.get("stateData")
+    project.pfile = GD.pfile
+    state_data = project.pfile.get("stateData")
     if state_data is None:
         return
     selected = state_data.get("selected")
@@ -50,7 +53,6 @@ def highlight_selected_node_links(message):
         linkl = project.get_all_links()[0]
     if link_rgb is None:
         link_rgb = project.get_all_link_colors()[0]
-
     if project.origin:
         project = Project(project.origin)
     process = Project("process", read=False)
@@ -65,44 +67,42 @@ def highlight_selected_node_links(message):
             process.pfile["stateData"][key] = project.pfile[layout_list][0]
     process.pfile["stateData"]["main_tab"] = tab
     process.set_pfile_value("origin", project.name)
-    print(process.pfile["stateData"]["main_tab"])
 
     if process.exists():
         process.remove()
 
-    project.copy(process.location, ignore=True)
-    process.remove_subdir("layoutsRGB")
-    process.remove_subdir("linksRGB")
+    ignore = shutil.ignore_patterns(
+        "names.json", "nodes.json", "links.json", "annotations.json"
+    )
+    project.copy(process.location, ignore=ignore)
     process.set_pfile_value("name", "tmp")
     process.write_pfile()
+
     nodes_args = (
-        selected,
-        project.get_files_in_dir("layoutsRGB"),
-        project,
         process,
-        node_color,
+        selected,
     )
     links_args = (
-        selected,
-        selected_links,
-        project.get_files_in_dir("linksRGB"),
-        project,
         process,
+        selected_links,
+        selected,
         mode,
-        link_color,
     )
 
     if selected is None or len(selected) == 0:
-        selected = highlight.highlight_links(*links_args)
-        nodes_args = (selected,) + nodes_args[1:]
-        nodes = highlight.highlight_nodes(*nodes_args)
+        selected = highlight.mask_links(*links_args)
+        nodes_args = (
+            nodes_args[0],
+            selected,
+        )
+        nodes = highlight.mask_nodes(*nodes_args)
     else:
-        nodes = Process(
-            target=highlight.highlight_nodes,
+        nodes = mp.Process(
+            target=highlight.mask_nodes,
             args=nodes_args,
         )
-        links = Process(
-            target=highlight.highlight_links,
+        links = mp.Process(
+            target=highlight.mask_links,
             args=links_args,
         )
 
@@ -110,7 +110,35 @@ def highlight_selected_node_links(message):
             proc.start()
         for proc in [nodes, links]:
             proc.join()
+    jobs = []
+    for node_lay in process.get_all_node_colors():
+        jobs.append(
+            (
+                process.name,
+                node_lay,
+                NODE,
+                COLOR,
+            )
+        )
+    for link_lay in process.get_all_link_colors():
+        jobs.append(
+            (
+                process.name,
+                link_lay,
+                LINK,
+                COLOR,
+            )
+        )
+    n = len(jobs)
+    if n > os.cpu_count() - 1:
+        n = os.cpu_count() - 1
+    with mp.Pool(n) as p:
+        p.starmap(highlight.apply_mask, jobs)
+    p.close()
+    p.join()
     tmp = Project("tmp", read=False)
+    for data_type in [NODE, LINK]:
+        process.delete_bitmap("mask", data_type, COLOR)
     if tmp.exists():
         tmp.remove()
     process.copy(tmp.location)
@@ -133,11 +161,12 @@ def select_nodes(message):
             nodes = nodes[nodes[annotation] == value]
         elif operator == 2:
             nodes = nodes[nodes[annotation] >= value]
-    elif dtype in ["object", "bool"]:
-        if value.lower() == "true":
-            value = True
-        elif value.lower() == "false":
-            value = False
+    elif dtype in ["object", "category", "bool"]:
+        if isinstance(value, str):
+            if value.lower() == "true":
+                value = True
+            elif value.lower() == "false":
+                value = False
 
         nodes = nodes[nodes[annotation] == value]
 
@@ -173,7 +202,7 @@ def select_links(message):
     return GD.sessionData["selected_links"]
 
 
-def get_annotation(message, return_dict):
+def process_annotation(message, return_dict):
     project = message["project"]
     project = Project(project)
     annotation_type = message["type"]
@@ -185,8 +214,9 @@ def get_annotation(message, return_dict):
         df = pd.DataFrame(project.links["links"])
         names = pd.DataFrame(project.nodes["nodes"])[const.NAME_COL]
     dtypes = df.dtypes.astype(str).to_dict()
-    drops = [c for c in const.IGNORE_COLS if c in df.columns]
-    df = df.drop(columns=drops)
+    for col in const.IGNORE_COLS:
+        if col in df.columns:
+            df = df.drop(columns=col)
     lengths = {}
     # print(project.name, annotation_type, len(df.columns))
 
@@ -199,7 +229,7 @@ def get_annotation(message, return_dict):
             annot["min"] = 0
             annot["max"] = len(names) - 1
             annot["values"] = names.tolist()
-        elif name in const.NAME_COL and annotation_type == "node":
+        elif name == const.NAME_COL and annotation_type == "node":
             annot["dtype"] = "int"
             annot["min"] = 0
             annot["max"] = len(col) - 1
@@ -270,7 +300,7 @@ def get_annotation(message, return_dict):
             if len(options.set) > 3:
                 annot["dtype"] = "str"
             else:
-                annot["dtype"] = "bool"
+                annot["dtype"] = "category"
             annot["options"] = list(options.set)
         elif dtype == "object":
             return
@@ -327,22 +357,14 @@ def get_annotation(message, return_dict):
         for k, v in annotations.to_dict().items()
     }
 
-    message = (
-        {
-            "data": "annotations",
-            "type": annotation_type,
-            "project": project.name,
-            "annotations": annotations,
-        },
-    )
-    return_dict["annotations"] = message
-    return message
+    return_dict["annotations"] = annotations
+    return annotations
 
 
 def get_selection(message):
     print("Handling selection request:", message)
     if message["type"] == "node":
-        if message["annotation"] in [const.NAME_COL, const.ID_COL, const.SUID_COL]:
+        if message["annotation"] in [const.NAME_COL, const.SUID_COL]:
             message["dtype"] = "object"
         selection = select_nodes(message)
         GD.pfile["stateData"]["node_annotation"] = message["annotation"]
@@ -422,26 +444,6 @@ def store_highlight(message):
         "projectName": new_name,
     }
     return message
-
-
-def reset():
-    project = GD.sessionData["actPro"]
-    project = Project(project)
-    origin = project.pfile.get("origin")
-    if not origin:
-        return {
-            "message": f"Nothing highlighted!",
-            "status": "error",
-        }
-    project.pfile = GD.pfile
-    project.write_pfile()
-    origin = Project(origin)
-    origin.pfile["stateData"] = GD.pfile["stateData"]
-    return {
-        "message": f"Resetting to {origin.name}",
-        "status": "success",
-        "projectName": origin.name,
-    }
 
 
 def hex_to_rgb(hex):

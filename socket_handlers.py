@@ -14,10 +14,9 @@ def projects(message: dict) -> None:
     curr_project = GD.sessionData["actPro"]
     curr_project = Project(curr_project)
     state_data = GD.pfile.get("stateData")
-    if state_data:
-        curr_project.set_pfile_value("stateData", state_data)
-    else:
+    if not state_data:
         state_data = {}
+    curr_project.set_pfile_value("stateData", state_data)
     for key, layout_list in zip(
         ["layouts", "nodecolors", "links", "linkcolors"],
         ["layouts", "layoutsRGB", "links", "linksRGB"],
@@ -114,6 +113,9 @@ def tab(message):
     if message["id"] in tab_ids:
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
+        if message["id"] == "tabs":
+            message["id"] = "main_tab"
+
         GD.pfile["stateData"][message["id"]] = message["msg"]
         GD.save_pfile(GD.pfile)
 

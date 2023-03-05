@@ -6,7 +6,7 @@ import time
 import GlobalData as GD
 import socket_handlers
 from io_blueprint import IOBlueprint
-
+from project import Project
 from . import anntoation_scraper, util
 
 # Prefix for the extension, as well as the names space of the extension
@@ -40,8 +40,8 @@ annotations = []
 
 @blueprint.before_app_first_request
 def util_setup():
-    GD.annotationScraper = anntoation_scraper.AnnotationScraper()
-    threading.Thread(target=GD.annotationScraper.start, args=(100,)).start()
+    GD.annotationScraper = anntoation_scraper.AnnotationScraper(send_result=send_result)
+    threading.Thread(target=GD.annotationScraper.start, args=(2,)).start()
     ...
 
 
@@ -71,9 +71,7 @@ def util_highlight(message):
     message = util.highlight_func(message)
     print(message)
     if message.get("set_project"):
-
         print("Setting project..")
-        GD.annotationScraper.update_annotations("tmp")
         set_project("tmp")
         time.sleep(2)
 
@@ -110,6 +108,12 @@ def set_project(project):
     socket_handlers.projects(message)
     blueprint.emit("ex", message, namespace="/chat")
     print("Project set..")
+
+
+def set_layout(id, value):
+    message = {"id": id, "opt": value, "fn": "sel"}
+    socket_handlers.select_menu(message)
+    blueprint.emit("ex", message, namespace="/chat")
 
 
 def send_result(message):

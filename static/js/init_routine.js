@@ -80,6 +80,5 @@ $(document).ready(function () {
     if (data.uid == uid) {
       initProject();
     }
-    //CONNECTION Established - initialize the project (Ui elements initialize when project changes)
   });
 });

@@ -49,13 +49,11 @@ function initHighlightButton(id, mode, check = false) {
 function hideShow(ids) {
   return function (val) {
     var disable = false;
-    console.log("SELECTED IS ", val);
     if (val == null || val == undefined) {
       disable = true;
     } else if (val.length == 0) {
       disable = true;
     }
-    console.log("DISABLE IS ", disable);
     for (var i = 0; i < ids.length; i++) {
       document.getElementById(ids[i]).disabled = disable;
       document.getElementById(ids[i]).style.display = disable

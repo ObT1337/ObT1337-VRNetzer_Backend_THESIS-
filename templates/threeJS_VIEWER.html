@@ -36,53 +36,54 @@
 <script src="{{ url_for('static', filename='js/OrbitControls.js') }}"></script>
 
 <body>
-    <div
-        style="z-index: 2; position: absolute; top: 10; left: 0; color:white; padding-left: 20px; padding-right: 20px;  background-color: #0000009d; overflow: hidden; width: 190px; ">
-        &nbsp;
+    <div id="leftSideav" class="sidenav" style="left:0">
+        <div
+            style="z-index: 2; position: absolute; top: 10; left: 0; color:white; padding-left: 20px; padding-right: 20px;  background-color: #0000009d; overflow: scroll; width: 190px; ">
+            &nbsp;
 
-        <form action="/preview">
-            <input type="submit" value="PROJECTS" style="height: 50px; width: 150px;" />
-        </form>
+            <form action="/preview">
+                <input type="submit" value="PROJECTS" style="height: 50px; width: 150px;" />
+            </form>
 
-        <h1 style='font-size: 24px; margin-bottom: 0px; color:rgb(95, 95, 95)'>VRNetzer</h1>
-        <div style='font-size: 20px; color:rgb(255, 255, 255)'>WebGL PREVIEW</div>
+            <h1 style='font-size: 24px; margin-bottom: 0px; color:rgb(95, 95, 95)'>VRNetzer</h1>
+            <div style='font-size: 20px; color:rgb(255, 255, 255)'>WebGL PREVIEW</div>
 
-        <p></p>
+            <p></p>
 
+            <h1 id='prname' style='font-size: 24px; margin-bottom: 3px; word-break:break-all;'>NAME</h1>
+            <div id='size'>SIZE</div>
+            <div id="warning" style='font-size: 20px; color:rgb(255,0, 0)'></div>
+            <br>
+            <p></p>
+            <div>LAYOUT</div>
+            <select id='layouts'></select>
+            <p></p>
+            <div>NODE COLOR</div>
+            <select id='layoutsRGB'></select>
+            <p></p>
+            <div>LINK COLOR</div>
+            <select id='linksRGB'></select>
 
-        <h1 id='prname' style='font-size: 24px; margin-bottom: 3px; word-break:break-all;'>NAME</h1>
-        <div id='size'>SIZE</div>
-        <div id="warning" style='font-size: 20px; color:rgb(255,0, 0)'></div>
-        <br>
-        <p></p>
-        <div>LAYOUT</div>
-        <select id='layouts'></select>
-        <p></p>
-        <div>NODE COLOR</div>
-        <select id='layoutsRGB'></select>
-        <p></p>
-        <div>LINK COLOR</div>
-        <select id='linksRGB'></select>
-
-        <p></p>
-
-
-        <input type="submit" value="RELOAD" id="reload" style="height: 50px; width: 150px;" />
-        <p></p>
-        <br>
-        <div style='margin-bottom: 8px;'>NODE SIZE</div>
-
-        <div id='nsize'></div>
-        <p></p>
-        <br>
-        <div>SEARCH</div>
-        <input type="Text" id="text" autocomplete="off" class="search" onkeydown="search(this)"
-            style="height: 50px; width: 150px;">
-        <p></p>
-        <p></p>
+            <p></p>
 
 
+            <input type="submit" value="RELOAD" id="reload" style="height: 50px; width: 150px;" />
+            <p></p>
+            <br>
+            <div style='margin-bottom: 8px;'>NODE SIZE</div>
 
+            <div id='nsize'></div>
+            <p></p>
+            <br>
+            <div>SEARCH</div>
+            <input type="Text" id="text" autocomplete="off" class="search" onkeydown="search(this)"
+                style="height: 50px; width: 150px;">
+            <p></p>
+            <p></p>
+
+
+
+        </div>
     </div>
     <div id='label'
         style='z-index: 2; position: absolute; top: 0; left: 0; color:white; margin-left: 10px; font-size: 30px;'></div>
@@ -304,7 +305,7 @@
             document.getElementById(id).selectedIndex = opt;
             $('#' + id).selectmenu({
                 classes: {
-                    "ui-selectmenu-open": "sixten-open",
+                    "ui-selectmenu-open": "twozerozero-open",
                 },
             });
             $('#' + id).on('selectmenuselect', function() {

@@ -164,7 +164,6 @@ function refreshWithoutEmit(id, event_name = "selectmenuselect") {
   var selectmenuselectHandler = jQuery._data(selectMenu[0], "events")[
     event_name
   ][0].handler;
-  console.log(selectmenuselectHandler);
   selectMenu.off(event_name, selectmenuselectHandler);
   selectMenu.selectmenu("refresh");
   selectMenu.on(event_name, selectmenuselectHandler);

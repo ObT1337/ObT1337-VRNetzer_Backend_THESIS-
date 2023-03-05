@@ -76,11 +76,12 @@ utilSocket.on("selection", function (data) {
 });
 // Turn update context depending on result
 utilSocket.on("result", function (data) {
-  console.log(data);
   if (data.project != sessionData["actPro"]) {
     return;
   }
   if (data.data == "annotations") {
+    console.log("NEW ANNOATIONS");
+    console.log(data);
     updatedAnnotations(data);
   } else if (data.data == "selection") {
     updateSelection(data, pdata);
