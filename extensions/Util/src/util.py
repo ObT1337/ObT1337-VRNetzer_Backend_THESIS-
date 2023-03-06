@@ -14,7 +14,7 @@ from . import const, highlight
 import numpy as np
 from PIL import Image
 
-MAX_ANNOT = 20
+MAX_ANNOT = 50
 
 
 def highlight_selected_node_links(message):
@@ -55,6 +55,7 @@ def highlight_selected_node_links(message):
         link_rgb = project.get_all_link_colors()[0]
     if project.origin:
         project = Project(project.origin)
+
     process = Project("process", read=False)
     process.pfile = GD.pfile
     if "stateData" not in process.pfile:

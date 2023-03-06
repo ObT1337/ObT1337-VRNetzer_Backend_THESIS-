@@ -45,7 +45,7 @@ z-index: 100;
 
 .util-bool-list input[type="radio"]:checked+label,
 .Checked+label {
-background: rgb(130 157 171 / 32%)
+background: rgba(130,157,171,0.33)
 }
 
 .util-bool-list label {

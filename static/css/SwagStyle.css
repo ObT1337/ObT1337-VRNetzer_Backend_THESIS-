@@ -1021,7 +1021,7 @@ a.crosslinks:visited {
     overflow:auto;
 }
 .ui-selectmenu-menu.sixten-open::-webkit-scrollbar-thumb {
-    background: transparent;
+    background: rgba(42, 113, 148,0.2);
     height: 50px;
 }
 .ui-selectmenu-menu.sixten-open::-webkit-scrollbar-thumb:hover {
@@ -1037,7 +1037,7 @@ a.crosslinks:visited {
     overflow:auto;
 }
 .ui-selectmenu-menu.twozerozero-open::-webkit-scrollbar-thumb{
-    background:transparent;
+    background:rgba(42, 113, 148,0.2);
     height: 50px;
 }
 .ui-selectmenu-menu.twozerozero-open::-webkit-scrollbar-thumb:hover {

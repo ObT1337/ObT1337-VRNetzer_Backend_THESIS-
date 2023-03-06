@@ -478,14 +478,15 @@ class Project:
             ignore = shutil.ignore_patterns("names.json", "nodes.json", "links.json")
         elif ignore == False:
             ignore = None
-            shutil.copytree(
-                self.location,
-                target,
-                *args,
-                **kwargs,
-                ignore=ignore,
-                dirs_exist_ok=True,
-            )
+
+        shutil.copytree(
+            self.location,
+            target,
+            *args,
+            **kwargs,
+            ignore=ignore,
+            dirs_exist_ok=True,
+        )
 
     def write_bitmap(
         self,

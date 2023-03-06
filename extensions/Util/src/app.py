@@ -81,7 +81,7 @@ def util_highlight(message):
 @blueprint.on("reset")
 def util_reset(message):
     if message["type"] == "project":
-        message.update(util.reset())
+        # message.update(util.reset())
         project = message.get("projectName")
         if project:
 
