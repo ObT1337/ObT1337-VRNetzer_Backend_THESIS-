@@ -1,0 +1,20 @@
+<link rel="stylesheet" href="{{ url_for('ExampleExtension.static', filename='css/ExampleStyle.css') }}">
+</link>
+
+<script src="{{ url_for('ExampleExtension.static', filename='js/ExampleScript.js') }}"></script>
+
+<!-- This Tab will be added -->
+<div id="tab_to_add" class="container" style="display:none;">
+    <div id="example_tab">
+        <div class="twelve columns" style="min-height: fit-content;">
+            <h2 class="lineglowslow" style="line-height: 50px;margin-top: 2px;">EXAMPLE EX</h2>
+        </div>
+        <div id="Hello World" class="twelve columns">
+            <h3 style="margin-bottom:50px;margin-top:30px">Hello World</h3>
+        </div>
+    </div>
+</div>
+
+<!--Define the image which will be shown on the tab icon-->
+<img id="tab_img" src="{{ url_for('ExampleExtension.static', filename='img/example_icon.png') }}" style="display: none;"
+    ;>

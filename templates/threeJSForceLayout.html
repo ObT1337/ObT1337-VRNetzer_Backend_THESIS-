@@ -1,0 +1,103 @@
+<head>
+  <style> body { margin: 0; } </style>
+
+  <script src="//unpkg.com/3d-force-graph"></script>
+  <script src="https://unpkg.com/neo4j-driver"></script>
+  <!--<script src="../../dist/3d-force-graph.js"></script>-->
+</head>
+
+<body>
+  <div id="3d-graph"></div>
+
+  <script>
+    //https://rawgit.com/jexp/neo4j-3d-force-graph/master/weights.html
+    //https://github.com/anvaka/pm
+    var nodes = JSON.parse({{nodes|tojson}});
+    var links = JSON.parse({{links|tojson}});
+
+    console.log(nodes);
+    const nnodes = [];
+    const nlinks = [];
+
+    for (let i = 0; i < nodes['nodes'].length; i++) {
+      var newnode = {};
+      newnode["size"] = 0.2;
+      newnode["id"] = i;
+      newnode["caption"] = nodes['nodes'][i]["n"];
+      newnode['label'] = ":"
+
+      nnodes.push(newnode);
+    }
+    
+    for (let i = 0; i < links['links'].length; i++) {
+      var newlink = {};
+      newlink["id"] = links['links'][i]["id"];
+      newlink["source"] = parseInt(links['links'][i]["s"]);
+      newlink["target"] = parseInt(links['links'][i]["e"]);
+      links['weight'] = 1;
+      links['type'] = "idk";
+      nlinks.push(newlink);
+    }
+    console.log(nnodes);
+    console.log(nlinks);
+
+    //let nodestxt = '[{"size": 0.15000000000000002, "caption": "Addam-Marbrand", "id": 0, "label": "Character"},{"size": 0.15000000000000002, "caption": "REEEEE", "id": 1, "label": "Character"},{"size": 0.15000000000000002, "caption": "Pferdinand", "id": 2, "label": "Character"}]';
+    //let linkstxt = '[{"source": 0, "target": 1, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 1, "target": 2, "weight": 1.0986122886681098, "type": "INTERACTS45"},{"source": 2, "target": 0, "weight": 1.0986122886681098, "type": "INTERACTS45"}]'
+    //const nnodes = JSON.parse(nodestxt); 
+    //const nlinks = JSON.parse(linkstxt); 
+
+
+
+
+    const elem = document.getElementById('3d-graph');
+    const driver = neo4j.driver("bolt://demo.neo4jlabs.com", neo4j.auth.basic("gameofthrones", "gameofthrones"),{encrypted: true});
+	//const session = driver.session({database:"gameofthrones"});
+	//const start = new Date()
+
+
+    const gData = { nodes: Object.values(nnodes), links: nlinks}
+        const Graph = ForceGraph3D()(elem)
+                      .graphData(gData)
+                      .nodeAutoColorBy('label')
+                      .nodeVal('size')
+                      .linkAutoColorBy('type')
+                      .linkWidth('weight')
+                      .nodeLabel(node => `${node.label}: ${node.caption}`)
+                      .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
+
+    /*session
+      .run('MATCH (n)-[r]->(m) RETURN { id: id(n), label:head(labels(n)), caption:n.name, size:n.pagerank } as source, { id: id(m), label:head(labels(m)), caption:m.name, size:m.pagerank } as target, {weight:log(r.weight), type:type(r)} as rel LIMIT $limit', {limit: neo4j.int(5000)})
+      .then(function (result) {
+        console.log(result);
+        const nodes = {}
+        const links = result.records.map(r => { 
+	       var source = r.get('source');source.id = source.id.toNumber();
+           nodes[source.id] = source;
+	       var target = r.get('target');target.id = target.id.toNumber();
+           nodes[target.id] = target;
+           var rel = r.get('rel');
+	       return Object.assign({source:source.id,target:target.id}, rel);
+           
+	    });
+        console.log(nodes[0]);
+        console.log(nnodes[0]);
+        session.close();
+
+        
+        console.log(links.length+" links loaded in "+(new Date()-start)+" ms.")
+            const gData = { nodes: Object.values(nnodes), links: nlinks}
+        const Graph = ForceGraph3D()(elem)
+                      .graphData(gData)
+                      .nodeAutoColorBy('label')
+                      .nodeVal('size')
+                      .linkAutoColorBy('type')
+                      .linkWidth('weight')
+                      .nodeLabel(node => `${node.label}: ${node.caption}`)
+                      .onNodeHover(node => elem.style.cursor = node ? 'pointer' : null);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      */
+  </script>
+</body>

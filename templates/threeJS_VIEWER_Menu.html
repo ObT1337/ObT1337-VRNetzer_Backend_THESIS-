@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WEBGL Preview</title>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}">
+<link href="{{ url_for('static', filename='css/jquery-ui.css') }}" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script src="{{ url_for('static', filename='js/three.js') }}"></script>
+<script src="{{ url_for('static', filename='js/OrbitControls.js') }}"></script>
+
+<body style="background-color:rgb(30, 30, 30);">
+    {% if "UnrealEngine" not in request.user_agent|string%}
+    {% include "NavBar.html" %}
+    {% endif %}
+    <div style="z-index: 2; position: absolute; top: 10; left: 0; color:white">&nbsp;
+
+        <h1 style='font-size: 24px; margin-bottom: 0px;'>VRNetzer</h1>
+        <div style='font-size: 20px; colorrgb(92, 92, 92)e'>WebGL PREVIEW</div>
+        <p></p>
+        <div>PROJECTS</div>
+
+        <select id='projects'></select>
+
+
+
+    </div>
+
+    <script>
+        var pdata = JSON.parse({{ data| tojson}});
+
+        //console.log(pdata);
+
+        id = "projects"
+        for (let i = 0; i < pdata["projects"].length; i++) {
+            $('#' + id).append(new Option(pdata["projects"][i]));
+        }
+        $("#projects").selectmenu({
+            classes: {
+                "ui-selectmenu-open": "twozerozero-open",
+            },
+        });
+
+        $('#projects').on('selectmenuselect', function() {
+            url = new URL(window.location.href);
+            url.searchParams.set('project', this.value);
+            window.location.href = url;
+        });
+
+    </script>
+
+</body>
+
+</html>

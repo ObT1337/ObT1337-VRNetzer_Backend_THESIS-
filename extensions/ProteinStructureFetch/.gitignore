@@ -1,0 +1,12 @@
+**/__pycache__**/
+**.DS_Store
+.venv
+**/*.code-workspace
+**/**.vscode/
+**/**.code-workspace
+processing_files/**/**
+static/combined/*
+static/pdbs/*
+config.ini
+venv/*
+**.tar

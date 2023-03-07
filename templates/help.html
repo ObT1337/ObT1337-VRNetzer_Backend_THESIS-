@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/SwagStyle.css') }}"></link>
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+	<div style = "width: 800px; height: 400px;" >
+       
+		<h3 >VRNetzer Web App HELP</h3>
+        The VrNetzer Web App is a flask webserver that acts both as a backend (the python part) and as a frontend (all the html and js files) in the form of user interfaces for the VR Module.
+        It also has functionality that is meant to be used from a webbrowser (uploading files, preparing data), in fact a webbrowser can be used in conjunction with a vr session.<br><br>
+        Here is a list of tutorials that should get you started to develop your own User Interfaces that are tailored to your data and usecases.<br><br>
+
+		<a href="/doku/helloflask">Hello Flask!</a> - creating a dynamic http page<br>
+        <a href="/doku/websockets">Websockets</a> - communication model for multiple clients<br>
+        <a href="/doku/CustomElements1">CustomElements I</a> - using HTML-Templates<br>
+        <a href="/doku/CustomElements2">CustomElements II</a><br>
+        <a href="/doku/ServerSideVar">Server Side Variable</a> - storing data on the server<br><br><br>
+        
+
+        <img src="{{ url_for('static', filename='img/help/VRNetzerArch.jpg') }}" style="max-width: 100%;">
+
+		<h5 >Backend</h5>
+        - one per session<br>
+        - serves the html pages for user interfaces (UI)<br>
+        - multicast changes to the UI to all connected clients<br>
+        - serves networkdata as textures<br>
+        - holds the state of the session<br><br>
+        <h5 >Frontend</h5>
+        - client side (can run on a different machine than server)<br>
+        - one for each player<br>
+        - notify server of useractions (socketIO)<br>
+        - communicates with VRModul via WebUI.js ("Middleman")<br><br>
+        <h5 >VRModule</h5>
+        - binary, can't be changed<br>
+        - has fixed api <br>
+        - in game webbrowser (Chromium)<br>
+        - WebUI plugin for bi directional communication with Frontend<br>
+        - downloads big textures directly from server<br>
+        - config file tells it which server to connect to and wich html pages to load<br><br>
+
+	</body>
+</html>
