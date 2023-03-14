@@ -399,6 +399,7 @@ function resetSelection(id, type, sm) {
     sm: sm,
     text: $(document.getElementById(id)).val(),
   };
+  console.log(message);
   utilSocket.emit("reset", message);
   updateSelection(message);
 }

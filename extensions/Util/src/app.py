@@ -6,7 +6,6 @@ import time
 import GlobalData as GD
 import socket_handlers
 from io_blueprint import IOBlueprint
-from project import Project
 from . import anntoation_scraper, util
 
 # Prefix for the extension, as well as the names space of the extension
@@ -80,14 +79,18 @@ def util_highlight(message):
 
 @blueprint.on("reset")
 def util_reset(message):
+    print(message)
     if message["type"] == "project":
-        # message.update(util.reset())
-        project = message.get("projectName")
+        project = GD.pfile.get("origin")
         if project:
-
             set_project(project)
+            message["message"] = f"Project reset to {project}."
+            message["status"] = "success"
             print("Resetting..")
             time.sleep(0.5)
+        else:
+            message["message"] = "Current project is not highlighted."
+            message["status"] = "error"
         send_status(message)
         return
 
