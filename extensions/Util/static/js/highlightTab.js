@@ -6,6 +6,7 @@ $(document).ready(function () {
   initHighlightButton("util_highlight_bnt", "highlight");
   initCheckbox("util_use_highlight");
   highlightButton.push("util_reset_highlight_btn");
+
   $("#util_reset_highlight_btn").on("click", function () {
     statusID = "util_highlight_sm";
     resetSelection(
