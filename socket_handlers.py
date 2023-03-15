@@ -100,11 +100,11 @@ def slider(message):
 
 
 def select_menu(message):
-    id_map={
-        "layouts":"layouts",
-        "nodecolors":"layoutsRGB",
-        "links":"links",
-        "linkcolors":"linksRGB"
+    id_map = {
+        "layouts": "layouts",
+        "nodecolors": "layoutsRGB",
+        "links": "links",
+        "linkcolors": "linksRGB",
     }
     main_menus = ["layouts", "nodecolors", "links", "linkcolors"]
     if message["id"] in main_menus:
@@ -121,12 +121,13 @@ def select_menu(message):
 def tab(message):
     tab_ids = ["tabs", "nodepanel_tabs"]
     if message["id"] in tab_ids:
+        tab_id = message["id"]
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
-        if message["id"] == "tabs":
-            message["id"] = "main_tab"
+        if tab_id == "tabs":
+            tab_id = "main_tab"
 
-        GD.pfile["stateData"][message["id"]] = message["msg"]
+        GD.pfile["stateData"][tab_id] = message["msg"]
         GD.save_pfile(GD.pfile)
 
 
