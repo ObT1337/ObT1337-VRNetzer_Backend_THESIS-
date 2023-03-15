@@ -103,7 +103,6 @@ $(document).ready(function () {
         break;
 
       case "sel":
-        console.log("NEW PROJECT SELECTED");
         // SPECIAL CASE: Refresh Page When loading new project
         if (data.id == "projects") {
           console.log("NEW PROJECT SELECTED", data.opt);
@@ -118,7 +117,7 @@ $(document).ready(function () {
           }
           break;
         }
-
+        
         $("#" + data.id).val(data.opt);
         $("#" + data.id).selectmenu("refresh");
         ue4("sel", data);

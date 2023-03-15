@@ -104,8 +104,11 @@ def select_menu(message):
     if message["id"] in main_menus:
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
-        GD.pfile["stateData"][message["id"]] = message["opt"]
-        GD.save_pfile(GD.pfile)
+        if message["opt"] in GD.pfile[message["id"]]:
+            GD.pfile["stateData"][message["id"]] = message["opt"]
+            GD.save_pfile(GD.pfile)
+            return
+        exit()
 
 
 def tab(message):
