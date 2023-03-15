@@ -100,11 +100,18 @@ def slider(message):
 
 
 def select_menu(message):
+    id_map={
+        "layouts":"layouts",
+        "nodecolors":"layoutsRGB",
+        "links":"links",
+        "linkcolors":"linksRGB"
+    }
     main_menus = ["layouts", "nodecolors", "links", "linkcolors"]
     if message["id"] in main_menus:
         if "stateData" not in GD.pfile:
             GD.pfile["stateData"] = {}
-        if message["opt"] in GD.pfile[message["id"]]:
+        pfile_key = id_map.get(message["id"])
+        if pfile_key and message["opt"] in GD.pfile[pfile_key]:
             GD.pfile["stateData"][message["id"]] = message["opt"]
             GD.save_pfile(GD.pfile)
             return

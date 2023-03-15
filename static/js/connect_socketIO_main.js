@@ -38,6 +38,10 @@ $(document).ready(function () {
   socket.on("connect", function () {
     socket.emit("join", { uid: uid });
   });
+  socket.on("disconnect", function () {
+    console.log("disconnected - trying to connect");
+    location.reload();
+  });
   socket.on("ex", function (data) {
     console.log("server returned: " + JSON.stringify(data));
     switch (data.fn) {
