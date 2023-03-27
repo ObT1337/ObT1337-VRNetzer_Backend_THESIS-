@@ -259,6 +259,7 @@ def mask_links(project: Project, selected_links, selected_nodes, mode="highlight
             selected_links["id"] // LINK_BITMAP_SIZE,
             selected_links["id"] % LINK_BITMAP_SIZE,
         )
+        x, y = x.astype(int), y.astype(int)
         mask[x, y, :] = 1
     mask = Image.fromarray(np.uint8(mask)).convert("RGBA")
     project.write_bitmap(
@@ -277,6 +278,7 @@ def mask_nodes(project: Project, selected_nodes):
     mask = np.zeros((NODE_BITMAP_SIZE, NODE_BITMAP_SIZE, 4))
     nodes = nodes[nodes["id"].isin(selected_nodes)].copy()
     x, y = nodes["id"] // NODE_BITMAP_SIZE, nodes["id"] % NODE_BITMAP_SIZE
+    x, y = x.astype(int), y.astype(int)
     mask[x, y, :] = 1
     mask = Image.fromarray(np.uint8(mask)).convert("RGBA")
     project.write_bitmap(
@@ -307,10 +309,10 @@ def apply_mask(project, layout, data_type=NODE, bitmap_type=COLOR):
         non_zero = np.nonzero(selected[max_row])
         max_col = np.max(non_zero[0])
         not_selected = ~selected
-        not_selected[:max_row, :, :3] = [255, 255, 255]
-        not_selected[max_row, :max_col, :3] = [255, 255, 255]
-        not_selected[max_row, max_col:] = 0
-        not_selected[max_row + 1 :] = 0
+        not_selected[:max_row, :, :] = NOT_SELECTED
+        not_selected[max_row, :max_col, :] = NOT_SELECTED
+        not_selected[max_row, max_col:, :] = NOT_SELECTED
+        not_selected[max_row + 1 :, :, :] = NOT_SELECTED
 
         result = result + not_selected
         bmp = Image.fromarray(np.uint8(result))

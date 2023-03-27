@@ -38,6 +38,10 @@ $(document).ready(function () {
   socket.on("connect", function () {
     socket.emit("join", { uid: uid });
   });
+  socket.on("disconnect", function () {
+    console.log("disconnected - trying to connect");
+    location.reload();
+  });
   socket.on("ex", function (data) {
     console.log("server returned: " + JSON.stringify(data));
     switch (data.fn) {
@@ -103,7 +107,6 @@ $(document).ready(function () {
         break;
 
       case "sel":
-        console.log("NEW PROJECT SELECTED");
         // SPECIAL CASE: Refresh Page When loading new project
         if (data.id == "projects") {
           console.log("NEW PROJECT SELECTED", data.opt);
@@ -118,7 +121,7 @@ $(document).ready(function () {
           }
           break;
         }
-
+        
         $("#" + data.id).val(data.opt);
         $("#" + data.id).selectmenu("refresh");
         ue4("sel", data);

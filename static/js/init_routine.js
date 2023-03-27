@@ -17,10 +17,6 @@ function initProject() {
   socket.emit("init", { uid: uid, ids: ["projects"] });
 }
 $(document).ready(function () {
-  socket.on("disconnect", function () {
-    console.log("disconnected - trying to connect");
-    location.reload();
-  });
   socket.on("init", function (data) {
     console.log("Init: " + JSON.stringify(data));
     ids = data.ids;
