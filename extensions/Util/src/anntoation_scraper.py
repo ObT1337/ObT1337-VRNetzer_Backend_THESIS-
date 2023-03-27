@@ -1,7 +1,8 @@
 import multiprocessing as mp
 import os
-import time
 import signal
+import time
+
 import uploader
 from project import Project
 
@@ -29,6 +30,7 @@ class AnnotationScraper:
         self.results = self.manager.Queue()
         self.done = self.manager.Value("done", False)
         self.queue_lock = self.manager.Lock()
+        self.idle_dict = self.manager.dict()
         self.file_locks = {}
         self.pool = None
         self.forced = False
@@ -40,6 +42,7 @@ class AnnotationScraper:
         ]
         self.annotations = {}
         self.is_active = False
+        self.is_initialized = False
         self.send_result = send_result
 
     def init_pool(self, n=None):
@@ -56,15 +59,18 @@ class AnnotationScraper:
                 self.done,
                 self.queue_lock,
                 self.file_locks,
+                self.idle_dict,
                 backup,
             ]
             for backup in [True] + [False] * (n - 1)
         )
+
         self.pool = mp.Pool(n)
         for _ in range(n):
             self.pool.starmap_async(worker_task, bg_args)
-        # for _ in range(n):
-        #     worker_task(*bg_args)
+        # for args in bg_args:
+        #     worker_task(*args)
+        self.is_initialized = True
 
     def update_annotations(
         self, project, data_type: str or list[str] = ["node", "link"]
@@ -214,7 +220,9 @@ class AnnotationScraper:
             self.is_active = True
             for project in self.projects:
                 self.update_annotations(project)
-            self.init_pool()
+            if not self.is_initialized:
+                self.init_pool()
+            self.idle_dict["main"] = False
             waiter = ["/", "\\"]
             i = 0
             while True:
@@ -243,14 +251,18 @@ class AnnotationScraper:
 
     def stop(self, terminate=False):
         self.done.value = True
+        self.idle_dict["main"] = True
         if terminate:
             self.pool.terminate()
-        else:
-            self.pool.close()
-        self.pool.join()
-        print(
-            "Annotation Scraper: Pool closed will handle remaining results...", end="\r"
-        )
+            self.is_initialized = False
+        # else:
+        #     self.pool.close()
+        while True:
+            if all(list(self.idle_dict.values())):
+                break
+            time.sleep(0.5)
+        print("Annotation Scraper: All worker done, will handle remaining results...")
+        print(self.idle_dict, all(list(self.idle_dict.values())))
         while not self.results.empty():
             self.store_result(self.results.get())
         self.forced = False
@@ -343,7 +355,7 @@ class AnnotationScraper:
 
 
 class Worker(mp.Process):
-    def __init__(self, queue, results, done, queue_lock, file_locks, backup):
+    def __init__(self, queue, results, done, queue_lock, file_locks, idle_dict, backup):
         super().__init__()
         self.queue = queue
         self.results = results
@@ -351,6 +363,14 @@ class Worker(mp.Process):
         self.queue_lock = queue_lock
         self.file_locks = file_locks
         self.backup = backup
+        self.idle_dict = idle_dict
+        self.idle(False)
+
+    def idle(self, idle=True):
+        self.idle_dict[mp.current_process().pid] = idle
+
+    def remove_from_pool(self):
+        self.idle_dict.pop(mp.current_process().pid)
 
     def run(self):
         # print(f"Starting worker background={self.background}")
@@ -358,8 +378,6 @@ class Worker(mp.Process):
             if self.done.value:
                 break
             if self.queue.empty():
-                if not self.backup:
-                    break
                 # break
                 # print("Queue empty, waiting..", end="\r")
                 time.sleep(0.3)
@@ -410,4 +428,13 @@ def find_data_origin(project, data_type):
 
 def worker_task(*args):
     worker = Worker(*args)
-    worker.run()
+    while True:
+        if worker.done.value and worker.queue.empty():
+            worker.idle(True)
+            time.sleep(5)
+            continue
+        worker.idle(False)
+        worker.run()
+        if not worker.backup:
+            worker.remove_from_pool()
+            break
