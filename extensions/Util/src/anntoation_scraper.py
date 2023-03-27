@@ -74,7 +74,7 @@ class AnnotationScraper:
         for dt in data_type:
             self.add_to_queue(project, dt, force=True)
 
-    def reorganize_queue(self, project, data_type, force=False):
+    def reorganize_queue(self, project, data_type):
         with self.queue_lock:
             jobs = []
             while not self.queue.empty():
@@ -105,7 +105,7 @@ class AnnotationScraper:
             self.forced = force
 
             if force:
-                self.reorganize_queue(project, data_type, force)
+                self.reorganize_queue(project, data_type)
             else:
                 self.queue.put(AnnotationJob(project, data_type))
 
@@ -183,8 +183,7 @@ class AnnotationScraper:
 
         for data_type in updated:
             self.set_processed(project_name, data_type)
-            if not self.request_is_handled(project_name, data_type):
-                self.send_update_to_clients(project_name, data_type)
+            self.send_update_to_clients(project_name, data_type)
 
     def send_update_to_clients(self, project, data_type):
         message = {
