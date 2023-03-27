@@ -98,8 +98,12 @@ class Project:
     @staticmethod
     def write_json(file: str, data: object):
         """Generic write function for json files."""
-        with open(file, "w+", encoding="UTF-8") as f:
+        file_name = os.path.basename(file)
+        tmp_name = "tmp_" + file_name
+        tmp_name = os.path.join(os.path.dirname(file), tmp_name)
+        with open(tmp_name, "w+", encoding="UTF-8") as f:
             json.dump(data, f)
+        os.rename(tmp_name, file)
 
     def read_json(self, file: str, default: object = {}):
         """Generic read function for json files.
